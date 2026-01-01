@@ -1,0 +1,26 @@
+@namespace ArkUI.Components.Popover
+@using Microsoft.AspNetCore.Components.Rendering
+
+@{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "id", Context.PopoverId);
+        builder.AddAttribute(2, "role", "dialog");
+        builder.AddAttribute(3, "aria-modal", TrapFocus.ToString().ToLowerInvariant());
+        builder.AddAttribute(4, "data-state", DataState);
+        builder.AddAttribute(5, "data-side", Side.ToString().ToLowerInvariant());
+        builder.AddAttribute(6, "data-align", Align.ToString().ToLowerInvariant());
+        builder.AddAttribute(7, "data-ark-popover-content", true);
+        builder.AddAttribute(8, "tabindex", "-1");
+        builder.AddAttribute(9, "style", "position: absolute; top: 0; left: 0;");
+        builder.AddMultipleAttributes(10, AdditionalAttributes);
+        builder.AddElementReferenceCapture(11, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(12, ChildContent);
+        builder.CloseElement();
+    }
+}

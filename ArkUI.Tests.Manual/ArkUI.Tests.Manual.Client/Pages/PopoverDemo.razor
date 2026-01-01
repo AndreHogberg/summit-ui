@@ -1,0 +1,198 @@
+@page "/popover"
+@rendermode InteractiveAuto
+
+<h1>Popover Component Demo</h1>
+<section>
+    <h2>Basic Popover</h2>
+    <p>A simple popover with default settings.</p>
+    
+    <PopoverRoot>
+        <PopoverTrigger class="btn btn-primary">
+            Open Popover
+        </PopoverTrigger>
+        <PopoverPortal>
+            <PopoverContent class="popover-content" SideOffset="8">
+                <div class="popover-panel">
+                    <h3>Basic Popover</h3>
+                    <p>This is a simple popover with default positioning.</p>
+                    <PopoverClose class="btn btn-secondary btn-sm">Close</PopoverClose>
+                </div>
+            </PopoverContent>
+        </PopoverPortal>
+    </PopoverRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Popover with Arrow</h2>
+    <p>A popover with a visual arrow pointing to the trigger.</p>
+
+    <PopoverRoot>
+        <PopoverTrigger class="btn btn-success">
+            With Arrow
+        </PopoverTrigger>
+        <PopoverPortal>
+            <PopoverContent class="popover-content" Side="PopoverSide.Right" SideOffset="12">
+                <PopoverArrow class="popover-arrow" />
+                <div class="popover-panel">
+                    <h3>Arrow Popover</h3>
+                    <p>Notice the arrow pointing to the trigger!</p>
+                    <PopoverClose class="btn btn-secondary btn-sm">Got it</PopoverClose>
+                </div>
+            </PopoverContent>
+        </PopoverPortal>
+    </PopoverRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Different Placements</h2>
+    <p>Popovers can appear on different sides of the trigger.</p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <PopoverRoot>
+            <PopoverTrigger class="btn btn-outline-primary">Top</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="PopoverSide.Top" SideOffset="8">
+                    <div class="popover-panel">
+                        <p>I appear above!</p>
+                    </div>
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+
+        <PopoverRoot>
+            <PopoverTrigger class="btn btn-outline-primary">Right</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="PopoverSide.Right" SideOffset="8">
+                    <div class="popover-panel">
+                        <p>I appear to the right!</p>
+                    </div>
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+
+        <PopoverRoot>
+            <PopoverTrigger class="btn btn-outline-primary">Bottom</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="PopoverSide.Bottom" SideOffset="8">
+                    <div class="popover-panel">
+                        <p>I appear below!</p>
+                    </div>
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+
+        <PopoverRoot>
+            <PopoverTrigger class="btn btn-outline-primary">Left</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="PopoverSide.Left" SideOffset="8">
+                    <div class="popover-panel">
+                        <p>I appear to the left!</p>
+                    </div>
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>With Overlay</h2>
+    <p>A popover with a backdrop overlay for modal-like behavior.</p>
+
+    <PopoverRoot>
+        <PopoverTrigger class="btn btn-warning">
+            Open with Overlay
+        </PopoverTrigger>
+        <PopoverPortal>
+            <PopoverOverlay class="popover-overlay" />
+            <PopoverContent class="popover-content" Side="PopoverSide.Bottom" SideOffset="8" TrapFocus="true">
+                <div class="popover-panel">
+                    <h3>Modal-like Popover</h3>
+                    <p>Click the overlay or press Escape to close.</p>
+                    <p>Focus is trapped within this popover.</p>
+                    <input type="text" class="form-control" placeholder="Try tabbing..." style="margin-bottom: 0.5rem;" />
+                    <PopoverClose class="btn btn-primary">Done</PopoverClose>
+                </div>
+            </PopoverContent>
+        </PopoverPortal>
+    </PopoverRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Controlled Mode</h2>
+    <p>The popover state can be controlled externally.</p>
+
+    <div style="margin-bottom: 1rem;">
+        <button class="btn btn-info" @onclick="() => isControlledOpen = !isControlledOpen">
+            Toggle Externally (@(isControlledOpen ? "Open" : "Closed"))
+        </button>
+    </div>
+
+    <PopoverRoot Open="@isControlledOpen" OpenChanged="@(v => isControlledOpen = v)">
+        <PopoverTrigger class="btn btn-secondary">
+            Controlled Popover
+        </PopoverTrigger>
+        <PopoverPortal>
+            <PopoverContent class="popover-content" SideOffset="8">
+                <div class="popover-panel">
+                    <h3>Controlled State</h3>
+                    <p>This popover's state is managed externally.</p>
+                    <PopoverClose class="btn btn-secondary btn-sm">Close</PopoverClose>
+                </div>
+            </PopoverContent>
+        </PopoverPortal>
+    </PopoverRoot>
+</section>
+
+@code {
+    private bool isControlledOpen = false;
+}
+
+<style>
+    .popover-content {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e0e0e0;
+    }
+
+    .popover-panel {
+        padding: 1rem;
+        min-width: 200px;
+        max-width: 300px;
+    }
+
+    .popover-panel h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .popover-panel p {
+        margin: 0 0 0.75rem 0;
+        color: #666;
+        font-size: 0.875rem;
+    }
+
+    .popover-arrow {
+        background: white;
+        border: 1px solid #e0e0e0;
+        transform: rotate(45deg);
+    }
+
+    .popover-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    section h2 {
+        margin-top: 0;
+    }
+</style>

@@ -1,0 +1,19 @@
+@namespace ArkUI.Components.Popover
+@using Microsoft.AspNetCore.Components.Rendering
+
+@{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "data-ark-popover-arrow", true);
+        builder.AddAttribute(2, "style", $"position: absolute; width: {Width}px; height: {Height}px;");
+        builder.AddMultipleAttributes(3, AdditionalAttributes);
+        builder.AddElementReferenceCapture(4, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(5, ChildContent);
+        builder.CloseElement();
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "arkui-js",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JavaScript modules for ArkUI Blazor component library",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild Scripts/popover.js Scripts/focus-trap.js Scripts/tabs.js --bundle --format=esm --outdir=wwwroot --minify",
+    "watch": "esbuild Scripts/popover.js Scripts/focus-trap.js Scripts/tabs.js --bundle --format=esm --outdir=wwwroot --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.6.12"
+  }
+}

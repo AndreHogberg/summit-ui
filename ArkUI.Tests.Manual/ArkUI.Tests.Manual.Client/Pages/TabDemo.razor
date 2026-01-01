@@ -1,0 +1,16 @@
+@page "/Tabs"
+@rendermode InteractiveWebAssembly
+<TabsRoot DefaultValue="account">
+    <TabsList>
+        <TabsTrigger Value="account">Account</TabsTrigger>
+        <TabsTrigger Value="password">Password</TabsTrigger>
+        <TabsTrigger Value="settings" Disabled>Settings</TabsTrigger>
+    </TabsList>
+
+    <TabsContent Value="account">
+        Account settings content...
+    </TabsContent>
+    <TabsContent Value="password">
+        Password settings content...
+    </TabsContent>
+</TabsRoot>

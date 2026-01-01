@@ -1,0 +1,5 @@
+<Primitive @attributes="AdditionalAttributes" class="btn btn-primary" As="@As"/>
+@code {
+    [Parameter] public string As { get; set; } = "button";
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

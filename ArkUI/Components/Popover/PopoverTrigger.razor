@@ -1,0 +1,25 @@
+@namespace ArkUI.Components.Popover
+@inherits Microsoft.AspNetCore.Components.ComponentBase
+@using Microsoft.AspNetCore.Components.Rendering
+
+@{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "aria-haspopup", "dialog");
+        builder.AddAttribute(2, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
+        builder.AddAttribute(3, "aria-controls", Context.PopoverId);
+        builder.AddAttribute(4, "data-state", DataState);
+        builder.AddAttribute(5, "data-ark-popover-trigger", true);
+        builder.AddMultipleAttributes(6, AdditionalAttributes);
+        builder.AddAttribute(7, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
+        builder.AddAttribute(8, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
+        builder.AddElementReferenceCapture(9, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(10, ChildContent);
+        builder.CloseElement();
+    }
+}
