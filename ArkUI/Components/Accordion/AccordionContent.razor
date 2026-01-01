@@ -1,0 +1,31 @@
+@namespace ArkUI.Components.Accordion
+@inherits Microsoft.AspNetCore.Components.ComponentBase
+@using Microsoft.AspNetCore.Components.Rendering
+
+@if (IsExpanded || ForceMount)
+{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "role", "region");
+        builder.AddAttribute(2, "id", Context.GetContentId(ItemContext.Value));
+        builder.AddAttribute(3, "aria-labelledby", Context.GetTriggerId(ItemContext.Value));
+        builder.AddAttribute(4, "data-state", DataState);
+        builder.AddAttribute(5, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
+        builder.AddAttribute(6, "data-ark-accordion-content", true);
+
+        if (!IsExpanded)
+        {
+            builder.AddAttribute(7, "hidden", true);
+        }
+
+        builder.AddMultipleAttributes(8, AdditionalAttributes);
+        builder.AddElementReferenceCapture(9, elementRef => _elementRef = elementRef);
+        builder.AddContent(10, ChildContent);
+        builder.CloseElement();
+    }
+}

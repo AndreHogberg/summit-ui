@@ -1,0 +1,115 @@
+@page "/Accordion"
+@rendermode InteractiveWebAssembly
+
+<h1>Accordion Demo</h1>
+
+<h2>Single Mode (Default)</h2>
+<AccordionRoot DefaultValue="item-1">
+    <AccordionItem Value="item-1">
+        <AccordionHeader>
+            <AccordionTrigger>What is ArkUI?</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>ArkUI is a Blazor component library focused on WCAG-compliant, fully customizable headless components.</p>
+        </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem Value="item-2">
+        <AccordionHeader>
+            <AccordionTrigger>Is it accessible?</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Yes! All components are built with WCAG accessibility compliance, including proper ARIA attributes and keyboard navigation.</p>
+        </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem Value="item-3">
+        <AccordionHeader>
+            <AccordionTrigger>Can I style it?</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Absolutely. ArkUI components are headless, meaning they provide functionality without opinionated styling. Use data attributes like <code>data-state="open"</code> for styling hooks.</p>
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+
+<h2>Multiple Mode</h2>
+<AccordionRoot Type="AccordionType.Multiple" DefaultValues="@(["feature-1", "feature-2"])">
+    <AccordionItem Value="feature-1">
+        <AccordionHeader>
+            <AccordionTrigger>Feature 1: Headless Design</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Components provide structure and behavior without opinionated styling.</p>
+        </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem Value="feature-2">
+        <AccordionHeader>
+            <AccordionTrigger>Feature 2: Full Accessibility</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Built-in ARIA attributes, keyboard navigation, and screen reader support.</p>
+        </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem Value="feature-3">
+        <AccordionHeader>
+            <AccordionTrigger>Feature 3: Cross-Render Mode</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Works across WASM, SSR, and Interactive Server Blazor render modes.</p>
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+
+<h2>Non-Collapsible Single Mode</h2>
+<AccordionRoot DefaultValue="always-1" Collapsible="false">
+    <AccordionItem Value="always-1">
+        <AccordionHeader>
+            <AccordionTrigger>Always One Open</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>In non-collapsible mode, at least one item must always be open.</p>
+        </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem Value="always-2">
+        <AccordionHeader>
+            <AccordionTrigger>Try Closing Me</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>You can switch to this item, but you can't close the last open item.</p>
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+
+<h2>With Disabled Items</h2>
+<AccordionRoot DefaultValue="enabled-1">
+    <AccordionItem Value="enabled-1">
+        <AccordionHeader>
+            <AccordionTrigger>Enabled Item</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>This item works normally.</p>
+        </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem Value="disabled-1" Disabled="true">
+        <AccordionHeader>
+            <AccordionTrigger>Disabled Item</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>You shouldn't be able to see this!</p>
+        </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem Value="enabled-2">
+        <AccordionHeader>
+            <AccordionTrigger>Another Enabled Item</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Keyboard navigation skips the disabled item.</p>
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>

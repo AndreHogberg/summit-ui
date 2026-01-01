@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<FocusTrapJsInterop>();
 
         // Component-specific services
+        services.AddScoped<AccordionJsInterop>();
         services.AddScoped<PopoverJsInterop>();
         services.AddScoped<TabsJsInterop>();
 
