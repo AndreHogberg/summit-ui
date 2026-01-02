@@ -3,7 +3,7 @@
 <div
     role="option"
     id="@Context.GetItemId(Value)"
-    aria-selected="@IsSelected"
+    aria-selected="@(IsSelected ? "true" : "false")"
     aria-disabled="@(Disabled ? "true" : null)"
     data-ark-select-item=""
     data-value="@Value"
