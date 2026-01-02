@@ -1,0 +1,181 @@
+@page "/focus-trap"
+@rendermode InteractiveWebAssembly
+@using ArkUI.Components.Utilities
+
+<h1>Focus Trap Component Demo</h1>
+
+<section>
+    <h2>Focus Trap with Zero Tabbable Items</h2>
+    <p>A focus trap with no focusable elements inside. Focus should still be trapped within the container.</p>
+    
+    <button class="btn btn-primary" @onclick="() => showZeroItems = true" data-testid="open-zero-items">
+        Open Dialog (No Buttons)
+    </button>
+    
+    @if (showZeroItems)
+    {
+        <div class="dialog-overlay" data-testid="zero-items-overlay">
+            <FocusTrap IsActive="true" AutoFocus="true">
+                <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="zero-dialog-title" 
+                     data-testid="zero-items-dialog" tabindex="-1" @onkeydown="HandleZeroItemsKeyDown">
+                    <h3 id="zero-dialog-title">No Focusable Elements</h3>
+                    <p>This dialog has no buttons or inputs. Press Escape to close.</p>
+                    <p>Focus is trapped here - you cannot Tab away to external elements.</p>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Focus Trap with One Tabbable Item</h2>
+    <p>A focus trap with exactly one focusable element inside.</p>
+    
+    <button class="btn btn-primary" @onclick="() => showOneItem = true" data-testid="open-one-item">
+        Open Dialog (One Button)
+    </button>
+    
+    @if (showOneItem)
+    {
+        <div class="dialog-overlay" data-testid="one-item-overlay">
+            <FocusTrap IsActive="true" AutoFocus="true">
+                <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="one-dialog-title" data-testid="one-item-dialog">
+                    <h3 id="one-dialog-title">Single Focusable Element</h3>
+                    <p>This dialog has only one button. Tabbing should cycle back to the same button.</p>
+                    <button class="btn btn-secondary" @onclick="() => showOneItem = false" data-testid="one-item-close">
+                        Close
+                    </button>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Focus Trap with Two Tabbable Items</h2>
+    <p>A focus trap with two focusable elements inside.</p>
+    
+    <button class="btn btn-primary" @onclick="() => showTwoItems = true" data-testid="open-two-items">
+        Open Dialog (Two Buttons)
+    </button>
+    
+    @if (showTwoItems)
+    {
+        <div class="dialog-overlay" data-testid="two-items-overlay">
+            <FocusTrap IsActive="true" AutoFocus="true">
+                <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="two-dialog-title" data-testid="two-items-dialog">
+                    <h3 id="two-dialog-title">Two Focusable Elements</h3>
+                    <p>This dialog has two buttons. Tab cycles between them.</p>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary" @onclick="() => showTwoItems = false" data-testid="two-items-cancel">
+                            Cancel
+                        </button>
+                        <button class="btn btn-primary" @onclick="() => showTwoItems = false" data-testid="two-items-confirm">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Focus Trap with Multiple Items</h2>
+    <p>A more complex focus trap with form elements.</p>
+    
+    <button class="btn btn-primary" @onclick="() => showMultipleItems = true" data-testid="open-multiple-items">
+        Open Form Dialog
+    </button>
+    
+    @if (showMultipleItems)
+    {
+        <div class="dialog-overlay" data-testid="multiple-items-overlay">
+            <FocusTrap IsActive="true" AutoFocus="true">
+                <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="multiple-dialog-title" data-testid="multiple-items-dialog">
+                    <h3 id="multiple-dialog-title">Form Dialog</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <label for="name-input">Name:</label>
+                        <input type="text" id="name-input" class="form-control" placeholder="Enter name" data-testid="multiple-items-input" />
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label for="email-input">Email:</label>
+                        <input type="email" id="email-input" class="form-control" placeholder="Enter email" data-testid="multiple-items-email" />
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary" @onclick="() => showMultipleItems = false" data-testid="multiple-items-cancel">
+                            Cancel
+                        </button>
+                        <button class="btn btn-primary" @onclick="() => showMultipleItems = false" data-testid="multiple-items-submit">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>External Focus Target</h2>
+    <p>This button is outside all dialogs - used to verify focus cannot escape.</p>
+    <button class="btn btn-outline-danger" data-testid="external-button">
+        External Button (Should Not Be Reachable When Dialog Open)
+    </button>
+</section>
+
+@code {
+    private bool showZeroItems = false;
+    private bool showOneItem = false;
+    private bool showTwoItems = false;
+    private bool showMultipleItems = false;
+
+    private void HandleZeroItemsKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            showZeroItems = false;
+        }
+    }
+}
+
+<style>
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    section h2 {
+        margin-top: 0;
+    }
+
+    .dialog-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .dialog-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        min-width: 300px;
+        max-width: 500px;
+    }
+
+    .dialog-content h3 {
+        margin: 0 0 1rem 0;
+    }
+
+    .dialog-content p {
+        margin: 0 0 1rem 0;
+        color: #666;
+    }
+</style>

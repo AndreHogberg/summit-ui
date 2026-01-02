@@ -19,27 +19,27 @@ TUnit uses `--treenode-filter` with path pattern: `/assembly/namespace/class/tes
 
 Filter by class name:
 ```bash
-dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter /*/*/ClassName/*
+dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/ClassName/*'
 ```
 
 Filter by exact test name:
 ```bash
-dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter /*/*/*/TestName
+dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/*/TestName'
 ```
 
 Examples:
 ```bash
 # Run all Select accessibility tests
-dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter /*/*/SelectAccessibilityTests/*
+dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/SelectAccessibilityTests/*'
 
 # Run specific test by name
-dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter /*/*/*/Trigger_ShouldHave_RoleCombobox
+dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/*/Trigger_ShouldHave_RoleCombobox'
 
 # Run tests matching pattern (wildcard in test name)
-dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter /*/*/*/Keyboard*
-
+dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/*/Keyboard*
+'
 # Run all tests in namespace
-dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter /*/ArkUI.Tests.Playwright/*/*
+dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/ArkUI.Tests.Playwright/*/*'
 ```
 
 ## Run Tests in Debug Mode
