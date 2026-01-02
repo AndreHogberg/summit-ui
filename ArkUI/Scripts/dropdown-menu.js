@@ -319,6 +319,21 @@ export function initializeDropdownMenu(triggerEl, contentEl, arrowEl, dotNetRef,
     contentEl.addEventListener('keydown', handleKeyDown);
     contentEl.addEventListener('click', handleItemClick);
 
+    // Handle mouse over on items - use event delegation for efficiency
+    // Using mouseover (not mouseenter) because it bubbles and enables event delegation
+    let currentHighlightedItem = null;
+    function handleItemMouseOver(event) {
+        if (isDisposed) return;
+        const item = event.target.closest(MENU_ITEM_SELECTOR);
+        if (item && !item.hasAttribute('data-disabled') && item !== currentHighlightedItem) {
+            currentHighlightedItem = item;
+            const items = getMenuItems(contentEl);
+            updateHighlightedItem(items, item);
+        }
+    }
+
+    contentEl.addEventListener('mouseover', handleItemMouseOver);
+
     // Focus first item when menu opens
     requestAnimationFrame(() => {
         if (isDisposed) return;
@@ -339,6 +354,7 @@ export function initializeDropdownMenu(triggerEl, contentEl, arrowEl, dotNetRef,
             document.removeEventListener('pointerdown', handleOutsideClick, true);
             contentEl.removeEventListener('keydown', handleKeyDown);
             contentEl.removeEventListener('click', handleItemClick);
+            contentEl.removeEventListener('mouseover', handleItemMouseOver);
             clearTimeout(state.typeaheadTimeout);
         },
         updatePosition,

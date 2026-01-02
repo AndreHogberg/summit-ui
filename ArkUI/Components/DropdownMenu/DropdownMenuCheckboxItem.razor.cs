@@ -59,8 +59,6 @@ public partial class DropdownMenuCheckboxItem : ComponentBase
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private bool IsHighlighted { get; set; }
-
     private string AriaChecked => Indeterminate ? "mixed" : Checked.ToString().ToLowerInvariant();
     private string DataState => Indeterminate ? "indeterminate" : (Checked ? "checked" : "unchecked");
 
@@ -81,19 +79,6 @@ public partial class DropdownMenuCheckboxItem : ComponentBase
         await OnSelect.InvokeAsync();
 
         // Don't close menu for checkbox items
-    }
-
-    private void HandleMouseEnter()
-    {
-        if (!Disabled)
-        {
-            IsHighlighted = true;
-        }
-    }
-
-    private void HandleMouseLeave()
-    {
-        IsHighlighted = false;
     }
 }
 

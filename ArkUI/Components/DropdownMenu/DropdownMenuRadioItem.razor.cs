@@ -44,7 +44,6 @@ public partial class DropdownMenuRadioItem : ComponentBase
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private bool IsHighlighted { get; set; }
     private bool IsSelected => RadioContext.Value == Value;
     private string DataState => IsSelected ? "checked" : "unchecked";
 
@@ -56,19 +55,6 @@ public partial class DropdownMenuRadioItem : ComponentBase
         await OnSelect.InvokeAsync();
 
         // Don't close menu for radio items
-    }
-
-    private void HandleMouseEnter()
-    {
-        if (!Disabled)
-        {
-            IsHighlighted = true;
-        }
-    }
-
-    private void HandleMouseLeave()
-    {
-        IsHighlighted = false;
     }
 }
 

@@ -42,8 +42,6 @@ public partial class DropdownMenuItem : ComponentBase
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private bool IsHighlighted { get; set; }
-
     private async Task HandleClickAsync(MouseEventArgs args)
     {
         if (Disabled) return;
@@ -51,18 +49,5 @@ public partial class DropdownMenuItem : ComponentBase
         await OnClick.InvokeAsync(args);
         await OnSelect.InvokeAsync();
         await Context.SelectItemAsync();
-    }
-
-    private void HandleMouseEnter()
-    {
-        if (!Disabled)
-        {
-            IsHighlighted = true;
-        }
-    }
-
-    private void HandleMouseLeave()
-    {
-        IsHighlighted = false;
     }
 }

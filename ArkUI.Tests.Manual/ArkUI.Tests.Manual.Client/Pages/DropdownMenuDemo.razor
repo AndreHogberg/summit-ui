@@ -1,5 +1,5 @@
 @page "/dropdown-menu"
-@rendermode InteractiveAuto
+@rendermode InteractiveWebAssembly
 
 <h1>Dropdown Menu Component Demo</h1>
 
@@ -52,7 +52,7 @@
                 <DropdownMenuSeparator class="dropdown-menu-separator" />
                 <DropdownMenuGroup>
                     <DropdownMenuGroupLabel class="dropdown-menu-label">Edit</DropdownMenuGroupLabel>
-                    <DropdownMenuItem class="dropdown-menu-item">Undo</DropdownMenuItem>
+                    <DropdownMenuItem OnClick="@(() => Console.WriteLine("Undo"))" class="dropdown-menu-item">Undo</DropdownMenuItem>
                     <DropdownMenuItem class="dropdown-menu-item">Redo</DropdownMenuItem>
                     <DropdownMenuItem class="dropdown-menu-item">Cut</DropdownMenuItem>
                     <DropdownMenuItem class="dropdown-menu-item">Copy</DropdownMenuItem>
