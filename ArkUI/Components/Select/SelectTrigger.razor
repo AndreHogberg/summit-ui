@@ -1,0 +1,66 @@
+@namespace ArkUI.Components.Select
+@using Microsoft.AspNetCore.Components.Rendering
+
+@{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "role", "combobox");
+        builder.AddAttribute(2, "id", Context.TriggerId);
+        if (As == "button")
+        {
+            builder.AddAttribute(3, "type", "button");
+        }
+        builder.AddAttribute(4, "aria-haspopup", "listbox");
+        builder.AddAttribute(5, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
+        builder.AddAttribute(6, "aria-controls", Context.ContentId);
+        if (!string.IsNullOrEmpty(HighlightedItemId))
+        {
+            builder.AddAttribute(7, "aria-activedescendant", HighlightedItemId);
+        }
+        if (!string.IsNullOrEmpty(AriaLabel))
+        {
+            builder.AddAttribute(8, "aria-label", AriaLabel);
+        }
+        if (!string.IsNullOrEmpty(AriaLabelledBy))
+        {
+            builder.AddAttribute(9, "aria-labelledby", AriaLabelledBy);
+        }
+        if (Context.Required)
+        {
+            builder.AddAttribute(10, "aria-required", "true");
+        }
+        if (Context.Invalid)
+        {
+            builder.AddAttribute(11, "aria-invalid", "true");
+        }
+        if (Context.Disabled)
+        {
+            builder.AddAttribute(12, "aria-disabled", "true");
+            builder.AddAttribute(13, "disabled", true);
+        }
+        builder.AddAttribute(14, "data-state", DataState);
+        if (Context.Disabled)
+        {
+            builder.AddAttribute(15, "data-disabled", "");
+        }
+        if (Context.Invalid)
+        {
+            builder.AddAttribute(16, "data-invalid", "");
+        }
+        if (string.IsNullOrEmpty(Context.Value))
+        {
+            builder.AddAttribute(17, "data-placeholder", "");
+        }
+        builder.AddMultipleAttributes(18, AdditionalAttributes);
+        builder.AddAttribute(19, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
+        builder.AddAttribute(20, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
+        builder.AddElementReferenceCapture(21, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(22, ChildContent);
+        builder.CloseElement();
+    }
+}

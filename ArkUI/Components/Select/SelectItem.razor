@@ -1,0 +1,15 @@
+@namespace ArkUI.Components.Select
+
+<div
+    role="option"
+    id="@Context.GetItemId(Value)"
+    aria-selected="@IsSelected"
+    aria-disabled="@(Disabled ? "true" : null)"
+    data-ark-select-item=""
+    data-value="@Value"
+    data-label="@EffectiveLabel"
+    data-state="@DataState"
+    data-disabled="@(Disabled ? "" : null)"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</div>

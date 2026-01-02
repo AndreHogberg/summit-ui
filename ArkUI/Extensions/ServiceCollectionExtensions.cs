@@ -21,7 +21,9 @@ public static class ServiceCollectionExtensions
 
         // Component-specific services
         services.AddScoped<AccordionJsInterop>();
+        services.AddScoped<DropdownMenuJsInterop>();
         services.AddScoped<PopoverJsInterop>();
+        services.AddScoped<SelectJsInterop>();
         services.AddScoped<TabsJsInterop>();
 
         return services;

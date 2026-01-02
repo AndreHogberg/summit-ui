@@ -5,8 +5,8 @@
   "description": "JavaScript modules for ArkUI Blazor component library",
   "type": "module",
   "scripts": {
-    "build": "esbuild Scripts/accordion.js Scripts/popover.js Scripts/focus-trap.js Scripts/tabs.js --bundle --format=esm --outdir=wwwroot --minify",
-    "watch": "esbuild Scripts/accordion.js Scripts/popover.js Scripts/focus-trap.js Scripts/tabs.js --bundle --format=esm --outdir=wwwroot --watch"
+    "build": "esbuild Scripts/accordion.js Scripts/popover.js Scripts/focus-trap.js Scripts/select.js Scripts/tabs.js Scripts/dropdown-menu.js --bundle --format=esm --outdir=wwwroot --minify",
+    "watch": "esbuild Scripts/accordion.js Scripts/popover.js Scripts/focus-trap.js Scripts/select.js Scripts/tabs.js Scripts/dropdown-menu.js --bundle --format=esm --outdir=wwwroot --watch"
   },
   "devDependencies": {
     "esbuild": "^0.24.0"

@@ -1,0 +1,15 @@
+@namespace ArkUI.Components.DropdownMenu
+
+<div
+    role="menuitem"
+    tabindex="-1"
+    aria-disabled="@(Disabled ? "true" : null)"
+    data-ark-dropdown-menu-item=""
+    data-disabled="@(Disabled ? "" : null)"
+    data-highlighted="@(IsHighlighted ? "" : null)"
+    @onclick="HandleClickAsync"
+    @onmouseenter="HandleMouseEnter"
+    @onmouseleave="HandleMouseLeave"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</div>

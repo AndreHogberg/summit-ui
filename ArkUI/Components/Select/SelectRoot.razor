@@ -1,0 +1,10 @@
+@namespace ArkUI.Components.Select
+
+<CascadingValue Value="_context" IsFixed="false">
+    @ChildContent
+    
+    @if (!string.IsNullOrEmpty(Name))
+    {
+        <input type="hidden" name="@Name" value="@EffectiveValue" />
+    }
+</CascadingValue>

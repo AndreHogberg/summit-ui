@@ -1,0 +1,11 @@
+@namespace ArkUI.Components.DropdownMenu
+
+<CascadingValue Value="_radioContext" IsFixed="false">
+    <div
+        role="group"
+        aria-label="@AriaLabel"
+        data-ark-dropdown-menu-radio-group=""
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>

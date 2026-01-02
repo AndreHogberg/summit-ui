@@ -1,0 +1,54 @@
+using Microsoft.AspNetCore.Components;
+
+namespace ArkUI.Components.Select;
+
+/// <summary>
+/// Renders children in a fixed-position container to avoid z-index and overflow issues.
+/// Content is visually "portaled" to the top of the stacking context.
+/// </summary>
+public partial class SelectPortal : ComponentBase, IDisposable
+{
+    [CascadingParameter]
+    private SelectContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// Content to render in the portal.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional custom container ID.
+    /// </summary>
+    [Parameter]
+    public string? ContainerId { get; set; }
+
+    private ElementReference _containerRef;
+    private bool _isSubscribed;
+    private bool _isDisposed;
+
+    private string ActualContainerId => ContainerId ?? $"{Context.SelectId}-portal";
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to context state changes
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
+    }
+}

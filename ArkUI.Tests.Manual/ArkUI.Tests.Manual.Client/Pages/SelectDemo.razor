@@ -1,0 +1,382 @@
+@page "/select"
+@rendermode InteractiveAuto
+
+<h1>Select Component Demo</h1>
+<section>
+    <h2>Basic Select</h2>
+    <p>A simple select with placeholder and options.</p>
+    
+    <SelectRoot @bind-Value="selectedFruit">
+        <SelectTrigger class="select-trigger">
+            <SelectValue Placeholder="Select a fruit..." />
+            <span class="select-icon">&#9662;</span>
+        </SelectTrigger>
+        <SelectPortal>
+            <SelectContent class="select-content" SideOffset="4">
+                <SelectViewport class="select-viewport">
+                    <SelectItem Value="apple" Label="Apple">
+                        <SelectItemText>Apple</SelectItemText>
+                    </SelectItem>
+                    <SelectItem Value="banana" Label="Banana">
+                        <SelectItemText>Banana</SelectItemText>
+                    </SelectItem>
+                    <SelectItem Value="orange" Label="Orange">
+                        <SelectItemText>Orange</SelectItemText>
+                    </SelectItem>
+                    <SelectItem Value="grape" Label="Grape">
+                        <SelectItemText>Grape</SelectItemText>
+                    </SelectItem>
+                    <SelectItem Value="mango" Label="Mango">
+                        <SelectItemText>Mango</SelectItemText>
+                    </SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong>@(selectedFruit ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Grouped Items</h2>
+    <p>Items can be organized into groups with labels.</p>
+    
+    <SelectRoot @bind-Value="selectedFood">
+        <SelectTrigger class="select-trigger">
+            <SelectValue Placeholder="Choose food..." />
+            <span class="select-icon">&#9662;</span>
+        </SelectTrigger>
+        <SelectPortal>
+            <SelectContent class="select-content" SideOffset="4">
+                <SelectViewport class="select-viewport">
+                    <SelectGroup>
+                        <SelectGroupLabel class="select-group-label">Fruits</SelectGroupLabel>
+                        <SelectItem Value="apple" Label="Apple">
+                            <SelectItemText>Apple</SelectItemText>
+                        </SelectItem>
+                        <SelectItem Value="banana" Label="Banana">
+                            <SelectItemText>Banana</SelectItemText>
+                        </SelectItem>
+                        <SelectItem Value="orange" Label="Orange">
+                            <SelectItemText>Orange</SelectItemText>
+                        </SelectItem>
+                    </SelectGroup>
+                    <SelectGroup>
+                        <SelectGroupLabel class="select-group-label">Vegetables</SelectGroupLabel>
+                        <SelectItem Value="carrot" Label="Carrot">
+                            <SelectItemText>Carrot</SelectItemText>
+                        </SelectItem>
+                        <SelectItem Value="broccoli" Label="Broccoli">
+                            <SelectItemText>Broccoli</SelectItemText>
+                        </SelectItem>
+                        <SelectItem Value="spinach" Label="Spinach">
+                            <SelectItemText>Spinach</SelectItemText>
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong>@(selectedFood ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>With Disabled Items</h2>
+    <p>Some items can be disabled and non-selectable.</p>
+    
+    <SelectRoot @bind-Value="selectedPlan">
+        <SelectTrigger class="select-trigger">
+            <SelectValue Placeholder="Choose a plan..." />
+            <span class="select-icon">&#9662;</span>
+        </SelectTrigger>
+        <SelectPortal>
+            <SelectContent class="select-content" SideOffset="4">
+                <SelectViewport class="select-viewport">
+                    <SelectItem Value="free" Label="Free">
+                        <SelectItemText>Free</SelectItemText>
+                    </SelectItem>
+                    <SelectItem Value="pro" Label="Pro">
+                        <SelectItemText>Pro - $9/month</SelectItemText>
+                    </SelectItem>
+                    <SelectItem Value="enterprise" Label="Enterprise" Disabled="true">
+                        <SelectItemText>Enterprise (Coming Soon)</SelectItemText>
+                    </SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong>@(selectedPlan ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Form Integration</h2>
+    <p>Select with form name and validation states.</p>
+    
+    <form @onsubmit="HandleSubmit" @onsubmit:preventDefault>
+        <div style="margin-bottom: 1rem;">
+            <label id="country-label" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Country</label>
+            <SelectRoot @bind-Value="selectedCountry" Name="country" Required="true" Invalid="@showValidation">
+                <SelectTrigger class="select-trigger" AriaLabelledBy="country-label">
+                    <SelectValue Placeholder="Select your country..." />
+                    <span class="select-icon">&#9662;</span>
+                </SelectTrigger>
+                <SelectPortal>
+                    <SelectContent class="select-content" SideOffset="4">
+                        <SelectViewport class="select-viewport">
+                            <SelectItem Value="us" Label="United States">
+                                <SelectItemText>United States</SelectItemText>
+                            </SelectItem>
+                            <SelectItem Value="uk" Label="United Kingdom">
+                                <SelectItemText>United Kingdom</SelectItemText>
+                            </SelectItem>
+                            <SelectItem Value="ca" Label="Canada">
+                                <SelectItemText>Canada</SelectItemText>
+                            </SelectItem>
+                            <SelectItem Value="au" Label="Australia">
+                                <SelectItemText>Australia</SelectItemText>
+                            </SelectItem>
+                            <SelectItem Value="de" Label="Germany">
+                                <SelectItemText>Germany</SelectItemText>
+                            </SelectItem>
+                        </SelectViewport>
+                    </SelectContent>
+                </SelectPortal>
+            </SelectRoot>
+            @if (showValidation && string.IsNullOrEmpty(selectedCountry))
+            {
+                <p style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">Please select a country</p>
+            }
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+    <p style="margin-top: 1rem;">Selected: <strong>@(selectedCountry ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Different Placements</h2>
+    <p>Select content can appear in different positions.</p>
+    
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <SelectRoot @bind-Value="placement1">
+            <SelectTrigger class="select-trigger">
+                <SelectValue Placeholder="Bottom (default)" />
+                <span class="select-icon">&#9662;</span>
+            </SelectTrigger>
+            <SelectPortal>
+                <SelectContent class="select-content" Side="SelectSide.Bottom" SideOffset="4">
+                    <SelectViewport class="select-viewport">
+                        <SelectItem Value="a" Label="Option A"><SelectItemText>Option A</SelectItemText></SelectItem>
+                        <SelectItem Value="b" Label="Option B"><SelectItemText>Option B</SelectItemText></SelectItem>
+                    </SelectViewport>
+                </SelectContent>
+            </SelectPortal>
+        </SelectRoot>
+
+        <SelectRoot @bind-Value="placement2">
+            <SelectTrigger class="select-trigger">
+                <SelectValue Placeholder="Top" />
+                <span class="select-icon">&#9652;</span>
+            </SelectTrigger>
+            <SelectPortal>
+                <SelectContent class="select-content" Side="SelectSide.Top" SideOffset="4">
+                    <SelectViewport class="select-viewport">
+                        <SelectItem Value="a" Label="Option A"><SelectItemText>Option A</SelectItemText></SelectItem>
+                        <SelectItem Value="b" Label="Option B"><SelectItemText>Option B</SelectItemText></SelectItem>
+                    </SelectViewport>
+                </SelectContent>
+            </SelectPortal>
+        </SelectRoot>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Disabled State</h2>
+    <p>The entire select can be disabled.</p>
+    
+    <SelectRoot Value="preset" Disabled="true">
+        <SelectTrigger class="select-trigger">
+            <SelectValue Placeholder="Disabled select" />
+            <span class="select-icon">&#9662;</span>
+        </SelectTrigger>
+        <SelectPortal>
+            <SelectContent class="select-content" SideOffset="4">
+                <SelectViewport class="select-viewport">
+                    <SelectItem Value="preset" Label="Preset Value"><SelectItemText>Preset Value</SelectItemText></SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Typeahead Search</h2>
+    <p>Type to quickly find items. Try typing "g" to jump to Grape, or "ma" for Mango.</p>
+    
+    <SelectRoot @bind-Value="typeaheadValue">
+        <SelectTrigger class="select-trigger">
+            <SelectValue Placeholder="Type to search..." />
+            <span class="select-icon">&#9662;</span>
+        </SelectTrigger>
+        <SelectPortal>
+            <SelectContent class="select-content" SideOffset="4">
+                <SelectViewport class="select-viewport">
+                    <SelectItem Value="apple" Label="Apple"><SelectItemText>Apple</SelectItemText></SelectItem>
+                    <SelectItem Value="apricot" Label="Apricot"><SelectItemText>Apricot</SelectItemText></SelectItem>
+                    <SelectItem Value="banana" Label="Banana"><SelectItemText>Banana</SelectItemText></SelectItem>
+                    <SelectItem Value="blueberry" Label="Blueberry"><SelectItemText>Blueberry</SelectItemText></SelectItem>
+                    <SelectItem Value="cherry" Label="Cherry"><SelectItemText>Cherry</SelectItemText></SelectItem>
+                    <SelectItem Value="grape" Label="Grape"><SelectItemText>Grape</SelectItemText></SelectItem>
+                    <SelectItem Value="grapefruit" Label="Grapefruit"><SelectItemText>Grapefruit</SelectItemText></SelectItem>
+                    <SelectItem Value="mango" Label="Mango"><SelectItemText>Mango</SelectItemText></SelectItem>
+                    <SelectItem Value="orange" Label="Orange"><SelectItemText>Orange</SelectItemText></SelectItem>
+                    <SelectItem Value="papaya" Label="Papaya"><SelectItemText>Papaya</SelectItemText></SelectItem>
+                    <SelectItem Value="peach" Label="Peach"><SelectItemText>Peach</SelectItemText></SelectItem>
+                    <SelectItem Value="pear" Label="Pear"><SelectItemText>Pear</SelectItemText></SelectItem>
+                    <SelectItem Value="pineapple" Label="Pineapple"><SelectItemText>Pineapple</SelectItemText></SelectItem>
+                    <SelectItem Value="strawberry" Label="Strawberry"><SelectItemText>Strawberry</SelectItemText></SelectItem>
+                    <SelectItem Value="watermelon" Label="Watermelon"><SelectItemText>Watermelon</SelectItemText></SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong>@(typeaheadValue ?? "None")</strong></p>
+</section>
+
+@code {
+    private string? selectedFruit;
+    private string? selectedFood;
+    private string? selectedPlan;
+    private string? selectedCountry;
+    private string? placement1;
+    private string? placement2;
+    private string? typeaheadValue;
+    private bool showValidation;
+    
+    private void HandleSubmit()
+    {
+        showValidation = true;
+        if (!string.IsNullOrEmpty(selectedCountry))
+        {
+            // Form is valid
+            showValidation = false;
+        }
+    }
+}
+
+<style>
+    .select-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        min-width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    
+    .select-trigger:hover {
+        border-color: #999;
+    }
+    
+    .select-trigger:focus {
+        outline: none;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    }
+    
+    .select-trigger[data-disabled] {
+        background: #f5f5f5;
+        color: #999;
+        cursor: not-allowed;
+    }
+    
+    .select-trigger[data-invalid] {
+        border-color: #dc3545;
+    }
+    
+    .select-trigger[data-invalid]:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+    }
+    
+    .select-icon {
+        color: #666;
+        font-size: 0.75rem;
+    }
+    
+    .select-content {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+    }
+    
+    .select-viewport {
+        padding: 0.25rem;
+        max-height: 300px;
+    }
+    
+    [data-ark-select-item] {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.1s;
+    }
+    
+    [data-ark-select-item]:hover,
+    [data-ark-select-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-ark-select-item][data-state="checked"] {
+        background: #e7f1ff;
+        color: #0d6efd;
+        font-weight: 500;
+    }
+    
+    [data-ark-select-item][data-disabled] {
+        color: #999;
+        cursor: not-allowed;
+    }
+    
+    [data-ark-select-item][data-disabled]:hover {
+        background: transparent;
+    }
+    
+    .select-group-label {
+        padding: 0.5rem 0.75rem 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    [data-ark-select-value][data-placeholder] {
+        color: #999;
+    }
+    
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    section h2 {
+        margin-top: 0;
+    }
+</style>

@@ -1,0 +1,20 @@
+@namespace ArkUI.Components.DropdownMenu
+
+<div
+    role="menuitemcheckbox"
+    tabindex="-1"
+    aria-checked="@AriaChecked"
+    aria-disabled="@(Disabled ? "true" : null)"
+    data-ark-dropdown-menu-checkbox-item=""
+    data-state="@DataState"
+    data-disabled="@(Disabled ? "" : null)"
+    data-highlighted="@(IsHighlighted ? "" : null)"
+    @onclick="HandleClickAsync"
+    @onmouseenter="HandleMouseEnter"
+    @onmouseleave="HandleMouseLeave"
+    @attributes="AdditionalAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent(new DropdownMenuCheckboxItemContext { Checked = Checked, Indeterminate = Indeterminate })
+    }
+</div>

@@ -1,0 +1,26 @@
+@namespace ArkUI.Components.DropdownMenu
+@inherits Microsoft.AspNetCore.Components.ComponentBase
+@using Microsoft.AspNetCore.Components.Rendering
+
+@{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "type", As == "button" ? "button" : null);
+        builder.AddAttribute(2, "aria-haspopup", "menu");
+        builder.AddAttribute(3, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
+        builder.AddAttribute(4, "aria-controls", Context.IsOpen ? Context.MenuId : null);
+        builder.AddAttribute(5, "data-state", DataState);
+        builder.AddAttribute(6, "data-ark-dropdown-menu-trigger", true);
+        builder.AddMultipleAttributes(7, AdditionalAttributes);
+        builder.AddAttribute(8, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
+        builder.AddAttribute(9, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
+        builder.AddElementReferenceCapture(10, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(11, ChildContent);
+        builder.CloseElement();
+    }
+}

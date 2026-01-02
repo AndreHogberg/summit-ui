@@ -1,0 +1,29 @@
+@namespace ArkUI.Components.DropdownMenu
+@using Microsoft.AspNetCore.Components.Rendering
+
+@if (Context.IsOpen || ForceMount)
+{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "id", Context.MenuId);
+        builder.AddAttribute(2, "role", "menu");
+        builder.AddAttribute(3, "aria-orientation", "vertical");
+        builder.AddAttribute(4, "aria-labelledby", $"{Context.MenuId}-trigger");
+        builder.AddAttribute(5, "data-state", DataState);
+        builder.AddAttribute(6, "data-side", Side.ToString().ToLowerInvariant());
+        builder.AddAttribute(7, "data-align", Align.ToString().ToLowerInvariant());
+        builder.AddAttribute(8, "data-ark-dropdown-menu-content", true);
+        builder.AddAttribute(9, "tabindex", "-1");
+        builder.AddAttribute(10, "style", "position: absolute; top: 0; left: 0; outline: none;");
+        builder.AddMultipleAttributes(11, AdditionalAttributes);
+        builder.AddAttribute(12, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
+        builder.AddElementReferenceCapture(13, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(14, ChildContent);
+        builder.CloseElement();
+    }
+}

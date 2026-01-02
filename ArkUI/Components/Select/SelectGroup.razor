@@ -1,0 +1,11 @@
+@namespace ArkUI.Components.Select
+
+<CascadingValue Value="_groupContext" IsFixed="true">
+    <div
+        role="group"
+        aria-labelledby="@LabelId"
+        data-ark-select-group=""
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>

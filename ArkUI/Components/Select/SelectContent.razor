@@ -1,0 +1,25 @@
+@namespace ArkUI.Components.Select
+@using Microsoft.AspNetCore.Components.Rendering
+
+@if (Context.IsOpen)
+{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, As);
+        builder.AddAttribute(1, "role", "listbox");
+        builder.AddAttribute(2, "id", Context.ContentId);
+        builder.AddAttribute(3, "tabindex", "-1");
+        builder.AddAttribute(4, "aria-labelledby", Context.TriggerId);
+        builder.AddAttribute(5, "data-state", DataState);
+        builder.AddAttribute(6, "data-ark-select-content", "");
+        builder.AddAttribute(7, "style", ContentStyle);
+        builder.AddMultipleAttributes(8, AdditionalAttributes);
+        builder.AddElementReferenceCapture(9, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(10, ChildContent);
+        builder.CloseElement();
+    }
+}

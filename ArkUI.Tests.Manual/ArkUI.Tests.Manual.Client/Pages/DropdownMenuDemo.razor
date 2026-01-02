@@ -1,0 +1,389 @@
+@page "/dropdown-menu"
+@rendermode InteractiveAuto
+
+<h1>Dropdown Menu Component Demo</h1>
+
+<section>
+    <h2>Basic Dropdown Menu</h2>
+    <p>A simple dropdown menu with default settings.</p>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-primary">
+            Open Menu
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content" SideOffset="4">
+                <DropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("New File"))">
+                    New File
+                </DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("New Folder"))">
+                    New Folder
+                </DropdownMenuItem>
+                <DropdownMenuSeparator class="dropdown-menu-separator" />
+                <DropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("Settings"))">
+                    Settings
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+
+    @if (!string.IsNullOrEmpty(lastAction))
+    {
+        <p style="margin-top: 1rem; color: #666;">Last action: @lastAction</p>
+    }
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Grouped Items</h2>
+    <p>Menu items organized into labeled groups.</p>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-success">
+            Grouped Menu
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content">
+                <DropdownMenuGroup>
+                    <DropdownMenuGroupLabel class="dropdown-menu-label">File</DropdownMenuGroupLabel>
+                    <DropdownMenuItem class="dropdown-menu-item">New</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Open</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Save</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator class="dropdown-menu-separator" />
+                <DropdownMenuGroup>
+                    <DropdownMenuGroupLabel class="dropdown-menu-label">Edit</DropdownMenuGroupLabel>
+                    <DropdownMenuItem class="dropdown-menu-item">Undo</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Redo</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Cut</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Copy</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Paste</DropdownMenuItem>
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>With Disabled Items</h2>
+    <p>Some items can be disabled and skipped during keyboard navigation.</p>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-secondary">
+            With Disabled
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content">
+                <DropdownMenuItem class="dropdown-menu-item">Available Action</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item" Disabled="true">Disabled Action</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Another Available</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item" Disabled="true">Also Disabled</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Last Available</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Checkbox Items</h2>
+    <p>Toggle-able menu items that maintain checked state.</p>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-info">
+            Settings Menu
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content">
+                <DropdownMenuGroupLabel class="dropdown-menu-label">Preferences</DropdownMenuGroupLabel>
+                <DropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="showToolbar">
+                    <span class="checkbox-indicator">@(showToolbar ? "✓" : "")</span>
+                    <span>Show Toolbar</span>
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="showSidebar">
+                    <span class="checkbox-indicator">@(showSidebar ? "✓" : "")</span>
+                    <span>Show Sidebar</span>
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="enableNotifications">
+                    <span class="checkbox-indicator">@(enableNotifications ? "✓" : "")</span>
+                    <span>Enable Notifications</span>
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuSeparator class="dropdown-menu-separator" />
+                <DropdownMenuItem class="dropdown-menu-item">More Settings...</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+
+    <p style="margin-top: 1rem; color: #666; font-size: 0.875rem;">
+        Toolbar: @(showToolbar ? "On" : "Off") |
+        Sidebar: @(showSidebar ? "On" : "Off") |
+        Notifications: @(enableNotifications ? "On" : "Off")
+    </p>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Radio Items</h2>
+    <p>Single-select items within a radio group.</p>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-warning">
+            Select Theme
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content">
+                <DropdownMenuRadioGroup @bind-Value="selectedTheme" AriaLabel="Theme selection">
+                    <DropdownMenuGroupLabel class="dropdown-menu-label">Theme</DropdownMenuGroupLabel>
+                    <DropdownMenuRadioItem class="dropdown-menu-radio-item" Value="light">
+                        <span class="radio-indicator">@(selectedTheme == "light" ? "●" : "○")</span>
+                        <span>Light</span>
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem class="dropdown-menu-radio-item" Value="dark">
+                        <span class="radio-indicator">@(selectedTheme == "dark" ? "●" : "○")</span>
+                        <span>Dark</span>
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem class="dropdown-menu-radio-item" Value="system">
+                        <span class="radio-indicator">@(selectedTheme == "system" ? "●" : "○")</span>
+                        <span>System</span>
+                    </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+
+    <p style="margin-top: 1rem; color: #666; font-size: 0.875rem;">
+        Selected theme: @selectedTheme
+    </p>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Different Placements</h2>
+    <p>Dropdown menus can appear on different sides of the trigger.</p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="btn btn-outline-primary">Bottom Start</DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="dropdown-menu-content" Side="DropdownMenuSide.Bottom" Align="DropdownMenuAlign.Start">
+                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="btn btn-outline-primary">Right Start</DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="dropdown-menu-content" Side="DropdownMenuSide.Right" Align="DropdownMenuAlign.Start">
+                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="btn btn-outline-primary">Top End</DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="dropdown-menu-content" Side="DropdownMenuSide.Top" Align="DropdownMenuAlign.End">
+                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="btn btn-outline-primary">Left Center</DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="dropdown-menu-content" Side="DropdownMenuSide.Left" Align="DropdownMenuAlign.Center">
+                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
+                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>With Arrow</h2>
+    <p>A dropdown menu with a visual arrow pointing to the trigger.</p>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-dark">
+            With Arrow
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content dropdown-menu-with-arrow" Side="DropdownMenuSide.Right" SideOffset="12">
+                <DropdownMenuArrow class="dropdown-menu-arrow" />
+                <DropdownMenuItem class="dropdown-menu-item">Profile</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Settings</DropdownMenuItem>
+                <DropdownMenuSeparator class="dropdown-menu-separator" />
+                <DropdownMenuItem class="dropdown-menu-item">Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Controlled Mode</h2>
+    <p>The dropdown menu state can be controlled externally.</p>
+
+    <div style="margin-bottom: 1rem;">
+        <button class="btn btn-info" @onclick="() => isControlledOpen = !isControlledOpen">
+            Toggle Externally (@(isControlledOpen ? "Open" : "Closed"))
+        </button>
+    </div>
+
+    <DropdownMenuRoot Open="@isControlledOpen" OpenChanged="@(v => isControlledOpen = v)">
+        <DropdownMenuTrigger class="btn btn-secondary">
+            Controlled Menu
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content">
+                <DropdownMenuItem class="dropdown-menu-item">Action 1</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Action 2</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Action 3</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Keyboard Navigation</h2>
+    <p>Try these keyboard interactions:</p>
+    <ul style="font-size: 0.875rem; color: #666;">
+        <li><kbd>Enter</kbd> or <kbd>Space</kbd> - Open menu / select item</li>
+        <li><kbd>Arrow Down</kbd> - Move to next item</li>
+        <li><kbd>Arrow Up</kbd> - Move to previous item</li>
+        <li><kbd>Home</kbd> - Move to first item</li>
+        <li><kbd>End</kbd> - Move to last item</li>
+        <li><kbd>Escape</kbd> - Close menu</li>
+        <li>Type characters - Typeahead search</li>
+    </ul>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-primary">
+            Try Keyboard Navigation
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content">
+                <DropdownMenuItem class="dropdown-menu-item">Apple</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Banana</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Cherry</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Date</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Elderberry</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Fig</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item">Grape</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+</section>
+
+@code {
+    private string lastAction = "";
+    private bool isControlledOpen = false;
+    private bool showToolbar = true;
+    private bool showSidebar = true;
+    private bool enableNotifications = false;
+    private string? selectedTheme = "system";
+
+    private void LogAction(string action)
+    {
+        lastAction = action;
+    }
+}
+
+<style>
+    .dropdown-menu-content {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e0e0e0;
+        min-width: 180px;
+        padding: 4px;
+    }
+
+    .dropdown-menu-item,
+    .dropdown-menu-checkbox-item,
+    .dropdown-menu-radio-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+    }
+
+    .dropdown-menu-item:hover,
+    .dropdown-menu-item:focus,
+    .dropdown-menu-item[data-highlighted],
+    .dropdown-menu-checkbox-item:hover,
+    .dropdown-menu-checkbox-item:focus,
+    .dropdown-menu-checkbox-item[data-highlighted],
+    .dropdown-menu-radio-item:hover,
+    .dropdown-menu-radio-item:focus,
+    .dropdown-menu-radio-item[data-highlighted] {
+        background: #f0f0f0;
+    }
+
+    .dropdown-menu-item[data-disabled],
+    .dropdown-menu-checkbox-item[data-disabled],
+    .dropdown-menu-radio-item[data-disabled] {
+        color: #aaa;
+        cursor: not-allowed;
+    }
+
+    .dropdown-menu-label {
+        padding: 8px 12px 4px 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .dropdown-menu-separator {
+        height: 1px;
+        background: #e0e0e0;
+        margin: 4px 0;
+    }
+
+    .checkbox-indicator,
+    .radio-indicator {
+        width: 20px;
+        text-align: center;
+        margin-right: 8px;
+        font-size: 0.875rem;
+    }
+
+    .dropdown-menu-arrow {
+        fill: white;
+        color: white;
+    }
+
+    .dropdown-menu-with-arrow .dropdown-menu-arrow {
+        position: absolute;
+    }
+
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    section h2 {
+        margin-top: 0;
+    }
+
+    kbd {
+        background: #eee;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 2px 6px;
+        font-size: 0.75rem;
+        font-family: monospace;
+    }
+</style>
