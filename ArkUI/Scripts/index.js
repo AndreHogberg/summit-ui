@@ -4,20 +4,33 @@
  * to avoid conflicts and enable tree-shaking where possible.
  */
 
-// Accordion exports
+// Core Utilities exports
 export {
-    initializeAccordion as accordion_initializeAccordion,
-    destroyAccordion as accordion_destroyAccordion,
-    focusTrigger as accordion_focusTrigger,
+    isRtl as utilities_isRtl,
+    focusElement as utilities_focusElement,
+    focusElementById as utilities_focusElementById
+} from './utilities.js';
+
+// Floating UI wrapper exports (positioning only)
+export {
+    initializeFloating as floating_initializeFloating,
+    destroyFloating as floating_destroyFloating,
+    updatePosition as floating_updatePosition,
+    focusElement as floating_focusElement,
+    focusFirstElement as floating_focusFirstElement,
+    focusLastElement as floating_focusLastElement,
+    scrollIntoView as floating_scrollIntoView,
+    registerOutsideClick as floating_registerOutsideClick,
+    unregisterOutsideClick as floating_unregisterOutsideClick,
+    registerEscapeKey as floating_registerEscapeKey,
+    unregisterEscapeKey as floating_unregisterEscapeKey
+} from './floating.js';
+
+// Accordion exports
+// Note: Keyboard navigation moved to Blazor. Only DOM measurement remains.
+export {
     setContentHeight as accordion_setContentHeight
 } from './accordion.js';
-
-// Tabs exports
-export {
-    initializeTabs as tabs_initializeTabs,
-    destroyTabs as tabs_destroyTabs,
-    focusTrigger as tabs_focusTrigger
-} from './tabs.js';
 
 // Focus Trap exports
 export {
@@ -31,7 +44,7 @@ export {
     getFocusableCount as focusTrap_getFocusableCount
 } from './focus-trap.js';
 
-// Popover exports
+// Popover exports (legacy - will be deprecated)
 export {
     initializePopover as popover_initializePopover,
     destroyPopover as popover_destroyPopover,

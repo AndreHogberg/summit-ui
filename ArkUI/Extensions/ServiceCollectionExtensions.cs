@@ -1,4 +1,5 @@
 using ArkUI.Interop;
+using ArkUI.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArkUI.Extensions;
@@ -17,14 +18,15 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddArkUI(this IServiceCollection services)
     {
         // Core utility services
+        services.AddScoped<ArkUtilities>();
         services.AddScoped<FocusTrapJsInterop>();
+        services.AddScoped<FloatingJsInterop>();
 
         // Component-specific services
         services.AddScoped<AccordionJsInterop>();
         services.AddScoped<DropdownMenuJsInterop>();
         services.AddScoped<PopoverJsInterop>();
         services.AddScoped<SelectJsInterop>();
-        services.AddScoped<TabsJsInterop>();
 
         return services;
     }

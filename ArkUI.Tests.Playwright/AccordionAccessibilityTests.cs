@@ -346,7 +346,7 @@ public class AccordionAccessibilityTests : PageTest
 
     #endregion
 
-    #region Keyboard Navigation - Enter/Space (Known Bug - These tests are expected to fail)
+    #region Keyboard Navigation - Enter/Space
 
     [Test]
     public async Task Enter_ShouldToggleItem()
@@ -358,7 +358,6 @@ public class AccordionAccessibilityTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("Enter");
 
-        // BUG: This is expected to fail - Enter key doesn't toggle the item
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
     }
 
@@ -372,7 +371,6 @@ public class AccordionAccessibilityTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync(" ");
 
-        // BUG: This is expected to fail - Space key doesn't toggle the item
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
     }
 
@@ -398,6 +396,140 @@ public class AccordionAccessibilityTests : PageTest
         await Page.Keyboard.PressAsync(" ");
 
         await Expect(disabledTrigger).ToHaveAttributeAsync("aria-expanded", "false");
+    }
+
+    #endregion
+
+    #region Keyboard Navigation - Arrow Keys
+
+    [Test]
+    public async Task ArrowDown_ShouldMoveFocusToNextTrigger()
+    {
+        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var secondTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+
+        await firstTrigger.FocusAsync();
+        await Expect(firstTrigger).ToBeFocusedAsync();
+
+        await Page.Keyboard.PressAsync("ArrowDown");
+
+        await Expect(secondTrigger).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task ArrowUp_ShouldMoveFocusToPreviousTrigger()
+    {
+        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var secondTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+
+        await secondTrigger.FocusAsync();
+        await Expect(secondTrigger).ToBeFocusedAsync();
+
+        await Page.Keyboard.PressAsync("ArrowUp");
+
+        await Expect(firstTrigger).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task ArrowDown_ShouldLoopToFirst_WhenAtLast()
+    {
+        // The first accordion has 3 items, so item-3 is the last
+        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+
+        await thirdTrigger.FocusAsync();
+        await Expect(thirdTrigger).ToBeFocusedAsync();
+
+        await Page.Keyboard.PressAsync("ArrowDown");
+
+        // Should loop to the first trigger
+        await Expect(firstTrigger).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task ArrowUp_ShouldLoopToLast_WhenAtFirst()
+    {
+        // The first accordion has 3 items
+        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+
+        await firstTrigger.FocusAsync();
+        await Expect(firstTrigger).ToBeFocusedAsync();
+
+        await Page.Keyboard.PressAsync("ArrowUp");
+
+        // Should loop to the last trigger (third item)
+        await Expect(thirdTrigger).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task Home_ShouldMoveFocusToFirstTrigger()
+    {
+        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+
+        await thirdTrigger.FocusAsync();
+        await Expect(thirdTrigger).ToBeFocusedAsync();
+
+        await Page.Keyboard.PressAsync("Home");
+
+        await Expect(firstTrigger).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task End_ShouldMoveFocusToLastTrigger()
+    {
+        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+
+        await firstTrigger.FocusAsync();
+        await Expect(firstTrigger).ToBeFocusedAsync();
+
+        await Page.Keyboard.PressAsync("End");
+
+        await Expect(thirdTrigger).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task ArrowDown_ShouldSkipDisabledTriggers()
+    {
+        // Navigate to disabled items section
+        var disabledHeading = Page.Locator("h2:has-text('With Disabled Items')");
+        await disabledHeading.ScrollIntoViewIfNeededAsync();
+
+        // Focus the first enabled item
+        var enabledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button,
+            new() { Name = "Enabled Item", Exact = true });
+        await enabledTrigger.FocusAsync();
+        await Expect(enabledTrigger).ToBeFocusedAsync();
+
+        // Arrow down should skip the disabled item and go to "Another Enabled Item"
+        await Page.Keyboard.PressAsync("ArrowDown");
+
+        var anotherEnabledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button,
+            new() { Name = "Another Enabled Item" });
+        await Expect(anotherEnabledTrigger).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task ArrowUp_ShouldSkipDisabledTriggers()
+    {
+        // Navigate to disabled items section
+        var disabledHeading = Page.Locator("h2:has-text('With Disabled Items')");
+        await disabledHeading.ScrollIntoViewIfNeededAsync();
+
+        // Focus "Another Enabled Item" (last in this accordion)
+        var anotherEnabledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button,
+            new() { Name = "Another Enabled Item" });
+        await anotherEnabledTrigger.FocusAsync();
+        await Expect(anotherEnabledTrigger).ToBeFocusedAsync();
+
+        // Arrow up should skip the disabled item and go to "Enabled Item"
+        await Page.Keyboard.PressAsync("ArrowUp");
+
+        var enabledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button,
+            new() { Name = "Enabled Item", Exact = true });
+        await Expect(enabledTrigger).ToBeFocusedAsync();
     }
 
     #endregion

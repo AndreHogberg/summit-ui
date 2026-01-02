@@ -1,4 +1,5 @@
 @namespace ArkUI.Components.Popover
+@using ArkUI.Components.Utilities
 @using Microsoft.AspNetCore.Components.Rendering
 
 @{
@@ -22,7 +23,22 @@
         builder.AddAttribute(9, "style", "position: absolute; top: 0; left: 0; visibility: hidden;");
         builder.AddMultipleAttributes(10, AdditionalAttributes);
         builder.AddElementReferenceCapture(11, (elementRef) => { _elementRef = elementRef; });
-        builder.AddContent(12, ChildContent);
+        
+        // Wrap content in FocusTrap if enabled
+        if (TrapFocus)
+        {
+            builder.OpenComponent<FocusTrap>(12);
+            builder.AddAttribute(13, "IsActive", Context.IsOpen);
+            builder.AddAttribute(14, "AutoFocus", true);
+            builder.AddAttribute(15, "ReturnFocus", true);
+            builder.AddAttribute(16, "ChildContent", (RenderFragment)(childBuilder => childBuilder.AddContent(0, ChildContent)));
+            builder.CloseComponent();
+        }
+        else
+        {
+            builder.AddContent(12, ChildContent);
+        }
+        
         builder.CloseElement();
     }
 }

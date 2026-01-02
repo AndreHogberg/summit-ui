@@ -1,16 +1,18 @@
 using ArkUI.Interop;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace ArkUI.Components.Popover;
 
 /// <summary>
 /// The floating content panel of the popover with positioning logic.
+/// Uses FloatingUI for positioning while all event handling is done in Blazor.
 /// </summary>
 public partial class PopoverContent : ComponentBase, IAsyncDisposable
 {
     [Inject]
-    private PopoverJsInterop JsInterop { get; set; } = default!;
+    private FloatingJsInterop FloatingInterop { get; set; } = default!;
 
     [CascadingParameter]
     private PopoverContext Context { get; set; } = default!;
@@ -113,6 +115,9 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
 
     private ElementReference _elementRef;
     private DotNetObjectReference<PopoverContent>? _dotNetRef;
+    private string? _floatingInstanceId;
+    private string? _outsideClickListenerId;
+    private string? _escapeKeyListenerId;
     private bool _isPositioned;
     private bool _isDisposed;
 
@@ -125,53 +130,98 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
             Context.RegisterContent(_elementRef);
             _dotNetRef ??= DotNetObjectReference.Create(this);
 
-            var options = new PopoverPositionOptions
+            var options = new FloatingPositionOptions
             {
                 Side = Side.ToString().ToLowerInvariant(),
                 SideOffset = SideOffset,
                 Align = Align.ToString().ToLowerInvariant(),
                 AlignOffset = AlignOffset,
                 AvoidCollisions = AvoidCollisions,
-                CollisionPadding = CollisionPadding,
-                TrapFocus = TrapFocus,
-                CloseOnEscape = EscapeKeyBehavior == EscapeKeyBehavior.Close,
-                CloseOnOutsideClick = OutsideClickBehavior == OutsideClickBehavior.Close
+                CollisionPadding = CollisionPadding
             };
 
-            await JsInterop.InitializePopoverAsync(
+            // Initialize positioning
+            _floatingInstanceId = await FloatingInterop.InitializeAsync(
                 Context.TriggerElement,
                 _elementRef,
-                null,
-                _dotNetRef,
+                null, // No arrow element for now
                 options);
 
+            // Register outside click handler if needed
+            if (OutsideClickBehavior != OutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
+            {
+                _outsideClickListenerId = await FloatingInterop.RegisterOutsideClickAsync(
+                    Context.TriggerElement,
+                    _elementRef,
+                    _dotNetRef,
+                    nameof(HandleOutsideClick));
+            }
+
+            // Register Escape key handler if needed
+            if (EscapeKeyBehavior != EscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
+            {
+                _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
+                    _dotNetRef,
+                    nameof(HandleEscapeKey));
+            }
+
             _isPositioned = true;
+            
+            // Focus the content if not using FocusTrap (FocusTrap handles focus automatically)
+            if (!TrapFocus)
+            {
+                await FloatingInterop.FocusFirstElementAsync(_elementRef);
+            }
+            
             await OnOpenAutoFocus.InvokeAsync();
         }
         else if (!Context.IsOpen && _isPositioned)
         {
-            await CleanupPositioningAsync();
+            await CleanupAsync();
+            
+            // Return focus to trigger
+            await FloatingInterop.FocusElementAsync(Context.TriggerElement);
+            
             await OnCloseAutoFocus.InvokeAsync();
         }
     }
 
-    private async Task CleanupPositioningAsync()
+    private async Task CleanupAsync()
     {
-        if (_isPositioned)
+        if (!_isPositioned) return;
+        
+        _isPositioned = false;
+        
+        try
         {
-            _isPositioned = false;
-            try
+            // Cleanup Escape key listener
+            if (!string.IsNullOrEmpty(_escapeKeyListenerId))
             {
-                await JsInterop.DestroyPopoverAsync(_elementRef);
+                await FloatingInterop.UnregisterEscapeKeyAsync(_escapeKeyListenerId);
+                _escapeKeyListenerId = null;
             }
-            catch (JSDisconnectedException)
+
+            // Cleanup outside click listener
+            if (!string.IsNullOrEmpty(_outsideClickListenerId))
             {
-                // Circuit disconnected, ignore
+                await FloatingInterop.UnregisterOutsideClickAsync(_outsideClickListenerId);
+                _outsideClickListenerId = null;
             }
-            catch (ObjectDisposedException)
+
+            // Cleanup floating positioning
+            if (!string.IsNullOrEmpty(_floatingInstanceId))
             {
-                // Component already disposed, ignore
+                await FloatingInterop.DestroyAsync(_floatingInstanceId);
+                _floatingInstanceId = null;
             }
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+        catch (ObjectDisposedException)
+        {
+            // Component already disposed, ignore
         }
     }
 
@@ -181,7 +231,7 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleOutsideClick()
     {
-        if (_isDisposed) return;
+        if (_isDisposed || !Context.IsOpen) return;
 
         await OnInteractOutside.InvokeAsync();
 
@@ -197,7 +247,7 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleEscapeKey()
     {
-        if (_isDisposed) return;
+        if (_isDisposed || !Context.IsOpen) return;
 
         await OnEscapeKeyDown.InvokeAsync();
 
@@ -212,7 +262,7 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
         if (_isDisposed) return;
         _isDisposed = true;
 
-        await CleanupPositioningAsync();
+        await CleanupAsync();
         _dotNetRef?.Dispose();
     }
 }

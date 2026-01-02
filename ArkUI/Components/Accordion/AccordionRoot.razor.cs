@@ -1,3 +1,4 @@
+using ArkUI.Utilities;
 using Microsoft.AspNetCore.Components;
 
 namespace ArkUI.Components.Accordion;
@@ -8,6 +9,9 @@ namespace ArkUI.Components.Accordion;
 /// </summary>
 public partial class AccordionRoot : ComponentBase
 {
+    [Inject]
+    private ArkUtilities ArkUtilities { get; set; } = default!;
+
     /// <summary>
     /// Child content containing AccordionItem components.
     /// </summary>
@@ -132,6 +136,7 @@ public partial class AccordionRoot : ComponentBase
         SyncContext();
         _context.ToggleItemAsync = ToggleItemAsync;
         _context.NotifyStateChanged = () => StateHasChanged();
+        _context.FocusTriggerAsync = FocusTriggerAsync;
     }
 
     protected override void OnParametersSet()
@@ -147,6 +152,12 @@ public partial class AccordionRoot : ComponentBase
         _context.Loop = Loop;
         _context.Disabled = Disabled;
         _context.Collapsible = Collapsible;
+    }
+
+    private async Task FocusTriggerAsync(string value)
+    {
+        var triggerId = _context.GetTriggerId(value);
+        await ArkUtilities.FocusElementByIdAsync(triggerId);
     }
 
     private async Task ToggleItemAsync(string value)

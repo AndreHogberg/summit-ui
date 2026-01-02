@@ -1,15 +1,16 @@
-using ArkUI.Interop;
+using ArkUI.Utilities;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace ArkUI.Components.Tabs;
 
 /// <summary>
 /// Container for tab triggers. Renders with role="tablist".
+/// Handles keyboard navigation for arrow keys, Home, and End.
 /// </summary>
 public partial class TabsList : ComponentBase, IAsyncDisposable
 {
-    [Inject] private TabsJsInterop JsInterop { get; set; } = default!;
+    [Inject] private ArkUtilities Utilities { get; set; } = default!;
 
     /// <summary>
     /// The tabs context from the parent TabsRoot.
@@ -36,62 +37,93 @@ public partial class TabsList : ComponentBase, IAsyncDisposable
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private ElementReference _elementRef;
-    private DotNetObjectReference<TabsList>? _dotNetRef;
-    private bool _isInitialized;
-    private bool _isDisposed;
+    private bool? _cachedIsRtl;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnInitialized()
     {
-        if (firstRender && !_isInitialized)
-        {
-            _isInitialized = true;
-            _dotNetRef = DotNetObjectReference.Create(this);
+        // Register the focus callback with the context
+        Context.FocusTriggerByIdAsync = FocusTriggerByIdAsync;
+    }
 
-            try
+    /// <summary>
+    /// Handles keyboard navigation within the tabs list.
+    /// </summary>
+    private async Task HandleKeyDownAsync(KeyboardEventArgs args)
+    {
+        // Only handle navigation keys
+        if (args.Key is not ("ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Home" or "End"))
+            return;
+
+        var currentValue = Context.Value;
+        if (string.IsNullOrEmpty(currentValue))
+            return;
+
+        var currentIndex = Context.GetCurrentTriggerIndex(currentValue);
+        if (currentIndex < 0)
+            return;
+
+        // Cache RTL check
+        _cachedIsRtl ??= await Utilities.IsRtlAsync();
+        var isRtl = _cachedIsRtl.Value;
+
+        TabTriggerInfo? targetTrigger = null;
+
+        // Determine which keys are "previous" and "next" based on orientation
+        var isHorizontal = Context.Orientation == TabsOrientation.Horizontal;
+        var prevKey = isHorizontal ? "ArrowLeft" : "ArrowUp";
+        var nextKey = isHorizontal ? "ArrowRight" : "ArrowDown";
+
+        switch (args.Key)
+        {
+            case var key when key == prevKey:
+                var prevIndex = Context.GetNextTriggerIndex(currentIndex, -1, isRtl);
+                targetTrigger = Context.GetTriggerAtIndex(prevIndex);
+                break;
+
+            case var key when key == nextKey:
+                var nextIndex = Context.GetNextTriggerIndex(currentIndex, 1, isRtl);
+                targetTrigger = Context.GetTriggerAtIndex(nextIndex);
+                break;
+
+            case "Home":
+                targetTrigger = Context.GetFirstTrigger();
+                break;
+
+            case "End":
+                targetTrigger = Context.GetLastTrigger();
+                break;
+        }
+
+        if (targetTrigger != null && targetTrigger.Value != currentValue)
+        {
+            // Focus the target trigger
+            var triggerId = Context.GetTriggerId(targetTrigger.Value);
+            await Utilities.FocusElementByIdAsync(triggerId);
+
+            // In auto mode, also activate the tab
+            if (Context.ActivationMode == TabsActivationMode.Auto)
             {
-                await JsInterop.InitializeAsync(
-                    _elementRef,
-                    _dotNetRef,
-                    new TabsNavigationOptions
-                    {
-                        Orientation = Context.Orientation.ToString().ToLowerInvariant(),
-                        Loop = Context.Loop,
-                        ActivationMode = Context.ActivationMode.ToString().ToLowerInvariant()
-                    });
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit disconnected, ignore
+                await Context.ActivateTabAsync(targetTrigger.Value);
             }
         }
     }
 
     /// <summary>
-    /// Called from JavaScript when a tab should be activated via keyboard navigation.
+    /// Focuses a trigger element by its ID.
     /// </summary>
-    [JSInvokable]
-    public async Task HandleTabActivation(string value)
+    private async ValueTask FocusTriggerByIdAsync(string triggerId)
     {
-        await Context.ActivateTabAsync(value);
+        await Utilities.FocusElementByIdAsync(triggerId);
     }
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        if (_isDisposed) return;
-        _isDisposed = true;
-
-        if (_isInitialized)
+        // Clean up the focus callback
+        if (Context.FocusTriggerByIdAsync == FocusTriggerByIdAsync)
         {
-            try
-            {
-                await JsInterop.DestroyAsync(_elementRef);
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit disconnected, ignore
-            }
+            Context.FocusTriggerByIdAsync = null;
         }
-
-        _dotNetRef?.Dispose();
+        
+        return ValueTask.CompletedTask;
     }
 }
