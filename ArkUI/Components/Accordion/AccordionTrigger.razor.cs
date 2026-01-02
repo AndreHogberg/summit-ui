@@ -44,14 +44,12 @@ public partial class AccordionTrigger : ComponentBase
         await Context.ToggleItemAsync(ItemContext.Value);
     }
 
-    private async Task HandleKeyDownAsync(KeyboardEventArgs args)
+    private Task HandleKeyDownAsync(KeyboardEventArgs args)
     {
-        if (IsDisabled) return;
-
-        // Enter and Space toggle the item
-        if (args.Key is "Enter" or " ")
-        {
-            await Context.ToggleItemAsync(ItemContext.Value);
-        }
+        // Note: Enter and Space are handled natively by the <button> element,
+        // which triggers onclick. No need to handle them here.
+        // This handler is reserved for additional keyboard navigation if needed
+        // (e.g., arrow keys for focus management between accordion items).
+        return Task.CompletedTask;
     }
 }
