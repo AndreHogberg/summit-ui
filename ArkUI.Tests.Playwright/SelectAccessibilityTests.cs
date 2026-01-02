@@ -345,7 +345,7 @@ public class SelectAccessibilityTests : PageTest
     [Test]
     public async Task RequiredTrigger_ShouldHave_AriaRequiredTrue()
     {
-        var requiredTrigger = Page.Locator("section").Filter(new() { HasText = "Form Integration" }).Locator("[role='combobox']");
+        var requiredTrigger = Page.Locator("[data-testid='basic-form-section']").Locator("[role='combobox']");
         await Expect(requiredTrigger).ToHaveAttributeAsync("aria-required", "true");
     }
 
@@ -353,7 +353,7 @@ public class SelectAccessibilityTests : PageTest
     public async Task InvalidTrigger_ShouldHave_AriaInvalidTrue_WhenInvalid()
     {
         // Submit form without selection to trigger validation
-        var formSection = Page.Locator("section").Filter(new() { HasText = "Form Integration" });
+        var formSection = Page.Locator("[data-testid='basic-form-section']");
         var submitButton = formSection.Locator("button[type='submit']");
         await submitButton.ClickAsync();
 
@@ -364,7 +364,7 @@ public class SelectAccessibilityTests : PageTest
     [Test]
     public async Task InvalidTrigger_ShouldHave_DataInvalid_WhenInvalid()
     {
-        var formSection = Page.Locator("section").Filter(new() { HasText = "Form Integration" });
+        var formSection = Page.Locator("[data-testid='basic-form-section']");
         var submitButton = formSection.Locator("button[type='submit']");
         await submitButton.ClickAsync();
 
@@ -781,8 +781,8 @@ public class SelectAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldHave_AriaLabelledby_WhenProvided()
     {
-        // Form Integration section has an aria-labelledby
-        var trigger = Page.Locator("section").Filter(new() { HasText = "Form Integration" }).Locator("[role='combobox']");
+        // Basic Form section has an aria-labelledby
+        var trigger = Page.Locator("[data-testid='basic-form-section']").Locator("[role='combobox']");
         await Expect(trigger).ToHaveAttributeAsync("aria-labelledby", "country-label");
     }
 

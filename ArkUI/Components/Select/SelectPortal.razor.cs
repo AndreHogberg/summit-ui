@@ -6,10 +6,11 @@ namespace ArkUI.Components.Select;
 /// Renders children in a fixed-position container to avoid z-index and overflow issues.
 /// Content is visually "portaled" to the top of the stacking context.
 /// </summary>
-public partial class SelectPortal : ComponentBase, IDisposable
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public partial class SelectPortal<TValue> : ComponentBase, IDisposable where TValue : notnull
 {
     [CascadingParameter]
-    private SelectContext Context { get; set; } = default!;
+    private SelectContext<TValue> Context { get; set; } = default!;
 
     /// <summary>
     /// Content to render in the portal.

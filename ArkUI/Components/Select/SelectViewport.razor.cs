@@ -5,7 +5,8 @@ namespace ArkUI.Components.Select;
 /// <summary>
 /// Scrollable viewport container for select items.
 /// </summary>
-public partial class SelectViewport : ComponentBase
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public partial class SelectViewport<TValue> : ComponentBase where TValue : notnull
 {
     /// <summary>
     /// Child content (SelectItem, SelectGroup, etc.).

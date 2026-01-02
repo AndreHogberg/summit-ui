@@ -1,4 +1,5 @@
 @namespace ArkUI.Components.Select
+@typeparam TValue where TValue : notnull
 @using Microsoft.AspNetCore.Components.Rendering
 
 @{
@@ -52,7 +53,7 @@
         {
             builder.AddAttribute(16, "data-invalid", "");
         }
-        if (string.IsNullOrEmpty(Context.Value))
+        if (Context.Value is null)
         {
             builder.AddAttribute(17, "data-placeholder", "");
         }

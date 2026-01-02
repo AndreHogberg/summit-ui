@@ -1,4 +1,5 @@
 @namespace ArkUI.Components.Select
+@typeparam TValue where TValue : notnull
 
 <span data-ark-select-value="" data-placeholder="@(IsPlaceholder ? "" : null)">
     @if (ChildContent is not null)

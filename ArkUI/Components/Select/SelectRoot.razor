@@ -1,10 +1,11 @@
 @namespace ArkUI.Components.Select
+@typeparam TValue where TValue : notnull
 
 <CascadingValue Value="_context" IsFixed="false">
     @ChildContent
     
     @if (!string.IsNullOrEmpty(Name))
     {
-        <input type="hidden" name="@Name" value="@EffectiveValue" />
+        <input type="hidden" name="@Name" value="@EffectiveValueAsString" />
     }
 </CascadingValue>

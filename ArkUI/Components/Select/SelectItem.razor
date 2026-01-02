@@ -1,12 +1,13 @@
 @namespace ArkUI.Components.Select
+@typeparam TValue where TValue : notnull
 
 <div
     role="option"
-    id="@Context.GetItemId(Value)"
+    id="@Context.GetItemId(EffectiveKey)"
     aria-selected="@(IsSelected ? "true" : "false")"
     aria-disabled="@(Disabled ? "true" : null)"
     data-ark-select-item=""
-    data-value="@Value"
+    data-value="@EffectiveKey"
     data-label="@EffectiveLabel"
     data-state="@DataState"
     data-disabled="@(Disabled ? "" : null)"

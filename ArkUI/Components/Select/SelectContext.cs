@@ -6,7 +6,8 @@ namespace ArkUI.Components.Select;
 /// Cascading context shared between select sub-components.
 /// Provides state and callbacks for coordinating trigger, content, items, and other parts.
 /// </summary>
-public sealed class SelectContext
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public sealed class SelectContext<TValue> where TValue : notnull
 {
     /// <summary>
     /// Unique identifier for this select instance, used for ARIA relationships.
@@ -16,17 +17,30 @@ public sealed class SelectContext
     /// <summary>
     /// Currently selected value.
     /// </summary>
-    public string? Value { get; internal set; }
+    public TValue? Value { get; internal set; }
 
     /// <summary>
-    /// Currently highlighted value (for keyboard navigation).
+    /// Currently highlighted key (for keyboard navigation).
+    /// This is the string key, not the TValue, for JS interop compatibility.
     /// </summary>
-    public string? HighlightedValue { get; internal set; }
+    public string? HighlightedKey { get; internal set; }
 
     /// <summary>
     /// Label of the currently selected item (for display in trigger).
     /// </summary>
     public string? SelectedLabel { get; internal set; }
+
+    /// <summary>
+    /// Registry mapping string keys to TValue items.
+    /// Used to look up the actual value when an item is selected via JS interop.
+    /// </summary>
+    public Dictionary<string, TValue> ItemRegistry { get; } = new();
+
+    /// <summary>
+    /// Registry mapping string keys to labels.
+    /// Used to look up the label when an item is selected via JS interop.
+    /// </summary>
+    public Dictionary<string, string> LabelRegistry { get; } = new();
 
     private bool _isOpen;
     
@@ -80,14 +94,20 @@ public sealed class SelectContext
     public Func<Task> CloseAsync { get; internal set; } = () => Task.CompletedTask;
 
     /// <summary>
-    /// Callback to select an item by value.
+    /// Callback to select an item by its string key.
+    /// The context will look up the TValue from the registry.
     /// </summary>
-    public Func<string, string?, Task> SelectItemAsync { get; internal set; } = (_, _) => Task.CompletedTask;
+    public Func<string, Task> SelectItemByKeyAsync { get; internal set; } = _ => Task.CompletedTask;
 
     /// <summary>
-    /// Callback to update the highlighted value.
+    /// Callback to select an item directly by value.
     /// </summary>
-    public Func<string?, Task> SetHighlightedValueAsync { get; internal set; } = _ => Task.CompletedTask;
+    public Func<TValue, string?, Task> SelectItemAsync { get; internal set; } = (_, _) => Task.CompletedTask;
+
+    /// <summary>
+    /// Callback to update the highlighted key.
+    /// </summary>
+    public Func<string?, Task> SetHighlightedKeyAsync { get; internal set; } = _ => Task.CompletedTask;
 
     /// <summary>
     /// Action to register the trigger element reference.
@@ -119,6 +139,47 @@ public sealed class SelectContext
     }
 
     /// <summary>
+    /// Registers an item with the context.
+    /// </summary>
+    /// <param name="key">The string key for JS interop.</param>
+    /// <param name="value">The TValue to associate with this key.</param>
+    /// <param name="label">The display label for this item.</param>
+    public void RegisterItem(string key, TValue value, string label)
+    {
+        ItemRegistry[key] = value;
+        LabelRegistry[key] = label;
+    }
+
+    /// <summary>
+    /// Unregisters an item from the context.
+    /// </summary>
+    /// <param name="key">The string key to remove.</param>
+    public void UnregisterItem(string key)
+    {
+        ItemRegistry.Remove(key);
+        LabelRegistry.Remove(key);
+    }
+
+    /// <summary>
+    /// Gets the string key for a value, if registered.
+    /// </summary>
+    /// <param name="value">The value to look up.</param>
+    /// <returns>The key if found, null otherwise.</returns>
+    public string? GetKeyForValue(TValue? value)
+    {
+        if (value is null) return null;
+        
+        foreach (var kvp in ItemRegistry)
+        {
+            if (EqualityComparer<TValue>.Default.Equals(kvp.Value, value))
+            {
+                return kvp.Key;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Generates the trigger element ID for ARIA relationships.
     /// </summary>
     public string TriggerId => $"{SelectId}-trigger";
@@ -131,7 +192,7 @@ public sealed class SelectContext
     /// <summary>
     /// Generates a unique item ID for ARIA relationships.
     /// </summary>
-    public string GetItemId(string value) => $"{SelectId}-item-{value}";
+    public string GetItemId(string key) => $"{SelectId}-item-{key}";
 
     /// <summary>
     /// Generates a unique group label ID for ARIA relationships.

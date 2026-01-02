@@ -5,10 +5,11 @@ namespace ArkUI.Components.Select;
 /// <summary>
 /// Groups related select items together with an optional label.
 /// </summary>
-public partial class SelectGroup : ComponentBase
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public partial class SelectGroup<TValue> : ComponentBase where TValue : notnull
 {
     [CascadingParameter]
-    private SelectContext Context { get; set; } = default!;
+    private SelectContext<TValue> Context { get; set; } = default!;
 
     /// <summary>
     /// Child content (SelectGroupLabel and SelectItem components).

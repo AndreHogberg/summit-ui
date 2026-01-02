@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace ArkUI.Components.Select;
 
@@ -6,7 +8,8 @@ namespace ArkUI.Components.Select;
 /// Root component that manages the state of the select.
 /// Provides cascading context to child components.
 /// </summary>
-public partial class SelectRoot : ComponentBase, IAsyncDisposable
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public partial class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
     /// <summary>
     /// Child content containing SelectTrigger, SelectContent, etc.
@@ -18,25 +21,31 @@ public partial class SelectRoot : ComponentBase, IAsyncDisposable
     /// Controlled selected value. When provided, component operates in controlled mode.
     /// </summary>
     [Parameter]
-    public string? Value { get; set; }
+    public TValue? Value { get; set; }
 
     /// <summary>
     /// Default selected value for uncontrolled mode.
     /// </summary>
     [Parameter]
-    public string? DefaultValue { get; set; }
+    public TValue? DefaultValue { get; set; }
 
     /// <summary>
     /// Callback when selected value changes.
     /// </summary>
     [Parameter]
-    public EventCallback<string?> ValueChanged { get; set; }
+    public EventCallback<TValue?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Expression identifying the bound value (for EditForm validation).
+    /// </summary>
+    [Parameter]
+    public Expression<Func<TValue?>>? ValueExpression { get; set; }
 
     /// <summary>
     /// Callback invoked when value changes (alternative to ValueChanged for non-binding scenarios).
     /// </summary>
     [Parameter]
-    public EventCallback<string?> OnValueChange { get; set; }
+    public EventCallback<TValue?> OnValueChange { get; set; }
 
     /// <summary>
     /// Controlled open state. When provided, component operates in controlled mode for open/close.
@@ -80,16 +89,28 @@ public partial class SelectRoot : ComponentBase, IAsyncDisposable
     [Parameter]
     public string? Name { get; set; }
 
-    private readonly SelectContext _context = new();
-    private string? _internalValue;
+    /// <summary>
+    /// Cascading EditContext for form integration.
+    /// </summary>
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
+
+    private readonly SelectContext<TValue> _context = new();
+    private TValue? _internalValue;
     private bool _internalOpen;
     private bool _isDisposed;
     private DateTime _lastSelectionCloseTime; // Timestamp to debounce re-opening
+    private FieldIdentifier? _fieldIdentifier;
 
     /// <summary>
     /// Effective selected value (controlled or uncontrolled).
     /// </summary>
-    private string? EffectiveValue => Value ?? _internalValue;
+    private TValue? EffectiveValue => Value is not null ? Value : _internalValue;
+
+    /// <summary>
+    /// String representation of the effective value for hidden input.
+    /// </summary>
+    private string? EffectiveValueAsString => EffectiveValue?.ToString();
 
     /// <summary>
     /// Effective open state (controlled or uncontrolled).
@@ -101,6 +122,12 @@ public partial class SelectRoot : ComponentBase, IAsyncDisposable
         _internalValue = DefaultValue;
         _internalOpen = DefaultOpen;
         
+        // Set up EditContext field identifier for validation
+        if (EditContext is not null && ValueExpression is not null)
+        {
+            _fieldIdentifier = FieldIdentifier.Create(ValueExpression);
+        }
+        
         _context.Value = EffectiveValue;
         _context.IsOpen = IsOpen;
         _context.Disabled = Disabled;
@@ -111,7 +138,8 @@ public partial class SelectRoot : ComponentBase, IAsyncDisposable
         _context.OpenAsync = OpenAsync;
         _context.CloseAsync = CloseAsync;
         _context.SelectItemAsync = SelectItemAsync;
-        _context.SetHighlightedValueAsync = SetHighlightedValueAsync;
+        _context.SelectItemByKeyAsync = SelectItemByKeyAsync;
+        _context.SetHighlightedKeyAsync = SetHighlightedKeyAsync;
         _context.RegisterTrigger = RegisterTrigger;
         _context.RegisterContent = RegisterContent;
         _context.NotifyStateChanged = () => StateHasChanged();
@@ -188,13 +216,22 @@ public partial class SelectRoot : ComponentBase, IAsyncDisposable
         }
 
         _context.IsOpen = false;
-        _context.HighlightedValue = null;
+        _context.HighlightedKey = null;
         await OpenChanged.InvokeAsync(false);
         StateHasChanged();
         _context.RaiseStateChanged();
     }
 
-    private async Task SelectItemAsync(string value, string? label)
+    private async Task SelectItemByKeyAsync(string key)
+    {
+        if (_context.ItemRegistry.TryGetValue(key, out var value))
+        {
+            var label = _context.LabelRegistry.GetValueOrDefault(key);
+            await SelectItemAsync(value, label);
+        }
+    }
+
+    private async Task SelectItemAsync(TValue value, string? label)
     {
         if (Disabled) return;
         
@@ -219,11 +256,17 @@ public partial class SelectRoot : ComponentBase, IAsyncDisposable
         
         await ValueChanged.InvokeAsync(value);
         await OnValueChange.InvokeAsync(value);
+        
+        // Notify EditContext of the change for validation
+        if (EditContext is not null && _fieldIdentifier.HasValue)
+        {
+            EditContext.NotifyFieldChanged(_fieldIdentifier.Value);
+        }
     }
 
-    private Task SetHighlightedValueAsync(string? value)
+    private Task SetHighlightedKeyAsync(string? key)
     {
-        _context.HighlightedValue = value;
+        _context.HighlightedKey = key;
         StateHasChanged();
         return Task.CompletedTask;
     }

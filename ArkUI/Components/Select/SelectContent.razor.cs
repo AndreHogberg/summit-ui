@@ -8,13 +8,14 @@ namespace ArkUI.Components.Select;
 /// The floating content panel of the select with positioning logic.
 /// Implements listbox role with keyboard navigation support.
 /// </summary>
-public partial class SelectContent : ComponentBase, IAsyncDisposable
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public partial class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
     [Inject]
     private SelectJsInterop JsInterop { get; set; } = default!;
 
     [CascadingParameter]
-    private SelectContext Context { get; set; } = default!;
+    private SelectContext<TValue> Context { get; set; } = default!;
 
     /// <summary>
     /// Child content of the select (typically SelectViewport with items).
@@ -95,7 +96,7 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private ElementReference _elementRef;
-    private DotNetObjectReference<SelectContent>? _dotNetRef;
+    private DotNetObjectReference<SelectContent<TValue>>? _dotNetRef;
     private bool _isPositioned;
     private bool _isDisposed;
     private bool _isSubscribed;
@@ -125,6 +126,9 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
             Context.RegisterContent(_elementRef);
             _dotNetRef ??= DotNetObjectReference.Create(this);
 
+            // Get the string key for the currently selected value
+            var selectedKey = Context.GetKeyForValue(Context.Value);
+
             var options = new SelectPositionOptions
             {
                 Side = Side.ToString().ToLowerInvariant(),
@@ -135,7 +139,7 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
                 CollisionPadding = CollisionPadding,
                 CloseOnEscape = EscapeKeyBehavior == SelectEscapeKeyBehavior.Close,
                 CloseOnOutsideClick = OutsideClickBehavior == SelectOutsideClickBehavior.Close,
-                SelectedValue = Context.Value
+                SelectedValue = selectedKey
             };
 
             await JsInterop.InitializeSelectAsync(
@@ -174,13 +178,15 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
 
     /// <summary>
     /// Called from JavaScript when an item is selected.
+    /// The key is the string key used in data-value attribute.
     /// </summary>
     [JSInvokable]
-    public async Task HandleItemSelect(string value, string? label)
+    public async Task HandleItemSelect(string key, string? label)
     {
         if (_isDisposed) return;
 
-        await Context.SelectItemAsync(value, label);
+        // Look up the TValue from the key and call SelectItemByKeyAsync
+        await Context.SelectItemByKeyAsync(key);
     }
 
     /// <summary>
@@ -230,11 +236,11 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     /// Called from JavaScript when highlighted item changes.
     /// </summary>
     [JSInvokable]
-    public async Task HandleHighlightChange(string value)
+    public async Task HandleHighlightChange(string key)
     {
         if (_isDisposed) return;
 
-        await Context.SetHighlightedValueAsync(value);
+        await Context.SetHighlightedKeyAsync(key);
     }
 
     public async ValueTask DisposeAsync()

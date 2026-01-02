@@ -5,10 +5,11 @@ namespace ArkUI.Components.Select;
 /// <summary>
 /// Displays the currently selected value or a placeholder.
 /// </summary>
-public partial class SelectValue : ComponentBase
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public partial class SelectValue<TValue> : ComponentBase where TValue : notnull
 {
     [CascadingParameter]
-    private SelectContext Context { get; set; } = default!;
+    private SelectContext<TValue> Context { get; set; } = default!;
 
     /// <summary>
     /// Placeholder text to display when no value is selected.
@@ -25,7 +26,7 @@ public partial class SelectValue : ComponentBase
     /// <summary>
     /// Whether the placeholder is currently being displayed.
     /// </summary>
-    private bool IsPlaceholder => string.IsNullOrEmpty(Context.Value);
+    private bool IsPlaceholder => Context.Value is null;
 
     /// <summary>
     /// The text to display (selected label or placeholder).
@@ -33,7 +34,7 @@ public partial class SelectValue : ComponentBase
     private string? DisplayText => 
         !string.IsNullOrEmpty(Context.SelectedLabel) 
             ? Context.SelectedLabel 
-            : !string.IsNullOrEmpty(Context.Value)
-                ? Context.Value
+            : Context.Value is not null
+                ? Context.Value.ToString()
                 : Placeholder;
 }

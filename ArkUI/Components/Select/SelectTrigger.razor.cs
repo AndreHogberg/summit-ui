@@ -9,13 +9,14 @@ namespace ArkUI.Components.Select;
 /// Trigger button that opens/closes the select dropdown.
 /// Implements combobox role with full ARIA support.
 /// </summary>
-public partial class SelectTrigger : ComponentBase, IAsyncDisposable
+/// <typeparam name="TValue">The type of the select value.</typeparam>
+public partial class SelectTrigger<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
     [Inject]
     private SelectJsInterop JsInterop { get; set; } = default!;
 
     [CascadingParameter]
-    private SelectContext Context { get; set; } = default!;
+    private SelectContext<TValue> Context { get; set; } = default!;
 
     /// <summary>
     /// Child content (typically SelectValue).
@@ -105,8 +106,8 @@ public partial class SelectTrigger : ComponentBase, IAsyncDisposable
     private string DataState => Context.IsOpen ? "open" : "closed";
 
     private string? HighlightedItemId => 
-        !string.IsNullOrEmpty(Context.HighlightedValue) 
-            ? Context.GetItemId(Context.HighlightedValue) 
+        !string.IsNullOrEmpty(Context.HighlightedKey) 
+            ? Context.GetItemId(Context.HighlightedKey) 
             : null;
 
     public async ValueTask DisposeAsync()
