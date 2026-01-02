@@ -10,7 +10,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/ArkUI/accordion.js").AsTask());
+            "import", "./_content/ArkUI/arkui.js").AsTask());
 
     /// <summary>
     /// Initialize keyboard navigation for the accordion.
@@ -25,7 +25,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         AccordionNavigationOptions options) where T : class
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("initializeAccordion", rootElement, dotNetRef, options);
+        await module.InvokeVoidAsync("accordion_initializeAccordion", rootElement, dotNetRef, options);
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask DestroyAsync(ElementReference rootElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("destroyAccordion", rootElement);
+        await module.InvokeVoidAsync("accordion_destroyAccordion", rootElement);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask FocusTriggerAsync(ElementReference rootElement, string value)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("focusTrigger", rootElement, value);
+        await module.InvokeVoidAsync("accordion_focusTrigger", rootElement, value);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask SetContentHeightAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("setContentHeight", contentElement);
+        await module.InvokeVoidAsync("accordion_setContentHeight", contentElement);
     }
 
     public async ValueTask DisposeAsync()

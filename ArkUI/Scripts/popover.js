@@ -92,7 +92,8 @@ export function initializePopover(triggerEl, contentEl, arrowEl, dotNetRef, opti
 
         Object.assign(contentEl.style, {
             left: `${x}px`,
-            top: `${y}px`
+            top: `${y}px`,
+            visibility: 'visible' // Make visible after positioning to prevent flash in top-left corner
         });
 
         // Update data attributes for styling hooks
@@ -127,18 +128,27 @@ export function initializePopover(triggerEl, contentEl, arrowEl, dotNetRef, opti
         }
     );
 
+    // Track if instance is disposed to prevent callbacks after cleanup
+    let isDisposed = false;
+
     // Handle outside clicks
     function handleOutsideClick(event) {
+        if (isDisposed) return;
         if (!contentEl.contains(event.target) && !triggerEl.contains(event.target)) {
-            dotNetRef.invokeMethodAsync('HandleOutsideClick');
+            dotNetRef.invokeMethodAsync('HandleOutsideClick').catch(() => {
+                // DotNetObjectReference may have been disposed, ignore errors
+            });
         }
     }
 
     // Handle escape key
     function handleEscapeKey(event) {
+        if (isDisposed) return;
         if (event.key === 'Escape') {
             event.preventDefault();
-            dotNetRef.invokeMethodAsync('HandleEscapeKey');
+            dotNetRef.invokeMethodAsync('HandleEscapeKey').catch(() => {
+                // DotNetObjectReference may have been disposed, ignore errors
+            });
         }
     }
 
@@ -153,10 +163,13 @@ export function initializePopover(triggerEl, contentEl, arrowEl, dotNetRef, opti
 
     // Add event listeners
     if (options.closeOnOutsideClick) {
-        // Use setTimeout to avoid catching the click that opened the popover
-        setTimeout(() => {
-            document.addEventListener('pointerdown', handleOutsideClick, true);
-        }, 0);
+        // Use requestAnimationFrame to avoid catching the click that opened the popover
+        // This is safer than setTimeout as it fires at the next frame
+        requestAnimationFrame(() => {
+            if (!isDisposed) {
+                document.addEventListener('pointerdown', handleOutsideClick, true);
+            }
+        });
     }
     if (options.closeOnEscape) {
         document.addEventListener('keydown', handleEscapeKey);
@@ -170,6 +183,7 @@ export function initializePopover(triggerEl, contentEl, arrowEl, dotNetRef, opti
     // Store cleanup function
     popoverInstances.set(contentEl, {
         cleanup: () => {
+            isDisposed = true;
             cleanupAutoUpdate();
             document.removeEventListener('pointerdown', handleOutsideClick, true);
             document.removeEventListener('keydown', handleEscapeKey);

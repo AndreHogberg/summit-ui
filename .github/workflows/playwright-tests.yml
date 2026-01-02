@@ -1,0 +1,41 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --no-restore
+
+      - name: Install Playwright browsers
+        run: pwsh ArkUI.Tests.Playwright/bin/Debug/net10.0/playwright.ps1 install --with-deps
+
+      - name: Run Playwright tests
+        run: dotnet run --project ArkUI.Tests.Playwright --no-build
+
+      - name: Upload Playwright traces
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: ArkUI.Tests.Playwright/bin/Debug/net10.0/playwright-traces/
+          retention-days: 7

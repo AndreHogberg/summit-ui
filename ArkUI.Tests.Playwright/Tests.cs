@@ -1,28 +1,19 @@
-﻿using System.Text.RegularExpressions;
-using TUnit.Playwright;
+﻿using TUnit.Playwright;
 
 namespace ArkUI.Tests.Playwright;
 
 public class Tests : PageTest
 {
     [Test]
-    public async Task Test()
+    public async Task BlazorAppLoads()
     {
-        await Page.GotoAsync("https://playwright.dev");
+        // Navigate to the Blazor application running via WebApplicationFactory
+        await Page.GotoAsync(Hooks.ServerUrl);
 
-        // Expect a title "to contain" a substring.
-        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+        // Wait for Blazor to fully load
+        await Page.WaitForLoadStateAsync(Microsoft.Playwright.LoadState.NetworkIdle);
 
-        // create a locator
-        var getStarted = Page.Locator("text=Get Started");
-
-        // Expect an attribute "to be strictly equal" to the value.
-        await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
-
-        // Click the get started link.
-        await getStarted.ClickAsync();
-
-        // Expects the URL to contain intro.
-        await Expect(Page).ToHaveURLAsync(new Regex(".*intro"));
+        // Verify the page loaded successfully
+        await Expect(Page).Not.ToHaveTitleAsync(string.Empty);
     }
 }

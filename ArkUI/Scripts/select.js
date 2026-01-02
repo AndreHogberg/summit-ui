@@ -296,7 +296,8 @@ export function initializeSelect(triggerEl, contentEl, dotNetRef, options) {
         
         Object.assign(contentEl.style, {
             left: `${x}px`,
-            top: `${y}px`
+            top: `${y}px`,
+            visibility: 'visible' // Make visible after positioning to prevent flash in top-left corner
         });
         
         // Update data attributes for styling hooks
@@ -317,8 +318,12 @@ export function initializeSelect(triggerEl, contentEl, dotNetRef, options) {
         }
     );
     
+    // Track if instance is disposed to prevent callbacks after cleanup
+    let isDisposed = false;
+
     // Handle keyboard navigation on trigger (focus stays on trigger with aria-activedescendant pattern)
     function handleTriggerKeyDown(event) {
+        if (isDisposed) return;
         switch (event.key) {
             case 'ArrowDown':
                 event.preventDefault();
@@ -351,13 +356,17 @@ export function initializeSelect(triggerEl, contentEl, dotNetRef, options) {
             case 'Escape':
                 if (options.closeOnEscape) {
                     event.preventDefault();
-                    dotNetRef.invokeMethodAsync('HandleEscapeKey');
+                    dotNetRef.invokeMethodAsync('HandleEscapeKey').catch(() => {
+                        // DotNetObjectReference may have been disposed, ignore errors
+                    });
                 }
                 break;
                 
             case 'Tab':
                 // Close on tab and allow natural tab behavior
-                dotNetRef.invokeMethodAsync('HandleClose');
+                dotNetRef.invokeMethodAsync('HandleClose').catch(() => {
+                    // DotNetObjectReference may have been disposed, ignore errors
+                });
                 break;
                 
             default:
@@ -378,21 +387,27 @@ export function initializeSelect(triggerEl, contentEl, dotNetRef, options) {
     
     // Handle outside clicks
     function handleOutsideClick(event) {
+        if (isDisposed) return;
         if (!contentEl.contains(event.target) && !triggerEl.contains(event.target)) {
             if (options.closeOnOutsideClick) {
-                dotNetRef.invokeMethodAsync('HandleOutsideClick');
+                dotNetRef.invokeMethodAsync('HandleOutsideClick').catch(() => {
+                    // DotNetObjectReference may have been disposed, ignore errors
+                });
             }
         }
     }
     
     // Handle item clicks
     function handleItemClick(event) {
+        if (isDisposed) return;
         const item = event.target.closest('[data-ark-select-item]');
         if (item && !item.hasAttribute('data-disabled')) {
             const value = item.getAttribute('data-value');
             const label = item.getAttribute('data-label') || item.textContent?.trim();
             if (value) {
-                dotNetRef.invokeMethodAsync('HandleItemSelect', value, label);
+                dotNetRef.invokeMethodAsync('HandleItemSelect', value, label).catch(() => {
+                    // DotNetObjectReference may have been disposed, ignore errors
+                });
             }
         }
     }
@@ -412,9 +427,12 @@ export function initializeSelect(triggerEl, contentEl, dotNetRef, options) {
     contentEl.addEventListener('mouseover', handleItemMouseEnter);
     
     // Delay outside click listener to avoid catching the click that opened the select
-    setTimeout(() => {
-        document.addEventListener('pointerdown', handleOutsideClick, true);
-    }, 0);
+    // Use requestAnimationFrame - safer than setTimeout as it fires at the next frame
+    requestAnimationFrame(() => {
+        if (!isDisposed) {
+            document.addEventListener('pointerdown', handleOutsideClick, true);
+        }
+    });
     
     // Highlight selected item or first item
     const selectedValue = options.selectedValue;
@@ -427,6 +445,7 @@ export function initializeSelect(triggerEl, contentEl, dotNetRef, options) {
     // Store cleanup function and state
     selectInstances.set(contentEl, {
         cleanup: () => {
+            isDisposed = true;
             cleanupAutoUpdate();
             triggerEl.removeEventListener('keydown', handleTriggerKeyDown);
             contentEl.removeEventListener('keydown', handleContentKeyDown);

@@ -46,7 +46,10 @@ public partial class PopoverTrigger : ComponentBase
 
     private async Task HandleKeyDownAsync(KeyboardEventArgs args)
     {
-        if (args.Key is "Enter" or " ")
+        // Only handle Enter/Space for non-button elements.
+        // Button elements automatically fire a click event on Enter/Space,
+        // so the click handler will take care of toggling.
+        if (As != "button" && args.Key is "Enter" or " ")
         {
             await Context.ToggleAsync();
         }

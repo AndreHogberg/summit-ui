@@ -102,7 +102,9 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
 
     private string DataState => Context.IsOpen ? "open" : "closed";
 
-    private string ContentStyle => "position: absolute; z-index: 50;";
+    // Use visibility: hidden initially to prevent flash in top-left corner before JS positioning
+    // JS will set visibility: visible after first position calculation
+    private string ContentStyle => "position: absolute; z-index: 50; visibility: hidden;";
 
     protected override void OnInitialized()
     {
@@ -154,6 +156,7 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     {
         if (_isPositioned)
         {
+            _isPositioned = false;
             try
             {
                 await JsInterop.DestroySelectAsync(_elementRef);
@@ -162,7 +165,10 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
             {
                 // Circuit disconnected, ignore
             }
-            _isPositioned = false;
+            catch (ObjectDisposedException)
+            {
+                // Component already disposed, ignore
+            }
         }
     }
 
@@ -172,6 +178,8 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleItemSelect(string value, string? label)
     {
+        if (_isDisposed) return;
+
         await Context.SelectItemAsync(value, label);
     }
 
@@ -181,6 +189,8 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleOutsideClick()
     {
+        if (_isDisposed) return;
+
         await OnInteractOutside.InvokeAsync();
 
         if (OutsideClickBehavior == SelectOutsideClickBehavior.Close)
@@ -195,6 +205,8 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleEscapeKey()
     {
+        if (_isDisposed) return;
+
         await OnEscapeKeyDown.InvokeAsync();
 
         if (EscapeKeyBehavior == SelectEscapeKeyBehavior.Close)
@@ -209,6 +221,8 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleClose()
     {
+        if (_isDisposed) return;
+
         await Context.CloseAsync();
     }
 
@@ -218,6 +232,8 @@ public partial class SelectContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleHighlightChange(string value)
     {
+        if (_isDisposed) return;
+
         await Context.SetHighlightedValueAsync(value);
     }
 

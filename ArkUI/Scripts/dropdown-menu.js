@@ -171,7 +171,8 @@ export function initializeDropdownMenu(triggerEl, contentEl, arrowEl, dotNetRef,
 
         Object.assign(contentEl.style, {
             left: `${x}px`,
-            top: `${y}px`
+            top: `${y}px`,
+            visibility: 'visible' // Make visible after positioning to prevent flash in top-left corner
         });
 
         // Update data attributes for styling hooks
@@ -206,15 +207,22 @@ export function initializeDropdownMenu(triggerEl, contentEl, arrowEl, dotNetRef,
         }
     );
 
+    // Track if instance is disposed to prevent callbacks after cleanup
+    let isDisposed = false;
+
     // Handle outside clicks
     function handleOutsideClick(event) {
+        if (isDisposed) return;
         if (!contentEl.contains(event.target) && !triggerEl.contains(event.target)) {
-            dotNetRef.invokeMethodAsync('HandleOutsideClick');
+            dotNetRef.invokeMethodAsync('HandleOutsideClick').catch(() => {
+                // DotNetObjectReference may have been disposed, ignore errors
+            });
         }
     }
 
     // Handle keyboard navigation within the menu
     function handleKeyDown(event) {
+        if (isDisposed) return;
         const items = getMenuItems(contentEl);
         const currentIndex = getCurrentItemIndex(items);
 
@@ -242,7 +250,9 @@ export function initializeDropdownMenu(triggerEl, contentEl, arrowEl, dotNetRef,
             case 'Escape':
                 if (options.closeOnEscape) {
                     event.preventDefault();
-                    dotNetRef.invokeMethodAsync('HandleEscapeKey');
+                    dotNetRef.invokeMethodAsync('HandleEscapeKey').catch(() => {
+                        // DotNetObjectReference may have been disposed, ignore errors
+                    });
                 }
                 break;
 
@@ -266,36 +276,44 @@ export function initializeDropdownMenu(triggerEl, contentEl, arrowEl, dotNetRef,
 
     // Handle item click to select
     function handleItemClick(event) {
+        if (isDisposed) return;
         const item = event.target.closest('[data-ark-dropdown-menu-item]');
         if (item && !item.hasAttribute('data-disabled')) {
-            dotNetRef.invokeMethodAsync('HandleItemSelect', item.dataset.value || '');
+            dotNetRef.invokeMethodAsync('HandleItemSelect', item.dataset.value || '').catch(() => {
+                // DotNetObjectReference may have been disposed, ignore errors
+            });
         }
     }
 
     // Add event listeners
     if (options.closeOnOutsideClick) {
-        // Use setTimeout to avoid catching the click that opened the menu
-        setTimeout(() => {
-            document.addEventListener('pointerdown', handleOutsideClick, true);
-        }, 0);
+        // Use requestAnimationFrame to avoid catching the click that opened the menu
+        // This is safer than setTimeout as it fires at the next frame
+        requestAnimationFrame(() => {
+            if (!isDisposed) {
+                document.addEventListener('pointerdown', handleOutsideClick, true);
+            }
+        });
     }
 
     contentEl.addEventListener('keydown', handleKeyDown);
     contentEl.addEventListener('click', handleItemClick);
 
     // Focus first item when menu opens
-    setTimeout(() => {
+    requestAnimationFrame(() => {
+        if (isDisposed) return;
         const items = getMenuItems(contentEl);
         if (items.length > 0) {
             items[0].focus();
         } else {
             contentEl.focus();
         }
-    }, 0);
+    });
 
     // Store cleanup function
     menuInstances.set(contentEl, {
         cleanup: () => {
+            isDisposed = true;
             cleanupAutoUpdate();
             document.removeEventListener('pointerdown', handleOutsideClick, true);
             contentEl.removeEventListener('keydown', handleKeyDown);

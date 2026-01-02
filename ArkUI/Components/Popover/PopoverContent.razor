@@ -17,7 +17,9 @@
         builder.AddAttribute(6, "data-align", Align.ToString().ToLowerInvariant());
         builder.AddAttribute(7, "data-ark-popover-content", true);
         builder.AddAttribute(8, "tabindex", "-1");
-        builder.AddAttribute(9, "style", "position: absolute; top: 0; left: 0;");
+        // Use visibility: hidden initially to prevent flash in top-left corner before JS positioning
+        // JS will set visibility: visible after first position calculation
+        builder.AddAttribute(9, "style", "position: absolute; top: 0; left: 0; visibility: hidden;");
         builder.AddMultipleAttributes(10, AdditionalAttributes);
         builder.AddElementReferenceCapture(11, (elementRef) => { _elementRef = elementRef; });
         builder.AddContent(12, ChildContent);

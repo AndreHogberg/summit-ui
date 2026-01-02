@@ -127,12 +127,21 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (_isDisposed) return;
         if (!RendererInfo.IsInteractive) return;
 
-        if (Context.IsOpen && !_isPositioned)
+        if (Context.IsOpen && !_isPositioned && !_isDisposed)
         {
             Context.RegisterContent(_elementRef);
             _dotNetRef ??= DotNetObjectReference.Create(this);
+
+            // Check again after creating the reference in case of race condition
+            if (_isDisposed)
+            {
+                _dotNetRef?.Dispose();
+                _dotNetRef = null;
+                return;
+            }
 
             var options = new DropdownMenuPositionOptions
             {
@@ -168,6 +177,7 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
     {
         if (_isPositioned)
         {
+            _isPositioned = false;
             try
             {
                 await JsInterop.DestroyDropdownMenuAsync(_elementRef);
@@ -176,7 +186,10 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
             {
                 // Circuit disconnected, ignore
             }
-            _isPositioned = false;
+            catch (ObjectDisposedException)
+            {
+                // Component already disposed, ignore
+            }
         }
     }
 
@@ -204,6 +217,8 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleOutsideClick()
     {
+        if (_isDisposed) return;
+
         await OnInteractOutside.InvokeAsync();
 
         if (OutsideClickBehavior == OutsideClickBehavior.Close)
@@ -218,6 +233,8 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleEscapeKey()
     {
+        if (_isDisposed) return;
+
         await OnEscapeKeyDown.InvokeAsync();
 
         if (EscapeKeyBehavior == EscapeKeyBehavior.Close)
@@ -232,6 +249,8 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleItemSelect(string value)
     {
+        if (_isDisposed) return;
+
         await Context.SelectItemAsync();
     }
 

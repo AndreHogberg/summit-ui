@@ -10,7 +10,7 @@ public sealed class TabsJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/ArkUI/tabs.js").AsTask());
+            "import", "./_content/ArkUI/arkui.js").AsTask());
 
     /// <summary>
     /// Initialize keyboard navigation for the tabs list.
@@ -25,7 +25,7 @@ public sealed class TabsJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         TabsNavigationOptions options) where T : class
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("initializeTabs", listElement, dotNetRef, options);
+        await module.InvokeVoidAsync("tabs_initializeTabs", listElement, dotNetRef, options);
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public sealed class TabsJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask DestroyAsync(ElementReference listElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("destroyTabs", listElement);
+        await module.InvokeVoidAsync("tabs_destroyTabs", listElement);
     }
 
     /// <summary>
@@ -46,15 +46,22 @@ public sealed class TabsJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask FocusTriggerAsync(ElementReference listElement, string value)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("focusTrigger", listElement, value);
+        await module.InvokeVoidAsync("tabs_focusTrigger", listElement, value);
     }
 
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)
         {
-            var module = await _moduleTask.Value;
-            await module.DisposeAsync();
+            try
+            {
+                var module = await _moduleTask.Value;
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit is already disconnected, JS resources are cleaned up automatically
+            }
         }
     }
 }

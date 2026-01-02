@@ -10,7 +10,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/ArkUI/select.js").AsTask());
+            "import", "./_content/ArkUI/arkui.js").AsTask());
 
     /// <summary>
     /// Initialize select positioning and event listeners.
@@ -28,7 +28,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync(
-            "initializeSelect",
+            "select_initializeSelect",
             triggerElement,
             contentElement,
             dotNetRef,
@@ -42,7 +42,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask DestroySelectAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("destroySelect", contentElement);
+        await module.InvokeVoidAsync("select_destroySelect", contentElement);
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask UpdatePositionAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("updatePosition", contentElement);
+        await module.InvokeVoidAsync("select_updatePosition", contentElement);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask HighlightItemAsync(ElementReference contentElement, string value)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("highlightItem", contentElement, value);
+        await module.InvokeVoidAsync("select_highlightItem", contentElement, value);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask HighlightFirstAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("highlightFirst", contentElement);
+        await module.InvokeVoidAsync("select_highlightFirst", contentElement);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask HighlightLastAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("highlightLast", contentElement);
+        await module.InvokeVoidAsync("select_highlightLast", contentElement);
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask FocusTriggerAsync(ElementReference triggerElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("focusTrigger", triggerElement);
+        await module.InvokeVoidAsync("select_focusTrigger", triggerElement);
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask RegisterTriggerAsync(ElementReference triggerElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("registerTrigger", triggerElement);
+        await module.InvokeVoidAsync("select_registerTrigger", triggerElement);
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask UnregisterTriggerAsync(ElementReference triggerElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("unregisterTrigger", triggerElement);
+        await module.InvokeVoidAsync("select_unregisterTrigger", triggerElement);
     }
 
     public async ValueTask DisposeAsync()

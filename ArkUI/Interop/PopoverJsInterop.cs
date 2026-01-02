@@ -10,7 +10,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/ArkUI/popover.js").AsTask());
+            "import", "./_content/ArkUI/arkui.js").AsTask());
 
     /// <summary>
     /// Initialize popover positioning and event listeners.
@@ -30,7 +30,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync(
-            "initializePopover",
+            "popover_initializePopover",
             triggerElement,
             contentElement,
             arrowElement,
@@ -45,7 +45,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask DestroyPopoverAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("destroyPopover", contentElement);
+        await module.InvokeVoidAsync("popover_destroyPopover", contentElement);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask UpdatePositionAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("updatePosition", contentElement);
+        await module.InvokeVoidAsync("popover_updatePosition", contentElement);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask CreatePortalAsync(string containerId, string? targetSelector = null)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("createPortal", containerId, targetSelector);
+        await module.InvokeVoidAsync("popover_createPortal", containerId, targetSelector);
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask DestroyPortalAsync(string containerId)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("destroyPortal", containerId);
+        await module.InvokeVoidAsync("popover_destroyPortal", containerId);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask FocusFirstElementAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("focusFirstElement", contentElement);
+        await module.InvokeVoidAsync("popover_focusFirstElement", contentElement);
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask FocusElementAsync(ElementReference element)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("focusElement", element);
+        await module.InvokeVoidAsync("popover_focusElement", element);
     }
 
     public async ValueTask DisposeAsync()

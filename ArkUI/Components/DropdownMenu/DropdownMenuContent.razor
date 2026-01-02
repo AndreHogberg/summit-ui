@@ -19,7 +19,9 @@
         builder.AddAttribute(7, "data-align", Align.ToString().ToLowerInvariant());
         builder.AddAttribute(8, "data-ark-dropdown-menu-content", true);
         builder.AddAttribute(9, "tabindex", "-1");
-        builder.AddAttribute(10, "style", "position: absolute; top: 0; left: 0; outline: none;");
+        // Use visibility: hidden initially to prevent flash in top-left corner before JS positioning
+        // JS will set visibility: visible after first position calculation
+        builder.AddAttribute(10, "style", "position: absolute; top: 0; left: 0; outline: none; visibility: hidden;");
         builder.AddMultipleAttributes(11, AdditionalAttributes);
         builder.AddAttribute(12, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
         builder.AddElementReferenceCapture(13, (elementRef) => { _elementRef = elementRef; });

@@ -159,6 +159,7 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
     {
         if (_isPositioned)
         {
+            _isPositioned = false;
             try
             {
                 await JsInterop.DestroyPopoverAsync(_elementRef);
@@ -167,7 +168,10 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
             {
                 // Circuit disconnected, ignore
             }
-            _isPositioned = false;
+            catch (ObjectDisposedException)
+            {
+                // Component already disposed, ignore
+            }
         }
     }
 
@@ -177,6 +181,8 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleOutsideClick()
     {
+        if (_isDisposed) return;
+
         await OnInteractOutside.InvokeAsync();
 
         if (OutsideClickBehavior == OutsideClickBehavior.Close)
@@ -191,6 +197,8 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleEscapeKey()
     {
+        if (_isDisposed) return;
+
         await OnEscapeKeyDown.InvokeAsync();
 
         if (EscapeKeyBehavior == EscapeKeyBehavior.Close)

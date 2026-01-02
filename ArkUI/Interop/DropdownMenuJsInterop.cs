@@ -10,7 +10,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/ArkUI/dropdown-menu.js").AsTask());
+            "import", "./_content/ArkUI/arkui.js").AsTask());
 
     /// <summary>
     /// Initialize dropdown menu positioning and event listeners.
@@ -30,7 +30,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
     {
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync(
-            "initializeDropdownMenu",
+            "dropdownMenu_initializeDropdownMenu",
             triggerElement,
             contentElement,
             arrowElement,
@@ -45,7 +45,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
     public async ValueTask DestroyDropdownMenuAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("destroyDropdownMenu", contentElement);
+        await module.InvokeVoidAsync("dropdownMenu_destroyDropdownMenu", contentElement);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
     public async ValueTask UpdatePositionAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("updatePosition", contentElement);
+        await module.InvokeVoidAsync("dropdownMenu_updatePosition", contentElement);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
     public async ValueTask CreatePortalAsync(string containerId, string? targetSelector = null)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("createPortal", containerId, targetSelector);
+        await module.InvokeVoidAsync("dropdownMenu_createPortal", containerId, targetSelector);
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
     public async ValueTask DestroyPortalAsync(string containerId)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("destroyPortal", containerId);
+        await module.InvokeVoidAsync("dropdownMenu_destroyPortal", containerId);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
     public async ValueTask FocusFirstItemAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("focusFirstItem", contentElement);
+        await module.InvokeVoidAsync("dropdownMenu_focusFirstItem", contentElement);
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
     public async ValueTask FocusLastItemAsync(ElementReference contentElement)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("focusLastItem", contentElement);
+        await module.InvokeVoidAsync("dropdownMenu_focusLastItem", contentElement);
     }
 
     public async ValueTask DisposeAsync()

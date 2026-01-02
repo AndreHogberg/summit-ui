@@ -46,12 +46,11 @@ public partial class DropdownMenuTrigger : ComponentBase
 
     private async Task HandleKeyDownAsync(KeyboardEventArgs args)
     {
+        // Note: Enter and Space are NOT handled here.
+        // The browser's default behavior for buttons triggers onclick for these keys,
+        // which calls HandleClickAsync. Handling them here would cause double-toggle.
         switch (args.Key)
         {
-            case "Enter":
-            case " ":
-                await Context.ToggleAsync();
-                break;
             case "ArrowDown":
                 // Open menu and focus first item
                 if (!Context.IsOpen)
