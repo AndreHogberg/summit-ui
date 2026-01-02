@@ -29,11 +29,6 @@ public sealed class DropdownMenuContext
     public ElementReference ContentElement { get; internal set; }
 
     /// <summary>
-    /// Reference to the arrow element (set by DropdownMenuArrow).
-    /// </summary>
-    public ElementReference? ArrowElement { get; internal set; }
-
-    /// <summary>
     /// Callback to toggle the menu state.
     /// </summary>
     public Func<Task> ToggleAsync { get; internal set; } = () => Task.CompletedTask;
@@ -62,11 +57,6 @@ public sealed class DropdownMenuContext
     /// Action to register the content element reference.
     /// </summary>
     public Action<ElementReference> RegisterContent { get; internal set; } = _ => { };
-
-    /// <summary>
-    /// Action to register the arrow element reference.
-    /// </summary>
-    public Action<ElementReference> RegisterArrow { get; internal set; } = _ => { };
 
     /// <summary>
     /// Callback to notify state changes for re-rendering.

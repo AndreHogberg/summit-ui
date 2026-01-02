@@ -1,13 +1,18 @@
+using ArkUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace ArkUI.Components.DropdownMenu;
 
 /// <summary>
 /// Trigger button that toggles the dropdown menu open/closed.
 /// </summary>
-public partial class DropdownMenuTrigger : ComponentBase
+public partial class DropdownMenuTrigger : ComponentBase, IAsyncDisposable
 {
+    [Inject]
+    private DropdownMenuJsInterop JsInterop { get; set; } = default!;
+
     [CascadingParameter]
     private DropdownMenuContext Context { get; set; } = default!;
 
@@ -30,12 +35,20 @@ public partial class DropdownMenuTrigger : ComponentBase
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private ElementReference _elementRef;
+    private bool _isInitialized;
+    private bool _isDisposed;
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             Context.RegisterTrigger(_elementRef);
+
+            if (RendererInfo.IsInteractive && !_isDisposed)
+            {
+                await JsInterop.InitializeTriggerAsync(_elementRef);
+                _isInitialized = true;
+            }
         }
     }
 
@@ -69,4 +82,26 @@ public partial class DropdownMenuTrigger : ComponentBase
     }
 
     private string DataState => Context.IsOpen ? "open" : "closed";
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
+        if (_isInitialized)
+        {
+            try
+            {
+                await JsInterop.DestroyTriggerAsync(_elementRef);
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit disconnected, ignore
+            }
+            catch (ObjectDisposedException)
+            {
+                // Component already disposed, ignore
+            }
+        }
+    }
 }

@@ -63,5 +63,7 @@ export {
     createPortal as dropdownMenu_createPortal,
     destroyPortal as dropdownMenu_destroyPortal,
     focusFirstItem as dropdownMenu_focusFirstItem,
-    focusLastItem as dropdownMenu_focusLastItem
+    focusLastItem as dropdownMenu_focusLastItem,
+    initializeTrigger as dropdownMenu_initializeTrigger,
+    destroyTrigger as dropdownMenu_destroyTrigger
 } from './dropdown-menu.js';

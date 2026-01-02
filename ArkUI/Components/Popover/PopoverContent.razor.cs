@@ -141,7 +141,7 @@ public partial class PopoverContent : ComponentBase, IAsyncDisposable
             await JsInterop.InitializePopoverAsync(
                 Context.TriggerElement,
                 _elementRef,
-                Context.ArrowElement,
+                null,
                 _dotNetRef,
                 options);
 

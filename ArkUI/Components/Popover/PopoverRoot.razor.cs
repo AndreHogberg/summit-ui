@@ -71,7 +71,6 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
         _context.CloseAsync = CloseAsync;
         _context.RegisterTrigger = RegisterTrigger;
         _context.RegisterContent = RegisterContent;
-        _context.RegisterArrow = RegisterArrow;
         _context.NotifyStateChanged = () => StateHasChanged();
     }
 
@@ -127,11 +126,6 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
     private void RegisterContent(ElementReference element)
     {
         _context.ContentElement = element;
-    }
-
-    private void RegisterArrow(ElementReference element)
-    {
-        _context.ArrowElement = element;
     }
 
     public async ValueTask DisposeAsync()

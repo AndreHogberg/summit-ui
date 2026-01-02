@@ -680,18 +680,4 @@ public class DropdownMenuAccessibilityTests : PageTest
     }
 
     #endregion
-
-    #region Arrow Element
-
-    [Test]
-    public async Task Arrow_ShouldBePresent_WhenConfigured()
-    {
-        var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "With Arrow" });
-        await trigger.ClickAsync();
-
-        var arrow = Page.Locator("[data-ark-dropdown-menu-arrow]");
-        await Expect(arrow).ToBeVisibleAsync();
-    }
-
-    #endregion
 }

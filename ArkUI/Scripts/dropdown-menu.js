@@ -409,3 +409,35 @@ export function focusLastItem(contentEl) {
         items[items.length - 1].focus();
     }
 }
+
+/**
+ * Initialize trigger to prevent default scroll on arrow keys
+ * @param {HTMLElement} triggerEl - Trigger element
+ */
+export function initializeTrigger(triggerEl) {
+    if (!triggerEl) return;
+
+    function handleKeyDown(event) {
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault();
+        }
+    }
+
+    triggerEl.addEventListener('keydown', handleKeyDown);
+
+    // Store cleanup function on element
+    triggerEl._arkCleanup = () => {
+        triggerEl.removeEventListener('keydown', handleKeyDown);
+    };
+}
+
+/**
+ * Cleanup trigger event listeners
+ * @param {HTMLElement} triggerEl - Trigger element
+ */
+export function destroyTrigger(triggerEl) {
+    if (triggerEl?._arkCleanup) {
+        triggerEl._arkCleanup();
+        delete triggerEl._arkCleanup;
+    }
+}

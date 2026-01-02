@@ -99,6 +99,26 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
         await module.InvokeVoidAsync("dropdownMenu_focusLastItem", contentElement);
     }
 
+    /// <summary>
+    /// Initialize trigger to prevent default scroll on arrow keys.
+    /// </summary>
+    /// <param name="triggerElement">Reference to the trigger element.</param>
+    public async ValueTask InitializeTriggerAsync(ElementReference triggerElement)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("dropdownMenu_initializeTrigger", triggerElement);
+    }
+
+    /// <summary>
+    /// Cleanup trigger event listeners.
+    /// </summary>
+    /// <param name="triggerElement">Reference to the trigger element.</param>
+    public async ValueTask DestroyTriggerAsync(ElementReference triggerElement)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("dropdownMenu_destroyTrigger", triggerElement);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)

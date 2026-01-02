@@ -159,7 +159,7 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
             await JsInterop.InitializeDropdownMenuAsync(
                 Context.TriggerElement,
                 _elementRef,
-                Context.ArrowElement,
+                null,
                 _dotNetRef,
                 options);
 
