@@ -89,3 +89,26 @@ export function methodName(params) {
 - Support keyboard navigation
 - Expose customization through Blazor attributes and `AdditionalAttributes`
 - Ensure functionality works across WASM, SSR, and Interactive Server modes
+
+## Testing
+
+This project uses **TUnit** as the testing library with **Playwright** for end-to-end testing.
+
+**Testing Requirements:**
+- Every feature must have corresponding Playwright tests
+- Tests are located in `ArkUI.Tests.Playwright/`
+- Test files follow the naming convention `{ComponentName}AccessibilityTests.cs`
+
+**Running Tests:**
+```bash
+# Run all tests
+dotnet test
+
+# Run tests for a specific project
+dotnet test ArkUI.Tests.Playwright/
+```
+
+**Test Guidelines:**
+- Write Playwright tests that verify component behavior and accessibility
+- Test keyboard navigation and ARIA attributes
+- Ensure tests cover all three render modes where applicable
