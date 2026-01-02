@@ -68,6 +68,21 @@ function getCurrentItemIndex(items) {
 }
 
 /**
+ * Update the data-highlighted attribute on menu items
+ * @param {HTMLElement[]} items - All menu items
+ * @param {HTMLElement|null} highlightedItem - The item to highlight (null to clear all)
+ */
+function updateHighlightedItem(items, highlightedItem) {
+    items.forEach(item => {
+        if (item === highlightedItem) {
+            item.setAttribute('data-highlighted', '');
+        } else {
+            item.removeAttribute('data-highlighted');
+        }
+    });
+}
+
+/**
  * Focus a menu item by index with looping support
  * @param {HTMLElement[]} items
  * @param {number} index
@@ -84,7 +99,11 @@ function focusItemByIndex(items, index, loop) {
         targetIndex = Math.max(0, Math.min(index, items.length - 1));
     }
 
-    items[targetIndex]?.focus();
+    const targetItem = items[targetIndex];
+    if (targetItem) {
+        targetItem.focus();
+        updateHighlightedItem(items, targetItem);
+    }
 }
 
 /**
@@ -117,6 +136,7 @@ function handleTypeahead(contentEl, char, state) {
 
         if (text.startsWith(state.typeaheadSearch)) {
             item.focus();
+            updateHighlightedItem(items, item);
             break;
         }
     }
@@ -305,6 +325,7 @@ export function initializeDropdownMenu(triggerEl, contentEl, arrowEl, dotNetRef,
         const items = getMenuItems(contentEl);
         if (items.length > 0) {
             items[0].focus();
+            updateHighlightedItem(items, items[0]);
         } else {
             contentEl.focus();
         }
@@ -396,6 +417,7 @@ export function focusFirstItem(contentEl) {
     const items = getMenuItems(contentEl);
     if (items.length > 0) {
         items[0].focus();
+        updateHighlightedItem(items, items[0]);
     }
 }
 
@@ -406,7 +428,9 @@ export function focusFirstItem(contentEl) {
 export function focusLastItem(contentEl) {
     const items = getMenuItems(contentEl);
     if (items.length > 0) {
-        items[items.length - 1].focus();
+        const lastItem = items[items.length - 1];
+        lastItem.focus();
+        updateHighlightedItem(items, lastItem);
     }
 }
 

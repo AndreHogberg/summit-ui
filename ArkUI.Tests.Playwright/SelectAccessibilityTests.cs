@@ -733,9 +733,14 @@ public class SelectAccessibilityTests : PageTest
         var content = Page.Locator("[data-ark-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        // Type 'ma' quickly to find mango (not matching apple which starts with 'a')
+        // Wait for initial highlight to be applied (first item should be highlighted)
+        // This ensures the JS event handlers are fully set up before we type
+        var firstItem = Page.Locator("[data-ark-select-item][data-value='apple']");
+        await Expect(firstItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Type 'ma' to find mango (not matching apple which starts with 'a')
         // Use delay to ensure both characters are captured by typeahead buffer
-        await Page.Keyboard.TypeAsync("ma", new() { Delay = 50 });
+        await Page.Keyboard.TypeAsync("ma", new() { Delay = 100 });
 
         // Mango should be highlighted
         var mangoItem = Page.Locator("[data-ark-select-item][data-value='mango']");
