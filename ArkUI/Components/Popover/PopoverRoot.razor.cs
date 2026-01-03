@@ -10,6 +10,7 @@ namespace ArkUI.Components.Popover;
 public partial class PopoverRoot : ComponentBase, IAsyncDisposable
 {
     [Inject] private PopoverJsInterop JsInterop { get; set; } = default!;
+    [Inject] private PopoverService PopoverService { get; set; } = default!;
 
     /// <summary>
     /// Child content containing PopoverTrigger, PopoverContent, etc.
@@ -92,6 +93,9 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
     {
         if (IsOpen) return;
 
+        // Close any other open popovers before opening this one
+        await PopoverService.RegisterOpenAsync(_context);
+
         if (Open is null)
         {
             _internalOpen = true;
@@ -106,6 +110,9 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
     private async Task CloseAsync()
     {
         if (!IsOpen) return;
+
+        // Unregister from the popover service
+        PopoverService.Unregister(_context);
 
         if (Open is null)
         {
@@ -133,7 +140,9 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
         if (_isDisposed) return;
         _isDisposed = true;
 
-        // Cleanup is handled by individual components
+        // Unregister from service if still open
+        PopoverService.Unregister(_context);
+
         await Task.CompletedTask;
     }
 }

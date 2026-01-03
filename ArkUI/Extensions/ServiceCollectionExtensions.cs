@@ -1,3 +1,4 @@
+using ArkUI.Components.Popover;
 using ArkUI.Interop;
 using ArkUI.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<AccordionJsInterop>();
         services.AddScoped<DropdownMenuJsInterop>();
         services.AddScoped<PopoverJsInterop>();
+        services.AddScoped<PopoverService>();
         services.AddScoped<SelectJsInterop>();
 
         return services;
