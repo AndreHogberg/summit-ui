@@ -20,7 +20,7 @@ public class AccordionTrigger : ComponentBase, IAsyncDisposable
     private AccordionItemContext ItemContext { get; set; } = default!;
 
     [Inject]
-    private ArkUtilities ArkUtilities { get; set; } = default!;
+    private SummitUtilities SummitUtilities { get; set; } = default!;
 
     [Inject]
     private AccordionJsInterop JsInterop { get; set; } = default!;
@@ -157,7 +157,7 @@ public class AccordionTrigger : ComponentBase, IAsyncDisposable
 
     private async Task<bool> IsRtlAsync()
     {
-        _cachedIsRtl ??= await ArkUtilities.IsRtlAsync();
+        _cachedIsRtl ??= await SummitUtilities.IsRtlAsync();
         return _cachedIsRtl.Value;
     }
 

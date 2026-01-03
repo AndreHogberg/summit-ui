@@ -12,7 +12,7 @@ public sealed class SelectJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/arkui.js").AsTask());
+            "import", "./_content/SummitUI/summitui.js").AsTask());
 
     /// <summary>
     /// Register trigger element to prevent default scroll behavior on arrow keys.

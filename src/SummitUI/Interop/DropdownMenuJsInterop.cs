@@ -11,7 +11,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/arkui.js").AsTask());
+            "import", "./_content/SummitUI/summitui.js").AsTask());
 
     /// <summary>
     /// Create a portal container element at the specified location.

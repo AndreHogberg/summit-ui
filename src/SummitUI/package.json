@@ -1,12 +1,12 @@
 {
-  "name": "arkui-js",
+  "name": "summitui-js",
   "version": "1.0.0",
   "private": true,
   "description": "JavaScript modules for SummitUI Blazor component library",
   "type": "module",
   "scripts": {
-    "build": "esbuild Scripts/index.js --bundle --format=esm --outfile=wwwroot/arkui.js --minify",
-    "watch": "esbuild Scripts/index.js --bundle --format=esm --outfile=wwwroot/arkui.js --watch"
+    "build": "esbuild Scripts/index.js --bundle --format=esm --outfile=wwwroot/summitui.js --minify",
+    "watch": "esbuild Scripts/index.js --bundle --format=esm --outfile=wwwroot/summitui.js --watch"
   },
   "devDependencies": {
     "esbuild": "^0.25.0"

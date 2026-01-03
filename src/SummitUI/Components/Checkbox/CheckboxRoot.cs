@@ -12,7 +12,7 @@ namespace SummitUI;
 public class CheckboxRoot : ComponentBase, IAsyncDisposable
 {
     [Inject]
-    private ArkUtilities ArkUtilities { get; set; } = default!;
+    private SummitUtilities SummitUtilities { get; set; } = default!;
 
     /// <summary>
     /// Optional cascading parameter from CheckboxGroup.
@@ -215,7 +215,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         if (firstRender && !_jsInitialized)
         {
             _jsInitialized = true;
-            await ArkUtilities.InitializeCheckboxAsync(_elementRef);
+            await SummitUtilities.InitializeCheckboxAsync(_elementRef);
         }
     }
 
@@ -320,7 +320,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         
         if (_jsInitialized)
         {
-            await ArkUtilities.DestroyCheckboxAsync(_elementRef);
+            await SummitUtilities.DestroyCheckboxAsync(_elementRef);
         }
     }
 }

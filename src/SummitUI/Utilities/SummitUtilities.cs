@@ -7,18 +7,18 @@ namespace SummitUI.Utilities;
 /// Core utility service for SummitUI components.
 /// Provides minimal JavaScript interop for operations that cannot be done in pure Blazor.
 /// </summary>
-public sealed class ArkUtilities : IAsyncDisposable
+public sealed class SummitUtilities : IAsyncDisposable
 {
     private readonly IJSRuntime _jsRuntime;
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
     private bool? _cachedIsRtl;
 
-    public ArkUtilities(IJSRuntime jsRuntime)
+    public SummitUtilities(IJSRuntime jsRuntime)
     {
         _jsRuntime = jsRuntime;
         _moduleTask = new Lazy<Task<IJSObjectReference>>(() =>
             jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/SummitUI/arkui.js").AsTask());
+                "import", "./_content/SummitUI/summitui.js").AsTask());
     }
 
     /// <summary>

@@ -10,7 +10,7 @@ public sealed class PopoverJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/arkui.js").AsTask());
+            "import", "./_content/SummitUI/summitui.js").AsTask());
 
     /// <summary>
     /// Initialize popover positioning and event listeners.

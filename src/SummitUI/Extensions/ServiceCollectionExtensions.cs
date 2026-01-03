@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSummitUI(this IServiceCollection services)
     {
         // Core utility services
-        services.AddScoped<ArkUtilities>();
+        services.AddScoped<SummitUtilities>();
         services.AddScoped<FocusTrapJsInterop>();
         services.AddScoped<FloatingJsInterop>();
 

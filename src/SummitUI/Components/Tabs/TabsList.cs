@@ -11,7 +11,7 @@ namespace SummitUI;
 /// </summary>
 public class TabsList : ComponentBase, IAsyncDisposable
 {
-    [Inject] private ArkUtilities Utilities { get; set; } = default!;
+    [Inject] private SummitUtilities Utilities { get; set; } = default!;
 
     /// <summary>
     /// The tabs context from the parent TabsRoot.

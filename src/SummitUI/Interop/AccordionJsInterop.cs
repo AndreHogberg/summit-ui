@@ -12,7 +12,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
         jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/arkui.js").AsTask());
+            "import", "./_content/SummitUI/summitui.js").AsTask());
 
     /// <summary>
     /// Set CSS variables for content height and width (for animations).

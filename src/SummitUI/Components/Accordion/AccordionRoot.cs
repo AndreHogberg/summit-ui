@@ -11,7 +11,7 @@ namespace SummitUI;
 public class AccordionRoot : ComponentBase
 {
     [Inject]
-    private ArkUtilities ArkUtilities { get; set; } = default!;
+    private SummitUtilities SummitUtilities { get; set; } = default!;
 
     /// <summary>
     /// Child content containing AccordionItem components.
@@ -167,7 +167,7 @@ public class AccordionRoot : ComponentBase
     private async Task FocusTriggerAsync(string value)
     {
         var triggerId = _context.GetTriggerId(value);
-        await ArkUtilities.FocusElementByIdAsync(triggerId);
+        await SummitUtilities.FocusElementByIdAsync(triggerId);
     }
 
     private async Task ToggleItemAsync(string value)
