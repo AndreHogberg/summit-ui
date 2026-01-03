@@ -14,7 +14,7 @@ A vertically stacked set of interactive headings that each reveal an associated 
 ## Import
 
 ```razor
-@using ArkUI.Components.Accordion
+@using SummitUI.Components.Accordion
 ```
 
 ## Anatomy
@@ -128,10 +128,10 @@ public enum AccordionOrientation
 <AccordionRoot DefaultValue="item-1">
     <AccordionItem Value="item-1">
         <AccordionHeader>
-            <AccordionTrigger>What is ArkUI?</AccordionTrigger>
+            <AccordionTrigger>What is SummitUI?</AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>
-            <p>ArkUI is a Blazor component library focused on accessibility.</p>
+            <p>SummitUI is a Blazor component library focused on accessibility.</p>
         </AccordionContent>
     </AccordionItem>
     <AccordionItem Value="item-2">

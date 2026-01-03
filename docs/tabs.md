@@ -14,7 +14,7 @@ A set of layered sections of content, known as tab panels, that are displayed on
 ## Import
 
 ```razor
-@using ArkUI.Components.Tabs
+@using SummitUI.Components.Tabs
 ```
 
 ## Anatomy

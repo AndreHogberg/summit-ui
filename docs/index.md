@@ -1,6 +1,6 @@
-# ArkUI Component Library
+# SummitUI Component Library
 
-ArkUI is a Blazor component library focused on WCAG-compliant, fully customizable headless components. The library targets performance across all three Blazor render modes: WebAssembly (WASM), Server-Side Rendering (SSR), and Interactive Server.
+SummitUI is a Blazor component library focused on WCAG-compliant, fully customizable headless components. The library targets performance across all three Blazor render modes: WebAssembly (WASM), Server-Side Rendering (SSR), and Interactive Server.
 
 ## Design Philosophy
 
@@ -12,7 +12,7 @@ ArkUI is a Blazor component library focused on WCAG-compliant, fully customizabl
 ## Installation
 
 ```bash
-dotnet add package ArkUI
+dotnet add package SummitUI
 ```
 
 ## Components
@@ -86,7 +86,7 @@ All components support spreading custom HTML attributes:
 
 ## Accessibility
 
-ArkUI components are built with accessibility as a core principle:
+SummitUI components are built with accessibility as a core principle:
 
 - Proper ARIA roles and attributes
 - Keyboard navigation support

@@ -15,7 +15,7 @@ A custom dropdown select component with full keyboard navigation and accessibili
 ## Import
 
 ```razor
-@using ArkUI.Components.Select
+@using SummitUI.Components.Select
 ```
 
 ## Anatomy

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ArkUI is a Blazor component library focused on WCAG-compliant, fully customizable headless components. The library targets performance across all three Blazor render modes: WebAssembly (WASM), Server-Side Rendering (SSR), and Interactive Server.
+SummitUI is a Blazor component library focused on WCAG-compliant, fully customizable headless components. The library targets performance across all three Blazor render modes: WebAssembly (WASM), Server-Side Rendering (SSR), and Interactive Server.
 
 **Design Philosophy:**
 - Headless components (logic without opinionated styling)
@@ -32,10 +32,10 @@ dotnet pack
 ### Project Structure
 
 ```
-ArkUI/
-├── ArkUI.slnx          # Solution file
-└── ArkUI/
-    ├── ArkUI.csproj    # Razor class library targeting .NET 10.0
+SummitUI/
+├── SummitUI.slnx          # Solution file
+└── SummitUI/
+    ├── SummitUI.csproj    # Razor class library targeting .NET 10.0
     ├── _Imports.razor  # Global Razor imports
     └── wwwroot/        # Static assets (JS modules, CSS, images)
 ```
@@ -53,7 +53,7 @@ public class ComponentJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> moduleTask =
         new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/ArkUI/componentName.js").AsTask());
+            "import", "./_content/SummitUI/componentName.js").AsTask());
 
     public async ValueTask<T> CallMethodAsync<T>(...)
     {
@@ -87,7 +87,7 @@ export function methodName(params) {
 }
 ```
 
-**Asset Path Convention:** `./_content/ArkUI/{filename}.js`
+**Asset Path Convention:** `./_content/SummitUI/{filename}.js`
 
 ### Component Guidelines
 
@@ -104,7 +104,7 @@ This project uses **TUnit** as the testing library with **Playwright** for end-t
 
 **Testing Requirements:**
 - Every feature must have corresponding Playwright tests
-- Tests are located in `ArkUI.Tests.Playwright/`
+- Tests are located in `SummitUI.Tests.Playwright/`
 - Test files follow the naming convention `{ComponentName}AccessibilityTests.cs`
 
 **Running Tests:**
@@ -113,7 +113,7 @@ This project uses **TUnit** as the testing library with **Playwright** for end-t
 dotnet test
 
 # Run tests for a specific project
-dotnet test ArkUI.Tests.Playwright/
+dotnet test SummitUI.Tests.Playwright/
 ```
 
 **Test Guidelines:**

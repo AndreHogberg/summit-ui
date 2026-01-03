@@ -15,7 +15,7 @@ A floating menu component with support for items, checkbox items, radio groups, 
 ## Import
 
 ```razor
-@using ArkUI.Components.DropdownMenu
+@using SummitUI.Components.DropdownMenu
 ```
 
 ## Anatomy

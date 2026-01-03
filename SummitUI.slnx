@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="tests/SummitUI.Tests.Manual/SummitUI.Tests.Manual.Client/SummitUI.Tests.Manual.Client.csproj" />
+  <Project Path="tests/SummitUI.Tests.Manual/SummitUI.Tests.Manual/SummitUI.Tests.Manual.csproj" />
+  <Project Path="tests/SummitUI.Tests.Playwright/SummitUI.Tests.Playwright.csproj" />
+  <Project Path="src/SummitUI/SummitUI.csproj" />
+</Solution>

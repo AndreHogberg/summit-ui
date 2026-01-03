@@ -14,7 +14,7 @@ A floating content panel that appears next to a trigger element, commonly used f
 ## Import
 
 ```razor
-@using ArkUI.Components.Popover
+@using SummitUI.Components.Popover
 ```
 
 ## Anatomy

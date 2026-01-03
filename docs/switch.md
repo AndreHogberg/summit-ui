@@ -13,7 +13,7 @@ A control that allows the user to toggle between checked and not checked.
 ## Import
 
 ```razor
-@using ArkUI.Components.Switch
+@using SummitUI.Components.Switch
 ```
 
 ## Anatomy

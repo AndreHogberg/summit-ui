@@ -14,7 +14,7 @@ A utility component that traps keyboard focus within its children, preventing fo
 ## Import
 
 ```razor
-@using ArkUI.Components.Utilities
+@using SummitUI.Components.Utilities
 ```
 
 ## Anatomy

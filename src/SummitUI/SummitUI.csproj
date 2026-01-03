@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+        <!-- NuGet Metadata -->
+        <PackageId>SummitUI</PackageId>
+        <Version>0.0.1-alpha</Version>
+        <Authors>André Högberg</Authors>
+        <Company>André Högberg</Company>
+        <Description>A headless Blazor component library focused on accessibility and customization. SummitUI provides unstyled, WCAG-compliant components that give you full control over your application's design.</Description>
+        <PackageProjectUrl>https://github.com/AndreHogberg/summitui</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/AndreHogberg/summitui</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>blazor;headless;components;accessibility;wcag;ui</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.1"/>
+    </ItemGroup>
+
+    <!-- npm build integration for JavaScript bundling -->
+    <Target Name="NpmInstall" BeforeTargets="NpmBuild" Condition="!Exists('node_modules')">
+        <Exec Command="npm install" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    </Target>
+
+    <Target Name="NpmBuild" BeforeTargets="BeforeBuild">
+        <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    </Target>
+
+</Project>
