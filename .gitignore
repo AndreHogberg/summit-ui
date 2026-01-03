@@ -5,7 +5,7 @@
 
 # dotenv files
 .env
-
+summitui.js
 # User-specific files
 *.rsuser
 *.suo
