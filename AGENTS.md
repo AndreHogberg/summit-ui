@@ -8,9 +8,10 @@ ArkUI is a Blazor component library focused on WCAG-compliant, fully customizabl
 
 **Design Philosophy:**
 - Headless components (logic without opinionated styling)
+- Build components using .cs files only
 - WCAG accessibility compliance built-in
 - Customization via attributes
-- Maximize JavaScript for cross-render-mode compatibility
+- Prefer C# implementation; use JavaScript only for tasks impossible in C# or for external package dependencies
 - Expose minimal, clean APIs to consumers
 
 ## Build Commands

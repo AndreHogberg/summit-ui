@@ -217,8 +217,11 @@ public class CheckboxAccessibilityTests : PageTest
     [Test]
     public async Task Tab_ShouldNavigateBetweenCheckboxes()
     {
-        var firstCheckbox = Page.Locator("[data-ark-checkbox]").First;
-        var secondCheckbox = Page.Locator("[data-ark-checkbox]").Nth(1);
+        // Use data-testid selectors to get checkboxes that are adjacent in tab order
+        // The basic-checkbox-unchecked and basic-checkbox-checked have a native input between them,
+        // so we use the item checkboxes which are adjacent
+        var firstCheckbox = Page.Locator("[data-testid='item1-checkbox']");
+        var secondCheckbox = Page.Locator("[data-testid='item2-checkbox']");
 
         await firstCheckbox.FocusAsync();
         await Expect(firstCheckbox).ToBeFocusedAsync();
@@ -233,8 +236,11 @@ public class CheckboxAccessibilityTests : PageTest
     [Test]
     public async Task ShiftTab_ShouldNavigateBackwards()
     {
-        var firstCheckbox = Page.Locator("[data-ark-checkbox]").First;
-        var secondCheckbox = Page.Locator("[data-ark-checkbox]").Nth(1);
+        // Use data-testid selectors to get checkboxes that are adjacent in tab order
+        // The basic-checkbox-unchecked and basic-checkbox-checked have a native input between them,
+        // so we use the item checkboxes which are adjacent
+        var firstCheckbox = Page.Locator("[data-testid='item1-checkbox']");
+        var secondCheckbox = Page.Locator("[data-testid='item2-checkbox']");
 
         await secondCheckbox.FocusAsync();
         await Expect(secondCheckbox).ToBeFocusedAsync();

@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="ArkUI.Tests.Manual/ArkUI.Tests.Manual.Client/ArkUI.Tests.Manual.Client.csproj" />
-  <Project Path="ArkUI.Tests.Manual/ArkUI.Tests.Manual/ArkUI.Tests.Manual.csproj" />
-  <Project Path="ArkUI.Tests.Playwright/ArkUI.Tests.Playwright.csproj" />
-  <Project Path="ArkUI/ArkUI.csproj" />
+  <Project Path="tests/ArkUI.Tests.Manual/ArkUI.Tests.Manual.Client/ArkUI.Tests.Manual.Client.csproj" />
+  <Project Path="tests/ArkUI.Tests.Manual/ArkUI.Tests.Manual/ArkUI.Tests.Manual.csproj" />
+  <Project Path="tests/ArkUI.Tests.Playwright/ArkUI.Tests.Playwright.csproj" />
+  <Project Path="src/ArkUI/ArkUI.csproj" />
 </Solution>

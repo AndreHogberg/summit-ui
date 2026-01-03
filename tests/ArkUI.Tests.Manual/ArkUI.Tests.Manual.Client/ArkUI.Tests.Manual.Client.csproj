@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\ArkUI\ArkUI.csproj" />
+      <ProjectReference Include="..\..\..\src\ArkUI\ArkUI.csproj" />
     </ItemGroup>
 
 </Project>
