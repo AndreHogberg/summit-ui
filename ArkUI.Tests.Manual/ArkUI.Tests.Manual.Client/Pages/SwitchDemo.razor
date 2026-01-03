@@ -46,7 +46,7 @@
         
         <div class="d-flex align-items-center justify-content-between">
              <label for="marketing">Marketing Emails</label>
-             <SwitchRoot Name="marketing" Value="yes" @bind-Checked="_marketing" id="marketing" class="switch-root">
+             <SwitchRoot Name="marketing" Value="yes" @bind-Checked="_marketing" id="marketing" class="switch-root" data-testid="marketing-switch">
                  <SwitchThumb class="switch-thumb" />
              </SwitchRoot>
         </div>
@@ -60,6 +60,52 @@
             <pre>@_lastSubmitData</pre>
         </div>
     }
+</div>
+
+<div class="mb-5">
+    <h2>Controlled Mode</h2>
+    <div class="d-flex flex-column gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <SwitchRoot @bind-Checked="_controlledChecked" class="switch-root" data-testid="controlled-switch">
+                <SwitchThumb class="switch-thumb" />
+            </SwitchRoot>
+            <button type="button" class="btn btn-secondary" @onclick="ToggleControlled">
+                Toggle Externally (@(_controlledChecked ? "Checked" : "Unchecked"))
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="mb-5">
+    <h2>With Label</h2>
+    <label class="d-flex align-items-center gap-2" data-testid="labeled-switch-container">
+        <SwitchRoot @bind-Checked="_labeledChecked" class="switch-root" data-testid="labeled-switch">
+            <SwitchThumb class="switch-thumb" />
+        </SwitchRoot>
+        <span>Enable notifications</span>
+    </label>
+</div>
+
+<div class="mb-5">
+    <h2>Default Checked</h2>
+    <div class="d-flex align-items-center">
+        <SwitchRoot DefaultChecked="true" class="switch-root" data-testid="default-checked-switch">
+            <SwitchThumb class="switch-thumb" />
+        </SwitchRoot>
+        <span class="ms-2">Default checked (uncontrolled)</span>
+    </div>
+</div>
+
+<div class="mb-5">
+    <h2>Required Switch</h2>
+    <form class="d-flex flex-column gap-3" style="max-width: 300px;">
+        <div class="d-flex align-items-center justify-content-between">
+            <label for="required-switch">Accept Terms</label>
+            <SwitchRoot Name="terms" Required="true" @bind-Checked="_required" id="required-switch" class="switch-root" data-testid="required-switch">
+                <SwitchThumb class="switch-thumb" />
+            </SwitchRoot>
+        </div>
+    </form>
 </div>
 
 <style>
@@ -111,10 +157,18 @@
     private bool _checked;
     private bool _notifications;
     private bool _marketing;
+    private bool _controlledChecked;
+    private bool _labeledChecked;
+    private bool _required;
     private string? _lastSubmitData;
 
     private void HandleSubmit()
     {
         _lastSubmitData = $"Notifications: {_notifications}, Marketing: {_marketing}";
+    }
+
+    private void ToggleControlled()
+    {
+        _controlledChecked = !_controlledChecked;
     }
 }
