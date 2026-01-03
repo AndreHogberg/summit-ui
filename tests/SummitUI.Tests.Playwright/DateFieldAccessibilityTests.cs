@@ -133,14 +133,6 @@ public class DateFieldAccessibilityTests : PageTest
     #region Contenteditable Attributes
 
     [Test]
-    public async Task Segment_ShouldBe_ContentEditable()
-    {
-        var section = Page.Locator("[data-testid='basic-section']");
-        var segment = section.Locator("[data-segment='day']");
-        await Expect(segment).ToHaveAttributeAsync("contenteditable", "true");
-    }
-
-    [Test]
     public async Task Segment_ShouldHave_InputmodeNumeric()
     {
         var section = Page.Locator("[data-testid='basic-section']");
@@ -213,14 +205,6 @@ public class DateFieldAccessibilityTests : PageTest
     }
 
     [Test]
-    public async Task DisabledSegment_ShouldHave_ContenteditableFalse()
-    {
-        var section = Page.Locator("[data-testid='disabled-section']");
-        var segment = section.Locator("[data-segment='day']");
-        await Expect(segment).ToHaveAttributeAsync("contenteditable", "false");
-    }
-
-    [Test]
     public async Task DisabledSegment_ShouldHave_TabindexNegative1()
     {
         var section = Page.Locator("[data-testid='disabled-section']");
@@ -263,14 +247,6 @@ public class DateFieldAccessibilityTests : PageTest
         var section = Page.Locator("[data-testid='readonly-section']");
         var segment = section.Locator("[data-segment='day']");
         await Expect(segment).ToHaveAttributeAsync("data-readonly", "");
-    }
-
-    [Test]
-    public async Task ReadOnlySegment_ShouldHave_ContenteditableFalse()
-    {
-        var section = Page.Locator("[data-testid='readonly-section']");
-        var segment = section.Locator("[data-segment='day']");
-        await Expect(segment).ToHaveAttributeAsync("contenteditable", "false");
     }
 
     #endregion

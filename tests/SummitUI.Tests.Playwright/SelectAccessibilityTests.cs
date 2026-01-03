@@ -57,7 +57,7 @@ public class SelectAccessibilityTests : PageTest
 
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         var contentId = await content.GetAttributeAsync("id");
 
         await Assert.That(ariaControls).IsNotNull();
@@ -87,7 +87,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Press arrow down to highlight next item (first item is already highlighted on open)
@@ -107,7 +107,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToHaveAttributeAsync("role", "listbox");
     }
 
@@ -117,7 +117,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToHaveAttributeAsync("tabindex", "-1");
     }
 
@@ -129,7 +129,7 @@ public class SelectAccessibilityTests : PageTest
 
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToHaveAttributeAsync("aria-labelledby", triggerId!);
     }
 
@@ -139,7 +139,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToHaveAttributeAsync("data-state", "open");
     }
 
@@ -153,7 +153,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-select-item]").First;
+        var item = Page.Locator("[data-summit-select-item]").First;
         await Expect(item).ToHaveAttributeAsync("role", "option");
     }
 
@@ -163,7 +163,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-select-item]").First;
+        var item = Page.Locator("[data-summit-select-item]").First;
         await Expect(item).ToHaveAttributeAsync("aria-selected", "false");
     }
 
@@ -174,11 +174,11 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]");
+        var content = Page.Locator("[data-summit-select-content]");
         await Expect(content.First).ToBeVisibleAsync();
 
         // Get the first item within the open content and select it
-        var item = content.Locator("[data-ark-select-item]").First;
+        var item = content.Locator("[data-summit-select-item]").First;
         var itemValue = await item.GetAttributeAsync("data-value");
         await item.ClickAsync();
 
@@ -195,7 +195,7 @@ public class SelectAccessibilityTests : PageTest
         await Expect(content.First).ToBeVisibleAsync();
 
         // Check the selected item has aria-selected=true
-        var selectedItem = content.Locator($"[data-ark-select-item][data-value='{itemValue}']");
+        var selectedItem = content.Locator($"[data-summit-select-item][data-value='{itemValue}']");
         await Expect(selectedItem).ToHaveAttributeAsync("aria-selected", "true");
     }
 
@@ -205,7 +205,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-select-item]").First;
+        var item = Page.Locator("[data-summit-select-item]").First;
         await Expect(item).ToHaveAttributeAsync("data-state", "unchecked");
     }
 
@@ -216,11 +216,11 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]");
+        var content = Page.Locator("[data-summit-select-content]");
         await Expect(content.First).ToBeVisibleAsync();
 
         // Get the first item within the open content and select it
-        var item = content.Locator("[data-ark-select-item]").First;
+        var item = content.Locator("[data-summit-select-item]").First;
         var itemValue = await item.GetAttributeAsync("data-value");
         await item.ClickAsync();
 
@@ -237,7 +237,7 @@ public class SelectAccessibilityTests : PageTest
         await Expect(content.First).ToBeVisibleAsync();
 
         // Check the selected item has data-state='checked'
-        var selectedItem = content.Locator($"[data-ark-select-item][data-value='{itemValue}']");
+        var selectedItem = content.Locator($"[data-summit-select-item][data-value='{itemValue}']");
         await Expect(selectedItem).ToHaveAttributeAsync("data-state", "checked");
     }
 
@@ -247,7 +247,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var items = Page.Locator("[data-ark-select-item]");
+        var items = Page.Locator("[data-summit-select-item]");
         var count = await items.CountAsync();
 
         var ids = new List<string>();
@@ -273,7 +273,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
         await trigger.ClickAsync();
 
-        var disabledItem = Page.Locator("[data-ark-select-item][data-disabled]").First;
+        var disabledItem = Page.Locator("[data-summit-select-item][data-disabled]").First;
         await Expect(disabledItem).ToHaveAttributeAsync("aria-disabled", "true");
     }
 
@@ -283,7 +283,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
         await trigger.ClickAsync();
 
-        var disabledItem = Page.Locator("[data-ark-select-item][data-disabled]").First;
+        var disabledItem = Page.Locator("[data-summit-select-item][data-disabled]").First;
         await Expect(disabledItem).ToHaveAttributeAsync("data-disabled", "");
     }
 
@@ -293,8 +293,8 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
         await trigger.ClickAsync();
 
-        var disabledItem = Page.Locator("[data-ark-select-item][data-disabled]").First;
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var disabledItem = Page.Locator("[data-summit-select-item][data-disabled]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
 
         // Try to click disabled item (use Force since element is disabled)
         await disabledItem.ClickAsync(new() { Force = true });
@@ -383,7 +383,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("Enter");
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
@@ -394,7 +394,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync(" ");
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
@@ -405,7 +405,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("ArrowDown");
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
@@ -416,7 +416,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("ArrowUp");
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
@@ -426,7 +426,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         await Page.Keyboard.PressAsync("Escape");
@@ -454,7 +454,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible and JS initialization
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // On open, first item is already highlighted
@@ -462,7 +462,7 @@ public class SelectAccessibilityTests : PageTest
         await Page.Keyboard.PressAsync("ArrowDown");
 
         // Second item should be highlighted
-        var secondItem = content.Locator("[data-ark-select-item]").Nth(1);
+        var secondItem = content.Locator("[data-summit-select-item]").Nth(1);
         await Expect(secondItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -473,7 +473,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible and JS initialization
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // On open, first item is highlighted
@@ -484,7 +484,7 @@ public class SelectAccessibilityTests : PageTest
         await Page.Keyboard.PressAsync("ArrowUp");
 
         // First item should be highlighted
-        var firstItem = content.Locator("[data-ark-select-item]").First;
+        var firstItem = content.Locator("[data-summit-select-item]").First;
         await Expect(firstItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -495,7 +495,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible and JS initialization
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // On open, first item is highlighted
@@ -503,7 +503,7 @@ public class SelectAccessibilityTests : PageTest
         await Page.Keyboard.PressAsync("ArrowDown");
 
         // Get the second item's value
-        var secondItem = content.Locator("[data-ark-select-item]").Nth(1);
+        var secondItem = content.Locator("[data-summit-select-item]").Nth(1);
         var expectedLabel = await secondItem.GetAttributeAsync("data-label");
 
         // Select it
@@ -513,7 +513,7 @@ public class SelectAccessibilityTests : PageTest
         await Expect(content).Not.ToBeVisibleAsync();
 
         // Value should be updated
-        var value = Page.Locator("[data-ark-select-value]").First;
+        var value = Page.Locator("[data-summit-select-value]").First;
         await Expect(value).ToHaveTextAsync(expectedLabel!);
     }
 
@@ -524,7 +524,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible and JS initialization
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Navigate down a few items
@@ -536,7 +536,7 @@ public class SelectAccessibilityTests : PageTest
         await Page.Keyboard.PressAsync("Home");
 
         // First item should be highlighted
-        var firstItem = content.Locator("[data-ark-select-item]").First;
+        var firstItem = content.Locator("[data-summit-select-item]").First;
         await Expect(firstItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -547,14 +547,14 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible and JS initialization
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Press End
         await Page.Keyboard.PressAsync("End");
 
         // Last item should be highlighted
-        var lastItem = content.Locator("[data-ark-select-item]").Last;
+        var lastItem = content.Locator("[data-summit-select-item]").Last;
         await Expect(lastItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -564,7 +564,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         await Page.Keyboard.PressAsync("Tab");
@@ -582,7 +582,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-select-item]").First;
+        var item = Page.Locator("[data-summit-select-item]").First;
         await item.ClickAsync();
 
         await Expect(trigger).ToBeFocusedAsync();
@@ -605,7 +605,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Click outside the select
@@ -621,7 +621,7 @@ public class SelectAccessibilityTests : PageTest
     [Test]
     public async Task Value_ShouldHave_DataPlaceholder_WhenNoSelection()
     {
-        var value = Page.Locator("[data-ark-select-value]").First;
+        var value = Page.Locator("[data-summit-select-value]").First;
         await Expect(value).ToHaveAttributeAsync("data-placeholder", "");
     }
 
@@ -631,10 +631,10 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-select-item]").First;
+        var item = Page.Locator("[data-summit-select-item]").First;
         await item.ClickAsync();
 
-        var value = Page.Locator("[data-ark-select-value]").First;
+        var value = Page.Locator("[data-summit-select-value]").First;
         await Expect(value).Not.ToHaveAttributeAsync("data-placeholder", "");
     }
 
@@ -655,16 +655,16 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-select-item]").First;
+        var item = Page.Locator("[data-summit-select-item]").First;
         var expectedLabel = await item.GetAttributeAsync("data-label");
         await item.ClickAsync();
 
         // Dropdown should close
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).Not.ToBeVisibleAsync();
 
         // Value should be updated
-        var value = Page.Locator("[data-ark-select-value]").First;
+        var value = Page.Locator("[data-summit-select-value]").First;
         await Expect(value).ToHaveTextAsync(expectedLabel!);
     }
 
@@ -675,11 +675,11 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]");
+        var content = Page.Locator("[data-summit-select-content]");
         await Expect(content.First).ToBeVisibleAsync();
 
         // Select second item within the open content
-        var secondItem = content.Locator("[data-ark-select-item]").Nth(1);
+        var secondItem = content.Locator("[data-summit-select-item]").Nth(1);
         var secondValue = await secondItem.GetAttributeAsync("data-value");
         await secondItem.ClickAsync();
 
@@ -696,7 +696,7 @@ public class SelectAccessibilityTests : PageTest
         await Expect(content.First).ToBeVisibleAsync();
 
         // Second item should be highlighted (scoped to this content)
-        var highlightedItem = content.Locator($"[data-ark-select-item][data-value='{secondValue}']");
+        var highlightedItem = content.Locator($"[data-summit-select-item][data-value='{secondValue}']");
         await Expect(highlightedItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -712,14 +712,14 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Type 'g' to find grape
         await Page.Keyboard.TypeAsync("g", new() { Delay = 50 });
 
         // Grape should be highlighted
-        var grapeItem = Page.Locator("[data-ark-select-item][data-value='grape']");
+        var grapeItem = Page.Locator("[data-summit-select-item][data-value='grape']");
         await Expect(grapeItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -730,12 +730,12 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Wait for initial highlight to be applied (first item should be highlighted)
         // This ensures the JS event handlers are fully set up before we type
-        var firstItem = Page.Locator("[data-ark-select-item][data-value='apple']");
+        var firstItem = Page.Locator("[data-summit-select-item][data-value='apple']");
         await Expect(firstItem).ToHaveAttributeAsync("data-highlighted", "");
 
         // Type 'ma' to find mango (not matching apple which starts with 'a')
@@ -743,7 +743,7 @@ public class SelectAccessibilityTests : PageTest
         await Page.Keyboard.TypeAsync("ma", new() { Delay = 100 });
 
         // Mango should be highlighted
-        var mangoItem = Page.Locator("[data-ark-select-item][data-value='mango']");
+        var mangoItem = Page.Locator("[data-summit-select-item][data-value='mango']");
         await Expect(mangoItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -757,7 +757,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Check that content is positioned below trigger
@@ -773,7 +773,7 @@ public class SelectAccessibilityTests : PageTest
         var trigger = Page.Locator("[role='combobox']").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         var dataSide = await content.GetAttributeAsync("data-side");
 
         await Assert.That(dataSide).IsNotNull();
@@ -814,7 +814,7 @@ public class SelectAccessibilityTests : PageTest
 
         // On open, first item (Apple) is already highlighted
         // Verify the first highlighted item is Apple (not the group label)
-        var highlightedItem = Page.Locator("[data-ark-select-item][data-highlighted]").First;
+        var highlightedItem = Page.Locator("[data-summit-select-item][data-highlighted]").First;
         var value = await highlightedItem.GetAttributeAsync("data-value");
         await Assert.That(value).IsEqualTo("apple");
     }
@@ -832,16 +832,16 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // First item (Free) should be highlighted on open
-        var freeItem = content.Locator("[data-ark-select-item][data-value='free']");
+        var freeItem = content.Locator("[data-summit-select-item][data-value='free']");
         await Expect(freeItem).ToHaveAttributeAsync("data-highlighted", "");
 
         // Press ArrowDown - should go to Pro (second item)
         await Page.Keyboard.PressAsync("ArrowDown");
-        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        var proItem = content.Locator("[data-summit-select-item][data-value='pro']");
         await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
 
         // Press ArrowDown again - should skip Enterprise (disabled) and loop to Free
@@ -857,16 +857,16 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // First item (Free) should be highlighted on open
-        var freeItem = content.Locator("[data-ark-select-item][data-value='free']");
+        var freeItem = content.Locator("[data-summit-select-item][data-value='free']");
         await Expect(freeItem).ToHaveAttributeAsync("data-highlighted", "");
 
         // Press ArrowUp - should skip Enterprise (disabled) and loop to Pro
         await Page.Keyboard.PressAsync("ArrowUp");
-        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        var proItem = content.Locator("[data-summit-select-item][data-value='pro']");
         await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -878,17 +878,17 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Navigate to Pro
         await Page.Keyboard.PressAsync("ArrowDown");
-        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        var proItem = content.Locator("[data-summit-select-item][data-value='pro']");
         await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
 
         // Press Home - should go to first non-disabled item (Free)
         await Page.Keyboard.PressAsync("Home");
-        var freeItem = content.Locator("[data-ark-select-item][data-value='free']");
+        var freeItem = content.Locator("[data-summit-select-item][data-value='free']");
         await Expect(freeItem).ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -901,16 +901,16 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Press End - should go to last non-disabled item (Pro, not Enterprise)
         await Page.Keyboard.PressAsync("End");
-        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        var proItem = content.Locator("[data-summit-select-item][data-value='pro']");
         await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
 
         // Verify Enterprise (disabled) is NOT highlighted
-        var enterpriseItem = content.Locator("[data-ark-select-item][data-value='enterprise']");
+        var enterpriseItem = content.Locator("[data-summit-select-item][data-value='enterprise']");
         await Expect(enterpriseItem).Not.ToHaveAttributeAsync("data-highlighted", "");
     }
 
@@ -922,7 +922,7 @@ public class SelectAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Navigate through all items multiple times
@@ -932,7 +932,7 @@ public class SelectAccessibilityTests : PageTest
         }
 
         // Verify Enterprise (disabled) is NOT highlighted
-        var enterpriseItem = content.Locator("[data-ark-select-item][data-value='enterprise']");
+        var enterpriseItem = content.Locator("[data-summit-select-item][data-value='enterprise']");
         await Expect(enterpriseItem).Not.ToHaveAttributeAsync("data-highlighted", "");
     }
 

@@ -22,21 +22,21 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldHave_AriaHaspopupMenu()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("aria-haspopup", "menu");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_AriaExpandedFalse_WhenClosed()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_AriaExpandedTrue_WhenOpen()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
@@ -45,12 +45,12 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldHave_AriaControls_MatchingContentId()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
 
         // Open the menu first - aria-controls is only set when open
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         var ariaControls = await trigger.GetAttributeAsync("aria-controls");
@@ -63,14 +63,14 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldHave_DataStateClosed_WhenClosed()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("data-state", "closed");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_DataStateOpen_WhenOpen()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
         await Expect(trigger).ToHaveAttributeAsync("data-state", "open");
@@ -83,49 +83,49 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Content_ShouldHave_RoleMenu()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToHaveAttributeAsync("role", "menu");
     }
 
     [Test]
     public async Task Content_ShouldHave_AriaOrientationVertical()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToHaveAttributeAsync("aria-orientation", "vertical");
     }
 
     [Test]
     public async Task Content_ShouldHave_AriaLabelledby()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
 
         // Open menu first
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Verify aria-labelledby is set and follows the expected pattern
         var ariaLabelledby = await content.GetAttributeAsync("aria-labelledby");
 
         await Assert.That(ariaLabelledby).IsNotNull();
-        await Assert.That(ariaLabelledby!.Contains("ark-dropdown-menu")).IsTrue();
+        await Assert.That(ariaLabelledby!.Contains("summit-dropdown-menu")).IsTrue();
         await Assert.That(ariaLabelledby.EndsWith("-trigger")).IsTrue();
     }
 
     [Test]
     public async Task Content_ShouldHave_DataStateOpen_WhenOpen()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToHaveAttributeAsync("data-state", "open");
     }
 
@@ -136,20 +136,20 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task MenuItem_ShouldHave_RoleMenuitem()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var item = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(item).ToHaveAttributeAsync("role", "menuitem");
     }
 
     [Test]
     public async Task MenuItem_ShouldHave_TabIndexNegativeOne()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var item = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var item = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(item).ToHaveAttributeAsync("tabindex", "-1");
     }
 
@@ -160,7 +160,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "With Disabled" });
         await trigger.ClickAsync();
 
-        var disabledItem = Page.Locator("[data-ark-dropdown-menu-item][data-disabled]").First;
+        var disabledItem = Page.Locator("[data-summit-dropdown-menu-item][data-disabled]").First;
         await Expect(disabledItem).ToHaveAttributeAsync("aria-disabled", "true");
     }
 
@@ -170,7 +170,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "With Disabled" });
         await trigger.ClickAsync();
 
-        var disabledItems = Page.Locator("[data-ark-dropdown-menu-item][data-disabled]");
+        var disabledItems = Page.Locator("[data-summit-dropdown-menu-item][data-disabled]");
         await Expect(disabledItems).ToHaveCountAsync(2);
     }
 
@@ -181,43 +181,43 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Menu_ShouldOpen_OnEnterKey()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("Enter");
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Menu_ShouldOpen_OnSpaceKey()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync(" ");
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Menu_ShouldOpen_OnArrowDownKey()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("ArrowDown");
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Menu_ShouldClose_OnEscapeKey()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         await Page.Keyboard.PressAsync("Escape");
@@ -228,7 +228,7 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldUpdateAriaExpanded_AfterEscapeClose()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
@@ -245,36 +245,36 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task ArrowDown_ShouldFocusNextItem()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
         // First item should be focused initially
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Press ArrowDown to move to second item
         await Page.Keyboard.PressAsync("ArrowDown");
 
-        var secondItem = Page.Locator("[data-ark-dropdown-menu-item]").Nth(1);
+        var secondItem = Page.Locator("[data-summit-dropdown-menu-item]").Nth(1);
         await Expect(secondItem).ToBeFocusedAsync();
     }
 
     [Test]
     public async Task ArrowUp_ShouldFocusPreviousItem()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
         // Move to second item first
         await Page.Keyboard.PressAsync("ArrowDown");
 
-        var secondItem = Page.Locator("[data-ark-dropdown-menu-item]").Nth(1);
+        var secondItem = Page.Locator("[data-summit-dropdown-menu-item]").Nth(1);
         await Expect(secondItem).ToBeFocusedAsync();
 
         // Press ArrowUp to move back to first item
         await Page.Keyboard.PressAsync("ArrowUp");
 
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
     }
 
@@ -285,31 +285,31 @@ public class DropdownMenuAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // First item "Available Action" should be focused
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]:not([data-disabled])").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]:not([data-disabled])").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Press ArrowDown - should skip "Disabled Action" and go to "Another Available"
         await Page.Keyboard.PressAsync("ArrowDown");
 
         // Third item is second non-disabled item
-        var secondEnabledItem = Page.Locator("[data-ark-dropdown-menu-item]:not([data-disabled])").Nth(1);
+        var secondEnabledItem = Page.Locator("[data-summit-dropdown-menu-item]:not([data-disabled])").Nth(1);
         await Expect(secondEnabledItem).ToBeFocusedAsync();
     }
 
     [Test]
     public async Task Home_ShouldFocusFirstItem()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
         // Wait for first item to be focused (menu is ready)
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Move to last item
         await Page.Keyboard.PressAsync("End");
 
-        var lastItem = Page.Locator("[data-ark-dropdown-menu-item]").Last;
+        var lastItem = Page.Locator("[data-summit-dropdown-menu-item]").Last;
         await Expect(lastItem).ToBeFocusedAsync();
 
         // Press Home to jump to first item
@@ -321,17 +321,17 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task End_ShouldFocusLastItem()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
         // Wait for first item to be focused (menu is ready)
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Press End to jump to last item
         await Page.Keyboard.PressAsync("End");
 
-        var lastItem = Page.Locator("[data-ark-dropdown-menu-item]").Last;
+        var lastItem = Page.Locator("[data-summit-dropdown-menu-item]").Last;
         await Expect(lastItem).ToBeFocusedAsync();
     }
 
@@ -342,10 +342,10 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Enter_ShouldSelectHighlightedItem()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Press Enter to select the highlighted item
@@ -358,10 +358,10 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Space_ShouldSelectHighlightedItem()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Press Space to select the highlighted item
@@ -378,10 +378,10 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Menu_ShouldClose_OnOutsideClick()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Click outside the menu
@@ -393,10 +393,10 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Focus_ShouldReturnToTrigger_AfterEscapeClose()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         await Page.Keyboard.PressAsync("Escape");
@@ -407,10 +407,10 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task FirstItem_ShouldBeFocused_WhenMenuOpens()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
     }
 
@@ -437,7 +437,7 @@ public class DropdownMenuAccessibilityTests : PageTest
 
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-dropdown-menu-content]").First;
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
         await Expect(content).ToHaveAttributeAsync("data-side", expectedSide);
     }
 
@@ -451,7 +451,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Settings Menu" });
         await trigger.ClickAsync();
 
-        var checkboxItem = Page.Locator("[data-ark-dropdown-menu-checkbox-item]").First;
+        var checkboxItem = Page.Locator("[data-summit-dropdown-menu-checkbox-item]").First;
         await Expect(checkboxItem).ToHaveAttributeAsync("role", "menuitemcheckbox");
     }
 
@@ -462,7 +462,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // "Show Toolbar" is checked by default
-        var checkboxItem = Page.Locator("[data-ark-dropdown-menu-checkbox-item]").First;
+        var checkboxItem = Page.Locator("[data-summit-dropdown-menu-checkbox-item]").First;
         await Expect(checkboxItem).ToHaveAttributeAsync("aria-checked", "true");
     }
 
@@ -473,7 +473,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // "Show Toolbar" checkbox is checked by default
-        var checkboxItem = Page.Locator("[data-ark-dropdown-menu-checkbox-item]").First;
+        var checkboxItem = Page.Locator("[data-summit-dropdown-menu-checkbox-item]").First;
         await Expect(checkboxItem).ToHaveAttributeAsync("aria-checked", "true");
 
         // Click to toggle off
@@ -494,7 +494,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Select Theme" });
         await trigger.ClickAsync();
 
-        var radioItem = Page.Locator("[data-ark-dropdown-menu-radio-item]").First;
+        var radioItem = Page.Locator("[data-summit-dropdown-menu-radio-item]").First;
         await Expect(radioItem).ToHaveAttributeAsync("role", "menuitemradio");
     }
 
@@ -505,11 +505,11 @@ public class DropdownMenuAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // "System" is selected by default (third item)
-        var systemRadio = Page.Locator("[data-ark-dropdown-menu-radio-item]").Nth(2);
+        var systemRadio = Page.Locator("[data-summit-dropdown-menu-radio-item]").Nth(2);
         await Expect(systemRadio).ToHaveAttributeAsync("aria-checked", "true");
 
         // Other items should not be checked
-        var lightRadio = Page.Locator("[data-ark-dropdown-menu-radio-item]").First;
+        var lightRadio = Page.Locator("[data-summit-dropdown-menu-radio-item]").First;
         await Expect(lightRadio).ToHaveAttributeAsync("aria-checked", "false");
     }
 
@@ -520,7 +520,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Verify "Light" is not checked initially
-        var lightRadio = Page.Locator("[data-ark-dropdown-menu-radio-item]").First;
+        var lightRadio = Page.Locator("[data-summit-dropdown-menu-radio-item]").First;
         await Expect(lightRadio).ToHaveAttributeAsync("aria-checked", "false");
 
         // Click on "Light" (first radio item)
@@ -537,7 +537,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Select Theme" });
         await trigger.ClickAsync();
 
-        var radioGroup = Page.Locator("[data-ark-dropdown-menu-radio-group]");
+        var radioGroup = Page.Locator("[data-summit-dropdown-menu-radio-group]");
         await Expect(radioGroup).ToHaveAttributeAsync("role", "group");
     }
 
@@ -547,7 +547,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Select Theme" });
         await trigger.ClickAsync();
 
-        var radioGroup = Page.Locator("[data-ark-dropdown-menu-radio-group]");
+        var radioGroup = Page.Locator("[data-summit-dropdown-menu-radio-group]");
         await Expect(radioGroup).ToHaveAttributeAsync("aria-label", "Theme selection");
     }
 
@@ -561,7 +561,7 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Grouped Menu" });
         await trigger.ClickAsync();
 
-        var group = Page.Locator("[data-ark-dropdown-menu-group]").First;
+        var group = Page.Locator("[data-summit-dropdown-menu-group]").First;
         await Expect(group).ToHaveAttributeAsync("role", "group");
     }
 
@@ -571,12 +571,12 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Grouped Menu" });
         await trigger.ClickAsync();
 
-        var groupLabel = Page.Locator("[data-ark-dropdown-menu-group-label]").First;
+        var groupLabel = Page.Locator("[data-summit-dropdown-menu-group-label]").First;
         var labelId = await groupLabel.GetAttributeAsync("id");
 
         await Assert.That(labelId).IsNotNull();
 
-        var group = Page.Locator("[data-ark-dropdown-menu-group]").First;
+        var group = Page.Locator("[data-summit-dropdown-menu-group]").First;
         var ariaLabelledby = await group.GetAttributeAsync("aria-labelledby");
 
         await Assert.That(ariaLabelledby).IsEqualTo(labelId);
@@ -589,20 +589,20 @@ public class DropdownMenuAccessibilityTests : PageTest
     [Test]
     public async Task Separator_ShouldHave_RoleSeparator()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var separator = Page.Locator("[data-ark-dropdown-menu-separator]").First;
+        var separator = Page.Locator("[data-summit-dropdown-menu-separator]").First;
         await Expect(separator).ToHaveAttributeAsync("role", "separator");
     }
 
     [Test]
     public async Task Separator_ShouldHave_AriaOrientationHorizontal()
     {
-        var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
+        var trigger = Page.Locator("[data-summit-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
-        var separator = Page.Locator("[data-ark-dropdown-menu-separator]").First;
+        var separator = Page.Locator("[data-summit-dropdown-menu-separator]").First;
         await Expect(separator).ToHaveAttributeAsync("aria-orientation", "horizontal");
     }
 
@@ -658,14 +658,14 @@ public class DropdownMenuAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for menu to fully initialize and first item to focus
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Type 'c' to find "Cherry"
         await Page.Keyboard.TypeAsync("c");
 
         // Cherry should be focused
-        var items = Page.Locator("[data-ark-dropdown-menu-item]");
+        var items = Page.Locator("[data-summit-dropdown-menu-item]");
         var cherryItem = items.Filter(new() { HasText = "Cherry" });
         await Expect(cherryItem).ToBeFocusedAsync();
     }
@@ -678,13 +678,13 @@ public class DropdownMenuAccessibilityTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for menu to fully initialize
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Type 'b' to find "Banana"
         await Page.Keyboard.TypeAsync("b");
 
-        var items = Page.Locator("[data-ark-dropdown-menu-item]");
+        var items = Page.Locator("[data-summit-dropdown-menu-item]");
         var bananaItem = items.Filter(new() { HasText = "Banana" });
         await Expect(bananaItem).ToBeFocusedAsync();
     }

@@ -23,7 +23,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Item_ShouldHave_DataStateOpen_WhenExpanded()
     {
         // First item is expanded by default (item-1)
-        var item = Page.Locator("[data-ark-accordion-item][data-state='open']").First;
+        var item = Page.Locator("[data-summit-accordion-item][data-state='open']").First;
         await Expect(item).ToHaveAttributeAsync("data-state", "open");
     }
 
@@ -31,13 +31,13 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Item_ShouldHave_DataStateClosed_WhenCollapsed()
     {
         // Second item is collapsed by default
-        var items = Page.Locator("h2:has-text('Single Mode') + [data-ark-accordion-item], h2:has-text('Single Mode') ~ [data-ark-accordion-item]");
+        var items = Page.Locator("h2:has-text('Single Mode') + [data-summit-accordion-item], h2:has-text('Single Mode') ~ [data-summit-accordion-item]");
         // Use the first accordion section's items
         var singleModeSection = Page.Locator("h2:has-text('Single Mode (Default)')").First;
-        var accordion = singleModeSection.Locator("~ *").Locator("[data-ark-accordion-item]").First;
+        var accordion = singleModeSection.Locator("~ *").Locator("[data-summit-accordion-item]").First;
         
         // Get second item in first accordion (collapsed)
-        var allItems = Page.Locator("[data-ark-accordion-item]");
+        var allItems = Page.Locator("[data-summit-accordion-item]");
         var secondItem = allItems.Nth(1);
         await Expect(secondItem).ToHaveAttributeAsync("data-state", "closed");
     }
@@ -45,14 +45,14 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Item_ShouldHave_DataOrientation()
     {
-        var item = Page.Locator("[data-ark-accordion-item]").First;
+        var item = Page.Locator("[data-summit-accordion-item]").First;
         await Expect(item).ToHaveAttributeAsync("data-orientation", "vertical");
     }
 
     [Test]
     public async Task Item_ShouldHave_DataDisabled_WhenDisabled()
     {
-        var disabledItem = Page.Locator("[data-ark-accordion-item][data-disabled]").First;
+        var disabledItem = Page.Locator("[data-summit-accordion-item][data-disabled]").First;
         await Expect(disabledItem).ToHaveCountAsync(1);
     }
 
@@ -63,14 +63,14 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Header_ShouldHave_RoleHeading()
     {
-        var header = Page.Locator("[data-ark-accordion-header]").First;
+        var header = Page.Locator("[data-summit-accordion-header]").First;
         await Expect(header).ToHaveAttributeAsync("role", "heading");
     }
 
     [Test]
     public async Task Header_ShouldHave_AriaLevel()
     {
-        var header = Page.Locator("[data-ark-accordion-header]").First;
+        var header = Page.Locator("[data-summit-accordion-header]").First;
         var ariaLevel = await header.GetAttributeAsync("aria-level");
         await Assert.That(ariaLevel).IsNotNull();
         // Default level should be a valid heading level (1-6)
@@ -82,7 +82,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Header_ShouldHave_DataOrientation()
     {
-        var header = Page.Locator("[data-ark-accordion-header]").First;
+        var header = Page.Locator("[data-summit-accordion-header]").First;
         await Expect(header).ToHaveAttributeAsync("data-orientation", "vertical");
     }
 
@@ -93,14 +93,14 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldHave_TypeButton()
     {
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("type", "button");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_UniqueId()
     {
-        var triggers = Page.Locator("[data-ark-accordion-trigger]");
+        var triggers = Page.Locator("[data-summit-accordion-trigger]");
         var count = await triggers.CountAsync();
 
         var ids = new List<string>();
@@ -119,7 +119,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Trigger_ShouldHave_AriaExpandedTrue_WhenOpen()
     {
         // First trigger in single mode is expanded by default
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
     }
 
@@ -127,7 +127,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Trigger_ShouldHave_AriaExpandedFalse_WhenClosed()
     {
         // Second trigger is collapsed by default
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
     }
 
@@ -135,34 +135,34 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Trigger_ShouldHave_AriaControls_MatchingContentId()
     {
         // Get expanded trigger so content is rendered
-        var trigger = Page.Locator("[data-ark-accordion-trigger][aria-expanded='true']").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']").First;
         var ariaControls = await trigger.GetAttributeAsync("aria-controls");
 
         await Assert.That(ariaControls).IsNotNull();
 
         // Verify the content panel with that ID exists
-        var content = Page.Locator($"[data-ark-accordion-content]#{ariaControls}");
+        var content = Page.Locator($"[data-summit-accordion-content]#{ariaControls}");
         await Expect(content).ToHaveCountAsync(1);
     }
 
     [Test]
     public async Task Trigger_ShouldHave_DataStateOpen_WhenExpanded()
     {
-        var trigger = Page.Locator("[data-ark-accordion-trigger][aria-expanded='true']").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']").First;
         await Expect(trigger).ToHaveAttributeAsync("data-state", "open");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_DataStateClosed_WhenCollapsed()
     {
-        var trigger = Page.Locator("[data-ark-accordion-trigger][aria-expanded='false']").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger][aria-expanded='false']").First;
         await Expect(trigger).ToHaveAttributeAsync("data-state", "closed");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_DataOrientation()
     {
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("data-orientation", "vertical");
     }
 
@@ -173,7 +173,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Content_ShouldHave_RoleRegion()
     {
-        var content = Page.Locator("[data-ark-accordion-content]").First;
+        var content = Page.Locator("[data-summit-accordion-content]").First;
         await Expect(content).ToHaveAttributeAsync("role", "region");
     }
 
@@ -185,7 +185,7 @@ public class AccordionAccessibilityTests : PageTest
         await multipleModeHeading.ScrollIntoViewIfNeededAsync();
 
         // Multiple mode has multiple items open by default
-        var contents = Page.Locator("[data-ark-accordion-content]");
+        var contents = Page.Locator("[data-summit-accordion-content]");
         var count = await contents.CountAsync();
 
         // Should have at least 2 content panels visible (from multiple mode defaults)
@@ -206,20 +206,20 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Content_ShouldHave_AriaLabelledby_MatchingTriggerId()
     {
-        var content = Page.Locator("[data-ark-accordion-content]").First;
+        var content = Page.Locator("[data-summit-accordion-content]").First;
         var ariaLabelledby = await content.GetAttributeAsync("aria-labelledby");
 
         await Assert.That(ariaLabelledby).IsNotNull();
 
         // Verify the trigger with that ID exists
-        var trigger = Page.Locator($"[data-ark-accordion-trigger]#{ariaLabelledby}");
+        var trigger = Page.Locator($"[data-summit-accordion-trigger]#{ariaLabelledby}");
         await Expect(trigger).ToHaveCountAsync(1);
     }
 
     [Test]
     public async Task Content_ShouldHave_DataStateOpen_WhenVisible()
     {
-        var content = Page.Locator("[data-ark-accordion-content]").First;
+        var content = Page.Locator("[data-summit-accordion-content]").First;
         await Expect(content).ToHaveAttributeAsync("data-state", "open");
         await Expect(content).ToBeVisibleAsync();
     }
@@ -227,7 +227,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Content_ShouldHave_DataOrientation()
     {
-        var content = Page.Locator("[data-ark-accordion-content]").First;
+        var content = Page.Locator("[data-summit-accordion-content]").First;
         await Expect(content).ToHaveAttributeAsync("data-orientation", "vertical");
     }
 
@@ -238,21 +238,21 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task DisabledTrigger_ShouldHave_DisabledAttribute()
     {
-        var disabledTrigger = Page.Locator("[data-ark-accordion-trigger][data-disabled]").First;
+        var disabledTrigger = Page.Locator("[data-summit-accordion-trigger][data-disabled]").First;
         await Expect(disabledTrigger).ToBeDisabledAsync();
     }
 
     [Test]
     public async Task DisabledTrigger_ShouldHave_DataDisabled()
     {
-        var disabledTrigger = Page.Locator("[data-ark-accordion-trigger][data-disabled]");
+        var disabledTrigger = Page.Locator("[data-summit-accordion-trigger][data-disabled]");
         await Expect(disabledTrigger).ToHaveCountAsync(1);
     }
 
     [Test]
     public async Task DisabledItem_ShouldNotToggle_OnClick()
     {
-        var disabledTrigger = Page.Locator("[data-ark-accordion-trigger][data-disabled]").First;
+        var disabledTrigger = Page.Locator("[data-summit-accordion-trigger][data-disabled]").First;
 
         // Verify it's closed initially
         await Expect(disabledTrigger).ToHaveAttributeAsync("aria-expanded", "false");
@@ -267,7 +267,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task DisabledItem_ShouldHave_DataDisabled()
     {
-        var disabledItem = Page.Locator("[data-ark-accordion-item][data-disabled]").First;
+        var disabledItem = Page.Locator("[data-summit-accordion-item][data-disabled]").First;
         await Expect(disabledItem).ToHaveAttributeAsync("data-disabled", "");
     }
 
@@ -279,7 +279,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Click_ShouldExpandCollapsedItem()
     {
         // Get second trigger (collapsed)
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
 
         await trigger.ClickAsync();
@@ -291,7 +291,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Click_ShouldCollapseExpandedItem()
     {
         // First trigger is expanded by default
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
 
         await trigger.ClickAsync();
@@ -303,7 +303,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Click_ShouldShowContent_WhenExpanded()
     {
         // Get second trigger (collapsed) and expand it
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
         var ariaControls = await trigger.GetAttributeAsync("aria-controls");
 
         await trigger.ClickAsync();
@@ -317,7 +317,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Click_ShouldHideContent_WhenCollapsed()
     {
         // First trigger is expanded by default
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").First;
         var ariaControls = await trigger.GetAttributeAsync("aria-controls");
 
         // Content should be visible initially
@@ -334,8 +334,8 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Click_ShouldUpdateDataState_OnItem()
     {
         // Get first item (expanded) and its trigger
-        var item = Page.Locator("[data-ark-accordion-item]").First;
-        var trigger = item.Locator("[data-ark-accordion-trigger]");
+        var item = Page.Locator("[data-summit-accordion-item]").First;
+        var trigger = item.Locator("[data-summit-accordion-trigger]");
 
         await Expect(item).ToHaveAttributeAsync("data-state", "open");
 
@@ -352,7 +352,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Enter_ShouldToggleItem()
     {
         // Get second trigger (collapsed)
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
 
         await trigger.FocusAsync();
@@ -365,7 +365,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task Space_ShouldToggleItem()
     {
         // Get second trigger (collapsed)
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
 
         await trigger.FocusAsync();
@@ -377,7 +377,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Enter_ShouldNotToggle_DisabledItem()
     {
-        var disabledTrigger = Page.Locator("[data-ark-accordion-trigger][data-disabled]").First;
+        var disabledTrigger = Page.Locator("[data-summit-accordion-trigger][data-disabled]").First;
         await Expect(disabledTrigger).ToHaveAttributeAsync("aria-expanded", "false");
 
         await disabledTrigger.FocusAsync();
@@ -389,7 +389,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Space_ShouldNotToggle_DisabledItem()
     {
-        var disabledTrigger = Page.Locator("[data-ark-accordion-trigger][data-disabled]").First;
+        var disabledTrigger = Page.Locator("[data-summit-accordion-trigger][data-disabled]").First;
         await Expect(disabledTrigger).ToHaveAttributeAsync("aria-expanded", "false");
 
         await disabledTrigger.FocusAsync();
@@ -405,8 +405,8 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task ArrowDown_ShouldMoveFocusToNextTrigger()
     {
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var secondTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var secondTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
 
         await firstTrigger.FocusAsync();
         await Expect(firstTrigger).ToBeFocusedAsync();
@@ -419,8 +419,8 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task ArrowUp_ShouldMoveFocusToPreviousTrigger()
     {
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var secondTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var secondTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
 
         await secondTrigger.FocusAsync();
         await Expect(secondTrigger).ToBeFocusedAsync();
@@ -434,8 +434,8 @@ public class AccordionAccessibilityTests : PageTest
     public async Task ArrowDown_ShouldLoopToFirst_WhenAtLast()
     {
         // The first accordion has 3 items, so item-3 is the last
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(2);
 
         await thirdTrigger.FocusAsync();
         await Expect(thirdTrigger).ToBeFocusedAsync();
@@ -450,8 +450,8 @@ public class AccordionAccessibilityTests : PageTest
     public async Task ArrowUp_ShouldLoopToLast_WhenAtFirst()
     {
         // The first accordion has 3 items
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(2);
 
         await firstTrigger.FocusAsync();
         await Expect(firstTrigger).ToBeFocusedAsync();
@@ -465,8 +465,8 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Home_ShouldMoveFocusToFirstTrigger()
     {
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(2);
 
         await thirdTrigger.FocusAsync();
         await Expect(thirdTrigger).ToBeFocusedAsync();
@@ -479,8 +479,8 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task End_ShouldMoveFocusToLastTrigger()
     {
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var thirdTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(2);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var thirdTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(2);
 
         await firstTrigger.FocusAsync();
         await Expect(firstTrigger).ToBeFocusedAsync();
@@ -540,7 +540,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task TriggerAndContent_ShouldHave_MatchingIdRelationship()
     {
         // Get an expanded trigger so content is rendered
-        var trigger = Page.Locator("[data-ark-accordion-trigger][aria-expanded='true']").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']").First;
         var triggerId = await trigger.GetAttributeAsync("id");
         var ariaControls = await trigger.GetAttributeAsync("aria-controls");
 
@@ -556,7 +556,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task AllExpandedTriggers_ShouldHave_ValidAriaControls()
     {
         // Get all expanded triggers
-        var triggers = Page.Locator("[data-ark-accordion-trigger][aria-expanded='true']");
+        var triggers = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']");
         var count = await triggers.CountAsync();
 
         for (var i = 0; i < count; i++)
@@ -566,7 +566,7 @@ public class AccordionAccessibilityTests : PageTest
             await Assert.That(ariaControls).IsNotNull();
 
             // The content panel should exist when this accordion item is expanded
-            var referencedContent = Page.Locator($"[data-ark-accordion-content][id='{ariaControls}']");
+            var referencedContent = Page.Locator($"[data-summit-accordion-content][id='{ariaControls}']");
             await Expect(referencedContent).ToHaveCountAsync(1);
         }
     }
@@ -585,7 +585,7 @@ public class AccordionAccessibilityTests : PageTest
         // Multiple mode has feature-1 and feature-2 open by default
         // Count expanded items in the multiple mode accordion
         // Find triggers after the "Multiple Mode" heading
-        var triggers = Page.Locator("[data-ark-accordion-trigger][aria-expanded='true']");
+        var triggers = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']");
         var expandedCount = await triggers.CountAsync();
 
         // Should have at least 2 expanded (from DefaultValues)
@@ -600,19 +600,19 @@ public class AccordionAccessibilityTests : PageTest
         await multipleModeHeading.ScrollIntoViewIfNeededAsync();
 
         // Get initial count of expanded items
-        var initialExpandedTriggers = Page.Locator("[data-ark-accordion-trigger][aria-expanded='true']");
+        var initialExpandedTriggers = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']");
         var initialCount = await initialExpandedTriggers.CountAsync();
 
         // Find a collapsed trigger in the Multiple Mode section and click it
         // The third item (feature-3) should be collapsed by default
-        var collapsedTrigger = Page.Locator("[data-ark-accordion-trigger]").Filter(
+        var collapsedTrigger = Page.Locator("[data-summit-accordion-trigger]").Filter(
             new() { HasText = "Feature 3" });
         await Expect(collapsedTrigger).ToHaveAttributeAsync("aria-expanded", "false");
 
         await collapsedTrigger.ClickAsync();
 
         // Now should have one more expanded item
-        var newExpandedTriggers = Page.Locator("[data-ark-accordion-trigger][aria-expanded='true']");
+        var newExpandedTriggers = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']");
         var newCount = await newExpandedTriggers.CountAsync();
 
         await Assert.That(newCount).IsEqualTo(initialCount + 1);
@@ -630,7 +630,7 @@ public class AccordionAccessibilityTests : PageTest
         await nonCollapsibleHeading.ScrollIntoViewIfNeededAsync();
 
         // Find the expanded trigger in this section
-        var expandedTrigger = Page.Locator("[data-ark-accordion-trigger]").Filter(
+        var expandedTrigger = Page.Locator("[data-summit-accordion-trigger]").Filter(
             new() { HasText = "Always One Open" });
         await Expect(expandedTrigger).ToHaveAttributeAsync("aria-expanded", "true");
 
@@ -649,12 +649,12 @@ public class AccordionAccessibilityTests : PageTest
         await nonCollapsibleHeading.ScrollIntoViewIfNeededAsync();
 
         // Find the first (expanded) trigger
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").Filter(
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").Filter(
             new() { HasText = "Always One Open" });
         await Expect(firstTrigger).ToHaveAttributeAsync("aria-expanded", "true");
 
         // Find the second (collapsed) trigger and click it
-        var secondTrigger = Page.Locator("[data-ark-accordion-trigger]").Filter(
+        var secondTrigger = Page.Locator("[data-summit-accordion-trigger]").Filter(
             new() { HasText = "Try Closing Me" });
         await Expect(secondTrigger).ToHaveAttributeAsync("aria-expanded", "false");
 
@@ -673,7 +673,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task ExpandedContent_ShouldBeVisible()
     {
-        var content = Page.Locator("[data-ark-accordion-content][data-state='open']").First;
+        var content = Page.Locator("[data-summit-accordion-content][data-state='open']").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
@@ -681,7 +681,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task CollapsedContent_ShouldNotBeInDOM()
     {
         // Get a collapsed trigger's aria-controls
-        var collapsedTrigger = Page.Locator("[data-ark-accordion-trigger][aria-expanded='false']").First;
+        var collapsedTrigger = Page.Locator("[data-summit-accordion-trigger][aria-expanded='false']").First;
         var ariaControls = await collapsedTrigger.GetAttributeAsync("aria-controls");
 
         // The content should not be in the DOM (component doesn't render when collapsed)
@@ -693,7 +693,7 @@ public class AccordionAccessibilityTests : PageTest
     public async Task ContentVisibility_ShouldUpdate_OnToggle()
     {
         // Get second trigger (collapsed) and its aria-controls
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
         var ariaControls = await trigger.GetAttributeAsync("aria-controls");
 
         // Content should not exist initially
@@ -721,7 +721,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldReceiveFocus_OnClick()
     {
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").First;
         await trigger.ClickAsync();
 
         await Expect(trigger).ToBeFocusedAsync();
@@ -730,7 +730,7 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldRetainFocus_AfterToggle()
     {
-        var trigger = Page.Locator("[data-ark-accordion-trigger]").First;
+        var trigger = Page.Locator("[data-summit-accordion-trigger]").First;
         await trigger.FocusAsync();
         await Expect(trigger).ToBeFocusedAsync();
 
@@ -750,8 +750,8 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task Tab_ShouldNavigateBetweenTriggers()
     {
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var secondTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var secondTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
 
         await firstTrigger.FocusAsync();
         await Expect(firstTrigger).ToBeFocusedAsync();
@@ -766,8 +766,8 @@ public class AccordionAccessibilityTests : PageTest
     [Test]
     public async Task ShiftTab_ShouldNavigateBackwards()
     {
-        var firstTrigger = Page.Locator("[data-ark-accordion-trigger]").First;
-        var secondTrigger = Page.Locator("[data-ark-accordion-trigger]").Nth(1);
+        var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").First;
+        var secondTrigger = Page.Locator("[data-summit-accordion-trigger]").Nth(1);
 
         await secondTrigger.FocusAsync();
         await Expect(secondTrigger).ToBeFocusedAsync();
@@ -796,7 +796,7 @@ public class AccordionAccessibilityTests : PageTest
         await Page.Keyboard.PressAsync("Tab");
 
         // Disabled trigger should NOT be focused
-        var disabledTrigger = Page.Locator("[data-ark-accordion-trigger][data-disabled]");
+        var disabledTrigger = Page.Locator("[data-summit-accordion-trigger][data-disabled]");
         await Expect(disabledTrigger).Not.ToBeFocusedAsync();
 
         // Next enabled trigger should be focused
