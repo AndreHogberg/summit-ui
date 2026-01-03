@@ -15,12 +15,37 @@
         builder.AddAttribute(2, "id", Context.ContentId);
         builder.AddAttribute(3, "tabindex", "-1");
         builder.AddAttribute(4, "aria-labelledby", Context.TriggerId);
-        builder.AddAttribute(5, "data-state", DataState);
-        builder.AddAttribute(6, "data-ark-select-content", "");
-        builder.AddAttribute(7, "style", ContentStyle);
-        builder.AddMultipleAttributes(8, AdditionalAttributes);
-        builder.AddElementReferenceCapture(9, (elementRef) => { _elementRef = elementRef; });
-        builder.AddContent(10, ChildContent);
+        builder.AddAttribute(5, "aria-activedescendant", GetActiveDescendantId());
+        builder.AddAttribute(6, "data-state", DataState);
+        builder.AddAttribute(7, "data-ark-select-content", "");
+        builder.AddAttribute(8, "style", ContentStyle);
+        builder.AddMultipleAttributes(9, AdditionalAttributes);
+        builder.AddAttribute(10, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
+        builder.AddEventPreventDefaultAttribute(11, "onkeydown", true);
+        builder.AddAttribute(12, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleContentClickAsync));
+        builder.AddAttribute(13, "onmouseover", EventCallback.Factory.Create<MouseEventArgs>(this, HandleContentMouseOverAsync));
+        builder.AddElementReferenceCapture(14, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(15, ChildContent);
         builder.CloseElement();
+    }
+
+    private string? GetActiveDescendantId()
+    {
+        return !string.IsNullOrEmpty(Context.HighlightedKey)
+            ? Context.GetItemId(Context.HighlightedKey)
+            : null;
+    }
+
+    private async Task HandleContentClickAsync(MouseEventArgs args)
+    {
+        // Event delegation - find which item was clicked via JS
+        // For now, items handle their own clicks via data attributes
+        // This is handled by the SelectItem component
+    }
+
+    private async Task HandleContentMouseOverAsync(MouseEventArgs args)
+    {
+        // Event delegation - handled by individual items
+        // Mouse over highlighting is done via JS callback or item-level events
     }
 }

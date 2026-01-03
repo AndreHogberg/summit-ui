@@ -62,10 +62,17 @@ public class ComponentJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if (moduleTask.IsValueCreated)
+        try
         {
-            var module = await moduleTask.Value;
-            await module.DisposeAsync();
+            if (moduleTask.IsValueCreated)
+            {
+                var module = await moduleTask.Value;
+                await module.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException)
+        {
+            // Safe to ignore, JS resources are cleaned up by the browser
         }
     }
 }
@@ -112,3 +119,29 @@ dotnet test ArkUI.Tests.Playwright/
 - Write Playwright tests that verify component behavior and accessibility
 - Test keyboard navigation and ARIA attributes
 - Ensure tests cover all three render modes where applicable
+
+# Development Guidelines
+
+## Blazor JS Interop Disposal
+
+When implementing `IAsyncDisposable` in JS interop classes, always wrap the module disposal in a try-catch for `JSDisconnectedException`:
+
+````````csharp
+public async ValueTask DisposeAsync()
+{
+    try
+    {
+        if (moduleTask.IsValueCreated)
+        {
+            var module = await moduleTask.Value;
+            await module.DisposeAsync();
+        }
+    }
+    catch (JSDisconnectedException)
+    {
+        // Safe to ignore, JS resources are cleaned up by the browser
+    }
+}
+````````
+
+**Why:** In Blazor Server, when a user navigates away or closes the browser, the SignalR circuit disconnects before component disposal completes. Any JS interop calls during `DisposeAsync` will throw `JSDisconnectedException`. Since the browser automatically cleans up JS resources when the connection closes, catching and ignoring this exception is safe and expected.

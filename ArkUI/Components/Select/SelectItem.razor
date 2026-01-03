@@ -11,6 +11,10 @@
     data-label="@EffectiveLabel"
     data-state="@DataState"
     data-disabled="@(Disabled ? "" : null)"
+    data-highlighted="@(IsHighlighted ? "" : null)"
+    @onclick="HandleClickAsync"
+    @onclick:preventDefault="@(!Disabled)"
+    @onmouseenter="HandleMouseEnterAsync"
     @attributes="AdditionalAttributes">
     @ChildContent
 </div>

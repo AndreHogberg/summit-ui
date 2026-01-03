@@ -14,18 +14,21 @@
         builder.AddAttribute(2, "role", "menu");
         builder.AddAttribute(3, "aria-orientation", "vertical");
         builder.AddAttribute(4, "aria-labelledby", $"{Context.MenuId}-trigger");
-        builder.AddAttribute(5, "data-state", DataState);
-        builder.AddAttribute(6, "data-side", Side.ToString().ToLowerInvariant());
-        builder.AddAttribute(7, "data-align", Align.ToString().ToLowerInvariant());
-        builder.AddAttribute(8, "data-ark-dropdown-menu-content", true);
-        builder.AddAttribute(9, "tabindex", "-1");
+        builder.AddAttribute(5, "aria-activedescendant", Context.HighlightedItemId);
+        builder.AddAttribute(6, "data-state", DataState);
+        builder.AddAttribute(7, "data-side", Side.ToString().ToLowerInvariant());
+        builder.AddAttribute(8, "data-align", Align.ToString().ToLowerInvariant());
+        builder.AddAttribute(9, "data-ark-dropdown-menu-content", true);
+        builder.AddAttribute(10, "tabindex", "-1");
         // Use visibility: hidden initially to prevent flash in top-left corner before JS positioning
         // JS will set visibility: visible after first position calculation
-        builder.AddAttribute(10, "style", "position: absolute; top: 0; left: 0; outline: none; visibility: hidden;");
-        builder.AddMultipleAttributes(11, AdditionalAttributes);
-        builder.AddAttribute(12, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddElementReferenceCapture(13, (elementRef) => { _elementRef = elementRef; });
-        builder.AddContent(14, ChildContent);
+        builder.AddAttribute(11, "style", "position: absolute; top: 0; left: 0; outline: none; visibility: hidden;");
+        builder.AddMultipleAttributes(12, AdditionalAttributes);
+        builder.AddAttribute(13, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
+        builder.AddEventPreventDefaultAttribute(14, "onkeydown", true);
+        builder.AddEventStopPropagationAttribute(15, "onkeydown", true);
+        builder.AddElementReferenceCapture(16, (elementRef) => { _elementRef = elementRef; });
+        builder.AddContent(17, ChildContent);
         builder.CloseElement();
     }
 }

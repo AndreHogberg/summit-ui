@@ -196,6 +196,11 @@ public partial class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where 
         
         if (Disabled || IsOpen) return;
 
+        // Clear the item registry before opening to ensure items register in correct DOM order.
+        // This fixes a bug where items could register in wrong order if disposal of old items
+        // races with registration of new items, causing arrow key navigation to be reversed.
+        _context.ClearItemRegistry();
+
         if (Open is null)
         {
             _internalOpen = true;
@@ -209,6 +214,9 @@ public partial class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where 
     private async Task CloseAsync()
     {
         if (!IsOpen) return;
+
+        // Focus trigger BEFORE closing, as content may be unmounted after close
+        await _context.FocusTriggerAsync();
 
         if (Open is null)
         {
@@ -266,8 +274,11 @@ public partial class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where 
 
     private Task SetHighlightedKeyAsync(string? key)
     {
-        _context.HighlightedKey = key;
-        StateHasChanged();
+        if (_context.HighlightedKey != key)
+        {
+            _context.HighlightedKey = key;
+            _context.RaiseStateChanged();
+        }
         return Task.CompletedTask;
     }
 

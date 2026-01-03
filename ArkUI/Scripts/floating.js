@@ -60,9 +60,9 @@ function getOppositeSide(side) {
  * @param {HTMLElement} floatingEl - The floating element to position
  * @param {HTMLElement|null} arrowEl - Optional arrow element
  * @param {object} options - Positioning options
- * @returns {string} Instance ID for later cleanup
+ * @returns {Promise<string>} Instance ID for later cleanup
  */
-export function initializeFloating(referenceEl, floatingEl, arrowEl, options) {
+export async function initializeFloating(referenceEl, floatingEl, arrowEl, options) {
     if (!referenceEl || !floatingEl) return null;
 
     const instanceId = `floating-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -164,6 +164,10 @@ export function initializeFloating(referenceEl, floatingEl, arrowEl, options) {
         floatingEl
     });
 
+    // Do an initial position update before returning
+    // This ensures the element is visible when the function returns
+    await updatePosition();
+
     return instanceId;
 }
 
@@ -196,7 +200,8 @@ export function updatePosition(instanceId) {
  * @param {HTMLElement} element - Element to focus
  */
 export function focusElement(element) {
-    element?.focus();
+    if (!element) return;
+    element.focus();
 }
 
 /**
@@ -272,6 +277,59 @@ export function scrollIntoView(element, container) {
         }
     } else {
         element.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+    }
+}
+
+/**
+ * Scroll an item into view by its data-value attribute within a container.
+ * @param {HTMLElement} container - Container element
+ * @param {string} itemValue - The data-value attribute value of the item to scroll to
+ */
+export function scrollItemIntoView(container, itemValue) {
+    if (!container || !itemValue) return;
+    
+    const item = container.querySelector(`[data-value="${CSS.escape(itemValue)}"]`);
+    if (item) {
+        item.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+    }
+}
+
+/**
+ * Click an element by its ID.
+ * @param {string} elementId - The ID of the element to click
+ */
+export function clickElementById(elementId) {
+    if (!elementId) return;
+    
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.click();
+    }
+}
+
+/**
+ * Scroll an element into view by its ID.
+ * @param {string} elementId - The ID of the element to scroll into view
+ */
+export function scrollElementIntoViewById(elementId) {
+    if (!elementId) return;
+    
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+    }
+}
+
+/**
+ * Focus an element by its ID.
+ * @param {string} elementId - The ID of the element to focus
+ */
+export function focusElementById(elementId) {
+    if (!elementId) return;
+    
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.focus();
     }
 }
 

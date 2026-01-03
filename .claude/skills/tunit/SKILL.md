@@ -13,6 +13,20 @@ This project uses TUnit with Playwright for testing. Tests are located in `ArkUI
 dotnet run --project ArkUI.Tests.Playwright
 ```
 
+## Run Tests with Limited Parallelism (Recommended)
+
+To prevent system overload when running Playwright tests, limit parallel test execution:
+
+```bash
+# Run with maximum 1 parallel test (sequential)
+dotnet run --project ArkUI.Tests.Playwright -- --maximum-parallel-tests 1
+
+# Run with maximum 2 parallel tests
+dotnet run --project ArkUI.Tests.Playwright -- --maximum-parallel-tests 2
+```
+
+**Note:** All tests run sequentially via `[assembly: NotInParallel]` in GlobalSetup.cs to prevent system overload and reduce flakiness.
+
 ## Run Tests with Filters
 
 TUnit uses `--treenode-filter` with path pattern: `/assembly/namespace/class/test`
@@ -36,8 +50,8 @@ dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/SelectAcc
 dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/*/Trigger_ShouldHave_RoleCombobox'
 
 # Run tests matching pattern (wildcard in test name)
-dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/*/Keyboard*
-'
+dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/*/*/Keyboard*'
+
 # Run all tests in namespace
 dotnet run --project ArkUI.Tests.Playwright -- --treenode-filter '/*/ArkUI.Tests.Playwright/*/*'
 ```
@@ -57,10 +71,21 @@ dotnet run --project ArkUI.Tests.Playwright -- --output-format console-detailed
 dotnet run --project ArkUI.Tests.Playwright -- --report-trx
 ```
 
+## Flakiness Mitigation
+
+The test project includes several features to reduce flakiness:
+
+1. **Automatic Retries**: Tests are automatically retried up to 2 times on failure (`[Retry(2)]` in GlobalSetup.cs)
+2. **Fully Sequential Execution**: All tests run sequentially via `[assembly: NotInParallel]` in GlobalSetup.cs
+3. **Server Readiness Check**: `Hooks.cs` waits for the Blazor server to be fully ready before tests start
+4. **Extended Timeouts**: Configured via `tunit.json` for longer test and hook timeouts
+
 ## Project Structure
 
+- `GlobalSetup.cs` - Assembly-level test configuration (retries, parallelism)
 - `Hooks.cs` - Test session setup/teardown (starts Blazor server)
 - `BlazorWebApplicationFactory.cs` - WebApplicationFactory for hosting the test server
+- `tunit.json` - TUnit configuration file
 - `*AccessibilityTests.cs` - Accessibility test classes inheriting from `PageTest`
 
 ## Test Conventions

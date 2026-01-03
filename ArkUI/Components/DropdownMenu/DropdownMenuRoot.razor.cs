@@ -76,8 +76,11 @@ public partial class DropdownMenuRoot : ComponentBase, IAsyncDisposable
         _context.OpenAsync = OpenAsync;
         _context.CloseAsync = CloseAsync;
         _context.SelectItemAsync = SelectItemAsync;
+        _context.SetHighlightedItemAsync = SetHighlightedItemAsync;
         _context.RegisterTrigger = RegisterTrigger;
         _context.RegisterContent = RegisterContent;
+        _context.RegisterItem = RegisterItem;
+        _context.UnregisterItem = UnregisterItem;
         _context.NotifyStateChanged = () => StateHasChanged();
     }
 
@@ -105,6 +108,7 @@ public partial class DropdownMenuRoot : ComponentBase, IAsyncDisposable
         }
 
         _context.IsOpen = true;
+        _context.HighlightedItemId = null; // Reset highlight on open
         await OpenChanged.InvokeAsync(true);
         await OnOpen.InvokeAsync();
         StateHasChanged();
@@ -114,12 +118,16 @@ public partial class DropdownMenuRoot : ComponentBase, IAsyncDisposable
     {
         if (!IsOpen) return;
 
+        // Focus trigger BEFORE closing, as content may be unmounted after close
+        await _context.FocusTriggerAsync();
+
         if (Open is null)
         {
             _internalOpen = false;
         }
 
         _context.IsOpen = false;
+        _context.HighlightedItemId = null;
         await OpenChanged.InvokeAsync(false);
         await OnClose.InvokeAsync();
         StateHasChanged();
@@ -131,6 +139,16 @@ public partial class DropdownMenuRoot : ComponentBase, IAsyncDisposable
         await CloseAsync();
     }
 
+    private Task SetHighlightedItemAsync(string? itemId)
+    {
+        if (_context.HighlightedItemId != itemId)
+        {
+            _context.HighlightedItemId = itemId;
+            _context.RaiseStateChanged();
+        }
+        return Task.CompletedTask;
+    }
+
     private void RegisterTrigger(ElementReference element)
     {
         _context.TriggerElement = element;
@@ -139,6 +157,19 @@ public partial class DropdownMenuRoot : ComponentBase, IAsyncDisposable
     private void RegisterContent(ElementReference element)
     {
         _context.ContentElement = element;
+    }
+
+    private void RegisterItem(string itemId)
+    {
+        if (!_context.RegisteredItems.Contains(itemId))
+        {
+            _context.RegisteredItems.Add(itemId);
+        }
+    }
+
+    private void UnregisterItem(string itemId)
+    {
+        _context.RegisteredItems.Remove(itemId);
     }
 
     public async ValueTask DisposeAsync()

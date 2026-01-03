@@ -1,6 +1,42 @@
 // accordion.js - ES6 module for accordion animations
 // Note: Keyboard navigation has been moved to Blazor for better cross-render-mode compatibility.
-// Only DOM measurement functionality remains here (cannot be done in pure Blazor).
+// Only DOM measurement and scroll prevention functionality remains here.
+
+// Store trigger handlers to prevent default scroll behavior
+const triggerHandlers = new Map();
+
+/**
+ * Register trigger element to prevent default scroll behavior on arrow keys.
+ * Call this on first render of the trigger.
+ * @param {HTMLElement} triggerEl - Trigger element
+ */
+export function registerTrigger(triggerEl) {
+    if (!triggerEl || triggerHandlers.has(triggerEl)) return;
+    
+    function handleKeyDown(event) {
+        // Prevent default scroll behavior for navigation keys
+        if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+            event.preventDefault();
+        }
+    }
+    
+    triggerEl.addEventListener('keydown', handleKeyDown);
+    triggerHandlers.set(triggerEl, handleKeyDown);
+}
+
+/**
+ * Unregister trigger element keyboard handler.
+ * @param {HTMLElement} triggerEl - Trigger element
+ */
+export function unregisterTrigger(triggerEl) {
+    if (!triggerEl) return;
+    
+    const handler = triggerHandlers.get(triggerEl);
+    if (handler) {
+        triggerEl.removeEventListener('keydown', handler);
+        triggerHandlers.delete(triggerEl);
+    }
+}
 
 /**
  * Set CSS variables for content height and width (for smooth animations).

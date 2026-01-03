@@ -7,11 +7,12 @@ namespace ArkUI.Components.DropdownMenu;
 
 /// <summary>
 /// The floating content panel of the dropdown menu with positioning logic.
+/// All event handling is done in Blazor, with FloatingUI for positioning only.
 /// </summary>
 public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
 {
     [Inject]
-    private DropdownMenuJsInterop JsInterop { get; set; } = default!;
+    private FloatingJsInterop FloatingInterop { get; set; } = default!;
 
     [CascadingParameter]
     private DropdownMenuContext Context { get; set; } = default!;
@@ -120,10 +121,29 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
 
     private ElementReference _elementRef;
     private DotNetObjectReference<DropdownMenuContent>? _dotNetRef;
+    private string? _floatingInstanceId;
+    private string? _outsideClickListenerId;
+    private string? _escapeKeyListenerId;
     private bool _isPositioned;
     private bool _isDisposed;
 
+    // Typeahead state
+    private string _typeaheadBuffer = "";
+    private System.Timers.Timer? _typeaheadTimer;
+    private const int TypeaheadDelay = 500;
+
+    // Map item IDs to labels for typeahead
+    private readonly Dictionary<string, string> _itemLabels = new();
+
     private string DataState => Context.IsOpen ? "open" : "closed";
+
+    protected override void OnInitialized()
+    {
+        // Register label callbacks early so items can register during their OnParametersSet
+        Context.RegisterItemLabel = RegisterItemLabel;
+        Context.UnregisterItemLabel = UnregisterItemLabel;
+        Context.FocusTriggerAsync = FocusTriggerAsync;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -133,6 +153,7 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
         if (Context.IsOpen && !_isPositioned && !_isDisposed)
         {
             Context.RegisterContent(_elementRef);
+            Context.HandleKeyDownAsync = HandleKeyFromItemAsync;
             _dotNetRef ??= DotNetObjectReference.Create(this);
 
             // Check again after creating the reference in case of race condition
@@ -143,72 +164,115 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
                 return;
             }
 
-            var options = new DropdownMenuPositionOptions
+            var options = new FloatingPositionOptions
             {
                 Side = Side.ToString().ToLowerInvariant(),
                 SideOffset = SideOffset,
                 Align = Align.ToString().ToLowerInvariant(),
                 AlignOffset = AlignOffset,
                 AvoidCollisions = AvoidCollisions,
-                CollisionPadding = CollisionPadding,
-                CloseOnEscape = EscapeKeyBehavior == EscapeKeyBehavior.Close,
-                CloseOnOutsideClick = OutsideClickBehavior == OutsideClickBehavior.Close,
-                Loop = Loop
+                CollisionPadding = CollisionPadding
             };
 
-            await JsInterop.InitializeDropdownMenuAsync(
+            // Initialize positioning
+            _floatingInstanceId = await FloatingInterop.InitializeAsync(
                 Context.TriggerElement,
                 _elementRef,
                 null,
-                _dotNetRef,
                 options);
 
+            // Register outside click handler if needed
+            if (OutsideClickBehavior != OutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
+            {
+                _outsideClickListenerId = await FloatingInterop.RegisterOutsideClickAsync(
+                    Context.TriggerElement,
+                    _elementRef,
+                    _dotNetRef,
+                    nameof(HandleOutsideClick));
+            }
+
+            // Register Escape key handler if needed
+            if (EscapeKeyBehavior != EscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
+            {
+                _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
+                    _dotNetRef,
+                    nameof(HandleEscapeKey));
+            }
+
             _isPositioned = true;
+
+            // Highlight and focus first item
+            await HighlightFirstItemAsync();
+            
             await OnOpenAutoFocus.InvokeAsync();
         }
         else if (!Context.IsOpen && _isPositioned)
         {
-            await CleanupPositioningAsync();
+            await CleanupAsync();
+            // Note: Focus return to trigger is handled in the close handlers
+            // (HandleEscapeKey, HandleKeyFromItemAsync Tab) before Context.CloseAsync()
+            // is called, because the component may be unmounted before OnAfterRenderAsync runs.
+            
             await OnCloseAutoFocus.InvokeAsync();
         }
     }
 
-    private async Task CleanupPositioningAsync()
+    private async Task CleanupAsync()
     {
-        if (_isPositioned)
+        if (!_isPositioned) return;
+
+        _isPositioned = false;
+
+        // Clear typeahead
+        ClearTypeahead();
+
+        try
         {
-            _isPositioned = false;
-            try
+            // Cleanup Escape key listener
+            if (!string.IsNullOrEmpty(_escapeKeyListenerId))
             {
-                await JsInterop.DestroyDropdownMenuAsync(_elementRef);
+                await FloatingInterop.UnregisterEscapeKeyAsync(_escapeKeyListenerId);
+                _escapeKeyListenerId = null;
             }
-            catch (JSDisconnectedException)
+
+            // Cleanup outside click listener
+            if (!string.IsNullOrEmpty(_outsideClickListenerId))
             {
-                // Circuit disconnected, ignore
+                await FloatingInterop.UnregisterOutsideClickAsync(_outsideClickListenerId);
+                _outsideClickListenerId = null;
             }
-            catch (ObjectDisposedException)
+
+            // Cleanup floating positioning
+            if (!string.IsNullOrEmpty(_floatingInstanceId))
             {
-                // Component already disposed, ignore
+                await FloatingInterop.DestroyAsync(_floatingInstanceId);
+                _floatingInstanceId = null;
             }
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+        catch (ObjectDisposedException)
+        {
+            // Component already disposed, ignore
         }
     }
 
-    private async Task HandleKeyDownAsync(KeyboardEventArgs args)
+    /// <summary>
+    /// Register an item's label for typeahead.
+    /// </summary>
+    internal void RegisterItemLabel(string itemId, string label)
     {
-        switch (args.Key)
-        {
-            case "Escape":
-                if (EscapeKeyBehavior == EscapeKeyBehavior.Close)
-                {
-                    await OnEscapeKeyDown.InvokeAsync();
-                    await Context.CloseAsync();
-                }
-                break;
-            case "Tab":
-                // Close menu on Tab to move focus out
-                await Context.CloseAsync();
-                break;
-        }
+        _itemLabels[itemId] = label;
+    }
+
+    /// <summary>
+    /// Unregister an item's label.
+    /// </summary>
+    internal void UnregisterItemLabel(string itemId)
+    {
+        _itemLabels.Remove(itemId);
     }
 
     /// <summary>
@@ -217,7 +281,7 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleOutsideClick()
     {
-        if (_isDisposed) return;
+        if (_isDisposed || !Context.IsOpen) return;
 
         await OnInteractOutside.InvokeAsync();
 
@@ -233,25 +297,234 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public async Task HandleEscapeKey()
     {
-        if (_isDisposed) return;
+        if (_isDisposed || !Context.IsOpen) return;
 
         await OnEscapeKeyDown.InvokeAsync();
 
         if (EscapeKeyBehavior == EscapeKeyBehavior.Close)
         {
+            // Root.CloseAsync will focus the trigger before closing
             await Context.CloseAsync();
         }
     }
 
     /// <summary>
-    /// Called from JavaScript when an item is selected.
+    /// Handle keyboard navigation in C#.
     /// </summary>
-    [JSInvokable]
-    public async Task HandleItemSelect(string value)
+    private async Task HandleKeyDownAsync(KeyboardEventArgs args)
     {
-        if (_isDisposed) return;
+        await HandleKeyFromItemAsync(args.Key);
+    }
 
-        await Context.SelectItemAsync();
+    /// <summary>
+    /// Handle keyboard navigation from items (when they have focus).
+    /// </summary>
+    private async Task HandleKeyFromItemAsync(string key)
+    {
+        if (_isDisposed || !Context.IsOpen) return;
+
+        switch (key)
+        {
+            case "ArrowDown":
+                await HighlightNextItemAsync();
+                break;
+
+            case "ArrowUp":
+                await HighlightPreviousItemAsync();
+                break;
+
+            case "Home":
+                await HighlightFirstItemAsync();
+                break;
+
+            case "End":
+                await HighlightLastItemAsync();
+                break;
+
+            case "Enter":
+            case " ":
+                await ActivateHighlightedItemAsync();
+                break;
+
+            case "Tab":
+                // Root.CloseAsync will focus the trigger before closing
+                await Context.CloseAsync();
+                break;
+
+            default:
+                // Handle typeahead for printable characters
+                if (key.Length == 1)
+                {
+                    HandleTypeahead(key);
+                }
+                break;
+        }
+    }
+
+    private async Task HighlightNextItemAsync()
+    {
+        var items = Context.RegisteredItems;
+        if (items.Count == 0) return;
+
+        var currentIndex = string.IsNullOrEmpty(Context.HighlightedItemId)
+            ? -1
+            : items.IndexOf(Context.HighlightedItemId);
+
+        var nextIndex = currentIndex + 1;
+        if (nextIndex >= items.Count)
+        {
+            nextIndex = Loop ? 0 : items.Count - 1;
+        }
+
+        await Context.SetHighlightedItemAsync(items[nextIndex]);
+        await FocusHighlightedItemAsync();
+    }
+
+    private async Task HighlightPreviousItemAsync()
+    {
+        var items = Context.RegisteredItems;
+        if (items.Count == 0) return;
+
+        var currentIndex = string.IsNullOrEmpty(Context.HighlightedItemId)
+            ? items.Count
+            : items.IndexOf(Context.HighlightedItemId);
+
+        var prevIndex = currentIndex - 1;
+        if (prevIndex < 0)
+        {
+            prevIndex = Loop ? items.Count - 1 : 0;
+        }
+
+        await Context.SetHighlightedItemAsync(items[prevIndex]);
+        await FocusHighlightedItemAsync();
+    }
+
+    private async Task HighlightFirstItemAsync()
+    {
+        var items = Context.RegisteredItems;
+        if (items.Count == 0) return;
+
+        await Context.SetHighlightedItemAsync(items[0]);
+        await FocusHighlightedItemAsync();
+    }
+
+    private async Task HighlightLastItemAsync()
+    {
+        var items = Context.RegisteredItems;
+        if (items.Count == 0) return;
+
+        await Context.SetHighlightedItemAsync(items[^1]);
+        await FocusHighlightedItemAsync();
+    }
+
+    private async Task ActivateHighlightedItemAsync()
+    {
+        // The highlighted item will handle its own click via the context
+        // We just need to trigger the activation
+        // This is done by simulating a click on the highlighted element via JS
+        if (!string.IsNullOrEmpty(Context.HighlightedItemId))
+        {
+            try
+            {
+                await FloatingInterop.ClickElementByIdAsync(Context.HighlightedItemId);
+            }
+            catch (JSDisconnectedException)
+            {
+                // Ignore
+            }
+        }
+    }
+
+    private async Task ScrollToHighlightedItemAsync()
+    {
+        if (string.IsNullOrEmpty(Context.HighlightedItemId)) return;
+
+        try
+        {
+            await FloatingInterop.ScrollElementIntoViewByIdAsync(Context.HighlightedItemId);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Ignore
+        }
+    }
+
+    private async Task FocusHighlightedItemAsync()
+    {
+        if (string.IsNullOrEmpty(Context.HighlightedItemId)) return;
+
+        try
+        {
+            await FloatingInterop.FocusElementByIdAsync(Context.HighlightedItemId);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Ignore
+        }
+    }
+
+    private async Task FocusTriggerAsync()
+    {
+        try
+        {
+            await FloatingInterop.FocusElementAsync(Context.TriggerElement);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Ignore
+        }
+    }
+
+    private void HandleTypeahead(string character)
+    {
+        // Clear existing timeout
+        _typeaheadTimer?.Stop();
+        _typeaheadTimer?.Dispose();
+
+        // Add character to buffer
+        _typeaheadBuffer += character.ToLowerInvariant();
+
+        // Find matching item
+        var matchingItemId = FindMatchingItemId(_typeaheadBuffer);
+        if (matchingItemId != null)
+        {
+            _ = InvokeAsync(async () =>
+            {
+                await Context.SetHighlightedItemAsync(matchingItemId);
+                await FocusHighlightedItemAsync();
+            });
+        }
+
+        // Clear buffer after delay
+        _typeaheadTimer = new System.Timers.Timer(TypeaheadDelay);
+        _typeaheadTimer.Elapsed += (_, _) =>
+        {
+            _typeaheadBuffer = "";
+            _typeaheadTimer?.Dispose();
+            _typeaheadTimer = null;
+        };
+        _typeaheadTimer.AutoReset = false;
+        _typeaheadTimer.Start();
+    }
+
+    private string? FindMatchingItemId(string search)
+    {
+        foreach (var kvp in _itemLabels)
+        {
+            if (kvp.Value.StartsWith(search, StringComparison.OrdinalIgnoreCase))
+            {
+                return kvp.Key;
+            }
+        }
+        return null;
+    }
+
+    private void ClearTypeahead()
+    {
+        _typeaheadBuffer = "";
+        _typeaheadTimer?.Stop();
+        _typeaheadTimer?.Dispose();
+        _typeaheadTimer = null;
     }
 
     public async ValueTask DisposeAsync()
@@ -259,7 +532,8 @@ public partial class DropdownMenuContent : ComponentBase, IAsyncDisposable
         if (_isDisposed) return;
         _isDisposed = true;
 
-        await CleanupPositioningAsync();
+        ClearTypeahead();
+        await CleanupAsync();
         _dotNetRef?.Dispose();
     }
 }

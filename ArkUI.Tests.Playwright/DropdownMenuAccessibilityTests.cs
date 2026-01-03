@@ -302,13 +302,19 @@ public class DropdownMenuAccessibilityTests : PageTest
         var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
 
+        // Wait for first item to be focused (menu is ready)
+        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        await Expect(firstItem).ToBeFocusedAsync();
+
         // Move to last item
         await Page.Keyboard.PressAsync("End");
+
+        var lastItem = Page.Locator("[data-ark-dropdown-menu-item]").Last;
+        await Expect(lastItem).ToBeFocusedAsync();
 
         // Press Home to jump to first item
         await Page.Keyboard.PressAsync("Home");
 
-        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
     }
 
@@ -317,6 +323,10 @@ public class DropdownMenuAccessibilityTests : PageTest
     {
         var trigger = Page.Locator("[data-ark-dropdown-menu-trigger]").First;
         await trigger.ClickAsync();
+
+        // Wait for first item to be focused (menu is ready)
+        var firstItem = Page.Locator("[data-ark-dropdown-menu-item]").First;
+        await Expect(firstItem).ToBeFocusedAsync();
 
         // Press End to jump to last item
         await Page.Keyboard.PressAsync("End");

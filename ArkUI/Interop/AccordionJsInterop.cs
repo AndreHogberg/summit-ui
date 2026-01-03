@@ -4,8 +4,9 @@ using Microsoft.JSInterop;
 namespace ArkUI.Interop;
 
 /// <summary>
-/// JavaScript interop service for accordion animations.
-/// Only contains functionality that requires DOM measurement (cannot be done in pure Blazor).
+/// JavaScript interop service for accordion functionality.
+/// Handles DOM measurement and preventing default scroll behavior on arrow keys.
+/// All other functionality (state management, keyboard nav logic, etc.) is handled by Blazor.
 /// </summary>
 public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 {
@@ -24,6 +25,40 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         {
             var module = await _moduleTask.Value;
             await module.InvokeVoidAsync("accordion_setContentHeight", contentElement);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+    }
+
+    /// <summary>
+    /// Register trigger element to prevent default scroll behavior on arrow keys.
+    /// </summary>
+    /// <param name="triggerElement">Reference to the trigger element.</param>
+    public async ValueTask RegisterTriggerAsync(ElementReference triggerElement)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("accordion_registerTrigger", triggerElement);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+    }
+
+    /// <summary>
+    /// Unregister trigger element keyboard handler.
+    /// </summary>
+    /// <param name="triggerElement">Reference to the trigger element.</param>
+    public async ValueTask UnregisterTriggerAsync(ElementReference triggerElement)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("accordion_unregisterTrigger", triggerElement);
         }
         catch (JSDisconnectedException)
         {

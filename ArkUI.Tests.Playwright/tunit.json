@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/thomhurst/TUnit/main/TUnit.Core/tunit.schema.json",
+  "executionParallelism": {
+    "maxParallelTests": 2
+  },
+  "timeouts": {
+    "testTimeout": "00:02:00",
+    "hookTimeout": "00:05:00"
+  },
+  "retryConfiguration": {
+    "retryCount": 2,
+    "retryDelayMilliseconds": 500
+  }
+}

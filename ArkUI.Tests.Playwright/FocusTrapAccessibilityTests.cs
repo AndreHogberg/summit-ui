@@ -441,15 +441,13 @@ public class FocusTrapAccessibilityTests : PageTest
     public async Task FocusTrap_ShouldReturnFocusToTrigger_WhenClosedWithKeyboard()
     {
         var openButton = Page.GetByTestId("open-one-item");
-        await openButton.FocusAsync();
-        await Page.Keyboard.PressAsync("Enter");
+        await openButton.PressAsync("Enter");
 
         var dialog = Page.GetByTestId("one-item-dialog");
         await Expect(dialog).ToBeVisibleAsync();
 
         var closeButton = Page.GetByTestId("one-item-close");
-        await closeButton.FocusAsync();
-        await Page.Keyboard.PressAsync("Enter");
+        await closeButton.PressAsync("Enter");
 
         await Expect(dialog).Not.ToBeVisibleAsync();
 

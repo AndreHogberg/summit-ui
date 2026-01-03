@@ -19,6 +19,16 @@ public sealed class DropdownMenuContext
     public bool IsOpen { get; internal set; }
 
     /// <summary>
+    /// The ID of the currently highlighted item (for keyboard navigation).
+    /// </summary>
+    public string? HighlightedItemId { get; internal set; }
+
+    /// <summary>
+    /// List of registered menu item IDs in DOM order for keyboard navigation.
+    /// </summary>
+    public List<string> RegisteredItems { get; } = new();
+
+    /// <summary>
     /// Reference to the trigger element (set by DropdownMenuTrigger).
     /// </summary>
     public ElementReference TriggerElement { get; internal set; }
@@ -49,6 +59,11 @@ public sealed class DropdownMenuContext
     public Func<Task> SelectItemAsync { get; internal set; } = () => Task.CompletedTask;
 
     /// <summary>
+    /// Callback to set the highlighted item.
+    /// </summary>
+    public Func<string?, Task> SetHighlightedItemAsync { get; internal set; } = _ => Task.CompletedTask;
+
+    /// <summary>
     /// Action to register the trigger element reference.
     /// </summary>
     public Action<ElementReference> RegisterTrigger { get; internal set; } = _ => { };
@@ -59,9 +74,53 @@ public sealed class DropdownMenuContext
     public Action<ElementReference> RegisterContent { get; internal set; } = _ => { };
 
     /// <summary>
+    /// Action to register a menu item for keyboard navigation.
+    /// </summary>
+    public Action<string> RegisterItem { get; internal set; } = _ => { };
+
+    /// <summary>
+    /// Action to unregister a menu item.
+    /// </summary>
+    public Action<string> UnregisterItem { get; internal set; } = _ => { };
+
+    /// <summary>
+    /// Action to register a menu item's label for typeahead.
+    /// </summary>
+    public Action<string, string> RegisterItemLabel { get; internal set; } = (_, _) => { };
+
+    /// <summary>
+    /// Action to unregister a menu item's label.
+    /// </summary>
+    public Action<string> UnregisterItemLabel { get; internal set; } = _ => { };
+
+    /// <summary>
+    /// Callback to focus the trigger element. Set by the content component.
+    /// </summary>
+    public Func<Task> FocusTriggerAsync { get; internal set; } = () => Task.CompletedTask;
+
+    /// <summary>
+    /// Callback for keyboard navigation from items.
+    /// </summary>
+    public Func<string, Task> HandleKeyDownAsync { get; internal set; } = _ => Task.CompletedTask;
+
+    /// <summary>
     /// Callback to notify state changes for re-rendering.
     /// </summary>
     public Action NotifyStateChanged { get; internal set; } = () => { };
+
+    /// <summary>
+    /// Event raised when the context state changes.
+    /// Child components can subscribe to this to trigger re-renders.
+    /// </summary>
+    public event Action? OnStateChanged;
+
+    /// <summary>
+    /// Raises the OnStateChanged event to notify all subscribers.
+    /// </summary>
+    internal void RaiseStateChanged()
+    {
+        OnStateChanged?.Invoke();
+    }
 
     /// <summary>
     /// Gets the unique ID for a menu item based on its value.

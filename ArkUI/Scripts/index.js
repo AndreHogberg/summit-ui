@@ -20,6 +20,10 @@ export {
     focusFirstElement as floating_focusFirstElement,
     focusLastElement as floating_focusLastElement,
     scrollIntoView as floating_scrollIntoView,
+    scrollItemIntoView as floating_scrollItemIntoView,
+    clickElementById as floating_clickElementById,
+    scrollElementIntoViewById as floating_scrollElementIntoViewById,
+    focusElementById as floating_focusElementById,
     registerOutsideClick as floating_registerOutsideClick,
     unregisterOutsideClick as floating_unregisterOutsideClick,
     registerEscapeKey as floating_registerEscapeKey,
@@ -27,9 +31,11 @@ export {
 } from './floating.js';
 
 // Accordion exports
-// Note: Keyboard navigation moved to Blazor. Only DOM measurement remains.
+// Note: Keyboard navigation moved to Blazor. Only DOM measurement and scroll prevention remains.
 export {
-    setContentHeight as accordion_setContentHeight
+    setContentHeight as accordion_setContentHeight,
+    registerTrigger as accordion_registerTrigger,
+    unregisterTrigger as accordion_unregisterTrigger
 } from './accordion.js';
 
 // Focus Trap exports
@@ -55,28 +61,16 @@ export {
     focusElement as popover_focusElement
 } from './popover.js';
 
-// Select exports
+// Select exports (trigger functionality only - keyboard nav handled by Blazor)
 export {
-    initializeSelect as select_initializeSelect,
-    destroySelect as select_destroySelect,
-    updatePosition as select_updatePosition,
-    highlightItem as select_highlightItem,
-    highlightFirst as select_highlightFirst,
-    highlightLast as select_highlightLast,
-    focusTrigger as select_focusTrigger,
     registerTrigger as select_registerTrigger,
     unregisterTrigger as select_unregisterTrigger
 } from './select.js';
 
-// Dropdown Menu exports
+// Dropdown Menu exports (portal and trigger functionality only - keyboard nav handled by Blazor)
 export {
-    initializeDropdownMenu as dropdownMenu_initializeDropdownMenu,
-    destroyDropdownMenu as dropdownMenu_destroyDropdownMenu,
-    updatePosition as dropdownMenu_updatePosition,
     createPortal as dropdownMenu_createPortal,
     destroyPortal as dropdownMenu_destroyPortal,
-    focusFirstItem as dropdownMenu_focusFirstItem,
-    focusLastItem as dropdownMenu_focusLastItem,
     initializeTrigger as dropdownMenu_initializeTrigger,
     destroyTrigger as dropdownMenu_destroyTrigger
 } from './dropdown-menu.js';

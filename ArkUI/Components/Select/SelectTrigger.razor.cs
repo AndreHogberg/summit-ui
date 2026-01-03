@@ -51,11 +51,24 @@ public partial class SelectTrigger<TValue> : ComponentBase, IAsyncDisposable whe
     private ElementReference _elementRef;
     private bool _isRegistered;
     private bool _isDisposed;
+    private bool _isSubscribed;
 
     /// <summary>
     /// Get the element reference for the trigger.
     /// </summary>
     public ElementReference ElementRef => _elementRef;
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to context state changes to re-render when HighlightedKey changes
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -114,6 +127,12 @@ public partial class SelectTrigger<TValue> : ComponentBase, IAsyncDisposable whe
     {
         if (_isDisposed) return;
         _isDisposed = true;
+
+        // Unsubscribe from context state changes
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
 
         if (_isRegistered)
         {

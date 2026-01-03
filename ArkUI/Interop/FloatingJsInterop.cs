@@ -103,6 +103,16 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     }
 
     /// <summary>
+    /// Scroll an item into view by its data-value attribute within a container.
+    /// </summary>
+    /// <param name="container">Container element.</param>
+    /// <param name="itemValue">The data-value attribute value of the item to scroll to.</param>
+    public async ValueTask ScrollItemIntoViewAsync(ElementReference container, string itemValue)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("floating_scrollItemIntoView", container, itemValue);
+    }
+    /// <summary>
     /// Register an outside click listener.
     /// </summary>
     /// <typeparam name="T">The type containing the callback method.</typeparam>
@@ -168,12 +178,55 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         await module.InvokeVoidAsync("floating_unregisterEscapeKey", listenerId);
     }
 
+    /// <summary>
+    /// Click an element by its ID.
+    /// </summary>
+    /// <param name="elementId">The ID of the element to click.</param>
+    public async ValueTask ClickElementByIdAsync(string elementId)
+    {
+        if (string.IsNullOrEmpty(elementId)) return;
+        
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("floating_clickElementById", elementId);
+    }
+
+    /// <summary>
+    /// Scroll an element into view by its ID.
+    /// </summary>
+    /// <param name="elementId">The ID of the element to scroll into view.</param>
+    public async ValueTask ScrollElementIntoViewByIdAsync(string elementId)
+    {
+        if (string.IsNullOrEmpty(elementId)) return;
+        
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("floating_scrollElementIntoViewById", elementId);
+    }
+
+    /// <summary>
+    /// Focus an element by its ID.
+    /// </summary>
+    /// <param name="elementId">The ID of the element to focus.</param>
+    public async ValueTask FocusElementByIdAsync(string elementId)
+    {
+        if (string.IsNullOrEmpty(elementId)) return;
+        
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("floating_focusElementById", elementId);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)
         {
-            var module = await _moduleTask.Value;
-            await module.DisposeAsync();
+            try
+            {
+                var module = await _moduleTask.Value;
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit is already disconnected, no need to dispose JS resources
+            }
         }
     }
 }

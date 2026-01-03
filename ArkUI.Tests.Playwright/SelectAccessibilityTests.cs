@@ -820,4 +820,121 @@ public class SelectAccessibilityTests : PageTest
     }
 
     #endregion
+
+    #region Disabled Item Keyboard Navigation
+
+    [Test]
+    public async Task ArrowDown_ShouldSkipDisabledItems()
+    {
+        // Navigate to "With Disabled Items" section
+        // Items: Free, Pro, Enterprise (disabled)
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
+        await trigger.ClickAsync();
+
+        // Wait for content to be visible
+        var content = Page.Locator("[data-ark-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // First item (Free) should be highlighted on open
+        var freeItem = content.Locator("[data-ark-select-item][data-value='free']");
+        await Expect(freeItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Press ArrowDown - should go to Pro (second item)
+        await Page.Keyboard.PressAsync("ArrowDown");
+        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Press ArrowDown again - should skip Enterprise (disabled) and loop to Free
+        await Page.Keyboard.PressAsync("ArrowDown");
+        await Expect(freeItem).ToHaveAttributeAsync("data-highlighted", "");
+    }
+
+    [Test]
+    public async Task ArrowUp_ShouldSkipDisabledItems()
+    {
+        // Navigate to "With Disabled Items" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
+        await trigger.ClickAsync();
+
+        // Wait for content to be visible
+        var content = Page.Locator("[data-ark-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // First item (Free) should be highlighted on open
+        var freeItem = content.Locator("[data-ark-select-item][data-value='free']");
+        await Expect(freeItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Press ArrowUp - should skip Enterprise (disabled) and loop to Pro
+        await Page.Keyboard.PressAsync("ArrowUp");
+        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
+    }
+
+    [Test]
+    public async Task Home_ShouldGoToFirstNonDisabledItem()
+    {
+        // Navigate to "With Disabled Items" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
+        await trigger.ClickAsync();
+
+        // Wait for content to be visible
+        var content = Page.Locator("[data-ark-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // Navigate to Pro
+        await Page.Keyboard.PressAsync("ArrowDown");
+        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Press Home - should go to first non-disabled item (Free)
+        await Page.Keyboard.PressAsync("Home");
+        var freeItem = content.Locator("[data-ark-select-item][data-value='free']");
+        await Expect(freeItem).ToHaveAttributeAsync("data-highlighted", "");
+    }
+
+    [Test]
+    public async Task End_ShouldGoToLastNonDisabledItem()
+    {
+        // Navigate to "With Disabled Items" section
+        // Items: Free, Pro, Enterprise (disabled)
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
+        await trigger.ClickAsync();
+
+        // Wait for content to be visible
+        var content = Page.Locator("[data-ark-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // Press End - should go to last non-disabled item (Pro, not Enterprise)
+        await Page.Keyboard.PressAsync("End");
+        var proItem = content.Locator("[data-ark-select-item][data-value='pro']");
+        await Expect(proItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Verify Enterprise (disabled) is NOT highlighted
+        var enterpriseItem = content.Locator("[data-ark-select-item][data-value='enterprise']");
+        await Expect(enterpriseItem).Not.ToHaveAttributeAsync("data-highlighted", "");
+    }
+
+    [Test]
+    public async Task DisabledItem_ShouldNeverBeHighlighted_ByKeyboard()
+    {
+        // Navigate to "With Disabled Items" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Disabled Items" }).Locator("[role='combobox']");
+        await trigger.ClickAsync();
+
+        // Wait for content to be visible
+        var content = Page.Locator("[data-ark-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // Navigate through all items multiple times
+        for (var i = 0; i < 6; i++)
+        {
+            await Page.Keyboard.PressAsync("ArrowDown");
+        }
+
+        // Verify Enterprise (disabled) is NOT highlighted
+        var enterpriseItem = content.Locator("[data-ark-select-item][data-value='enterprise']");
+        await Expect(enterpriseItem).Not.ToHaveAttributeAsync("data-highlighted", "");
+    }
+
+    #endregion
 }

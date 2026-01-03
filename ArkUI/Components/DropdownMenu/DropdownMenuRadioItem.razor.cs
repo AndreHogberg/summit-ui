@@ -6,7 +6,7 @@ namespace ArkUI.Components.DropdownMenu;
 /// <summary>
 /// A radio menu item within a radio group.
 /// </summary>
-public partial class DropdownMenuRadioItem : ComponentBase
+public partial class DropdownMenuRadioItem : ComponentBase, IDisposable
 {
     [CascadingParameter]
     private DropdownMenuContext Context { get; set; } = default!;
@@ -44,8 +44,34 @@ public partial class DropdownMenuRadioItem : ComponentBase
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
+    private string _itemId = "";
+    private bool _isSubscribed;
+
     private bool IsSelected => RadioContext.Value == Value;
     private string DataState => IsSelected ? "checked" : "unchecked";
+
+    /// <summary>
+    /// Whether this item is currently highlighted.
+    /// </summary>
+    private bool IsHighlighted => Context.HighlightedItemId == _itemId;
+
+    protected override void OnInitialized()
+    {
+        _itemId = $"{Context.MenuId}-radio-{Guid.NewGuid():N}";
+        
+        if (!Disabled)
+        {
+            Context.RegisterItem(_itemId);
+        }
+
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
 
     private async Task HandleClickAsync(MouseEventArgs args)
     {
@@ -55,6 +81,34 @@ public partial class DropdownMenuRadioItem : ComponentBase
         await OnSelect.InvokeAsync();
 
         // Don't close menu for radio items
+    }
+
+    private async Task HandleMouseEnterAsync()
+    {
+        if (Disabled) return;
+
+        await Context.SetHighlightedItemAsync(_itemId);
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs args)
+    {
+        if (Disabled) return;
+
+        // Delegate keyboard handling to the content via context
+        await Context.HandleKeyDownAsync(args.Key);
+    }
+
+    public void Dispose()
+    {
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
+        
+        if (!Disabled)
+        {
+            Context.UnregisterItem(_itemId);
+        }
     }
 }
 

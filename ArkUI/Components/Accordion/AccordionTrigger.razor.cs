@@ -1,6 +1,8 @@
+using ArkUI.Interop;
 using ArkUI.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace ArkUI.Components.Accordion;
 
@@ -8,7 +10,7 @@ namespace ArkUI.Components.Accordion;
 /// Accordion trigger button that toggles the associated content panel.
 /// Handles keyboard navigation including arrow keys, Home, and End.
 /// </summary>
-public partial class AccordionTrigger : ComponentBase, IDisposable
+public partial class AccordionTrigger : ComponentBase, IAsyncDisposable
 {
     [CascadingParameter]
     private AccordionContext Context { get; set; } = default!;
@@ -18,6 +20,9 @@ public partial class AccordionTrigger : ComponentBase, IDisposable
 
     [Inject]
     private ArkUtilities ArkUtilities { get; set; } = default!;
+
+    [Inject]
+    private AccordionJsInterop JsInterop { get; set; } = default!;
 
     /// <summary>
     /// Child content (trigger label).
@@ -39,6 +44,8 @@ public partial class AccordionTrigger : ComponentBase, IDisposable
 
     private ElementReference _elementRef;
     private bool _isRegistered;
+    private bool _isJsInitialized;
+    private bool _isDisposed;
     private bool? _cachedIsRtl;
 
     private bool IsExpanded => Context.IsExpanded(ItemContext.Value);
@@ -50,6 +57,15 @@ public partial class AccordionTrigger : ComponentBase, IDisposable
         // Register this trigger with the context
         Context.RegisterTrigger(ItemContext.Value, IsDisabled);
         _isRegistered = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && RendererInfo.IsInteractive && !_isDisposed)
+        {
+            await JsInterop.RegisterTriggerAsync(_elementRef);
+            _isJsInitialized = true;
+        }
     }
 
     protected override void OnParametersSet()
@@ -119,13 +135,33 @@ public partial class AccordionTrigger : ComponentBase, IDisposable
         return _cachedIsRtl.Value;
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
         if (_isRegistered)
         {
             Context.UnregisterTrigger(ItemContext.Value);
             _isRegistered = false;
         }
+
+        if (_isJsInitialized)
+        {
+            try
+            {
+                await JsInterop.UnregisterTriggerAsync(_elementRef);
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit disconnected, ignore
+            }
+            catch (ObjectDisposedException)
+            {
+                // Component already disposed, ignore
+            }
+        }
+
         GC.SuppressFinalize(this);
     }
 }

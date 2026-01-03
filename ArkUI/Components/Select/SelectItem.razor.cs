@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace ArkUI.Components.Select;
 
@@ -57,6 +58,7 @@ public partial class SelectItem<TValue> : ComponentBase, IDisposable where TValu
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private string? _registeredKey;
+    private bool _isSubscribed;
 
     /// <summary>
     /// The effective key used for JS interop and item identification.
@@ -75,6 +77,11 @@ public partial class SelectItem<TValue> : ComponentBase, IDisposable where TValu
                                EqualityComparer<TValue>.Default.Equals(Context.Value, Value);
 
     /// <summary>
+    /// Whether this item is currently highlighted (keyboard navigation).
+    /// </summary>
+    private bool IsHighlighted => Context.HighlightedKey == EffectiveKey;
+
+    /// <summary>
     /// Data state for styling (checked or unchecked).
     /// </summary>
     private string DataState => IsSelected ? "checked" : "unchecked";
@@ -82,6 +89,15 @@ public partial class SelectItem<TValue> : ComponentBase, IDisposable where TValu
     protected override void OnInitialized()
     {
         RegisterWithContext();
+        
+        // Subscribe to context state changes for highlighting updates
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
     }
 
     protected override void OnParametersSet()
@@ -95,15 +111,15 @@ public partial class SelectItem<TValue> : ComponentBase, IDisposable where TValu
         }
         else
         {
-            // Update the value and label in case they changed
-            Context.RegisterItem(currentKey, Value, EffectiveLabel);
+            // Update the value, label, and disabled state in case they changed
+            Context.RegisterItem(currentKey, Value, EffectiveLabel, Disabled);
         }
     }
 
     private void RegisterWithContext()
     {
         var key = EffectiveKey;
-        Context.RegisterItem(key, Value, EffectiveLabel);
+        Context.RegisterItem(key, Value, EffectiveLabel, Disabled);
         _registeredKey = key;
     }
 
@@ -116,8 +132,27 @@ public partial class SelectItem<TValue> : ComponentBase, IDisposable where TValu
         }
     }
 
+    private async Task HandleClickAsync(MouseEventArgs args)
+    {
+        if (Disabled) return;
+
+        await Context.SelectItemByKeyAsync(EffectiveKey);
+        await OnSelect.InvokeAsync();
+    }
+
+    private async Task HandleMouseEnterAsync()
+    {
+        if (Disabled) return;
+
+        await Context.SetHighlightedKeyAsync(EffectiveKey);
+    }
+
     public void Dispose()
     {
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
         UnregisterFromContext();
     }
 }

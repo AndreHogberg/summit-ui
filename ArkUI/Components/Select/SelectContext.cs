@@ -42,6 +42,12 @@ public sealed class SelectContext<TValue> where TValue : notnull
     /// </summary>
     public Dictionary<string, string> LabelRegistry { get; } = new();
 
+    /// <summary>
+    /// Registry mapping string keys to disabled state.
+    /// Used for keyboard navigation to skip disabled items.
+    /// </summary>
+    public Dictionary<string, bool> DisabledRegistry { get; } = new();
+
     private bool _isOpen;
     
     /// <summary>
@@ -110,6 +116,11 @@ public sealed class SelectContext<TValue> where TValue : notnull
     public Func<string?, Task> SetHighlightedKeyAsync { get; internal set; } = _ => Task.CompletedTask;
 
     /// <summary>
+    /// Callback to focus the trigger element. Set by the content component.
+    /// </summary>
+    public Func<Task> FocusTriggerAsync { get; internal set; } = () => Task.CompletedTask;
+
+    /// <summary>
     /// Action to register the trigger element reference.
     /// </summary>
     public Action<ElementReference> RegisterTrigger { get; internal set; } = _ => { };
@@ -144,10 +155,12 @@ public sealed class SelectContext<TValue> where TValue : notnull
     /// <param name="key">The string key for JS interop.</param>
     /// <param name="value">The TValue to associate with this key.</param>
     /// <param name="label">The display label for this item.</param>
-    public void RegisterItem(string key, TValue value, string label)
+    /// <param name="disabled">Whether the item is disabled.</param>
+    public void RegisterItem(string key, TValue value, string label, bool disabled = false)
     {
         ItemRegistry[key] = value;
         LabelRegistry[key] = label;
+        DisabledRegistry[key] = disabled;
     }
 
     /// <summary>
@@ -158,6 +171,18 @@ public sealed class SelectContext<TValue> where TValue : notnull
     {
         ItemRegistry.Remove(key);
         LabelRegistry.Remove(key);
+        DisabledRegistry.Remove(key);
+    }
+
+    /// <summary>
+    /// Clears all registered items from the context.
+    /// Called when the select opens to ensure fresh registration order.
+    /// </summary>
+    public void ClearItemRegistry()
+    {
+        ItemRegistry.Clear();
+        LabelRegistry.Clear();
+        DisabledRegistry.Clear();
     }
 
     /// <summary>
