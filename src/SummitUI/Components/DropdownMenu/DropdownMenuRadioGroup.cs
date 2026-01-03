@@ -64,7 +64,7 @@ public class DropdownMenuRadioGroup : ComponentBase
             childBuilder.OpenElement(0, "div");
             childBuilder.AddAttribute(1, "role", "group");
             childBuilder.AddAttribute(2, "aria-label", AriaLabel);
-            childBuilder.AddAttribute(3, "data-ark-dropdown-menu-radio-group", "");
+            childBuilder.AddAttribute(3, "data-summit-dropdown-menu-radio-group", "");
             childBuilder.AddMultipleAttributes(4, AdditionalAttributes);
             childBuilder.AddContent(5, ChildContent);
             childBuilder.CloseElement();

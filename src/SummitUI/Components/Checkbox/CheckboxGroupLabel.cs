@@ -40,14 +40,14 @@ public class CheckboxGroupLabel : ComponentBase
         // Generate label ID from group context if available
         _labelId = GroupContext is not null
             ? $"{GroupContext.GroupId}-label"
-            : $"ark-checkbox-group-label-{Guid.NewGuid():N}";
+            : $"summit-checkbox-group-label-{Guid.NewGuid():N}";
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "id", _labelId);
-        builder.AddAttribute(2, "data-ark-checkbox-group-label", true);
+        builder.AddAttribute(2, "data-summit-checkbox-group-label", true);
         builder.AddMultipleAttributes(3, AdditionalAttributes);
 
         if (ChildContent is not null)

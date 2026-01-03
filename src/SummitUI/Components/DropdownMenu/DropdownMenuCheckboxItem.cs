@@ -100,7 +100,7 @@ public class DropdownMenuCheckboxItem : ComponentBase, IDisposable
         {
             builder.AddAttribute(5, "aria-disabled", "true");
         }
-        builder.AddAttribute(6, "data-ark-dropdown-menu-checkbox-item", "");
+        builder.AddAttribute(6, "data-summit-dropdown-menu-checkbox-item", "");
         builder.AddAttribute(7, "data-state", DataState);
         if (Disabled)
         {

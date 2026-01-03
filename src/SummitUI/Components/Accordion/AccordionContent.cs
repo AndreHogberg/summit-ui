@@ -72,7 +72,7 @@ public class AccordionContent : ComponentBase, IAsyncDisposable
         builder.AddAttribute(3, "aria-labelledby", Context.GetTriggerId(ItemContext.Value));
         builder.AddAttribute(4, "data-state", DataState);
         builder.AddAttribute(5, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(6, "data-ark-accordion-content", true);
+        builder.AddAttribute(6, "data-summit-accordion-content", true);
 
         if (!IsExpanded)
         {

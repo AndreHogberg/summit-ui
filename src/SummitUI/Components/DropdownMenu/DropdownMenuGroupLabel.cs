@@ -27,7 +27,7 @@ public class DropdownMenuGroupLabel : ComponentBase
     {
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", GroupLabelId);
-        builder.AddAttribute(2, "data-ark-dropdown-menu-group-label", "");
+        builder.AddAttribute(2, "data-summit-dropdown-menu-group-label", "");
         builder.AddMultipleAttributes(3, AdditionalAttributes);
         builder.AddContent(4, ChildContent);
         builder.CloseElement();

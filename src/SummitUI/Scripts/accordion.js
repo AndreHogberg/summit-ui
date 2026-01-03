@@ -57,8 +57,8 @@ export function setContentHeight(contentElement) {
     const height = contentElement.scrollHeight;
     const width = contentElement.scrollWidth;
 
-    contentElement.style.setProperty('--ark-accordion-content-height', `${height}px`);
-    contentElement.style.setProperty('--ark-accordion-content-width', `${width}px`);
+    contentElement.style.setProperty('--summit-accordion-content-height', `${height}px`);
+    contentElement.style.setProperty('--summit-accordion-content-width', `${width}px`);
 
     // Restore hidden state
     if (wasHidden) {

@@ -73,7 +73,7 @@ public sealed class TabsContext
 
     public TabsContext()
     {
-        TabsId = $"ark-tabs-{Guid.NewGuid():N}";
+        TabsId = $"summit-tabs-{Guid.NewGuid():N}";
     }
 
     /// <summary>

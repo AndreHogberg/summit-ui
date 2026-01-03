@@ -42,7 +42,7 @@ public class AccordionHeader : ComponentBase
         builder.AddAttribute(1, "role", "heading");
         builder.AddAttribute(2, "aria-level", Level);
         builder.AddAttribute(3, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(4, "data-ark-accordion-header", true);
+        builder.AddAttribute(4, "data-summit-accordion-header", true);
         builder.AddMultipleAttributes(5, AdditionalAttributes);
         builder.AddContent(6, ChildContent);
         builder.CloseElement();

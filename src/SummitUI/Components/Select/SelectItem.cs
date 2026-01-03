@@ -143,7 +143,7 @@ public class SelectItem<TValue> : ComponentBase, IDisposable where TValue : notn
         {
             builder.AddAttribute(4, "aria-disabled", "true");
         }
-        builder.AddAttribute(5, "data-ark-select-item", "");
+        builder.AddAttribute(5, "data-summit-select-item", "");
         builder.AddAttribute(6, "data-value", EffectiveKey);
         builder.AddAttribute(7, "data-label", EffectiveLabel);
         builder.AddAttribute(8, "data-state", DataState);

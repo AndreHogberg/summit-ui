@@ -231,7 +231,7 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
         builder.AddAttribute(6, "data-state", DataState);
         builder.AddAttribute(7, "data-side", Side.ToString().ToLowerInvariant());
         builder.AddAttribute(8, "data-align", Align.ToString().ToLowerInvariant());
-        builder.AddAttribute(9, "data-ark-dropdown-menu-content", true);
+        builder.AddAttribute(9, "data-summit-dropdown-menu-content", true);
         builder.AddAttribute(10, "tabindex", "-1");
         // Use visibility: hidden initially to prevent flash in top-left corner before JS positioning
         // JS will set visibility: visible after first position calculation

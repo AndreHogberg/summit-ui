@@ -26,7 +26,7 @@ public class DropdownMenuGroup : ComponentBase
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private readonly string _labelId = $"ark-dropdown-menu-group-{Guid.NewGuid():N}";
+    private readonly string _labelId = $"summit-dropdown-menu-group-{Guid.NewGuid():N}";
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
@@ -34,7 +34,7 @@ public class DropdownMenuGroup : ComponentBase
         builder.AddAttribute(1, "role", "group");
         builder.AddAttribute(2, "aria-labelledby", _labelId);
         builder.AddAttribute(3, "aria-label", AriaLabel);
-        builder.AddAttribute(4, "data-ark-dropdown-menu-group", "");
+        builder.AddAttribute(4, "data-summit-dropdown-menu-group", "");
         builder.AddMultipleAttributes(5, AdditionalAttributes);
 
         builder.OpenComponent<CascadingValue<string>>(6);

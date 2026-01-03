@@ -64,7 +64,7 @@ public sealed class AccordionContext
 
     public AccordionContext()
     {
-        AccordionId = $"ark-accordion-{Guid.NewGuid():N}";
+        AccordionId = $"summit-accordion-{Guid.NewGuid():N}";
     }
 
     /// <summary>

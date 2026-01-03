@@ -34,7 +34,7 @@ public class PopoverPortal : ComponentBase
 
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", ActualContainerId);
-        builder.AddAttribute(2, "data-ark-popover-portal", true);
+        builder.AddAttribute(2, "data-summit-popover-portal", true);
         builder.AddAttribute(3, "style", "position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;");
         builder.AddElementReferenceCapture(4, elementRef => _containerRef = elementRef);
 

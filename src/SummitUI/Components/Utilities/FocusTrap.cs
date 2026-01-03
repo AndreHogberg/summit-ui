@@ -59,7 +59,7 @@ public class FocusTrap : ComponentBase, IAsyncDisposable
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "data-ark-focus-trap", _isActive ? "active" : "inactive");
+        builder.AddAttribute(1, "data-summit-focus-trap", _isActive ? "active" : "inactive");
         builder.AddElementReferenceCapture(2, elementReference => _containerRef = elementReference);
         builder.AddContent(3, ChildContent);
         builder.CloseElement();

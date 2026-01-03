@@ -40,7 +40,7 @@ public class PopoverClose : ComponentBase
     {
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "aria-label", AriaLabel ?? "Close");
-        builder.AddAttribute(2, "data-ark-popover-close", true);
+        builder.AddAttribute(2, "data-summit-popover-close", true);
         builder.AddMultipleAttributes(3, AdditionalAttributes);
         builder.AddAttribute(4, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
         builder.AddContent(5, ChildContent);

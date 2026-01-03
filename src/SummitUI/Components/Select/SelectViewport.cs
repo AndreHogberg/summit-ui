@@ -30,7 +30,7 @@ public class SelectViewport<TValue> : ComponentBase where TValue : notnull
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, As);
-        builder.AddAttribute(1, "data-ark-select-viewport", "");
+        builder.AddAttribute(1, "data-summit-select-viewport", "");
         builder.AddAttribute(2, "style", "overflow: auto;");
         builder.AddMultipleAttributes(3, AdditionalAttributes);
         builder.AddContent(4, ChildContent);

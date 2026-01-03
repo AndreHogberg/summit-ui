@@ -98,7 +98,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private readonly string _checkboxId = $"ark-checkbox-{Guid.NewGuid():N}";
+    private readonly string _checkboxId = $"summit-checkbox-{Guid.NewGuid():N}";
     private ElementReference _elementRef;
     private bool _internalChecked;
     private bool _jsInitialized;
@@ -228,7 +228,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         builder.AddAttribute(4, "aria-checked", AriaChecked);
         builder.AddAttribute(5, "aria-disabled", IsDisabled ? "true" : null);
         builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-ark-checkbox", "");
+        builder.AddAttribute(7, "data-summit-checkbox", "");
 
         if (IsDisabled)
         {

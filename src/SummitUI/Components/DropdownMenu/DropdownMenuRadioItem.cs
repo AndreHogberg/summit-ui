@@ -85,7 +85,7 @@ public class DropdownMenuRadioItem : ComponentBase, IDisposable
         {
             builder.AddAttribute(5, "aria-disabled", "true");
         }
-        builder.AddAttribute(6, "data-ark-dropdown-menu-radio-item", "");
+        builder.AddAttribute(6, "data-summit-dropdown-menu-radio-item", "");
         builder.AddAttribute(7, "data-state", DataState);
         if (Disabled)
         {

@@ -55,7 +55,7 @@ public sealed class CheckboxGroupContext
     /// </summary>
     public CheckboxGroupContext()
     {
-        GroupId = $"ark-checkbox-group-{Guid.NewGuid():N}";
+        GroupId = $"summit-checkbox-group-{Guid.NewGuid():N}";
     }
 
     /// <summary>

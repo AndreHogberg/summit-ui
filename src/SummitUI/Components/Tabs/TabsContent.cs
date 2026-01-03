@@ -50,7 +50,7 @@ public class TabsContent : ComponentBase
         builder.AddAttribute(4, "tabindex", "0");
         builder.AddAttribute(5, "data-state", DataState);
         builder.AddAttribute(6, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(7, "data-ark-tabs-content", true);
+        builder.AddAttribute(7, "data-summit-tabs-content", true);
         builder.AddMultipleAttributes(8, AdditionalAttributes);
         builder.AddContent(9, ChildContent);
         builder.CloseElement();

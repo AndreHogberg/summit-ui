@@ -42,7 +42,7 @@ public class SelectValue<TValue> : ComponentBase where TValue : notnull
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "data-ark-select-value", "");
+        builder.AddAttribute(1, "data-summit-select-value", "");
         if (IsPlaceholder)
         {
             builder.AddAttribute(2, "data-placeholder", "");

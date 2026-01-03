@@ -35,7 +35,7 @@ public class DropdownMenuPortal : ComponentBase, IAsyncDisposable
     [Parameter]
     public bool ForceMount { get; set; }
 
-    private readonly string _portalId = $"ark-dropdown-menu-portal-{Guid.NewGuid():N}";
+    private readonly string _portalId = $"summit-dropdown-menu-portal-{Guid.NewGuid():N}";
     private bool _isDisposed;
     private bool _portalCreated;
 
@@ -63,7 +63,7 @@ public class DropdownMenuPortal : ComponentBase, IAsyncDisposable
 
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", _portalId);
-        builder.AddAttribute(2, "data-ark-dropdown-menu-portal", "");
+        builder.AddAttribute(2, "data-summit-dropdown-menu-portal", "");
         builder.AddAttribute(3, "style", "position: absolute; top: 0; left: 0; z-index: 9999;");
         builder.AddContent(4, ChildContent);
         builder.CloseElement();

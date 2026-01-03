@@ -62,7 +62,7 @@ public class DropdownMenuTrigger : ComponentBase, IAsyncDisposable
         builder.AddAttribute(4, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
         builder.AddAttribute(5, "aria-controls", Context.IsOpen ? Context.MenuId : null);
         builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-ark-dropdown-menu-trigger", true);
+        builder.AddAttribute(7, "data-summit-dropdown-menu-trigger", true);
         builder.AddMultipleAttributes(8, AdditionalAttributes);
         builder.AddAttribute(9, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
         builder.AddAttribute(10, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));

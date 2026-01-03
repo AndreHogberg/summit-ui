@@ -91,7 +91,7 @@ public class TabsTrigger : ComponentBase, IDisposable
         builder.AddAttribute(5, "tabindex", TabIndex);
         builder.AddAttribute(6, "data-state", DataState);
         builder.AddAttribute(7, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(8, "data-ark-tabs-trigger", true);
+        builder.AddAttribute(8, "data-summit-tabs-trigger", true);
         builder.AddAttribute(9, "data-value", Value);
 
         if (Disabled)

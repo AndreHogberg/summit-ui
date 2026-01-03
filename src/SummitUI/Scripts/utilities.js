@@ -36,12 +36,12 @@ export function focusElementById(elementId) {
 export function initializeCheckbox(element) {
     if (!element) return;
     
-    element._arkCheckboxKeyHandler = (e) => {
+    element._summitCheckboxKeyHandler = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
     };
-    element.addEventListener('keydown', element._arkCheckboxKeyHandler);
+    element.addEventListener('keydown', element._summitCheckboxKeyHandler);
 }
 
 /**
@@ -49,8 +49,8 @@ export function initializeCheckbox(element) {
  * @param {HTMLElement} element - The checkbox button element.
  */
 export function destroyCheckbox(element) {
-    if (!element || !element._arkCheckboxKeyHandler) return;
+    if (!element || !element._summitCheckboxKeyHandler) return;
     
-    element.removeEventListener('keydown', element._arkCheckboxKeyHandler);
-    delete element._arkCheckboxKeyHandler;
+    element.removeEventListener('keydown', element._summitCheckboxKeyHandler);
+    delete element._summitCheckboxKeyHandler;
 }

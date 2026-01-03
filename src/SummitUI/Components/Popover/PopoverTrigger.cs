@@ -47,7 +47,7 @@ public class PopoverTrigger : ComponentBase
         builder.AddAttribute(2, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
         builder.AddAttribute(3, "aria-controls", Context.PopoverId);
         builder.AddAttribute(4, "data-state", DataState);
-        builder.AddAttribute(5, "data-ark-popover-trigger", true);
+        builder.AddAttribute(5, "data-summit-popover-trigger", true);
         builder.AddMultipleAttributes(6, AdditionalAttributes);
         builder.AddAttribute(7, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
         builder.AddAttribute(8, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));

@@ -231,7 +231,7 @@ export function createPortal(containerId, targetSelector) {
 
     const container = document.createElement('div');
     container.id = containerId;
-    container.setAttribute('data-ark-popover-portal', '');
+    container.setAttribute('data-summit-popover-portal', '');
     container.style.position = 'absolute';
     container.style.top = '0';
     container.style.left = '0';

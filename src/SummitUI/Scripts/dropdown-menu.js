@@ -17,7 +17,7 @@ export function createPortal(containerId, targetSelector) {
 
     const container = document.createElement('div');
     container.id = containerId;
-    container.setAttribute('data-ark-dropdown-menu-portal', '');
+    container.setAttribute('data-summit-dropdown-menu-portal', '');
     container.style.position = 'absolute';
     container.style.top = '0';
     container.style.left = '0';
@@ -61,7 +61,7 @@ export function initializeTrigger(triggerEl) {
     triggerEl.addEventListener('keydown', handleKeyDown);
 
     // Store cleanup function on element
-    triggerEl._arkCleanup = () => {
+    triggerEl._summitCleanup = () => {
         triggerEl.removeEventListener('keydown', handleKeyDown);
     };
 }
@@ -71,8 +71,8 @@ export function initializeTrigger(triggerEl) {
  * @param {HTMLElement} triggerEl - Trigger element
  */
 export function destroyTrigger(triggerEl) {
-    if (triggerEl?._arkCleanup) {
-        triggerEl._arkCleanup();
-        delete triggerEl._arkCleanup;
+    if (triggerEl?._summitCleanup) {
+        triggerEl._summitCleanup();
+        delete triggerEl._summitCleanup;
     }
 }

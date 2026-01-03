@@ -118,7 +118,7 @@ public class CheckboxGroup : ComponentBase
             childBuilder.AddAttribute(2, "id", _context.GroupId);
             childBuilder.AddAttribute(3, "aria-labelledby", _labelId);
             childBuilder.AddAttribute(4, "aria-disabled", Disabled ? "true" : null);
-            childBuilder.AddAttribute(5, "data-ark-checkbox-group", "");
+            childBuilder.AddAttribute(5, "data-summit-checkbox-group", "");
             childBuilder.AddAttribute(6, "data-disabled", Disabled ? "" : null);
             childBuilder.AddMultipleAttributes(7, AdditionalAttributes);
             childBuilder.AddContent(8, ChildContent);

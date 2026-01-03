@@ -51,7 +51,7 @@ public class SelectGroup<TValue> : ComponentBase where TValue : notnull
             childBuilder.OpenElement(0, "div");
             childBuilder.AddAttribute(1, "role", "group");
             childBuilder.AddAttribute(2, "aria-labelledby", LabelId);
-            childBuilder.AddAttribute(3, "data-ark-select-group", "");
+            childBuilder.AddAttribute(3, "data-summit-select-group", "");
             childBuilder.AddMultipleAttributes(4, AdditionalAttributes);
             childBuilder.AddContent(5, ChildContent);
             childBuilder.CloseElement();

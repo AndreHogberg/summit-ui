@@ -66,7 +66,7 @@ public class CheckboxIndicator : ComponentBase
         if (!ShouldDisplay) return;
 
         builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "data-ark-checkbox-indicator", "");
+        builder.AddAttribute(1, "data-summit-checkbox-indicator", "");
         builder.AddAttribute(2, "data-state", DataState);
         builder.AddMultipleAttributes(3, AdditionalAttributes);
         

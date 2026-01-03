@@ -34,7 +34,7 @@ public class SelectGroupLabel : ComponentBase
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "role", "presentation");
         builder.AddAttribute(2, "id", GroupContext.LabelId);
-        builder.AddAttribute(3, "data-ark-select-group-label", "");
+        builder.AddAttribute(3, "data-summit-select-group-label", "");
         builder.AddMultipleAttributes(4, AdditionalAttributes);
         builder.AddContent(5, ChildContent);
         builder.CloseElement();

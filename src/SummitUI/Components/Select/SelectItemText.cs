@@ -29,7 +29,7 @@ public class SelectItemText : ComponentBase
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, As);
-        builder.AddAttribute(1, "data-ark-select-item-text", "");
+        builder.AddAttribute(1, "data-summit-select-item-text", "");
         builder.AddMultipleAttributes(2, AdditionalAttributes);
         builder.AddContent(3, ChildContent);
         builder.CloseElement();

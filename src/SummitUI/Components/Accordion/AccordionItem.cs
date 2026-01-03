@@ -69,7 +69,7 @@ public class AccordionItem : ComponentBase
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "data-state", DataState);
         builder.AddAttribute(2, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(3, "data-ark-accordion-item", true);
+        builder.AddAttribute(3, "data-summit-accordion-item", true);
 
         if (IsDisabled)
         {

@@ -105,7 +105,7 @@ public class DropdownMenuItem : ComponentBase, IDisposable
         {
             builder.AddAttribute(4, "aria-disabled", "true");
         }
-        builder.AddAttribute(5, "data-ark-dropdown-menu-item", "");
+        builder.AddAttribute(5, "data-summit-dropdown-menu-item", "");
         if (Disabled)
         {
             builder.AddAttribute(6, "data-disabled", "");

@@ -49,7 +49,7 @@ public class PopoverOverlay : ComponentBase
     {
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "data-state", DataState);
-        builder.AddAttribute(2, "data-ark-popover-overlay", true);
+        builder.AddAttribute(2, "data-summit-popover-overlay", true);
         builder.AddAttribute(3, "aria-hidden", "true");
         builder.AddMultipleAttributes(4, AdditionalAttributes);
         builder.AddAttribute(5, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));

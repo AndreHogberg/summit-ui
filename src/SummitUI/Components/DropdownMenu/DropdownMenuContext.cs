@@ -129,7 +129,7 @@ public sealed class DropdownMenuContext
 
     public DropdownMenuContext()
     {
-        MenuId = $"ark-dropdown-menu-{Guid.NewGuid():N}";
+        MenuId = $"summit-dropdown-menu-{Guid.NewGuid():N}";
     }
 }
 
@@ -151,5 +151,5 @@ public sealed class DropdownMenuRadioGroupContext
     /// <summary>
     /// Unique identifier for this radio group.
     /// </summary>
-    public string GroupId { get; } = $"ark-dropdown-radio-{Guid.NewGuid():N}";
+    public string GroupId { get; } = $"summit-dropdown-radio-{Guid.NewGuid():N}";
 }

@@ -216,7 +216,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
         builder.AddAttribute(4, "aria-labelledby", Context.TriggerId);
         builder.AddAttribute(5, "aria-activedescendant", GetActiveDescendantId());
         builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-ark-select-content", "");
+        builder.AddAttribute(7, "data-summit-select-content", "");
         builder.AddAttribute(8, "style", ContentStyle);
         builder.AddMultipleAttributes(9, AdditionalAttributes);
         builder.AddAttribute(10, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));

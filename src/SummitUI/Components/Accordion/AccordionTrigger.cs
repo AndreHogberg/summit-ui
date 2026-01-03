@@ -87,7 +87,7 @@ public class AccordionTrigger : ComponentBase, IAsyncDisposable
         builder.AddAttribute(4, "aria-controls", Context.GetContentId(ItemContext.Value));
         builder.AddAttribute(5, "data-state", DataState);
         builder.AddAttribute(6, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(7, "data-ark-accordion-trigger", true);
+        builder.AddAttribute(7, "data-summit-accordion-trigger", true);
 
         if (IsDisabled)
         {
