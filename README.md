@@ -61,3 +61,6 @@ Here is a simple example of how to use the `Accordion` component:
     </AccordionItem>
 </AccordionRoot>
 ```
+
+## Testing tools
+NVDA and VoiceOver
