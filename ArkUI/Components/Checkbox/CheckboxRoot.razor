@@ -1,0 +1,60 @@
+@namespace ArkUI.Components.Checkbox
+@inherits Microsoft.AspNetCore.Components.ComponentBase
+@using Microsoft.AspNetCore.Components.Rendering
+
+@{
+    BuildElement(__builder);
+}
+
+@code {
+    private void BuildElement(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, "button");
+        builder.AddAttribute(1, "type", "button");
+        builder.AddAttribute(2, "role", "checkbox");
+        builder.AddAttribute(3, "id", _checkboxId);
+        builder.AddAttribute(4, "aria-checked", AriaChecked);
+        builder.AddAttribute(5, "aria-disabled", IsDisabled ? "true" : null);
+        builder.AddAttribute(6, "data-state", DataState);
+        builder.AddAttribute(7, "data-ark-checkbox", "");
+
+        if (IsDisabled)
+        {
+            builder.AddAttribute(8, "disabled", true);
+            builder.AddAttribute(9, "data-disabled", true);
+        }
+
+        builder.AddAttribute(10, "onclick", EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, HandleClickAsync));
+        builder.AddEventStopPropagationAttribute(11, "onclick", true);
+        builder.AddEventPreventDefaultAttribute(12, "onclick", true);
+        builder.AddMultipleAttributes(13, AdditionalAttributes);
+        builder.AddElementReferenceCapture(14, elemRef => _elementRef = elemRef);
+
+        // Cascade checkbox context to child content
+        builder.OpenComponent<CascadingValue<CheckboxContext>>(15);
+        builder.AddComponentParameter(16, "Value", CurrentContext);
+        builder.AddComponentParameter(17, "IsFixed", false);
+        builder.AddComponentParameter(18, "ChildContent", ChildContent);
+        builder.CloseComponent();
+
+        builder.CloseElement();
+
+        // Render hidden input for form submission when Name is provided
+        if (!string.IsNullOrEmpty(EffectiveName))
+        {
+            builder.OpenElement(19, "input");
+            builder.AddAttribute(20, "type", "hidden");
+            builder.AddAttribute(21, "name", EffectiveName);
+            builder.AddAttribute(22, "value", HiddenInputValue);
+            builder.AddAttribute(23, "disabled", IsDisabled);
+            
+            if (Required)
+            {
+                builder.AddAttribute(24, "required", true);
+            }
+            
+            builder.CloseElement();
+        }
+    }
+}
+

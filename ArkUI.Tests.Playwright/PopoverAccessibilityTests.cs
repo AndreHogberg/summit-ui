@@ -312,4 +312,61 @@ public class PopoverAccessibilityTests : PageTest
     }
 
     #endregion
+
+    #region Multiple Popovers
+
+    [Test]
+    public async Task OpeningSecondPopover_ShouldClose_FirstPopover_ViaClick()
+    {
+        // Open the first popover
+        var firstTrigger = Page.Locator("[data-ark-popover-trigger]").First;
+        await firstTrigger.ClickAsync();
+
+        var firstContent = Page.Locator("[data-ark-popover-content]").First;
+        await Expect(firstContent).ToBeVisibleAsync();
+
+        // Click on another popover trigger (e.g., "Top" button)
+        var secondTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Top", Exact = true });
+        await secondTrigger.ClickAsync();
+
+        // First popover should be closed, second should be open
+        await Expect(firstTrigger).ToHaveAttributeAsync("aria-expanded", "false");
+        await Expect(secondTrigger).ToHaveAttributeAsync("aria-expanded", "true");
+
+        // Only one popover content should be visible
+        var visibleContents = Page.Locator("[data-ark-popover-content][data-state='open']");
+        await Expect(visibleContents).ToHaveCountAsync(1);
+    }
+
+    [Test]
+    public async Task OpeningSecondPopover_ShouldClose_FirstPopover_ViaKeyboard()
+    {
+        // Open the first popover
+        var firstTrigger = Page.Locator("[data-ark-popover-trigger]").First;
+        await firstTrigger.ClickAsync();
+
+        var firstContent = Page.Locator("[data-ark-popover-content]").First;
+        await Expect(firstContent).ToBeVisibleAsync();
+
+        // Tab to the close button, then tab out to next trigger
+        var closeButton = firstContent.Locator("[data-ark-popover-close]");
+        await closeButton.FocusAsync();
+        
+        // Tab multiple times to reach another popover trigger
+        var secondTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Top", Exact = true });
+        await secondTrigger.FocusAsync();
+        
+        // Open via keyboard
+        await Page.Keyboard.PressAsync("Enter");
+
+        // First popover should be closed, second should be open
+        await Expect(firstTrigger).ToHaveAttributeAsync("aria-expanded", "false");
+        await Expect(secondTrigger).ToHaveAttributeAsync("aria-expanded", "true");
+
+        // Only one popover content should be visible
+        var visibleContents = Page.Locator("[data-ark-popover-content][data-state='open']");
+        await Expect(visibleContents).ToHaveCountAsync(1);
+    }
+
+    #endregion
 }

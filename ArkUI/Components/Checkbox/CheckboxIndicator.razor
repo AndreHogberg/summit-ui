@@ -1,0 +1,13 @@
+@namespace ArkUI.Components.Checkbox
+
+@if (ShouldDisplay)
+{
+    <span data-ark-checkbox-indicator=""
+          data-state="@DataState"
+          @attributes="AdditionalAttributes">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+    </span>
+}

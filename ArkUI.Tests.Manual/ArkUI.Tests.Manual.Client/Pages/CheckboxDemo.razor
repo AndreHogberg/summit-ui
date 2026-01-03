@@ -1,0 +1,605 @@
+@page "/checkbox"
+@rendermode InteractiveWebAssembly
+@using ArkUI.Components.Checkbox
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<h1>Checkbox Component Demo</h1>
+
+<section>
+    <h2>Basic Checkbox</h2>
+    <p>A simple checkbox with default settings.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label class="checkbox-label">
+            <CheckboxRoot DefaultChecked="false" class="checkbox-root" data-testid="basic-checkbox-unchecked">
+                <CheckboxIndicator>
+                    <span>✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Accept terms and conditions
+        </label>
+
+        <label class="checkbox-label">
+            <CheckboxRoot DefaultChecked="true" class="checkbox-root" data-testid="basic-checkbox-checked">
+                <CheckboxIndicator>
+                    <span>✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Subscribe to newsletter
+        </label>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Controlled Checkbox</h2>
+    <p>The checkbox state can be controlled externally.</p>
+
+    <div style="margin-bottom: 1rem;">
+        <button class="btn btn-info" @onclick="() => isControlledChecked = !isControlledChecked">
+            Toggle Externally (@(isControlledChecked ? "Checked" : "Unchecked"))
+        </button>
+    </div>
+
+    <label class="checkbox-label">
+        <CheckboxRoot Checked="@isControlledChecked" CheckedChanged="HandleControlledChange" class="checkbox-root" data-testid="controlled-checkbox">
+            <CheckboxIndicator>
+                <span>✓</span>
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Controlled checkbox
+    </label>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Indeterminate State</h2>
+    <p>Checkbox with indeterminate state for "select all" scenarios.</p>
+
+    <label class="checkbox-label">
+        <CheckboxRoot Checked="@allSelected"
+                      CheckedChanged="HandleSelectAllChanged"
+                      Indeterminate="@isIndeterminate"
+                      IndeterminateChanged="HandleIndeterminateChange"
+                      class="checkbox-root"
+                      data-testid="select-all-checkbox">
+            <CheckboxIndicator ForceMount="true">
+                @if (isIndeterminate)
+                {
+                    <span>−</span>
+                }
+                else if (allSelected)
+                {
+                    <span>✓</span>
+                }
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Select All
+    </label>
+
+    <div style="margin-left: 1.5rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <label class="checkbox-label">
+            <CheckboxRoot Checked="@item1Checked" CheckedChanged="HandleItem1Change" class="checkbox-root" data-testid="item1-checkbox">
+                <CheckboxIndicator>
+                    <span>✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Item 1
+        </label>
+
+        <label class="checkbox-label">
+            <CheckboxRoot Checked="@item2Checked" CheckedChanged="HandleItem2Change" class="checkbox-root" data-testid="item2-checkbox">
+                <CheckboxIndicator>
+                    <span>✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Item 2
+        </label>
+
+        <label class="checkbox-label">
+            <CheckboxRoot Checked="@item3Checked" CheckedChanged="HandleItem3Change" class="checkbox-root" data-testid="item3-checkbox">
+                <CheckboxIndicator>
+                    <span>✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Item 3
+        </label>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Disabled Checkboxes</h2>
+    <p>Checkboxes can be disabled to prevent interaction.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label class="checkbox-label">
+            <CheckboxRoot Disabled="true" class="checkbox-root" data-testid="disabled-unchecked">
+                <CheckboxIndicator>
+                    <span>✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Disabled (unchecked)
+        </label>
+
+        <label class="checkbox-label">
+            <CheckboxRoot DefaultChecked="true" Disabled="true" class="checkbox-root" data-testid="disabled-checked">
+                <CheckboxIndicator>
+                    <span>✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Disabled (checked)
+        </label>
+
+        <label class="checkbox-label">
+            <CheckboxRoot Indeterminate="true" Disabled="true" class="checkbox-root" data-testid="disabled-indeterminate">
+                <CheckboxIndicator ForceMount="true">
+                    <span>-</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Disabled (indeterminate)
+        </label>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Checkbox Group</h2>
+    <p>A group of related checkboxes with managed state.</p>
+
+    <CheckboxGroup DefaultValues="@defaultGroupValues" OnValueChange="@HandleGroupChange">
+        <CheckboxGroupLabel class="group-label">Select Features</CheckboxGroupLabel>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+            <label class="checkbox-label">
+                <CheckboxRoot Value="feature-1" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Feature 1: Headless Design
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Value="feature-2" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Feature 2: Full Accessibility
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Value="feature-3" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Feature 3: Cross-Render Mode
+            </label>
+        </div>
+    </CheckboxGroup>
+
+    <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #666;">
+        Selected: @string.Join(", ", groupValues)
+    </p>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Checkbox Group with Disabled Items</h2>
+    <p>Individual checkboxes within a group can be disabled.</p>
+
+    <CheckboxGroup DefaultValues="@optionsDefaultValues">
+        <CheckboxGroupLabel class="group-label">Options</CheckboxGroupLabel>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+            <label class="checkbox-label">
+                <CheckboxRoot Value="opt-1" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Option 1 (enabled)
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Value="opt-2" Disabled="true" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Option 2 (disabled)
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Value="opt-3" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Option 3 (enabled)
+            </label>
+        </div>
+    </CheckboxGroup>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Disabled Group</h2>
+    <p>The entire group can be disabled.</p>
+
+    <CheckboxGroup DefaultValues="@settingsDefaultValues" Disabled="true">
+        <CheckboxGroupLabel class="group-label">Settings (Group Disabled)</CheckboxGroupLabel>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+            <label class="checkbox-label">
+                <CheckboxRoot Value="setting-1" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Setting 1
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Value="setting-2" class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Setting 2
+            </label>
+        </div>
+    </CheckboxGroup>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Form Submission</h2>
+    <p>Checkboxes can include hidden inputs for form submission.</p>
+
+    <form @onsubmit="HandleFormSubmit" @onsubmit:preventDefault>
+        <CheckboxGroup Name="preferences" Values="@formValues" ValuesChanged="HandleFormValuesChange">
+            <CheckboxGroupLabel class="group-label">Preferences</CheckboxGroupLabel>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                <label class="checkbox-label">
+                    <CheckboxRoot Value="email-updates" class="checkbox-root">
+                        <CheckboxIndicator>
+                            <span>✓</span>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    Email Updates
+                </label>
+
+                <label class="checkbox-label">
+                    <CheckboxRoot Value="sms-notifications" class="checkbox-root">
+                        <CheckboxIndicator>
+                            <span>✓</span>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    SMS Notifications
+                </label>
+
+                <label class="checkbox-label">
+                    <CheckboxRoot Value="marketing" class="checkbox-root">
+                        <CheckboxIndicator>
+                            <span>✓</span>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    Marketing Communications
+                </label>
+            </div>
+        </CheckboxGroup>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Submit Form</button>
+
+        @if (!string.IsNullOrEmpty(formSubmitMessage))
+        {
+            <p style="margin-top: 0.5rem; color: green;">@formSubmitMessage</p>
+        }
+    </form>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="editform-section">
+    <h2>EditForm Integration</h2>
+    <p>Checkbox integration with Blazor EditForm for validation and model binding.</p>
+
+    <EditForm Model="@editFormModel" OnValidSubmit="HandleEditFormSubmit">
+        <DataAnnotationsValidator />
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label class="checkbox-label">
+                <CheckboxRoot Checked="@editFormModel.AcceptTerms"
+                              CheckedChanged="@(v => { editFormModel.AcceptTerms = v; })"
+                              Name="acceptTerms"
+                              Required="true"
+                              data-testid="editform-terms-checkbox"
+                              class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Accept Terms and Conditions (Required)
+            </label>
+            <ValidationMessage For="@(() => editFormModel.AcceptTerms)" class="validation-error" />
+
+            <label class="checkbox-label">
+                <CheckboxRoot Checked="@editFormModel.SubscribeNewsletter"
+                              CheckedChanged="@(v => { editFormModel.SubscribeNewsletter = v; })"
+                              Name="subscribeNewsletter"
+                              data-testid="editform-newsletter-checkbox"
+                              class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Subscribe to Newsletter (Optional)
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Checked="@editFormModel.EnableNotifications"
+                              CheckedChanged="@(v => { editFormModel.EnableNotifications = v; })"
+                              Name="enableNotifications"
+                              data-testid="editform-notifications-checkbox"
+                              class="checkbox-root">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Enable Notifications (Optional)
+            </label>
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary" data-testid="editform-submit">Submit</button>
+        </div>
+
+        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #666;">
+            <p>Accept Terms: <span data-testid="editform-terms-value">@editFormModel.AcceptTerms</span></p>
+            <p>Subscribe Newsletter: <span data-testid="editform-newsletter-value">@editFormModel.SubscribeNewsletter</span></p>
+            <p>Enable Notifications: <span data-testid="editform-notifications-value">@editFormModel.EnableNotifications</span></p>
+        </div>
+
+        @if (editFormSubmitted)
+        {
+            <p style="margin-top: 0.5rem; color: green;" data-testid="editform-success-message">Form submitted successfully!</p>
+        }
+    </EditForm>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Custom Styling</h2>
+    <p>Checkboxes with custom styling using data attributes.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label class="checkbox-label">
+            <CheckboxRoot DefaultChecked="false" class="checkbox-root custom" data-testid="custom-unchecked">
+                <CheckboxIndicator>
+                    <span class="custom-indicator">✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Custom styled (unchecked)
+        </label>
+
+        <label class="checkbox-label">
+            <CheckboxRoot DefaultChecked="true" class="checkbox-root custom" data-testid="custom-checked">
+                <CheckboxIndicator>
+                    <span class="custom-indicator">✓</span>
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Custom styled (checked)
+        </label>
+    </div>
+</section>
+
+@code {
+// Controlled checkbox
+private bool isControlledChecked = false;
+
+// Indeterminate state demo
+private bool item1Checked = true;
+private bool item2Checked = false;
+private bool item3Checked = false;
+private bool allSelected = false;
+private bool isIndeterminate = true;
+
+// Group state
+private readonly IReadOnlyList<string> defaultGroupValues = ["feature-1", "feature-3"];
+private readonly IReadOnlyList<string> optionsDefaultValues = ["opt-1"];
+private readonly IReadOnlyList<string> settingsDefaultValues = ["setting-1"];
+private IReadOnlyList<string> groupValues = ["feature-1", "feature-3"];
+
+// Form submission
+private IReadOnlyList<string> formValues = [];
+private string formSubmitMessage = "";
+
+// EditForm model
+private CheckboxFormModel editFormModel = new();
+private bool editFormSubmitted = false;
+
+private class CheckboxFormModel
+{
+    [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms and conditions")]
+    public bool AcceptTerms { get; set; }
+
+    public bool SubscribeNewsletter { get; set; }
+
+    public bool EnableNotifications { get; set; }
+}
+
+private void HandleControlledChange(bool value)
+    {
+        isControlledChecked = value;
+    }
+
+    private void HandleIndeterminateChange(bool value)
+    {
+        isIndeterminate = value;
+    }
+
+    private void HandleItem1Change(bool value)
+    {
+        item1Checked = value;
+        UpdateSelectAllState();
+    }
+
+    private void HandleItem2Change(bool value)
+    {
+        item2Checked = value;
+        UpdateSelectAllState();
+    }
+
+    private void HandleItem3Change(bool value)
+    {
+        item3Checked = value;
+        UpdateSelectAllState();
+    }
+
+    private void UpdateSelectAllState()
+    {
+        var checkedCount = (item1Checked ? 1 : 0) + (item2Checked ? 1 : 0) + (item3Checked ? 1 : 0);
+
+        if (checkedCount == 0)
+        {
+            allSelected = false;
+            isIndeterminate = false;
+        }
+        else if (checkedCount == 3)
+        {
+            allSelected = true;
+            isIndeterminate = false;
+        }
+        else
+        {
+            allSelected = false;
+            isIndeterminate = true;
+        }
+    }
+
+    private void HandleSelectAllChanged(bool newValue)
+    {
+        allSelected = newValue;
+        item1Checked = newValue;
+        item2Checked = newValue;
+        item3Checked = newValue;
+        isIndeterminate = false;
+    }
+
+    private void HandleGroupChange(IReadOnlyList<string> values)
+    {
+        groupValues = values;
+    }
+
+    private void HandleFormValuesChange(IReadOnlyList<string> values)
+    {
+        formValues = values;
+    }
+
+    private void HandleFormSubmit()
+    {
+        var selectedPrefs = formValues.Count > 0 ? string.Join(", ", formValues) : "none";
+        formSubmitMessage = $"Submitted! Selected preferences: {selectedPrefs}";
+    }
+
+    private void HandleEditFormSubmit()
+    {
+        editFormSubmitted = true;
+    }
+}
+
+<style>
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    section h2 {
+        margin-top: 0;
+    }
+
+    .checkbox-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .checkbox-label:has([data-disabled]) {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .checkbox-root {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #666;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1;
+        padding: 0;
+    }
+
+    .checkbox-root:hover:not([data-disabled]) {
+        border-color: #333;
+    }
+
+    .checkbox-root:focus-visible {
+        outline: 2px solid #4f46e5;
+        outline-offset: 2px;
+    }
+
+    .checkbox-root[data-state="checked"],
+    .checkbox-root[data-state="indeterminate"] {
+        background: #4f46e5;
+        border-color: #4f46e5;
+        color: white;
+    }
+
+    .checkbox-root[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .checkbox-root.custom {
+        background: white;
+        border-color: #666;
+    }
+
+    .checkbox-root.custom[data-state="checked"],
+    .checkbox-root.custom[data-state="indeterminate"] {
+        background: #10b981;
+        border-color: #10b981;
+    }
+
+    .custom-indicator {
+        color: white;
+        font-weight: bold;
+    }
+
+    .group-label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.875rem;
+    }
+
+    .btn-primary {
+        background: #4f46e5;
+        color: white;
+    }
+
+    .btn-info {
+        background: #3b82f6;
+        color: white;
+    }
+</style>

@@ -93,11 +93,11 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
     {
         if (IsOpen) return;
 
-        // Close any other open popovers before opening this one
-        await PopoverService.RegisterOpenAsync(_context);
-
+        // Only uncontrolled popovers participate in automatic close behavior
+        // Controlled popovers are managed entirely by the parent component
         if (Open is null)
         {
+            await PopoverService.RegisterOpenAsync(_context);
             _internalOpen = true;
         }
 
@@ -111,11 +111,10 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
     {
         if (!IsOpen) return;
 
-        // Unregister from the popover service
-        PopoverService.Unregister(_context);
-
+        // Only uncontrolled popovers participate in automatic close behavior
         if (Open is null)
         {
+            PopoverService.Unregister(_context);
             _internalOpen = false;
         }
 
@@ -140,8 +139,11 @@ public partial class PopoverRoot : ComponentBase, IAsyncDisposable
         if (_isDisposed) return;
         _isDisposed = true;
 
-        // Unregister from service if still open
-        PopoverService.Unregister(_context);
+        // Only unregister uncontrolled popovers from service
+        if (Open is null)
+        {
+            PopoverService.Unregister(_context);
+        }
 
         await Task.CompletedTask;
     }

@@ -9,7 +9,6 @@
 
 // Run ALL Playwright tests sequentially to prevent system overload
 // Each Playwright test requires significant resources (browser instance, network, etc.)
-[assembly: TUnit.Core.NotInParallel]
 
 // Note: To override via command line, use:
 // dotnet run --project ArkUI.Tests.Playwright -- --maximum-parallel-tests 1

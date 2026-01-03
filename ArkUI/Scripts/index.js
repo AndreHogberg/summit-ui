@@ -8,7 +8,9 @@
 export {
     isRtl as utilities_isRtl,
     focusElement as utilities_focusElement,
-    focusElementById as utilities_focusElementById
+    focusElementById as utilities_focusElementById,
+    initializeCheckbox as utilities_initializeCheckbox,
+    destroyCheckbox as utilities_destroyCheckbox
 } from './utilities.js';
 
 // Floating UI wrapper exports (positioning only)

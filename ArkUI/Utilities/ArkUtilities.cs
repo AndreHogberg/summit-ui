@@ -86,6 +86,41 @@ public sealed class ArkUtilities : IAsyncDisposable
         }
     }
 
+    /// <summary>
+    /// Initializes a checkbox element to prevent Enter key from activating it.
+    /// Checkboxes should only respond to Space key per WAI-ARIA patterns.
+    /// </summary>
+    /// <param name="element">The checkbox button element.</param>
+    public async ValueTask InitializeCheckboxAsync(ElementReference element)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("utilities_initializeCheckbox", element);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+    }
+
+    /// <summary>
+    /// Cleans up checkbox event handlers.
+    /// </summary>
+    /// <param name="element">The checkbox button element.</param>
+    public async ValueTask DestroyCheckboxAsync(ElementReference element)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("utilities_destroyCheckbox", element);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)

@@ -27,3 +27,30 @@ export function focusElementById(elementId) {
     const element = document.getElementById(elementId);
     element?.focus();
 }
+
+/**
+ * Initialize a checkbox element to prevent Enter key from activating it.
+ * Checkboxes should only respond to Space key per WAI-ARIA patterns.
+ * @param {HTMLElement} element - The checkbox button element.
+ */
+export function initializeCheckbox(element) {
+    if (!element) return;
+    
+    element._arkCheckboxKeyHandler = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
+    element.addEventListener('keydown', element._arkCheckboxKeyHandler);
+}
+
+/**
+ * Cleanup checkbox event handlers.
+ * @param {HTMLElement} element - The checkbox button element.
+ */
+export function destroyCheckbox(element) {
+    if (!element || !element._arkCheckboxKeyHandler) return;
+    
+    element.removeEventListener('keydown', element._arkCheckboxKeyHandler);
+    delete element._arkCheckboxKeyHandler;
+}
