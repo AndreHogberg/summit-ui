@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text;
 
 namespace SummitUI;
@@ -17,8 +16,10 @@ internal static class DateFieldUtils
         var segments = new List<DateFieldSegmentState>();
         var culture = context.Culture;
         
-        // Get date segments from culture's short date pattern
-        var datePattern = culture.DateTimeFormat.ShortDatePattern;
+        // Use custom date pattern if provided, otherwise fall back to culture's short date pattern
+        var datePattern = !string.IsNullOrEmpty(context.DatePattern) 
+            ? context.DatePattern 
+            : culture.DateTimeFormat.ShortDatePattern;
         segments.AddRange(ParsePattern(datePattern));
         
         // Add time segments if granularity requires it
@@ -173,56 +174,6 @@ internal static class DateFieldUtils
         }
         
         return new DateFieldSegmentState { Type = type };
-    }
-
-    /// <summary>
-    /// Gets the localized label for a segment type.
-    /// </summary>
-    public static string GetSegmentLabel(DateFieldSegmentType type, CultureInfo culture)
-    {
-        // Use culture-specific names where available
-        var languageCode = culture.TwoLetterISOLanguageName;
-        
-        return (type, languageCode) switch
-        {
-            // Swedish
-            (DateFieldSegmentType.Year, "sv") => "År",
-            (DateFieldSegmentType.Month, "sv") => "Månad",
-            (DateFieldSegmentType.Day, "sv") => "Dag",
-            (DateFieldSegmentType.Hour, "sv") => "Timme",
-            (DateFieldSegmentType.Minute, "sv") => "Minut",
-            (DateFieldSegmentType.Second, "sv") => "Sekund",
-            (DateFieldSegmentType.DayPeriod, "sv") => "FM/EM",
-            
-            // Japanese
-            (DateFieldSegmentType.Year, "ja") => "年",
-            (DateFieldSegmentType.Month, "ja") => "月",
-            (DateFieldSegmentType.Day, "ja") => "日",
-            (DateFieldSegmentType.Hour, "ja") => "時",
-            (DateFieldSegmentType.Minute, "ja") => "分",
-            (DateFieldSegmentType.Second, "ja") => "秒",
-            (DateFieldSegmentType.DayPeriod, "ja") => "午前/午後",
-            
-            // Arabic
-            (DateFieldSegmentType.Year, "ar") => "السنة",
-            (DateFieldSegmentType.Month, "ar") => "الشهر",
-            (DateFieldSegmentType.Day, "ar") => "اليوم",
-            (DateFieldSegmentType.Hour, "ar") => "الساعة",
-            (DateFieldSegmentType.Minute, "ar") => "الدقيقة",
-            (DateFieldSegmentType.Second, "ar") => "الثانية",
-            (DateFieldSegmentType.DayPeriod, "ar") => "ص/م",
-            
-            // Default English
-            (DateFieldSegmentType.Year, _) => "Year",
-            (DateFieldSegmentType.Month, _) => "Month",
-            (DateFieldSegmentType.Day, _) => "Day",
-            (DateFieldSegmentType.Hour, _) => "Hour",
-            (DateFieldSegmentType.Minute, _) => "Minute",
-            (DateFieldSegmentType.Second, _) => "Second",
-            (DateFieldSegmentType.DayPeriod, _) => "AM/PM",
-            
-            _ => type.ToString()
-        };
     }
 
     /// <summary>

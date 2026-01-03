@@ -10,6 +10,43 @@ const elementHandlers = new Map();
 const inputBuffers = new Map();
 
 /**
+ * Gets localized segment labels using Intl.DisplayNames.
+ * Falls back to English if the API is not available or fails.
+ * @param {string} locale - The locale to use (e.g., "en-US", "sv-SE").
+ * @returns {Object} Object containing localized labels for each segment type.
+ */
+export function getSegmentLabels(locale) {
+    const fallback = {
+        year: 'Year',
+        month: 'Month',
+        day: 'Day',
+        hour: 'Hour',
+        minute: 'Minute',
+        second: 'Second',
+        dayPeriod: 'AM/PM'
+    };
+
+    if (typeof Intl.DisplayNames === 'undefined') {
+        return fallback;
+    }
+
+    try {
+        const dn = new Intl.DisplayNames(locale, { type: 'dateTimeField' });
+        return {
+            year: dn.of('year') ?? fallback.year,
+            month: dn.of('month') ?? fallback.month,
+            day: dn.of('day') ?? fallback.day,
+            hour: dn.of('hour') ?? fallback.hour,
+            minute: dn.of('minute') ?? fallback.minute,
+            second: dn.of('second') ?? fallback.second,
+            dayPeriod: dn.of('dayPeriod') ?? fallback.dayPeriod
+        };
+    } catch {
+        return fallback;
+    }
+}
+
+/**
  * Initializes interactions for a date field segment.
  * @param {HTMLElement} element - The segment element.
  * @param {DotNetObjectReference} dotNetHelper - Reference to C# component for callbacks.
@@ -66,7 +103,7 @@ export function initializeSegment(element, dotNetHelper) {
             return;
         }
         
-        // Prevent other input in contenteditable
+        // Prevent default for other character keys
         if (key.length === 1 && !event.ctrlKey && !event.metaKey) {
             event.preventDefault();
         }
@@ -186,43 +223,24 @@ export function initializeSegment(element, dotNetHelper) {
     }
     
     function handleFocus(event) {
-        // Clear buffer on focus
+        // Clear buffer on focus to start fresh input
         clearInputBuffer(element);
-        
-        // Select all text on focus for easy replacement
-        requestAnimationFrame(() => {
-            const range = document.createRange();
-            range.selectNodeContents(element);
-            const sel = window.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(range);
-        });
     }
     
     function handleBlur(event) {
         // Clear buffer on blur
         clearInputBuffer(element);
     }
-    
-    // Prevent paste and other input methods that bypass keydown
-    function handleBeforeInput(event) {
-        // Allow only specific input types or prevent entirely
-        if (event.inputType !== 'insertText') {
-            event.preventDefault();
-        }
-    }
 
     // Register all event listeners
     element.addEventListener('keydown', handleKeyDown);
     element.addEventListener('focus', handleFocus);
     element.addEventListener('blur', handleBlur);
-    element.addEventListener('beforeinput', handleBeforeInput);
     
     elementHandlers.set(element, { 
         handleKeyDown, 
         handleFocus, 
-        handleBlur,
-        handleBeforeInput
+        handleBlur
     });
 }
 
@@ -238,7 +256,6 @@ export function destroySegment(element) {
         element.removeEventListener('keydown', handlers.handleKeyDown);
         element.removeEventListener('focus', handlers.handleFocus);
         element.removeEventListener('blur', handlers.handleBlur);
-        element.removeEventListener('beforeinput', handlers.handleBeforeInput);
         elementHandlers.delete(element);
     }
     

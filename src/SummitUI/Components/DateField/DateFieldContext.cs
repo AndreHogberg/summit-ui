@@ -26,6 +26,7 @@ public class DateFieldContext
     public DateFieldGranularity Granularity { get; private set; } = DateFieldGranularity.Day;
     public HourCycle HourCycle { get; private set; } = HourCycle.Auto;
     public CultureInfo Culture { get; private set; } = CultureInfo.CurrentCulture;
+    public string? DatePattern { get; private set; }
     
     // Validation constraints
     public DateOnly? MinDate { get; private set; }
@@ -41,6 +42,9 @@ public class DateFieldContext
     // Callbacks for value changes
     public EventCallback<DateOnly?> DateValueChanged { get; private set; }
     public EventCallback<DateTime?> DateTimeValueChanged { get; private set; }
+    
+    // Cached segment labels from JavaScript Intl.DisplayNames
+    private Dictionary<DateFieldSegmentType, string>? _segmentLabels;
     
     public event Action? OnStateChanged;
 
@@ -89,6 +93,7 @@ public class DateFieldContext
         DateFieldGranularity granularity,
         HourCycle hourCycle,
         CultureInfo culture,
+        string? datePattern,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -102,6 +107,7 @@ public class DateFieldContext
         Granularity = granularity;
         HourCycle = hourCycle;
         Culture = culture;
+        DatePattern = datePattern;
         Disabled = disabled;
         ReadOnly = readOnly;
         Invalid = invalid;
@@ -120,6 +126,7 @@ public class DateFieldContext
         DateFieldGranularity granularity,
         HourCycle hourCycle,
         CultureInfo culture,
+        string? datePattern,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -133,6 +140,7 @@ public class DateFieldContext
         Granularity = granularity;
         HourCycle = hourCycle;
         Culture = culture;
+        DatePattern = datePattern;
         Disabled = disabled;
         ReadOnly = readOnly;
         Invalid = invalid;
@@ -307,6 +315,48 @@ public class DateFieldContext
     }
 
     public void NotifyStateChanged() => OnStateChanged?.Invoke();
+
+    /// <summary>
+    /// Sets the cached segment labels from JavaScript Intl.DisplayNames.
+    /// </summary>
+    public void SetSegmentLabels(Dictionary<string, string> labels)
+    {
+        _segmentLabels = new Dictionary<DateFieldSegmentType, string>
+        {
+            [DateFieldSegmentType.Year] = labels.GetValueOrDefault("year", "Year"),
+            [DateFieldSegmentType.Month] = labels.GetValueOrDefault("month", "Month"),
+            [DateFieldSegmentType.Day] = labels.GetValueOrDefault("day", "Day"),
+            [DateFieldSegmentType.Hour] = labels.GetValueOrDefault("hour", "Hour"),
+            [DateFieldSegmentType.Minute] = labels.GetValueOrDefault("minute", "Minute"),
+            [DateFieldSegmentType.Second] = labels.GetValueOrDefault("second", "Second"),
+            [DateFieldSegmentType.DayPeriod] = labels.GetValueOrDefault("dayPeriod", "AM/PM")
+        };
+    }
+
+    /// <summary>
+    /// Gets the localized label for a segment type.
+    /// Falls back to English if labels haven't been loaded yet.
+    /// </summary>
+    public string GetSegmentLabel(DateFieldSegmentType type)
+    {
+        if (_segmentLabels != null && _segmentLabels.TryGetValue(type, out var label))
+        {
+            return label;
+        }
+        
+        // Fallback to English defaults
+        return type switch
+        {
+            DateFieldSegmentType.Year => "Year",
+            DateFieldSegmentType.Month => "Month",
+            DateFieldSegmentType.Day => "Day",
+            DateFieldSegmentType.Hour => "Hour",
+            DateFieldSegmentType.Minute => "Minute",
+            DateFieldSegmentType.Second => "Second",
+            DateFieldSegmentType.DayPeriod => "AM/PM",
+            _ => type.ToString()
+        };
+    }
 }
 
 /// <summary>

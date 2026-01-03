@@ -25,6 +25,13 @@ public class DateFieldRoot : ComponentBase
     [Parameter] public HourCycle HourCycle { get; set; } = HourCycle.Auto;
     [Parameter] public CultureInfo? Locale { get; set; }
     
+    /// <summary>
+    /// Custom date pattern to override the culture's default short date pattern.
+    /// Use standard .NET date format specifiers (e.g., "yyyy-MM-dd", "dd.MM.yyyy").
+    /// Only affects date segments; time segments are derived from culture and granularity.
+    /// </summary>
+    [Parameter] public string? DatePattern { get; set; }
+    
     // Validation constraints
     [Parameter] public DateOnly? MinValue { get; set; }
     [Parameter] public DateOnly? MaxValue { get; set; }
@@ -68,6 +75,7 @@ public class DateFieldRoot : ComponentBase
                 Granularity,
                 HourCycle,
                 culture,
+                DatePattern,
                 Disabled,
                 ReadOnly,
                 isInvalid,
@@ -83,6 +91,7 @@ public class DateFieldRoot : ComponentBase
                 Granularity,
                 HourCycle,
                 culture,
+                DatePattern,
                 Disabled,
                 ReadOnly,
                 isInvalid,

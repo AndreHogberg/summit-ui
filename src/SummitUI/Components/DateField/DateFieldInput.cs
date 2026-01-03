@@ -1,6 +1,6 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using SummitUI.Interop;
 
 namespace SummitUI;
 
@@ -9,6 +9,8 @@ namespace SummitUI;
 /// </summary>
 public class DateFieldInput : ComponentBase, IDisposable
 {
+    [Inject] private DateFieldJsInterop JsInterop { get; set; } = default!;
+    
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
     
     /// <summary>
@@ -19,6 +21,7 @@ public class DateFieldInput : ComponentBase, IDisposable
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private List<DateFieldSegmentState> _segments = new();
+    private bool _labelsLoaded;
 
     protected override void OnInitialized()
     {
@@ -32,6 +35,17 @@ public class DateFieldInput : ComponentBase, IDisposable
     protected override void OnParametersSet()
     {
         RegenerateSegments();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_labelsLoaded)
+        {
+            _labelsLoaded = true;
+            var labels = await JsInterop.GetSegmentLabelsAsync(Context.Culture.Name);
+            Context.SetSegmentLabels(labels);
+            StateHasChanged();
+        }
     }
 
     private void HandleStateChanged()

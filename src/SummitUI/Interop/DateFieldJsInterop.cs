@@ -31,6 +31,17 @@ public class DateFieldJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         }
     }
 
+    /// <summary>
+    /// Gets localized segment labels from the browser using Intl.DisplayNames.
+    /// </summary>
+    /// <param name="locale">The locale to use (e.g., "en-US", "sv-SE").</param>
+    /// <returns>Dictionary of segment labels keyed by segment type name.</returns>
+    public async ValueTask<Dictionary<string, string>> GetSegmentLabelsAsync(string locale)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<Dictionary<string, string>>("dateField_getSegmentLabels", locale);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)

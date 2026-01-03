@@ -56,35 +56,41 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
     {
         var effectiveDateTime = Context.EffectiveDateTime;
         var segmentText = DateFieldUtils.FormatSegmentValue(Segment.Type, effectiveDateTime, Context);
-        var ariaLabel = DateFieldUtils.GetSegmentLabel(Segment.Type, Context.Culture);
+        var ariaLabel = Context.GetSegmentLabel(Segment.Type);
         var min = DateFieldUtils.GetSegmentMin(Segment.Type, Context);
         var max = DateFieldUtils.GetSegmentMax(Segment.Type, Context);
         var valueNow = GetValueNow();
         
-        builder.OpenElement(0, "div");
+        builder.OpenElement(0, "span");
         builder.AddAttribute(1, "role", "spinbutton");
-        builder.AddAttribute(2, "contenteditable", Context.Disabled || Context.ReadOnly ? "false" : "true");
-        builder.AddAttribute(3, "aria-label", ariaLabel);
-        builder.AddAttribute(4, "aria-valuemin", min);
-        builder.AddAttribute(5, "aria-valuemax", max);
+        builder.AddAttribute(2, "aria-label", ariaLabel);
+        builder.AddAttribute(3, "aria-valuemin", min);
+        builder.AddAttribute(4, "aria-valuemax", max);
         
         if (valueNow.HasValue)
         {
-            builder.AddAttribute(6, "aria-valuenow", valueNow.Value);
+            builder.AddAttribute(5, "aria-valuenow", valueNow.Value);
         }
         
-        builder.AddAttribute(7, "aria-valuetext", segmentText);
-        builder.AddAttribute(8, "inputmode", Segment.Type == DateFieldSegmentType.DayPeriod ? "text" : "numeric");
-        builder.AddAttribute(9, "tabindex", Context.Disabled ? "-1" : "0");
-        builder.AddAttribute(10, "data-segment", Segment.Type.ToString().ToLowerInvariant());
+        builder.AddAttribute(6, "aria-valuetext", segmentText);
+        builder.AddAttribute(7, "tabindex", Context.Disabled ? "-1" : "0");
+        builder.AddAttribute(8, "data-segment", Segment.Type.ToString().ToLowerInvariant());
+        builder.AddAttribute(9, "inputmode", Segment.Type == DateFieldSegmentType.DayPeriod ? "text" : "numeric");
         
-        if (Context.Disabled) builder.AddAttribute(11, "data-disabled", "");
-        if (Context.ReadOnly) builder.AddAttribute(12, "data-readonly", "");
-        if (!Context.HasValue) builder.AddAttribute(13, "data-placeholder", "");
+        if (Context.Disabled) builder.AddAttribute(10, "data-disabled", "");
+        if (Context.ReadOnly) builder.AddAttribute(11, "data-readonly", "");
+        if (!Context.HasValue) builder.AddAttribute(12, "data-placeholder", "");
         
-        builder.AddMultipleAttributes(14, AdditionalAttributes);
-        builder.AddElementReferenceCapture(15, el => _elementRef = el);
-        builder.AddContent(16, segmentText);
+        builder.AddMultipleAttributes(13, AdditionalAttributes);
+        builder.AddElementReferenceCapture(14, el => _elementRef = el);
+        
+        // Wrap text content in aria-hidden span to prevent screen readers from 
+        // reading both aria-valuetext and the visible text content
+        builder.OpenElement(15, "span");
+        builder.AddAttribute(16, "aria-hidden", "true");
+        builder.AddContent(17, segmentText);
+        builder.CloseElement();
+        
         builder.CloseElement();
     }
 
