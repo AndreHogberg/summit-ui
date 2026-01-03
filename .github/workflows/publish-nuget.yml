@@ -1,0 +1,108 @@
+name: Publish to NuGet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 1.0.0, 1.0.0-alpha, 1.0.0-beta.1)'
+        required: true
+        type: string
+      push_to_nuget:
+        description: 'Push package to NuGet.org'
+        required: true
+        type: boolean
+        default: true
+      create_git_tag:
+        description: 'Create a git tag for this version'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ inputs.version }}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[0-9]+)?)?$ ]]; then
+            echo "Error: Invalid version format '$VERSION'"
+            echo "Expected format: X.Y.Z or X.Y.Z-prerelease (e.g., 1.0.0, 1.0.0-alpha, 1.0.0-beta.1)"
+            exit 1
+          fi
+          echo "Version '$VERSION' is valid"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Update version in csproj
+        run: |
+          VERSION="${{ inputs.version }}"
+          CSPROJ_PATH="src/SummitUI/SummitUI.csproj"
+          
+          # Update the version using sed
+          sed -i "s|<Version>.*</Version>|<Version>${VERSION}</Version>|" "$CSPROJ_PATH"
+          
+          echo "Updated version to $VERSION in $CSPROJ_PATH"
+          grep "<Version>" "$CSPROJ_PATH"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Create NuGet package
+        run: dotnet pack src/SummitUI/SummitUI.csproj --configuration Release --no-build --output ./nupkg
+
+      - name: Upload NuGet package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package
+          path: ./nupkg/*.nupkg
+          retention-days: 30
+
+      - name: Push to NuGet.org
+        if: ${{ inputs.push_to_nuget }}
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+      - name: Commit version update
+        if: ${{ inputs.create_git_tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/SummitUI/SummitUI.csproj
+          git commit -m "chore: bump version to ${{ inputs.version }}"
+          git push
+
+      - name: Create git tag
+        if: ${{ inputs.create_git_tag }}
+        run: |
+          git tag "v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
+
+      - name: Create GitHub Release
+        if: ${{ inputs.create_git_tag }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          generate_release_notes: true
+          files: ./nupkg/*.nupkg
