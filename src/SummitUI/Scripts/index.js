@@ -69,6 +69,12 @@ export {
     unregisterTrigger as select_unregisterTrigger
 } from './select.js';
 
+// DateField exports (segment interaction)
+export {
+    initializeSegment as dateField_initializeSegment,
+    destroySegment as dateField_destroySegment
+} from './date-field.js';
+
 // Dropdown Menu exports (portal and trigger functionality only - keyboard nav handled by Blazor)
 export {
     createPortal as dropdownMenu_createPortal,
