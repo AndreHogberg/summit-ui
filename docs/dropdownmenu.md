@@ -79,9 +79,9 @@ A floating menu component with support for items, checkbox items, radio groups, 
 |-----------|------|---------|-------------|
 | `ChildContent` | `RenderFragment?` | - | Menu content |
 | `As` | `string` | `"div"` | HTML element |
-| `Side` | `DropdownMenuSide` | `Bottom` | Placement side |
+| `Side` | `Side` | `Bottom` | Placement side |
 | `SideOffset` | `int` | `4` | Offset from trigger (px) |
-| `Align` | `DropdownMenuAlign` | `Start` | Alignment along side axis |
+| `Align` | `Align` | `Start` | Alignment along side axis |
 | `AlignOffset` | `int` | `0` | Alignment offset (px) |
 | `AvoidCollisions` | `bool` | `true` | Avoid viewport boundaries |
 | `CollisionPadding` | `int` | `8` | Viewport padding (px) |
@@ -156,10 +156,10 @@ A floating menu component with support for items, checkbox items, radio groups, 
 
 ## Enums
 
-### DropdownMenuSide
+### Side
 
 ```csharp
-public enum DropdownMenuSide
+public enum Side
 {
     Top,
     Right,
@@ -168,10 +168,10 @@ public enum DropdownMenuSide
 }
 ```
 
-### DropdownMenuAlign
+### Align
 
 ```csharp
-public enum DropdownMenuAlign
+public enum Align
 {
     Start,
     Center,
@@ -324,22 +324,22 @@ public enum OutsideClickBehavior
 
 ```razor
 @* Bottom-aligned (default) *@
-<DropdownMenuContent Side="DropdownMenuSide.Bottom" Align="DropdownMenuAlign.Start">
+<DropdownMenuContent Side="Side.Bottom" Align="Align.Start">
     ...
 </DropdownMenuContent>
 
 @* Right side *@
-<DropdownMenuContent Side="DropdownMenuSide.Right" Align="DropdownMenuAlign.Start">
+<DropdownMenuContent Side="Side.Right" Align="Align.Start">
     ...
 </DropdownMenuContent>
 
 @* Top, centered *@
-<DropdownMenuContent Side="DropdownMenuSide.Top" Align="DropdownMenuAlign.Center">
+<DropdownMenuContent Side="Side.Top" Align="Align.Center">
     ...
 </DropdownMenuContent>
 
 @* Left, end-aligned *@
-<DropdownMenuContent Side="DropdownMenuSide.Left" Align="DropdownMenuAlign.End">
+<DropdownMenuContent Side="Side.Left" Align="Align.End">
     ...
 </DropdownMenuContent>
 ```

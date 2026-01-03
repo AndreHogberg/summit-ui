@@ -77,9 +77,9 @@ A floating content panel that appears next to a trigger element, commonly used f
 |-----------|------|---------|-------------|
 | `ChildContent` | `RenderFragment?` | - | Popover content |
 | `As` | `string` | `"div"` | HTML element |
-| `Side` | `PopoverSide` | `Bottom` | Placement side |
+| `Side` | `Side` | `Bottom` | Placement side |
 | `SideOffset` | `int` | `0` | Offset from trigger (px) |
-| `Align` | `PopoverAlign` | `Center` | Alignment along side axis |
+| `Align` | `Align` | `Center` | Alignment along side axis |
 | `AlignOffset` | `int` | `0` | Alignment offset (px) |
 | `AvoidCollisions` | `bool` | `true` | Avoid viewport boundaries |
 | `CollisionPadding` | `int` | `8` | Viewport padding (px) |
@@ -110,10 +110,10 @@ A floating content panel that appears next to a trigger element, commonly used f
 
 ## Enums
 
-### PopoverSide
+### Side
 
 ```csharp
-public enum PopoverSide
+public enum Side
 {
     Top,
     Right,
@@ -122,10 +122,10 @@ public enum PopoverSide
 }
 ```
 
-### PopoverAlign
+### Align
 
 ```csharp
-public enum PopoverAlign
+public enum Align
 {
     Start,
     Center,
@@ -223,7 +223,7 @@ public enum OutsideClickBehavior
 <PopoverRoot>
     <PopoverTrigger>Bottom</PopoverTrigger>
     <PopoverPortal>
-        <PopoverContent Side="PopoverSide.Bottom" SideOffset="8">
+        <PopoverContent Side="Side.Bottom" SideOffset="8">
             Content appears below
         </PopoverContent>
     </PopoverPortal>
@@ -233,7 +233,7 @@ public enum OutsideClickBehavior
 <PopoverRoot>
     <PopoverTrigger>Top</PopoverTrigger>
     <PopoverPortal>
-        <PopoverContent Side="PopoverSide.Top" SideOffset="8">
+        <PopoverContent Side="Side.Top" SideOffset="8">
             Content appears above
         </PopoverContent>
     </PopoverPortal>
@@ -243,7 +243,7 @@ public enum OutsideClickBehavior
 <PopoverRoot>
     <PopoverTrigger>Left</PopoverTrigger>
     <PopoverPortal>
-        <PopoverContent Side="PopoverSide.Left" SideOffset="8">
+        <PopoverContent Side="Side.Left" SideOffset="8">
             Content appears to the left
         </PopoverContent>
     </PopoverPortal>
@@ -253,7 +253,7 @@ public enum OutsideClickBehavior
 <PopoverRoot>
     <PopoverTrigger>Right</PopoverTrigger>
     <PopoverPortal>
-        <PopoverContent Side="PopoverSide.Right" SideOffset="8">
+        <PopoverContent Side="Side.Right" SideOffset="8">
             Content appears to the right
         </PopoverContent>
     </PopoverPortal>
@@ -264,17 +264,17 @@ public enum OutsideClickBehavior
 
 ```razor
 @* Start aligned *@
-<PopoverContent Side="PopoverSide.Bottom" Align="PopoverAlign.Start" SideOffset="8">
+<PopoverContent Side="Side.Bottom" Align="Align.Start" SideOffset="8">
     Aligned to start
 </PopoverContent>
 
 @* Center aligned (default) *@
-<PopoverContent Side="PopoverSide.Bottom" Align="PopoverAlign.Center" SideOffset="8">
+<PopoverContent Side="Side.Bottom" Align="Align.Center" SideOffset="8">
     Centered
 </PopoverContent>
 
 @* End aligned *@
-<PopoverContent Side="PopoverSide.Bottom" Align="PopoverAlign.End" SideOffset="8">
+<PopoverContent Side="Side.Bottom" Align="Align.End" SideOffset="8">
     Aligned to end
 </PopoverContent>
 ```

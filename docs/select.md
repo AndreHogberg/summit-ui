@@ -95,14 +95,14 @@ A custom dropdown select component with full keyboard navigation and accessibili
 |-----------|------|---------|-------------|
 | `ChildContent` | `RenderFragment?` | - | Typically SelectViewport |
 | `As` | `string` | `"div"` | HTML element |
-| `Side` | `SelectSide` | `Bottom` | Placement side |
+| `Side` | `Side` | `Bottom` | Placement side |
 | `SideOffset` | `int` | `4` | Offset from trigger (px) |
-| `Align` | `SelectAlign` | `Start` | Alignment along side axis |
+| `Align` | `Align` | `Start` | Alignment along side axis |
 | `AlignOffset` | `int` | `0` | Alignment offset (px) |
 | `AvoidCollisions` | `bool` | `true` | Avoid viewport boundaries |
 | `CollisionPadding` | `int` | `8` | Viewport padding (px) |
-| `EscapeKeyBehavior` | `SelectEscapeKeyBehavior` | `Close` | Escape key behavior |
-| `OutsideClickBehavior` | `SelectOutsideClickBehavior` | `Close` | Outside click behavior |
+| `EscapeKeyBehavior` | `EscapeKeyBehavior` | `Close` | Escape key behavior |
+| `OutsideClickBehavior` | `OutsideClickBehavior` | `Close` | Outside click behavior |
 | `OnInteractOutside` | `EventCallback` | - | Outside click callback |
 | `OnEscapeKeyDown` | `EventCallback` | - | Escape key callback |
 
@@ -146,10 +146,10 @@ A custom dropdown select component with full keyboard navigation and accessibili
 
 ## Enums
 
-### SelectSide
+### Side
 
 ```csharp
-public enum SelectSide
+public enum Side
 {
     Top,
     Right,
@@ -158,10 +158,10 @@ public enum SelectSide
 }
 ```
 
-### SelectAlign
+### Align
 
 ```csharp
-public enum SelectAlign
+public enum Align
 {
     Start,
     Center,
@@ -169,20 +169,20 @@ public enum SelectAlign
 }
 ```
 
-### SelectEscapeKeyBehavior
+### EscapeKeyBehavior
 
 ```csharp
-public enum SelectEscapeKeyBehavior
+public enum EscapeKeyBehavior
 {
     Close,
     Ignore
 }
 ```
 
-### SelectOutsideClickBehavior
+### OutsideClickBehavior
 
 ```csharp
-public enum SelectOutsideClickBehavior
+public enum OutsideClickBehavior
 {
     Close,
     Ignore
