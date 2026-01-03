@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace ArkUI.Components.Popover;
+namespace ArkUI;
 
 /// <summary>
 /// Cascading context shared between popover sub-components.

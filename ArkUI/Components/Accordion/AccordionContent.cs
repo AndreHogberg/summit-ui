@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 
-namespace ArkUI.Components.Accordion;
+namespace ArkUI;
 
 /// <summary>
 /// Accordion content panel. Renders with role="region".

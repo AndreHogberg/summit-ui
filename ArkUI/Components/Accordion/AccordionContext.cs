@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Accordion;
+namespace ArkUI;
 
 /// <summary>
 /// Cascading context shared between accordion sub-components.

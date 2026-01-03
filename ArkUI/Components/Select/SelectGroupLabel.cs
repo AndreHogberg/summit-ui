@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Select;
+namespace ArkUI;
 
 /// <summary>
 /// Label for a select group. Used for accessibility labeling.

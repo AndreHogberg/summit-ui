@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
-namespace ArkUI.Components.DropdownMenu;
+namespace ArkUI;
 
 /// <summary>
 /// The floating content panel of the dropdown menu with positioning logic.

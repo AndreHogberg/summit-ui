@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace ArkUI.Components.Select;
+namespace ArkUI;
 
 /// <summary>
 /// A selectable option within the select dropdown.

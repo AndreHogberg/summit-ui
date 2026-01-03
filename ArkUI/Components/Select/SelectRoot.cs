@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Select;
+namespace ArkUI;
 
 /// <summary>
 /// Root component that manages the state of the select.

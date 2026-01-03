@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Tabs;
+namespace ArkUI;
 
 /// <summary>
 /// Tab content panel. Renders with role="tabpanel".

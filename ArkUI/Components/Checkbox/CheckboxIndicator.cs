@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Checkbox;
+namespace ArkUI;
 
 /// <summary>
 /// A visual indicator for the checkbox state.

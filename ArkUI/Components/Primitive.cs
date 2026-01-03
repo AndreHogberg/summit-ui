@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components;
+namespace ArkUI;
 
 /// <summary>
 /// A polymorphic component that renders a dynamic HTML element.

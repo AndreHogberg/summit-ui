@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 
-namespace ArkUI.Components.Utilities;
+namespace ArkUI;
 
 /// <summary>
 /// A component that traps keyboard focus within its children.

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.DropdownMenu;
+namespace ArkUI;
 
 /// <summary>
 /// Groups related menu items together.

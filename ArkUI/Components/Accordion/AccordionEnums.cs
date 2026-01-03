@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Accordion;
+namespace ArkUI;
 
 /// <summary>
 /// Type of accordion expansion behavior.

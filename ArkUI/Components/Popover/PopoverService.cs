@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Popover;
+namespace ArkUI;
 
 /// <summary>
 /// Service that coordinates multiple popover instances to ensure only one is open at a time.

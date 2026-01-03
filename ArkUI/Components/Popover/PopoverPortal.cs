@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Popover;
+namespace ArkUI;
 
 /// <summary>
 /// Renders children in a fixed-position container to avoid z-index and overflow issues.

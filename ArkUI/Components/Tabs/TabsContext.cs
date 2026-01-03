@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace ArkUI.Components.Tabs;
+namespace ArkUI;
 
 /// <summary>
 /// Represents a registered tab trigger with its metadata for navigation.

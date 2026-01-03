@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace ArkUI.Components.Popover;
+namespace ArkUI;
 
 /// <summary>
 /// Close button for the popover.

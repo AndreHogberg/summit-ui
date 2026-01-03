@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
-namespace ArkUI.Components.Select;
+namespace ArkUI;
 
 /// <summary>
 /// Trigger button that opens/closes the select dropdown.

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace ArkUI.Components.Checkbox;
+namespace ArkUI;
 
 /// <summary>
 /// A fully accessible checkbox component with three states: unchecked, indeterminate, and checked.

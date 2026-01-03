@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Select;
+namespace ArkUI;
 
 /// <summary>
 /// Text content wrapper for a select item.

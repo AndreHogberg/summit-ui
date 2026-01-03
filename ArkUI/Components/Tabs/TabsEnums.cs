@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Tabs;
+namespace ArkUI;
 
 /// <summary>
 /// Orientation of the tabs component, affects keyboard navigation.

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Accordion;
+namespace ArkUI;
 
 /// <summary>
 /// Semantic heading wrapper for accordion trigger.

@@ -1,4 +1,4 @@
-namespace ArkUI.Components.DropdownMenu;
+namespace ArkUI;
 
 /// <summary>
 /// Primary placement side for the dropdown menu relative to the trigger.

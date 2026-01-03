@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Switch;
+namespace ArkUI;
 
 public class SwitchContext
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Tabs;
+namespace ArkUI;
 
 /// <summary>
 /// Root component that manages the state of the tabs.

@@ -1,10 +1,9 @@
-using ArkUI.Components.Utilities;
 using ArkUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 
-namespace ArkUI.Components.Popover;
+namespace ArkUI;
 
 /// <summary>
 /// The floating content panel of the popover with positioning logic.

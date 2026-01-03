@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.DropdownMenu;
+namespace ArkUI;
 
 /// <summary>
 /// A group of radio menu items where only one can be selected at a time.

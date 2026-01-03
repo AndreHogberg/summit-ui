@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 
-namespace ArkUI.Components.DropdownMenu;
+namespace ArkUI;
 
 /// <summary>
 /// Portal component that renders dropdown menu content at the document body level.

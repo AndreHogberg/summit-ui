@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Checkbox;
+namespace ArkUI;
 
 /// <summary>
 /// Represents the checked state of a checkbox.

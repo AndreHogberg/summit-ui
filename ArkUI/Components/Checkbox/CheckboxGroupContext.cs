@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Checkbox;
+namespace ArkUI;
 
 /// <summary>
 /// Cascading context shared between CheckboxGroup and its child CheckboxRoot components.

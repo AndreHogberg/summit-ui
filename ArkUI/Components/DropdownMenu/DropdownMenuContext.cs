@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace ArkUI.Components.DropdownMenu;
+namespace ArkUI;
 
 /// <summary>
 /// Cascading context shared between dropdown menu sub-components.

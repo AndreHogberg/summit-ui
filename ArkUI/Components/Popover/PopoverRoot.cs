@@ -2,7 +2,7 @@ using ArkUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace ArkUI.Components.Popover;
+namespace ArkUI;
 
 /// <summary>
 /// Root component that manages the state of the popover.

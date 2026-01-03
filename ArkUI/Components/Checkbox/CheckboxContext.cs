@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Checkbox;
+namespace ArkUI;
 
 /// <summary>
 /// Context passed to child content of CheckboxRoot.

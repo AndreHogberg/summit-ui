@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace ArkUI.Components.Select;
+namespace ArkUI;
 
 /// <summary>
 /// Cascading context shared between select sub-components.

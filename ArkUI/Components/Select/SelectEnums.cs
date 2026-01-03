@@ -1,4 +1,4 @@
-namespace ArkUI.Components.Select;
+namespace ArkUI;
 
 /// <summary>
 /// Primary placement side for the select content relative to the trigger.
