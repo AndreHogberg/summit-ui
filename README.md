@@ -40,7 +40,7 @@ builder.Services.AddSummitUI();
 3. (Optional) Add the script reference in your `App.razor` (or `index.html` for WASM) if you are using components that require JavaScript interop (like `FocusTrap` or floating UI components). Note that many components load their scripts lazily, but including the main script can ensure early availability.
 
 ```html
-<script src="_content/SummitUI/summitui.js"></script>
+<script type="module" src="@Assets["_content/SummitUI/summitui.js"]" ></script>
 ```
 
 ## Usage Example
