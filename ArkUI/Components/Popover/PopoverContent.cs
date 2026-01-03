@@ -33,7 +33,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
     /// Preferred placement side relative to the trigger.
     /// </summary>
     [Parameter]
-    public PopoverSide Side { get; set; } = PopoverSide.Bottom;
+    public Side Side { get; set; } = Side.Bottom;
 
     /// <summary>
     /// Offset from the trigger element in pixels.
@@ -45,7 +45,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
     /// Alignment along the side axis.
     /// </summary>
     [Parameter]
-    public PopoverAlign Align { get; set; } = PopoverAlign.Center;
+    public Align Align { get; set; } = Align.Center;
 
     /// <summary>
     /// Offset for alignment in pixels.

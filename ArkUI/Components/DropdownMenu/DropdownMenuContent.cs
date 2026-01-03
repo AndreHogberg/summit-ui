@@ -34,7 +34,7 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
     /// Preferred placement side relative to the trigger.
     /// </summary>
     [Parameter]
-    public DropdownMenuSide Side { get; set; } = DropdownMenuSide.Bottom;
+    public Side Side { get; set; } = Side.Bottom;
 
     /// <summary>
     /// Offset from the trigger element in pixels.
@@ -46,7 +46,7 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
     /// Alignment along the side axis.
     /// </summary>
     [Parameter]
-    public DropdownMenuAlign Align { get; set; } = DropdownMenuAlign.Start;
+    public Align Align { get; set; } = Align.Start;
 
     /// <summary>
     /// Offset for alignment in pixels.

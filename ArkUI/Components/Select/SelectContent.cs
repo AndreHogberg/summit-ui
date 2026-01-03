@@ -36,7 +36,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
     /// Preferred placement side relative to the trigger.
     /// </summary>
     [Parameter]
-    public SelectSide Side { get; set; } = SelectSide.Bottom;
+    public Side Side { get; set; } = Side.Bottom;
 
     /// <summary>
     /// Offset from the trigger element in pixels.
@@ -48,7 +48,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
     /// Alignment along the side axis.
     /// </summary>
     [Parameter]
-    public SelectAlign Align { get; set; } = SelectAlign.Start;
+    public Align Align { get; set; } = Align.Start;
 
     /// <summary>
     /// Offset for alignment in pixels.
@@ -72,13 +72,13 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
     /// Behavior when Escape key is pressed.
     /// </summary>
     [Parameter]
-    public SelectEscapeKeyBehavior EscapeKeyBehavior { get; set; } = SelectEscapeKeyBehavior.Close;
+    public EscapeKeyBehavior EscapeKeyBehavior { get; set; } = EscapeKeyBehavior.Close;
 
     /// <summary>
     /// Behavior when clicking outside the select.
     /// </summary>
     [Parameter]
-    public SelectOutsideClickBehavior OutsideClickBehavior { get; set; } = SelectOutsideClickBehavior.Close;
+    public OutsideClickBehavior OutsideClickBehavior { get; set; } = OutsideClickBehavior.Close;
 
     /// <summary>
     /// Callback invoked when a click outside the select is detected.
@@ -159,7 +159,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
                 options);
 
             // Register outside click handler if needed
-            if (OutsideClickBehavior != SelectOutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
+            if (OutsideClickBehavior != OutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
             {
                 _outsideClickListenerId = await FloatingInterop.RegisterOutsideClickAsync(
                     Context.TriggerElement,
@@ -169,7 +169,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
             }
 
             // Register Escape key handler if needed
-            if (EscapeKeyBehavior != SelectEscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
+            if (EscapeKeyBehavior != EscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
             {
                 _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
                     _dotNetRef,
@@ -302,7 +302,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
 
         await OnInteractOutside.InvokeAsync();
 
-        if (OutsideClickBehavior == SelectOutsideClickBehavior.Close)
+        if (OutsideClickBehavior == OutsideClickBehavior.Close)
         {
             await Context.CloseAsync();
         }
@@ -318,7 +318,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
 
         await OnEscapeKeyDown.InvokeAsync();
 
-        if (EscapeKeyBehavior == SelectEscapeKeyBehavior.Close)
+        if (EscapeKeyBehavior == EscapeKeyBehavior.Close)
         {
             // Root.CloseAsync will focus the trigger before closing
             await Context.CloseAsync();

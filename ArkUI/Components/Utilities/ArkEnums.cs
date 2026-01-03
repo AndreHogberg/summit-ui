@@ -1,9 +1,9 @@
 namespace ArkUI;
 
 /// <summary>
-/// Primary placement side for the dropdown menu relative to the trigger.
+/// Primary placement side for floating elements relative to their trigger.
 /// </summary>
-public enum DropdownMenuSide
+public enum Side
 {
     Top,
     Right,
@@ -14,7 +14,7 @@ public enum DropdownMenuSide
 /// <summary>
 /// Alignment along the placement axis.
 /// </summary>
-public enum DropdownMenuAlign
+public enum Align
 {
     Start,
     Center,
@@ -22,22 +22,22 @@ public enum DropdownMenuAlign
 }
 
 /// <summary>
-/// Behavior when Escape key is pressed while menu is open.
+/// Behavior when Escape key is pressed while a component is open.
 /// </summary>
 public enum EscapeKeyBehavior
 {
-    /// <summary>Close the menu when Escape is pressed.</summary>
+    /// <summary>Close the component when Escape is pressed.</summary>
     Close,
     /// <summary>Do nothing when Escape is pressed.</summary>
     Ignore
 }
 
 /// <summary>
-/// Behavior when clicking outside the menu.
+/// Behavior when clicking outside a component.
 /// </summary>
 public enum OutsideClickBehavior
 {
-    /// <summary>Close the menu when clicking outside.</summary>
+    /// <summary>Close the component when clicking outside.</summary>
     Close,
     /// <summary>Do nothing when clicking outside.</summary>
     Ignore
