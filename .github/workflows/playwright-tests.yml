@@ -26,10 +26,10 @@ jobs:
           node-version: '24'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore tests/SummitUI.Tests.Playwright/SummitUI.Tests.Playwright.csproj
 
-      - name: Build solution
-        run: dotnet build --no-restore
+      - name: Build Playwright Tests
+        run: dotnet build tests/SummitUI.Tests.Playwright/SummitUI.Tests.Playwright.csproj --no-restore
 
       - name: Install Playwright browsers
         run: pwsh tests/SummitUI.Tests.Playwright/bin/Debug/net10.0/playwright.ps1 install --with-deps
