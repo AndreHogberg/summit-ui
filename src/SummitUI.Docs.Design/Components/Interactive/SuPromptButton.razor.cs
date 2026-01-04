@@ -37,13 +37,11 @@ public partial class SuPromptButton : ComponentBase
         "transition-colors duration-150";
 
     private const string DropdownClasses =
-        "absolute left-0 top-full mt-2 w-72 rounded-lg border border-su-border bg-su-card p-1.5 shadow-xl z-50 antialiased font-sans";
+        "absolute left-0 top-full mt-2 w-50 rounded-lg border border-su-border bg-su-card p-1.5 shadow-xl z-50 antialiased font-sans";
 
     private const string MenuItemClasses =
         "flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-su-foreground " +
         "hover:bg-su-accent transition-colors cursor-pointer text-left";
-
-    private const string MenuItemDescriptionClasses = "text-xs text-su-muted-foreground mt-0.5";
 
     private string FinalButtonClass => SuStyles.Cn(ButtonClasses, UserClass);
 
