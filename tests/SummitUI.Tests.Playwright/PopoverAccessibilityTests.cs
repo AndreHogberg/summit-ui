@@ -297,8 +297,8 @@ public class PopoverAccessibilityTests : PageTest
     {
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = buttonText, Exact = true });
         
-        // Scroll trigger to center of viewport to ensure enough space for popover placement
-        await trigger.ScrollIntoViewIfNeededAsync();
+        // Wait for trigger to be visible, then scroll to center of viewport for placement test
+        await Expect(trigger).ToBeVisibleAsync();
         await Page.EvaluateAsync(@"(element) => {
             const rect = element.getBoundingClientRect();
             const scrollY = window.scrollY + rect.top - (window.innerHeight / 2);

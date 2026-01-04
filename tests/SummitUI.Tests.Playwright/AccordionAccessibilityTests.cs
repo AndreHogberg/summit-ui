@@ -182,7 +182,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Click multiple items to expand them (use multiple mode section)
         var multipleModeHeading = Page.Locator("h2:has-text('Multiple Mode')");
-        await multipleModeHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(multipleModeHeading).ToBeVisibleAsync();
 
         // Multiple mode has multiple items open by default
         var contents = Page.Locator("[data-summit-accordion-content]");
@@ -495,7 +495,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Navigate to disabled items section
         var disabledHeading = Page.Locator("h2:has-text('With Disabled Items')");
-        await disabledHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(disabledHeading).ToBeVisibleAsync();
 
         // Focus the first enabled item
         var enabledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button,
@@ -516,7 +516,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Navigate to disabled items section
         var disabledHeading = Page.Locator("h2:has-text('With Disabled Items')");
-        await disabledHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(disabledHeading).ToBeVisibleAsync();
 
         // Focus "Another Enabled Item" (last in this accordion)
         var anotherEnabledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button,
@@ -580,7 +580,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Navigate to Multiple Mode section
         var multipleModeHeading = Page.Locator("h2:has-text('Multiple Mode')");
-        await multipleModeHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(multipleModeHeading).ToBeVisibleAsync();
 
         // Multiple mode has feature-1 and feature-2 open by default
         // Count expanded items in the multiple mode accordion
@@ -597,7 +597,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Navigate to Multiple Mode section
         var multipleModeHeading = Page.Locator("h2:has-text('Multiple Mode')");
-        await multipleModeHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(multipleModeHeading).ToBeVisibleAsync();
 
         // Get initial count of expanded items
         var initialExpandedTriggers = Page.Locator("[data-summit-accordion-trigger][aria-expanded='true']");
@@ -627,7 +627,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Navigate to Non-Collapsible section
         var nonCollapsibleHeading = Page.Locator("h2:has-text('Non-Collapsible Single Mode')");
-        await nonCollapsibleHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(nonCollapsibleHeading).ToBeVisibleAsync();
 
         // Find the expanded trigger in this section
         var expandedTrigger = Page.Locator("[data-summit-accordion-trigger]").Filter(
@@ -646,7 +646,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Navigate to Non-Collapsible section
         var nonCollapsibleHeading = Page.Locator("h2:has-text('Non-Collapsible Single Mode')");
-        await nonCollapsibleHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(nonCollapsibleHeading).ToBeVisibleAsync();
 
         // Find the first (expanded) trigger
         var firstTrigger = Page.Locator("[data-summit-accordion-trigger]").Filter(
@@ -784,7 +784,7 @@ public class AccordionAccessibilityTests : PageTest
     {
         // Navigate to disabled items section
         var disabledHeading = Page.Locator("h2:has-text('With Disabled Items')");
-        await disabledHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(disabledHeading).ToBeVisibleAsync();
 
         // Focus the first enabled item in this section (use GetByRole with Exact match)
         var enabledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, 

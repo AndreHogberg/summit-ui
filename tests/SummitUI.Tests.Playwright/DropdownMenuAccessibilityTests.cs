@@ -427,8 +427,8 @@ public class DropdownMenuAccessibilityTests : PageTest
     {
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = buttonText });
 
-        // Scroll trigger to center of viewport to ensure enough space for placement
-        await trigger.ScrollIntoViewIfNeededAsync();
+        // Wait for trigger to be visible, then scroll to center of viewport for placement test
+        await Expect(trigger).ToBeVisibleAsync();
         await Page.EvaluateAsync(@"(element) => {
             const rect = element.getBoundingClientRect();
             const scrollY = window.scrollY + rect.top - (window.innerHeight / 2);
@@ -615,7 +615,7 @@ public class DropdownMenuAccessibilityTests : PageTest
     {
         // Find the external toggle button (text includes state)
         var externalToggle = Page.Locator("button:has-text('Toggle Externally')");
-        await externalToggle.ScrollIntoViewIfNeededAsync();
+        await Expect(externalToggle).ToBeVisibleAsync();
 
         // Click external button to open
         await externalToggle.ClickAsync();
@@ -629,7 +629,7 @@ public class DropdownMenuAccessibilityTests : PageTest
     public async Task ControlledMenu_ShouldClose_WhenTriggerClicked()
     {
         var externalToggle = Page.Locator("button:has-text('Toggle Externally')");
-        await externalToggle.ScrollIntoViewIfNeededAsync();
+        await Expect(externalToggle).ToBeVisibleAsync();
 
         var controlledTrigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Controlled Menu" });
 
@@ -654,19 +654,23 @@ public class DropdownMenuAccessibilityTests : PageTest
     {
         // Use the keyboard navigation demo menu with fruit names
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Try Keyboard Navigation" });
-        await trigger.ScrollIntoViewIfNeededAsync();
+        
+        // Wait for trigger to be stable before interacting
+        await Expect(trigger).ToBeVisibleAsync();
         await trigger.ClickAsync();
 
-        // Wait for menu to fully initialize and first item to focus
-        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
+        // Wait for menu content to be visible and first item to be focused
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+        
+        var firstItem = content.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Type 'c' to find "Cherry"
         await Page.Keyboard.TypeAsync("c");
 
         // Cherry should be focused
-        var items = Page.Locator("[data-summit-dropdown-menu-item]");
-        var cherryItem = items.Filter(new() { HasText = "Cherry" });
+        var cherryItem = content.Locator("[data-summit-dropdown-menu-item]").Filter(new() { HasText = "Cherry" });
         await Expect(cherryItem).ToBeFocusedAsync();
     }
 
@@ -674,18 +678,23 @@ public class DropdownMenuAccessibilityTests : PageTest
     public async Task Typeahead_ShouldFocusFirstMatchingItem()
     {
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Try Keyboard Navigation" });
-        await trigger.ScrollIntoViewIfNeededAsync();
+        
+        // Wait for trigger to be stable before interacting
+        await Expect(trigger).ToBeVisibleAsync();
         await trigger.ClickAsync();
 
-        // Wait for menu to fully initialize
-        var firstItem = Page.Locator("[data-summit-dropdown-menu-item]").First;
+        // Wait for menu content to be visible and first item to be focused
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+        
+        var firstItem = content.Locator("[data-summit-dropdown-menu-item]").First;
         await Expect(firstItem).ToBeFocusedAsync();
 
         // Type 'b' to find "Banana"
         await Page.Keyboard.TypeAsync("b");
 
-        var items = Page.Locator("[data-summit-dropdown-menu-item]");
-        var bananaItem = items.Filter(new() { HasText = "Banana" });
+        // Banana should be focused
+        var bananaItem = content.Locator("[data-summit-dropdown-menu-item]").Filter(new() { HasText = "Banana" });
         await Expect(bananaItem).ToBeFocusedAsync();
     }
 

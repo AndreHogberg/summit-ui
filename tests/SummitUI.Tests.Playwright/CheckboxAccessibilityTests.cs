@@ -303,7 +303,7 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroup_ShouldHave_RoleGroup()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
         var group = Page.Locator("[data-summit-checkbox-group]").First;
         await Expect(group).ToHaveAttributeAsync("role", "group");
@@ -313,7 +313,7 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroup_ShouldHave_AriaLabelledby()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
         var group = Page.Locator("[data-summit-checkbox-group]").First;
         var ariaLabelledby = await group.GetAttributeAsync("aria-labelledby");
@@ -329,7 +329,7 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroupLabel_ShouldHave_MatchingId()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
         var group = Page.Locator("[data-summit-checkbox-group]").First;
         var ariaLabelledby = await group.GetAttributeAsync("aria-labelledby");
@@ -344,7 +344,7 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroup_ShouldManageValues()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
         // Feature 1 and Feature 3 are checked by default
         var feature1Checkbox = Page.Locator("[data-summit-checkbox-group]").First
@@ -368,7 +368,7 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task DisabledGroup_ShouldHave_AriaDisabled()
     {
         var disabledGroupHeading = Page.Locator("h2:has-text('Disabled Group')");
-        await disabledGroupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(disabledGroupHeading).ToBeVisibleAsync();
 
         var group = Page.Locator("[data-summit-checkbox-group][data-disabled]").First;
         await Expect(group).ToHaveAttributeAsync("aria-disabled", "true");
@@ -378,7 +378,7 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task DisabledGroup_ShouldDisable_AllCheckboxes()
     {
         var disabledGroupHeading = Page.Locator("h2:has-text('Disabled Group')");
-        await disabledGroupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(disabledGroupHeading).ToBeVisibleAsync();
 
         var group = Page.Locator("[data-summit-checkbox-group][data-disabled]").First;
         var checkboxes = group.Locator("[data-summit-checkbox]");
