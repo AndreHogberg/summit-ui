@@ -1,551 +1,317 @@
 @page "/docs/accordion"
-@using SummitUI.Docs.Client.Components
-@layout DocsLayout
 @rendermode InteractiveWebAssembly
-
+@layout DocsLayout
+@using SummitUI
+<PageTitle>SummitUI - Accordion</PageTitle>
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                Component
-            </span>
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
         </div>
-        <h1 class="flex flex-row gap-4 text-4xl font-bold tracking-tight"><PromptButton/> Accordion</h1>
-        <p class="text-xl text-muted-foreground leading-relaxed">
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Accordion
+            <SuPromptButton ComponentName="Accordion" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
             A vertically stacked set of interactive headings that each reveal an associated section of content.
-        </p>
+        </SuText>
     </div>
 
     @* Live Demo *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
-        <div class="rounded-xl border border-border bg-card p-6">
-            <AccordionRoot DefaultValue="item-1">
-                <AccordionItem Value="item-1" class="border-b border-border">
-                    <AccordionHeader class="flex">
-                        <AccordionTrigger class="demo-trigger">
+    <SuSection Title="Demo">
+        <SuCard>
+            <AccordionRoot DefaultValue="item-1" class="w-full divide-y divide-su-border">
+                <AccordionItem Value="item-1">
+                    <AccordionHeader>
+                        <AccordionTrigger class="accordion-trigger">
                             <span>Is it accessible?</span>
-                            <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent class="demo-content">
-                        <div class="pb-4 pt-0 text-sm text-muted-foreground">
+                    <AccordionContent class="accordion-content">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             Yes. It adheres to the WAI-ARIA design pattern for accordions, including proper keyboard navigation and ARIA attributes.
                         </div>
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem Value="item-2" class="border-b border-border">
-                    <AccordionHeader class="flex">
-                        <AccordionTrigger class="demo-trigger">
+                <AccordionItem Value="item-2">
+                    <AccordionHeader>
+                        <AccordionTrigger class="accordion-trigger">
                             <span>Is it styled?</span>
-                            <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent class="demo-content">
-                        <div class="pb-4 pt-0 text-sm text-muted-foreground">
+                    <AccordionContent class="accordion-content">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             No. It's completely unstyled by default, giving you full control over the appearance using CSS and data attributes.
                         </div>
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem Value="item-3" class="border-b border-border">
-                    <AccordionHeader class="flex">
-                        <AccordionTrigger class="demo-trigger">
+                <AccordionItem Value="item-3">
+                    <AccordionHeader>
+                        <AccordionTrigger class="accordion-trigger">
                             <span>Can I use it with animations?</span>
-                            <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent class="demo-content">
-                        <div class="pb-4 pt-0 text-sm text-muted-foreground">
+                    <AccordionContent class="accordion-content">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             Yes! CSS variables for height and width are automatically set, allowing smooth CSS transitions for expand/collapse animations.
                         </div>
                     </AccordionContent>
                 </AccordionItem>
             </AccordionRoot>
-        </div>
-    </section>
+        </SuCard>
+    </SuSection>
 
     @* Features *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Features</h2>
-        <ul class="grid gap-2 text-sm text-muted-foreground">
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Full keyboard navigation
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Single or multiple expanded items
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Controlled and uncontrolled modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Collapsible option for single mode
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Horizontal and vertical orientations
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 WCAG compliant with proper ARIA attributes
             </li>
         </ul>
-    </section>
+    </SuSection>
 
     @* Installation *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
-        <div class="code-block">
-            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
 
     @* Anatomy *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
-        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
-        <div class="code-block">
-            <pre><code class="language-xml">@anatomyCode</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
 
     @* Sub-components *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+    <SuSection Title="Sub-components">
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">AccordionRoot</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Root container that manages state and provides context to all children.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">AccordionItem</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Individual collapsible section container with a unique value identifier.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">AccordionHeader</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Semantic heading wrapper that provides proper heading semantics.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">AccordionTrigger</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Interactive button that toggles the associated content panel.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">AccordionContent</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Collapsible content panel that shows/hides based on state.</p>
-            </div>
+            <SuCard>
+                <SuCardTitle>AccordionRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">Root container that manages state and provides context to all children.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AccordionItem</SuCardTitle>
+                <SuCardDescription class="mt-1">Individual collapsible section container with a unique value identifier.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AccordionHeader</SuCardTitle>
+                <SuCardDescription class="mt-1">Semantic heading wrapper that provides proper heading semantics.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AccordionTrigger</SuCardTitle>
+                <SuCardDescription class="mt-1">Interactive button that toggles the associated content panel.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AccordionContent</SuCardTitle>
+                <SuCardDescription class="mt-1">Collapsible content panel that shows/hides based on state.</SuCardDescription>
+            </SuCard>
         </div>
-    </section>
+    </SuSection>
 
     @* API Reference *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
-        
-        @* AccordionRoot *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">AccordionRoot</h3>
-            <p class="text-sm text-muted-foreground">The root component that manages accordion state and provides cascading context.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Type</code></td>
-                            <td><code>AccordionType</code></td>
-                            <td><code>Single</code></td>
-                            <td>Whether one or multiple items can be expanded</td>
-                        </tr>
-                        <tr>
-                            <td><code>Value</code></td>
-                            <td><code>string?</code></td>
-                            <td><code>null</code></td>
-                            <td>Controlled expanded value (single mode)</td>
-                        </tr>
-                        <tr>
-                            <td><code>Values</code></td>
-                            <td><code>IReadOnlyList&lt;string&gt;?</code></td>
-                            <td><code>null</code></td>
-                            <td>Controlled expanded values (multiple mode)</td>
-                        </tr>
-                        <tr>
-                            <td><code>DefaultValue</code></td>
-                            <td><code>string?</code></td>
-                            <td><code>null</code></td>
-                            <td>Default expanded value (uncontrolled, single)</td>
-                        </tr>
-                        <tr>
-                            <td><code>DefaultValues</code></td>
-                            <td><code>IReadOnlyList&lt;string&gt;?</code></td>
-                            <td><code>null</code></td>
-                            <td>Default expanded values (uncontrolled, multiple)</td>
-                        </tr>
-                        <tr>
-                            <td><code>ValueChanged</code></td>
-                            <td><code>EventCallback&lt;string?&gt;</code></td>
-                            <td>-</td>
-                            <td>Callback when value changes (single mode)</td>
-                        </tr>
-                        <tr>
-                            <td><code>ValuesChanged</code></td>
-                            <td><code>EventCallback&lt;IReadOnlyList&lt;string&gt;&gt;</code></td>
-                            <td>-</td>
-                            <td>Callback when values change (multiple mode)</td>
-                        </tr>
-                        <tr>
-                            <td><code>Orientation</code></td>
-                            <td><code>AccordionOrientation</code></td>
-                            <td><code>Vertical</code></td>
-                            <td>Affects keyboard navigation direction</td>
-                        </tr>
-                        <tr>
-                            <td><code>Loop</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Whether keyboard nav loops from last to first</td>
-                        </tr>
-                        <tr>
-                            <td><code>Disabled</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Disable the entire accordion</td>
-                        </tr>
-                        <tr>
-                            <td><code>Collapsible</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Allow closing the last open item (single mode)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "AccordionRoot", Props: accordionRootProperties), 
+                (Title: "AccordionItem", Props: accordionItemProperties),
+                (Title: "AccordionHeader", Props: accordionHeaderProperties),
+                (Title: "AccordionTrigger", Props: accordionTriggerProperties),
+                (Title: "AccordionContent", Props: accordionContentProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
         </div>
-
-        @* AccordionItem *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">AccordionItem</h3>
-            <p class="text-sm text-muted-foreground">Container for an individual accordion section.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Value</code></td>
-                            <td><code>string</code></td>
-                            <td><span class="text-destructive">Required</span></td>
-                            <td>Unique identifier for this accordion item</td>
-                        </tr>
-                        <tr>
-                            <td><code>As</code></td>
-                            <td><code>string</code></td>
-                            <td><code>"div"</code></td>
-                            <td>HTML element to render</td>
-                        </tr>
-                        <tr>
-                            <td><code>Disabled</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Disable this specific item</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @* AccordionHeader *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">AccordionHeader</h3>
-            <p class="text-sm text-muted-foreground">Semantic heading wrapper for the trigger.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>As</code></td>
-                            <td><code>string</code></td>
-                            <td><code>"h3"</code></td>
-                            <td>HTML element to render</td>
-                        </tr>
-                        <tr>
-                            <td><code>Level</code></td>
-                            <td><code>int</code></td>
-                            <td><code>3</code></td>
-                            <td>ARIA heading level (1-6)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @* AccordionTrigger *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">AccordionTrigger</h3>
-            <p class="text-sm text-muted-foreground">Interactive button that toggles the content panel.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>As</code></td>
-                            <td><code>string</code></td>
-                            <td><code>"button"</code></td>
-                            <td>HTML element to render</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @* AccordionContent *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">AccordionContent</h3>
-            <p class="text-sm text-muted-foreground">Collapsible content panel.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>As</code></td>
-                            <td><code>string</code></td>
-                            <td><code>"div"</code></td>
-                            <td>HTML element to render</td>
-                        </tr>
-                        <tr>
-                            <td><code>ForceMount</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Always render in DOM (useful for CSS animations)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+    </SuSection>
 
     @* Examples *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
-        
-        @* Basic *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Basic Usage</h3>
-            <div class="code-block">
-                <pre><code class="language-xml">@basicExampleCode</code></pre>
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Multiple Mode *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Multiple Expanded Items</h3>
-            <p class="text-sm text-muted-foreground">Allow multiple items to be expanded simultaneously.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@multipleExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Multiple Expanded Items</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Allow multiple items to be expanded simultaneously.</SuText>
+                <SuCodeBlock Code="@multipleExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Controlled *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
-            <p class="text-sm text-muted-foreground">Control the expanded state externally.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@controlledExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Controlled Mode</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Control the expanded state externally.</SuText>
+                <SuCodeBlock Code="@controlledExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Disabled *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Disabled Items</h3>
-            <p class="text-sm text-muted-foreground">Disable specific accordion items.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@disabledExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Disabled Items</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Disable specific accordion items.</SuText>
+                <SuCodeBlock Code="@disabledExampleCode" Language="razor" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Styling *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
-            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Attribute</th>
-                            <th>Values</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>data-state</code></td>
-                            <td><code>"open"</code> | <code>"closed"</code></td>
-                            <td>Current expansion state</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-disabled</code></td>
-                            <td>Present when disabled</td>
-                            <td>Indicates disabled state</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-orientation</code></td>
-                            <td><code>"vertical"</code> | <code>"horizontal"</code></td>
-                            <td>Current orientation</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
             </div>
-        </div>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">CSS Variables</h3>
-            <p class="text-sm text-muted-foreground">These CSS variables are automatically set for animations:</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Variable</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>--summit-accordion-content-height</code></td>
-                            <td>Measured height of content in pixels</td>
-                        </tr>
-                        <tr>
-                            <td><code>--summit-accordion-content-width</code></td>
-                            <td>Measured width of content in pixels</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Variables</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Variable</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var variable in cssVariables)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@variable.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@variable.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+            
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
             </div>
         </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
-            <div class="code-block">
-                <pre><code class="language-css">@cssExampleCode</code></pre>
-            </div>
-        </div>
-    </section>
+    </SuSection>
 
     @* Accessibility *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
-                            <td>Toggle the focused accordion item</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowDown</kbd></td>
-                            <td>Move focus to next trigger (vertical)</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowUp</kbd></td>
-                            <td>Move focus to previous trigger (vertical)</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowRight</kbd></td>
-                            <td>Move focus to next trigger (horizontal)</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowLeft</kbd></td>
-                            <td>Move focus to previous trigger (horizontal)</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Home</kbd></td>
-                            <td>Move focus to first trigger</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>End</kbd></td>
-                            <td>Move focus to last trigger</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">AccordionHeader:</span>
+                        <span>Renders with <code>role="heading"</code> and appropriate <code>aria-level</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">AccordionTrigger:</span>
+                        <span>Renders as button with <code>aria-expanded</code> and <code>aria-controls</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">AccordionContent:</span>
+                        <span>Renders with <code>role="region"</code> and <code>aria-labelledby</code></span>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">AccordionHeader:</span>
-                    <span>Renders with <code>role="heading"</code> and appropriate <code>aria-level</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">AccordionTrigger:</span>
-                    <span>Renders as button with <code>aria-expanded</code> and <code>aria-controls</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">AccordionContent:</span>
-                    <span>Renders with <code>role="region"</code> and <code>aria-labelledby</code></span>
-                </li>
-            </ul>
-        </div>
-    </section>
+    </SuSection>
 </div>
 
 <style>
     /* Demo Accordion Styles */
-    .demo-trigger {
+    .accordion-trigger {
         display: flex;
         flex: 1;
         align-items: center;
@@ -556,39 +322,107 @@
         background: transparent;
         border: none;
         cursor: pointer;
-        color: hsl(var(--foreground));
+        color: rgb(var(--su-foreground));
         transition: color 0.15s;
         width: 100%;
         text-align: left;
     }
     
-    .demo-trigger:hover {
-        color: hsl(var(--muted-foreground));
+    .accordion-trigger:hover {
+        color: rgb(var(--su-primary));
     }
     
-    .demo-trigger[data-disabled] {
+    .accordion-trigger[data-disabled] {
         opacity: 0.5;
         cursor: not-allowed;
     }
     
-    .demo-chevron {
+    .accordion-chevron {
         transition: transform 0.2s ease;
+        flex-shrink: 0;
     }
     
-    .demo-trigger[data-state="open"] .demo-chevron {
+    .accordion-trigger[data-state="open"] {
+        color: rgb(var(--su-primary));
+    }
+
+    .accordion-trigger[data-state="open"] .accordion-chevron {
         transform: rotate(180deg);
     }
     
-    .demo-content {
+    .accordion-content {
         overflow: hidden;
     }
     
-    .demo-content[data-state="closed"] {
+    .accordion-content[data-state="closed"] {
         display: none;
     }
 </style>
 
 @code {
+    private List<SuApiProperty> accordionRootProperties = new()
+    {
+        new() { Name = "Type", Type = "AccordionType", Default = "Single", Description = "Whether one or multiple items can be expanded" },
+        new() { Name = "Value", Type = "string?", Default = "null", Description = "Controlled expanded value (single mode)" },
+        new() { Name = "Values", Type = "IReadOnlyList<string>?", Default = "null", Description = "Controlled expanded values (multiple mode)" },
+        new() { Name = "DefaultValue", Type = "string?", Default = "null", Description = "Default expanded value (uncontrolled, single)" },
+        new() { Name = "DefaultValues", Type = "IReadOnlyList<string>?", Default = "null", Description = "Default expanded values (uncontrolled, multiple)" },
+        new() { Name = "ValueChanged", Type = "EventCallback<string?>", Description = "Callback when value changes (single mode)" },
+        new() { Name = "ValuesChanged", Type = "EventCallback<IReadOnlyList<string>>", Description = "Callback when values change (multiple mode)" },
+        new() { Name = "Orientation", Type = "AccordionOrientation", Default = "Vertical", Description = "Affects keyboard navigation direction" },
+        new() { Name = "Loop", Type = "bool", Default = "true", Description = "Whether keyboard nav loops from last to first" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable the entire accordion" },
+        new() { Name = "Collapsible", Type = "bool", Default = "true", Description = "Allow closing the last open item (single mode)" }
+    };
+
+    private List<SuApiProperty> accordionItemProperties = new()
+    {
+        new() { Name = "Value", Type = "string", Required = true, Description = "Unique identifier for this accordion item" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable this specific item" }
+    };
+
+    private List<SuApiProperty> accordionHeaderProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"h3\"", Description = "HTML element to render" },
+        new() { Name = "Level", Type = "int", Default = "3", Description = "ARIA heading level (1-6)" }
+    };
+
+    private List<SuApiProperty> accordionTriggerProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"button\"", Description = "HTML element to render" }
+    };
+
+    private List<SuApiProperty> accordionContentProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" },
+        new() { Name = "ForceMount", Type = "bool", Default = "false", Description = "Always render in DOM (useful for CSS animations)" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-state", Type = "\"open\" | \"closed\"", Description = "Current expansion state" },
+        new() { Name = "data-disabled", Type = "Present when disabled", Description = "Indicates disabled state" },
+        new() { Name = "data-orientation", Type = "\"vertical\" | \"horizontal\"", Description = "Current orientation" }
+    };
+
+    private List<SuApiProperty> cssVariables = new()
+    {
+        new() { Name = "--summit-accordion-content-height", Description = "Measured height of content in pixels", Type = "" },
+        new() { Name = "--summit-accordion-content-width", Description = "Measured width of content in pixels", Type = "" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "Enter / Space", Description = "Toggle the focused accordion item", Type = "" },
+        new() { Name = "ArrowDown", Description = "Move focus to next trigger (vertical)", Type = "" },
+        new() { Name = "ArrowUp", Description = "Move focus to previous trigger (vertical)", Type = "" },
+        new() { Name = "ArrowRight", Description = "Move focus to next trigger (horizontal)", Type = "" },
+        new() { Name = "ArrowLeft", Description = "Move focus to previous trigger (horizontal)", Type = "" },
+        new() { Name = "Home", Description = "Move focus to first trigger", Type = "" },
+        new() { Name = "End", Description = "Move focus to last trigger", Type = "" }
+    };
+
     private const string anatomyCode = @"<AccordionRoot>
     <AccordionItem Value=""item-1"">
         <AccordionHeader>
@@ -656,7 +490,7 @@
 </AccordionRoot>
 
 <p>Currently expanded: @(expandedItem ?? ""None"")</p>
-<button @onclick=""@(() => expandedItem = ""item-2"")"">Open Section 2</button>";
+<button @@onclick=""@(() => expandedItem = ""item-2"")"">Open Section 2</button>";
 
     private const string disabledExampleCode = @"<AccordionRoot DefaultValue=""item-1"">
     <AccordionItem Value=""item-1"">
@@ -682,10 +516,15 @@
     background: transparent;
     border: none;
     cursor: pointer;
+    color: rgb(var(--su-foreground));
 }
 
 .accordion-trigger[data-state=""open""] {
-    background-color: #f5f5f5;
+    color: rgb(var(--su-primary));
+}
+
+.accordion-trigger:hover {
+    color: rgb(var(--su-primary));
 }
 
 .accordion-trigger[data-disabled] {

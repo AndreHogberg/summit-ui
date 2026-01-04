@@ -1,0 +1,14 @@
+@namespace SummitUI.Docs.Design
+
+@switch (Element)
+{
+    case "p":
+        <p class="@FinalClass" @attributes="OtherAttributes">@ChildContent</p>
+        break;
+    case "span":
+        <span class="@FinalClass" @attributes="OtherAttributes">@ChildContent</span>
+        break;
+    default:
+        <div class="@FinalClass" @attributes="OtherAttributes">@ChildContent</div>
+        break;
+}

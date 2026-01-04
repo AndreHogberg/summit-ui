@@ -1,318 +1,254 @@
 @page "/docs/agent-skills"
 @layout DocsLayout
+<PageTitle>SummitUI - Agent Skills</PageTitle>
+<SuBadge Variant="SuBadgeVariant.Outline">AI Integration</SuBadge>
+<SuHeading Level="SuHeadingLevel.H1">Agent Skills</SuHeading>
+<SuText Lead="true" Muted="true">
+    Pre-built skill files that help AI coding agents work more effectively with SummitUI.
+</SuText>
 
-<div class="flex flex-col gap-10">
-    @* Header *@
-    <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                AI Integration
-            </span>
-        </div>
-        <h1 class="text-4xl font-bold tracking-tight">Agent Skills</h1>
-        <p class="text-xl text-muted-foreground leading-relaxed">
-            Pre-built skill files that help AI coding agents work more effectively with SummitUI.
-        </p>
+<SuSection Title="What are Agent Skills?" Description="Agent skills are specialized instruction files that provide AI coding assistants with domain-specific knowledge.">
+    <SuText>
+        These files contain detailed instructions, commands, and context that help AI agents (like Claude, OpenCode, Cursor, and others) perform specific tasks more accurately and efficiently.
+    </SuText>
+    <SuText>
+        SummitUI includes several pre-built skills in the <SuCode>.claude/skills/</SuCode> directory that you can use to enhance your AI-assisted development workflow.
+    </SuText>
+</SuSection>
+
+<SuSection Title="Benefits">
+    <div class="grid gap-4 sm:grid-cols-2">
+        <SuCard>
+            <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-su-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+            </div>
+            <SuHeading Level="SuHeadingLevel.H3">Task-Specific Instructions</SuHeading>
+            <SuText Size="SuTextSize.Small" Muted="true">Skills provide detailed, step-by-step instructions for specific tasks like running tests or understanding render modes.</SuText>
+        </SuCard>
+        <SuCard>
+            <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-su-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+            </div>
+            <SuHeading Level="SuHeadingLevel.H3">Project-Specific Context</SuHeading>
+            <SuText Size="SuTextSize.Small" Muted="true">Skills encode knowledge about your project's specific tools, patterns, and conventions.</SuText>
+        </SuCard>
+        <SuCard>
+            <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-su-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
+            <SuHeading Level="SuHeadingLevel.H3">Faster Development</SuHeading>
+            <SuText Size="SuTextSize.Small" Muted="true">Reduce back-and-forth by giving AI agents the exact commands and workflows they need.</SuText>
+        </SuCard>
+        <SuCard>
+            <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-su-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+            </div>
+            <SuHeading Level="SuHeadingLevel.H3">Consistent Results</SuHeading>
+            <SuText Size="SuTextSize.Small" Muted="true">Skills ensure AI agents follow project standards and best practices consistently.</SuText>
+        </SuCard>
     </div>
+</SuSection>
 
-    @* Overview *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">What are Agent Skills?</h2>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            Agent skills are specialized instruction files that provide AI coding assistants (like Claude, OpenCode, Cursor, and others) 
-            with domain-specific knowledge. These files contain detailed instructions, commands, and context that help AI agents 
-            perform specific tasks more accurately and efficiently.
-        </p>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            SummitUI includes several pre-built skills in the <code>.claude/skills/</code> directory that you can use to enhance your 
-            AI-assisted development workflow.
-        </p>
-    </section>
-
-    @* Benefits *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Benefits</h2>
-        <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
-                        <path d="M12 20h9"/>
-                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                    </svg>
-                </div>
-                <h3 class="font-medium text-foreground">Task-Specific Instructions</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Skills provide detailed, step-by-step instructions for specific tasks like running tests or understanding render modes.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
-                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                        <polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
-                </div>
-                <h3 class="font-medium text-foreground">Project-Specific Context</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Skills encode knowledge about your project's specific tools, patterns, and conventions.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                </div>
-                <h3 class="font-medium text-foreground">Faster Development</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Reduce back-and-forth by giving AI agents the exact commands and workflows they need.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                </div>
-                <h3 class="font-medium text-foreground">Consistent Results</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Skills ensure AI agents follow project standards and best practices consistently.</p>
-            </div>
-        </div>
-    </section>
-
-    @* Available Skills *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-foreground">Available Skills</h2>
-        <p class="text-sm text-muted-foreground">
-            SummitUI includes the following pre-built skills:
-        </p>
-        
+<SuSection Title="Available Skills" Description="SummitUI includes several pre-built skills to enhance your workflow.">
+    <div class="flex flex-col gap-6">
         @* TUnit Skill *@
-        <div class="rounded-lg border border-border overflow-hidden">
-            <div class="bg-muted/30 px-4 py-3 border-b border-border">
+        <SuCard class="p-0 overflow-hidden">
+            <div class="bg-su-muted/30 px-4 py-3 border-b border-su-border">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-su-muted">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground">
                                 <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
                                 <polyline points="14 2 14 8 20 8"/>
                                 <path d="m9 15 2 2 4-4"/>
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-medium text-foreground">tunit</h3>
-                            <p class="text-sm text-muted-foreground">Run TUnit tests with Playwright</p>
+                            <SuHeading Level="SuHeadingLevel.H3" class="mb-0">tunit</SuHeading>
+                            <SuText Size="SuTextSize.Small" Muted="true">Run TUnit tests with Playwright</SuText>
                         </div>
                     </div>
-                    <span class="inline-flex items-center rounded-full bg-green-500/10 border border-green-500/20 px-2.5 py-0.5 text-xs font-medium text-green-400">
-                        Testing
-                    </span>
+                    <SuBadge Variant="SuBadgeVariant.Outline" class="bg-green-500/10 text-green-400 border-green-500/20">Testing</SuBadge>
                 </div>
             </div>
             <div class="p-4">
-                <p class="text-sm text-muted-foreground mb-3">
+                <SuText Size="SuTextSize.Small" Muted="true" class="mb-3">
                     Provides detailed instructions for running TUnit tests with Playwright, including:
-                </p>
-                <ul class="grid gap-1 text-sm text-muted-foreground">
+                </SuText>
+                <ul class="grid gap-1 text-sm text-su-muted-foreground">
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                         Running all tests or filtered subsets
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                        Using <code>--treenode-filter</code> for test selection
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        Using <SuCode>--treenode-filter</SuCode> for test selection
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                         Limiting parallelism to prevent system overload
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                         Project structure and test conventions
                     </li>
                 </ul>
-                <div class="mt-4 flex gap-3">
-                    <a href="https://github.com/andrehogberg/summit-ui/blob/main/.claude/skills/tunit/SKILL.md" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="inline-flex items-center gap-1.5 text-sm text-foreground hover:underline">
+                <div class="mt-4">
+                    <SuLink href="https://github.com/andrehogberg/summit-ui/blob/main/.claude/skills/tunit/SKILL.md" target="_blank" class="inline-flex items-center gap-1.5 text-sm">
                         View on GitHub
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                             <polyline points="15 3 21 3 21 9"/>
                             <line x1="10" y1="14" x2="21" y2="3"/>
                         </svg>
-                    </a>
+                    </SuLink>
                 </div>
             </div>
-        </div>
+        </SuCard>
 
         @* RendererInfo Skill *@
-        <div class="rounded-lg border border-border overflow-hidden">
-            <div class="bg-muted/30 px-4 py-3 border-b border-border">
+        <SuCard class="p-0 overflow-hidden">
+            <div class="bg-su-muted/30 px-4 py-3 border-b border-su-border">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-su-muted">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground">
                                 <circle cx="12" cy="12" r="10"/>
                                 <path d="M12 16v-4"/>
                                 <path d="M12 8h.01"/>
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-medium text-foreground">render-info</h3>
-                            <p class="text-sm text-muted-foreground">Using RendererInfo in Blazor</p>
+                            <SuHeading Level="SuHeadingLevel.H3" class="mb-0">render-info</SuHeading>
+                            <SuText Size="SuTextSize.Small" Muted="true">Using RendererInfo in Blazor</SuText>
                         </div>
                     </div>
-                    <span class="inline-flex items-center rounded-full bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 text-xs font-medium text-blue-400">
-                        Blazor
-                    </span>
+                    <SuBadge Variant="SuBadgeVariant.Outline" class="bg-blue-500/10 text-blue-400 border-blue-500/20">Blazor</SuBadge>
                 </div>
             </div>
             <div class="p-4">
-                <p class="text-sm text-muted-foreground mb-3">
-                    Documentation for using the <code>RendererInfo</code> class to detect rendering context:
-                </p>
-                <ul class="grid gap-1 text-sm text-muted-foreground">
+                <SuText Size="SuTextSize.Small" Muted="true" class="mb-3">
+                    Documentation for using the <SuCode>RendererInfo</SuCode> class to detect rendering context:
+                </SuText>
+                <ul class="grid gap-1 text-sm text-su-muted-foreground">
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                         Detecting interactive vs static rendering
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                         Identifying render platforms (Server, WebAssembly, WebView)
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                         Disabling inputs during prerendering
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                         Conditional rendering based on render mode
                     </li>
                 </ul>
-                <div class="mt-4 flex gap-3">
-                    <a href="https://github.com/andrehogberg/summit-ui/blob/main/.claude/skills/render-info/SKILL.md" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="inline-flex items-center gap-1.5 text-sm text-foreground hover:underline">
+                <div class="mt-4">
+                    <SuLink href="https://github.com/andrehogberg/summit-ui/blob/main/.claude/skills/render-info/SKILL.md" target="_blank" class="inline-flex items-center gap-1.5 text-sm">
                         View on GitHub
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                             <polyline points="15 3 21 3 21 9"/>
                             <line x1="10" y1="14" x2="21" y2="3"/>
                         </svg>
-                    </a>
+                    </SuLink>
                 </div>
             </div>
-        </div>
-    </section>
+        </SuCard>
+    </div>
+</SuSection>
 
-    @* Skill File Format *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Skill File Format</h2>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            Skills are Markdown files with YAML frontmatter that describe the skill's purpose. The format is compatible with 
-            Claude Code, OpenCode, and other AI coding assistants that support skill files.
-        </p>
-        <div class="code-block">
-            <pre><code class="language-markdown">@skillFormatCode</code></pre>
-        </div>
-    </section>
+<SuSection Title="Skill File Format" Description="Skills are Markdown files with YAML frontmatter that describe the skill's purpose.">
+    <SuText>
+        The format is compatible with Claude Code, OpenCode, and other AI coding assistants that support skill files.
+    </SuText>
+    <SuCodeBlock Language="markdown" Code="@skillFormatCode" />
+</SuSection>
 
-    @* File Structure *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">File Structure</h2>
-        <p class="text-sm text-muted-foreground">
-            Skills are organized in the <code>.claude/skills/</code> directory:
-        </p>
-        <div class="code-block">
-            <pre><code class="language-text">@fileStructureCode</code></pre>
-        </div>
-    </section>
+<SuSection Title="File Structure" Description="Skills are organized in the .claude/skills/ directory.">
+    <SuCodeBlock Code="@fileStructureCode" />
+</SuSection>
 
-    @* How to Use *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">How to Use</h2>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            AI coding assistants that support skills will automatically discover and use these files when working in the SummitUI repository.
-        </p>
-        
-        <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground mb-2">With Claude Code / OpenCode</h3>
-                <p class="text-sm text-muted-foreground">
-                    Skills are automatically loaded. When you ask the AI to run tests, it will use the <code>tunit</code> skill 
-                    to understand the correct commands.
-                </p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground mb-2">With Other AI Assistants</h3>
-                <p class="text-sm text-muted-foreground">
-                    Reference the skill file directly in your prompt:
-                    <code class="block mt-2 text-xs">"Please read .claude/skills/tunit/SKILL.md for test instructions"</code>
-                </p>
-            </div>
-        </div>
-    </section>
+<SuSection Title="How to Use" Description="AI coding assistants that support skills will automatically discover and use these files.">
+    <div class="grid gap-4 sm:grid-cols-2">
+        <SuCard>
+            <SuHeading Level="SuHeadingLevel.H3">With Claude Code / OpenCode</SuHeading>
+            <SuText Size="SuTextSize.Small" Muted="true">
+                Skills are automatically loaded. When you ask the AI to run tests, it will use the <SuCode>tunit</SuCode> skill 
+                to understand the correct commands.
+            </SuText>
+        </SuCard>
+        <SuCard>
+            <SuHeading Level="SuHeadingLevel.H3">With Other AI Assistants</SuHeading>
+            <SuText Size="SuTextSize.Small" Muted="true">
+                Reference the skill file directly in your prompt:
+                <SuCode class="block mt-2 text-xs">"Please read .claude/skills/tunit/SKILL.md for test instructions"</SuCode>
+            </SuText>
+        </SuCard>
+    </div>
+</SuSection>
 
-    @* Example Usage *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Example Prompts</h2>
-        <p class="text-sm text-muted-foreground">
-            Here are some example prompts that will trigger skill usage:
-        </p>
-        <div class="grid gap-3">
-            <div class="rounded-lg border border-border p-3 bg-muted/30">
-                <p class="text-sm font-medium text-foreground mb-1">Testing</p>
-                <p class="text-sm text-muted-foreground italic">"Run the Select accessibility tests"</p>
-                <p class="text-xs text-muted-foreground mt-1">Uses: <code>tunit</code> skill</p>
-            </div>
-            <div class="rounded-lg border border-border p-3 bg-muted/30">
-                <p class="text-sm font-medium text-foreground mb-1">Testing with filters</p>
-                <p class="text-sm text-muted-foreground italic">"Run only the keyboard navigation tests"</p>
-                <p class="text-xs text-muted-foreground mt-1">Uses: <code>tunit</code> skill with <code>--treenode-filter</code></p>
-            </div>
-            <div class="rounded-lg border border-border p-3 bg-muted/30">
-                <p class="text-sm font-medium text-foreground mb-1">Render modes</p>
-                <p class="text-sm text-muted-foreground italic">"How do I detect if the component is interactive?"</p>
-                <p class="text-xs text-muted-foreground mt-1">Uses: <code>render-info</code> skill</p>
-            </div>
-        </div>
-    </section>
+<SuSection Title="Example Prompts" Description="Here are some example prompts that will trigger skill usage.">
+    <div class="grid gap-3">
+        <SuCard class="bg-su-muted/30">
+            <SuText Size="SuTextSize.Small" class="font-medium mb-1">Testing</SuText>
+            <SuText Size="SuTextSize.Small" class="italic">"Run the Select accessibility tests"</SuText>
+            <SuText Size="SuTextSize.ExtraSmall" Muted="true" class="mt-1">Uses: <SuCode>tunit</SuCode> skill</SuText>
+        </SuCard>
+        <SuCard class="bg-su-muted/30">
+            <SuText Size="SuTextSize.Small" class="font-medium mb-1">Testing with filters</SuText>
+            <SuText Size="SuTextSize.Small" class="italic">"Run only the keyboard navigation tests"</SuText>
+            <SuText Size="SuTextSize.ExtraSmall" Muted="true" class="mt-1">Uses: <SuCode>tunit</SuCode> skill with <SuCode>--treenode-filter</SuCode></SuText>
+        </SuCard>
+        <SuCard class="bg-su-muted/30">
+            <SuText Size="SuTextSize.Small" class="font-medium mb-1">Render modes</SuText>
+            <SuText Size="SuTextSize.Small" class="italic">"How do I detect if the component is interactive?"</SuText>
+            <SuText Size="SuTextSize.ExtraSmall" Muted="true" class="mt-1">Uses: <SuCode>render-info</SuCode> skill</SuText>
+        </SuCard>
+    </div>
+</SuSection>
 
-    @* Creating Custom Skills *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Creating Custom Skills</h2>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            You can create your own skills for project-specific tasks. Here's how:
-        </p>
-        <ol class="grid gap-3 text-sm text-muted-foreground list-decimal list-inside">
-            <li>Create a new directory in <code>.claude/skills/</code> with your skill name</li>
-            <li>Add a <code>SKILL.md</code> file with YAML frontmatter</li>
-            <li>Include the skill name and description in the frontmatter</li>
-            <li>Write detailed instructions in Markdown format</li>
-            <li>Include code examples and commands where helpful</li>
-        </ol>
-        <div class="rounded-lg border border-border bg-muted/30 p-4 mt-2">
-            <div class="flex items-start gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground shrink-0 mt-0.5">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 16v-4"/>
-                    <path d="M12 8h.01"/>
-                </svg>
-                <div class="text-sm text-muted-foreground">
-                    <strong class="text-foreground">Tip:</strong> Skills work best when they're focused on a single task or topic. 
-                    Create multiple small skills rather than one large skill with many responsibilities.
-                </div>
-            </div>
-        </div>
-    </section>
+<SuSection Title="Creating Custom Skills" Description="You can create your own skills for project-specific tasks.">
+    <ol class="grid gap-3 text-sm text-su-muted-foreground list-decimal list-inside">
+        <li>Create a new directory in <SuCode>.claude/skills/</SuCode> with your skill name</li>
+        <li>Add a <SuCode>SKILL.md</SuCode> file with YAML frontmatter</li>
+        <li>Include the skill name and description in the frontmatter</li>
+        <li>Write detailed instructions in Markdown format</li>
+        <li>Include code examples and commands where helpful</li>
+    </ol>
+    <SuAlert Variant="SuAlertVariant.Info" class="mt-4">
+        <SuAlertTitle>Tip</SuAlertTitle>
+        <SuAlertDescription>
+            Skills work best when they're focused on a single task or topic. 
+            Create multiple small skills rather than one large skill with many responsibilities.
+        </SuAlertDescription>
+    </SuAlert>
+</SuSection>
 
-    @* Related Resources *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Related Resources</h2>
-        <div class="grid gap-4 sm:grid-cols-2">
-            <a href="/docs/llms" class="rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors">
-                <h3 class="font-medium text-foreground flex items-center gap-2">
+<SuSection Title="Related Resources">
+    <div class="grid gap-4 sm:grid-cols-2">
+        <SuCard class="hover:bg-su-muted/50 transition-colors p-0 overflow-hidden">
+            <SuLink href="/docs/llms" class="p-4 block">
+                <SuHeading Level="SuHeadingLevel.H3" class="flex items-center gap-2 mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 8V4H8"/>
                         <rect width="16" height="12" x="4" y="8" rx="2"/>
@@ -322,28 +258,27 @@
                         <path d="M9 13v2"/>
                     </svg>
                     llms.txt
-                </h3>
-                <p class="mt-2 text-sm text-muted-foreground">
+                </SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
                     Machine-readable documentation index for LLMs and AI coding assistants.
-                </p>
-            </a>
-            <a href="https://github.com/andrehogberg/summit-ui/tree/main/.claude/skills" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors">
-                <h3 class="font-medium text-foreground flex items-center gap-2">
+                </SuText>
+            </SuLink>
+        </SuCard>
+        <SuCard class="hover:bg-su-muted/50 transition-colors p-0 overflow-hidden">
+            <SuLink href="https://github.com/andrehogberg/summit-ui/tree/main/.claude/skills" target="_blank" class="p-4 block">
+                <SuHeading Level="SuHeadingLevel.H3" class="flex items-center gap-2 mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
                     Skills Directory
-                </h3>
-                <p class="mt-2 text-sm text-muted-foreground">
+                </SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
                     Browse all skill files on GitHub.
-                </p>
-            </a>
-        </div>
-    </section>
-</div>
+                </SuText>
+            </SuLink>
+        </SuCard>
+    </div>
+</SuSection>
 
 @code {
     private const string skillFormatCode = @"---

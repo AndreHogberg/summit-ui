@@ -1,503 +1,356 @@
 @page "/docs/focustrap"
 @layout DocsLayout
 @rendermode InteractiveWebAssembly
+<PageTitle>SummitUI - FocusTrap</PageTitle>
 
-<div class="flex flex-col gap-12">
-    @* Header *@
-    <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                Utility
-            </span>
-        </div>
-        <h1 class="text-4xl font-bold tracking-tight">FocusTrap</h1>
-        <p class="text-xl text-muted-foreground leading-relaxed">
-            A utility component that traps keyboard focus within its children, preventing focus from escaping to elements outside the trap.
-        </p>
-    </div>
+<SuBadge Variant="SuBadgeVariant.Outline">Utility</SuBadge>
+<SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+    FocusTrap
+    <SuPromptButton ComponentName="FocusTrap" />
+</SuHeading>
+<SuText Lead="true" Muted="true">
+    A utility component that traps keyboard focus within its children, preventing focus from escaping to elements outside the trap.
+</SuText>
 
-    @* Live Demo *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
-        <div class="rounded-xl border border-border bg-card p-6">
-            <div class="flex flex-col gap-4">
-                <button class="demo-button" @onclick="@(() => showDialog = true)">
-                    Open Dialog
-                </button>
-                
-                @if (showDialog)
-                {
-                    <div class="demo-overlay" @onclick="@(() => showDialog = false)">
-                        <FocusTrapPage IsActive="true" AutoFocus="true" ReturnFocus="true">
-                            <div class="demo-dialog" role="dialog" aria-modal="true" aria-labelledby="demo-dialog-title" @onclick:stopPropagation="true">
-                                <h3 id="demo-dialog-title" class="text-lg font-semibold text-foreground">Focus Trap Demo</h3>
-                                <p class="text-sm text-muted-foreground mt-2">
-                                    Try pressing Tab to navigate. Focus will cycle through the elements below and won't escape to the page behind.
-                                </p>
-                                <div class="flex flex-col gap-3 mt-4">
-                                    <input type="text" placeholder="First input" class="demo-input" />
-                                    <input type="text" placeholder="Second input" class="demo-input" />
-                                </div>
-                                <div class="flex gap-3 mt-4">
-                                    <button class="demo-button demo-button-secondary" @onclick="@(() => showDialog = false)">
-                                        Cancel
-                                    </button>
-                                    <button class="demo-button" @onclick="@(() => showDialog = false)">
-                                        Confirm
-                                    </button>
-                                </div>
+<SuSection Title="Demo">
+    <SuCard>
+        <div class="flex flex-col gap-4">
+            <SuButton @onclick="@(() => showDialog = true)">
+                Open Dialog
+            </SuButton>
+            
+            @if (showDialog)
+            {
+                <div class="demo-overlay" @onclick="@(() => showDialog = false)">
+                    <FocusTrap IsActive="true" AutoFocus="true" ReturnFocus="true">
+                        <SuCard class="max-w-[400px] w-[90%]" role="dialog" aria-modal="true" aria-labelledby="demo-dialog-title" @onclick:stopPropagation="true">
+                            <SuHeading Level="SuHeadingLevel.H3" id="demo-dialog-title">Focus Trap Demo</SuHeading>
+                            <SuText Size="SuTextSize.Small" Muted="true" class="mt-2">
+                                Try pressing Tab to navigate. Focus will cycle through the elements below and won't escape to the page behind.
+                            </SuText>
+                            <div class="flex flex-col gap-3 mt-4">
+                                <input type="text" placeholder="First input" class="demo-input" />
+                                <input type="text" placeholder="Second input" class="demo-input" />
                             </div>
-                        </FocusTrapPage>
-                    </div>
-                }
-            </div>
+                            <div class="flex gap-3 mt-4 justify-end">
+                                <SuButton Variant="SuButtonVariant.Outline" @onclick="@(() => showDialog = false)">
+                                    Cancel
+                                </SuButton>
+                                <SuButton @onclick="@(() => showDialog = false)">
+                                    Confirm
+                                </SuButton>
+                            </div>
+                        </SuCard>
+                    </FocusTrap>
+                </div>
+            }
         </div>
-    </section>
+    </SuCard>
+</SuSection>
 
-    @* Features *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Features</h2>
-        <ul class="grid gap-2 text-sm text-muted-foreground">
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Traps Tab and Shift+Tab navigation within boundaries
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Automatic focus on activation
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Returns focus on deactivation
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Handles edge cases (no focusable elements)
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Programmatic focus control methods
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Activation/deactivation callbacks
-            </li>
-        </ul>
-    </section>
+<SuSection Title="Features">
+    <ul class="grid gap-2 text-sm text-su-muted-foreground">
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Traps Tab and Shift+Tab navigation within boundaries
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Automatic focus on activation
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Returns focus on deactivation
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Handles edge cases (no focusable elements)
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Programmatic focus control methods
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Activation/deactivation callbacks
+        </li>
+    </ul>
+</SuSection>
 
-    @* Installation *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
-        <div class="code-block">
-            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
-        </div>
-    </section>
+<SuSection Title="Installation">
+    <SuCodeBlock Language="bash" Code="dotnet add package SummitUI" />
+</SuSection>
 
-    @* Anatomy *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
-        <p class="text-sm text-muted-foreground">Import the component and wrap your content:</p>
-        <div class="code-block">
-            <pre><code class="language-xml">@anatomyCode</code></pre>
-        </div>
-    </section>
+<SuSection Title="Anatomy" Description="Import the component and wrap your content:">
+    <SuCodeBlock Language="xml" Code="@anatomyCode" />
+</SuSection>
 
-    @* API Reference *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
-        
-        @* FocusTrap *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">FocusTrap</h3>
-            <p class="text-sm text-muted-foreground">The focus trap container component.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>ChildContent</code></td>
-                            <td><code>RenderFragment?</code></td>
-                            <td><code>null</code></td>
-                            <td>Content to render within the trap</td>
-                        </tr>
-                        <tr>
-                            <td><code>IsActive</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Whether trap is active</td>
-                        </tr>
-                        <tr>
-                            <td><code>AutoFocus</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Auto-focus first element when activated</td>
-                        </tr>
-                        <tr>
-                            <td><code>ReturnFocus</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Return focus to previously focused element on deactivation</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnActivated</code></td>
-                            <td><code>EventCallback</code></td>
-                            <td>-</td>
-                            <td>Callback when trap activates</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnDeactivated</code></td>
-                            <td><code>EventCallback</code></td>
-                            <td>-</td>
-                            <td>Callback when trap deactivates</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<SuSection Title="API Reference">
+    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2">FocusTrap</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true">The focus trap container component.</SuText>
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Prop</SuTableHead>
+                <SuTableHead>Type</SuTableHead>
+                <SuTableHead>Default</SuTableHead>
+                <SuTableHead>Description</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            @foreach (var prop in focusTrapProps)
+            {
+                <SuTableRow>
+                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
+                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
+                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
+                    <SuTableCell>@prop.Description</SuTableCell>
+                </SuTableRow>
+            }
+        </SuTableBody>
+    </SuTable>
 
-        @* Public Methods *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">Public Methods</h3>
-            <p class="text-sm text-muted-foreground">Methods available via component reference.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Returns</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>FocusFirstAsync()</code></td>
-                            <td><code>ValueTask</code></td>
-                            <td>Manually focus the first focusable element</td>
-                        </tr>
-                        <tr>
-                            <td><code>FocusLastAsync()</code></td>
-                            <td><code>ValueTask</code></td>
-                            <td>Manually focus the last focusable element</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">Public Methods</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true">Methods available via component reference.</SuText>
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Method</SuTableHead>
+                <SuTableHead>Returns</SuTableHead>
+                <SuTableHead>Description</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            <SuTableRow>
+                <SuTableCell><SuCode>FocusFirstAsync()</SuCode></SuTableCell>
+                <SuTableCell><SuCode>ValueTask</SuCode></SuTableCell>
+                <SuTableCell>Manually focus the first focusable element</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><SuCode>FocusLastAsync()</SuCode></SuTableCell>
+                <SuTableCell><SuCode>ValueTask</SuCode></SuTableCell>
+                <SuTableCell>Manually focus the last focusable element</SuTableCell>
+            </SuTableRow>
+        </SuTableBody>
+    </SuTable>
+</SuSection>
 
-    @* How It Works *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">How It Works</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Focus Trapping Mechanism</h3>
-            <ol class="grid gap-2 text-sm text-muted-foreground list-decimal list-inside">
-                <li>When activated, the component identifies all focusable elements within its boundaries</li>
-                <li>It intercepts Tab and Shift+Tab key presses</li>
-                <li>When Tab is pressed on the last focusable element, focus moves to the first</li>
-                <li>When Shift+Tab is pressed on the first focusable element, focus moves to the last</li>
-                <li>This creates a circular focus loop within the trapped area</li>
-            </ol>
-        </div>
+<SuSection Title="How It Works">
+    <SuHeading Level="SuHeadingLevel.H3">Focus Trapping Mechanism</SuHeading>
+    <ol class="grid gap-2 text-sm text-su-muted-foreground list-decimal list-inside my-4">
+        <li>When activated, the component identifies all focusable elements within its boundaries</li>
+        <li>It intercepts Tab and Shift+Tab key presses</li>
+        <li>When Tab is pressed on the last focusable element, focus moves to the first</li>
+        <li>When Shift+Tab is pressed on the first focusable element, focus moves to the last</li>
+        <li>This creates a circular focus loop within the trapped area</li>
+    </ol>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Focusable Elements</h3>
-            <p class="text-sm text-muted-foreground">The following elements are considered focusable:</p>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <code>&lt;a&gt;</code> with <code>href</code> attribute
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <code>&lt;button&gt;</code> (not disabled)
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <code>&lt;input&gt;</code> (not disabled, not <code>type="hidden"</code>)
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <code>&lt;select&gt;</code> (not disabled)
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <code>&lt;textarea&gt;</code> (not disabled)
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    Elements with <code>tabindex</code> >= 0
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    Elements with <code>contenteditable</code>
-                </li>
-            </ul>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Focusable Elements</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">The following elements are considered focusable:</SuText>
+    <ul class="grid gap-2 text-sm text-su-muted-foreground">
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuCode>&lt;a&gt;</SuCode> with <SuCode>href</SuCode> attribute
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuCode>&lt;button&gt;</SuCode> (not disabled)
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuCode>&lt;input&gt;</SuCode> (not disabled, not <SuCode>type="hidden"</SuCode>)
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuCode>&lt;select&gt;</SuCode> (not disabled)
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuCode>&lt;textarea&gt;</SuCode> (not disabled)
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Elements with <SuCode>tabindex</SuCode> >= 0
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Elements with <SuCode>contenteditable</SuCode>
+        </li>
+    </ul>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Edge Cases</h3>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">No focusable elements:</span>
-                    <span>If there are no focusable elements, the trap container itself receives focus (if it has <code>tabindex="-1"</code>)</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">Single focusable element:</span>
-                    <span>Focus stays on that element</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">Dynamically added elements:</span>
-                    <span>New focusable elements are automatically included in the trap</span>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Edge Cases</SuHeading>
+    <ul class="grid gap-2 text-sm text-su-muted-foreground mt-4">
+        <li class="flex items-start gap-2">
+            <SuText class="font-medium shrink-0">No focusable elements:</SuText>
+            <SuText>If there are no focusable elements, the trap container itself receives focus (if it has <SuCode>tabindex="-1"</SuCode>)</SuText>
+        </li>
+        <li class="flex items-start gap-2">
+            <SuText class="font-medium shrink-0">Single focusable element:</SuText>
+            <SuText>Focus stays on that element</SuText>
+        </li>
+        <li class="flex items-start gap-2">
+            <SuText class="font-medium shrink-0">Dynamically added elements:</SuText>
+            <SuText>New focusable elements are automatically included in the trap</SuText>
+        </li>
+    </ul>
+</SuSection>
 
-    @* Examples *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
-        
-        @* Basic Dialog *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Basic Dialog</h3>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@basicDialogCode</code></pre>
-            </div>
-        </div>
+<SuSection Title="Examples">
+    <SuHeading Level="SuHeadingLevel.H3">Basic Dialog</SuHeading>
+    <SuCodeBlock Language="razor" Code="@basicDialogCode" />
 
-        @* Modal Form *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Modal Form</h3>
-            <p class="text-sm text-muted-foreground">A form inside a modal with focus trapping.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@modalFormCode</code></pre>
-            </div>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Modal Form</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">A form inside a modal with focus trapping.</SuText>
+    <SuCodeBlock Language="razor" Code="@modalFormCode" />
 
-        @* Controlled Activation *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Controlled Activation</h3>
-            <p class="text-sm text-muted-foreground">Toggle the focus trap on and off.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@controlledCode</code></pre>
-            </div>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Controlled Activation</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Toggle the focus trap on and off.</SuText>
+    <SuCodeBlock Language="razor" Code="@controlledCode" />
 
-        @* Programmatic Focus *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Programmatic Focus Control</h3>
-            <p class="text-sm text-muted-foreground">Manually focus the first or last element.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@programmaticCode</code></pre>
-            </div>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Programmatic Focus Control</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Manually focus the first or last element.</SuText>
+    <SuCodeBlock Language="razor" Code="@programmaticCode" />
 
-        @* Sidebar Navigation *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Sidebar Navigation</h3>
-            <p class="text-sm text-muted-foreground">A mobile sidebar with focus trapping.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@sidebarCode</code></pre>
-            </div>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Sidebar Navigation</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">A mobile sidebar with focus trapping.</SuText>
+    <SuCodeBlock Language="razor" Code="@sidebarCode" />
 
-        @* Nested Focus Traps *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Nested Focus Traps</h3>
-            <p class="text-sm text-muted-foreground">Handle nested dialogs with multiple focus traps.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@nestedCode</code></pre>
-            </div>
-        </div>
-    </section>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Nested Focus Traps</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Handle nested dialogs with multiple focus traps.</SuText>
+    <SuCodeBlock Language="razor" Code="@nestedCode" />
+</SuSection>
 
-    @* Common Use Cases *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Common Use Cases</h2>
-        <div class="overflow-x-auto">
-            <table class="api-table">
-                <thead>
-                    <tr>
-                        <th>Use Case</th>
-                        <th>Configuration</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Modal dialog</td>
-                        <td><code>IsActive="true" AutoFocus="true" ReturnFocus="true"</code></td>
-                    </tr>
-                    <tr>
-                        <td>Dropdown menu</td>
-                        <td><code>IsActive="@@isOpen" AutoFocus="true" ReturnFocus="true"</code></td>
-                    </tr>
-                    <tr>
-                        <td>Sidebar navigation</td>
-                        <td><code>IsActive="@@isOpen" AutoFocus="true" ReturnFocus="true"</code></td>
-                    </tr>
-                    <tr>
-                        <td>Inline editor</td>
-                        <td><code>IsActive="@@isEditing" AutoFocus="true" ReturnFocus="true"</code></td>
-                    </tr>
-                    <tr>
-                        <td>Toast/notification</td>
-                        <td><code>IsActive="false"</code> (usually not needed)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+<SuSection Title="Common Use Cases">
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Use Case</SuTableHead>
+                <SuTableHead>Configuration</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            <SuTableRow>
+                <SuTableCell>Modal dialog</SuTableCell>
+                <SuTableCell><SuCode>IsActive="true" AutoFocus="true" ReturnFocus="true"</SuCode></SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell>Dropdown menu</SuTableCell>
+                <SuTableCell><SuCode>IsActive="@@isOpen" AutoFocus="true" ReturnFocus="true"</SuCode></SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell>Sidebar navigation</SuTableCell>
+                <SuTableCell><SuCode>IsActive="@@isOpen" AutoFocus="true" ReturnFocus="true"</SuCode></SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell>Inline editor</SuTableCell>
+                <SuTableCell><SuCode>IsActive="@@isEditing" AutoFocus="true" ReturnFocus="true"</SuCode></SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell>Toast/notification</SuTableCell>
+                <SuTableCell><SuCode>IsActive="false"</SuCode> (usually not needed)</SuTableCell>
+            </SuTableRow>
+        </SuTableBody>
+    </SuTable>
+</SuSection>
 
-    @* Styling *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
-            <p class="text-sm text-muted-foreground">Common styles for dialogs and overlays used with FocusTrap:</p>
-            <div class="code-block">
-                <pre><code class="language-css">@cssExampleCode</code></pre>
-            </div>
-        </div>
-    </section>
+<SuSection Title="Styling">
+    <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Common styles for dialogs and overlays used with FocusTrap:</SuText>
+    <SuCodeBlock Language="css" Code="@cssExampleCode" />
+</SuSection>
 
-    @* Accessibility *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Best Practices</h3>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <strong>Always use with modals/dialogs:</strong> Focus trapping is essential for modal accessibility
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <strong>Provide an escape route:</strong> Always include a way to close/deactivate the trap (close button, Escape key)
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <strong>Use with <code>role="dialog"</code>:</strong> Combine with proper ARIA roles for screen readers
-                </li>
-                <li class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                    <strong>Return focus:</strong> Keep <code>ReturnFocus</code> enabled to maintain user context
-                </li>
-            </ul>
-        </div>
+<SuSection Title="Accessibility">
+    <SuHeading Level="SuHeadingLevel.H3">Best Practices</SuHeading>
+    <ul class="grid gap-2 text-sm text-su-muted-foreground my-4">
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuText class="inline"><SuText class="font-medium inline">Always use with modals/dialogs:</SuText> Focus trapping is essential for modal accessibility</SuText>
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuText class="inline"><SuText class="font-medium inline">Provide an escape route:</SuText> Always include a way to close/deactivate the trap (close button, Escape key)</SuText>
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuText class="inline"><SuText class="font-medium inline">Use with <SuCode>role="dialog"</SuCode>:</SuText> Combine with proper ARIA roles for screen readers</SuText>
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            <SuText class="inline"><SuText class="font-medium inline">Return focus:</SuText> Keep <SuCode>ReturnFocus</SuCode> enabled to maintain user context</SuText>
+        </li>
+    </ul>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Screen Reader Considerations</h3>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="shrink-0">-</span>
-                    <span>The focus trap should be used in conjunction with <code>aria-modal="true"</code> for dialogs</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="shrink-0">-</span>
-                    <span>Include <code>aria-labelledby</code> or <code>aria-label</code> on the dialog container</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="shrink-0">-</span>
-                    <span>Announce the dialog opening/closing to screen readers if needed</span>
-                </li>
-            </ul>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Screen Reader Considerations</SuHeading>
+    <ul class="grid gap-2 text-sm text-su-muted-foreground mt-4">
+        <li class="flex items-start gap-2">
+            <span class="shrink-0">-</span>
+            <SuText>The focus trap should be used in conjunction with <SuCode>aria-modal="true"</SuCode> for dialogs</SuText>
+        </li>
+        <li class="flex items-start gap-2">
+            <span class="shrink-0">-</span>
+            <SuText>Include <SuCode>aria-labelledby</SuCode> or <SuCode>aria-label</SuCode> on the dialog container</SuText>
+        </li>
+        <li class="flex items-start gap-2">
+            <span class="shrink-0">-</span>
+            <SuText>Announce the dialog opening/closing to screen readers if needed</SuText>
+        </li>
+    </ul>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Accessible Dialog Example</h3>
-            <div class="code-block">
-                <pre><code class="language-xml">@accessibleDialogCode</code></pre>
-            </div>
-        </div>
-    </section>
-</div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Accessible Dialog Example</SuHeading>
+    <SuCodeBlock Language="xml" Code="@accessibleDialogCode" />
+</SuSection>
 
 <style>
-    /* Demo styles */
-    .demo-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem 1rem;
-        background: hsl(var(--primary));
-        color: hsl(var(--primary-foreground));
-        border: none;
-        border-radius: 0.5rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: opacity 0.15s;
-    }
-    
-    .demo-button:hover {
-        opacity: 0.9;
-    }
-    
-    .demo-button-secondary {
-        background: hsl(var(--muted));
-        color: hsl(var(--foreground));
-    }
-    
     .demo-overlay {
         position: fixed;
         inset: 0;
-        background: hsl(var(--foreground) / 0.5);
+        background: rgb(var(--su-foreground) / 0.5);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 1000;
     }
     
-    .demo-dialog {
-        background: hsl(var(--card));
-        border: 1px solid hsl(var(--border));
-        padding: 1.5rem;
-        border-radius: 0.75rem;
-        box-shadow: 0 4px 20px hsl(var(--foreground) / 0.2);
-        max-width: 400px;
-        width: 90%;
-    }
-    
     .demo-input {
         width: 100%;
         padding: 0.5rem 0.75rem;
-        background: hsl(var(--background));
-        border: 1px solid hsl(var(--border));
+        background: rgb(var(--su-background));
+        border: 1px solid rgb(var(--su-border));
         border-radius: 0.5rem;
-        color: hsl(var(--foreground));
+        color: rgb(var(--su-foreground));
         font-size: 0.875rem;
     }
     
     .demo-input:focus {
         outline: none;
-        border-color: hsl(var(--primary));
-        box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
+        border-color: rgb(var(--su-primary));
+        box-shadow: 0 0 0 2px rgb(var(--su-primary) / 0.2);
     }
     
     .demo-input::placeholder {
-        color: hsl(var(--muted-foreground));
+        color: rgb(var(--su-muted-foreground));
     }
 </style>
 
 @code {
     private bool showDialog = false;
 
+    private readonly List<SuApiProperty> focusTrapProps = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Default = "null", Description = "Content to render within the trap" },
+        new() { Name = "IsActive", Type = "bool", Default = "true", Description = "Whether trap is active" },
+        new() { Name = "AutoFocus", Type = "bool", Default = "true", Description = "Auto-focus first element when activated" },
+        new() { Name = "ReturnFocus", Type = "bool", Default = "true", Description = "Return focus to previously focused element on deactivation" },
+        new() { Name = "OnActivated", Type = "EventCallback", Description = "Callback when trap activates" },
+        new() { Name = "OnDeactivated", Type = "EventCallback", Description = "Callback when trap deactivates" }
+    };
+
     private const string anatomyCode = @"@using SummitUI.Components.Utilities
 
 <FocusTrap IsActive=""true"">
-    <div>
-        <input type=""text"" />
-        <button>Submit</button>
+    <div class=""su-trap-container"">
+        <input type=""text"" class=""su-input"" />
+        <button class=""su-button"">Submit</button>
     </div>
 </FocusTrap>";
 
@@ -507,21 +360,21 @@
 
 @if (showDialog)
 {
-    <div class=""dialog-overlay"">
+    <div class=""su-dialog-overlay"">
         <FocusTrap IsActive=""true"" AutoFocus=""true"">
-            <div class=""dialog"" role=""dialog"" aria-modal=""true"" aria-labelledby=""dialog-title"">
-                <h2 id=""dialog-title"">Confirm Action</h2>
-                <p>Are you sure you want to proceed?</p>
-                <div class=""dialog-actions"">
-                    <button @onclick=""@(() => showDialog = false)"">Cancel</button>
-                    <button @onclick=""HandleConfirm"">Confirm</button>
+            <div class=""su-dialog"" role=""dialog"" aria-modal=""true"" aria-labelledby=""dialog-title"">
+                <h2 id=""dialog-title"" class=""su-dialog-title"">Confirm Action</h2>
+                <p class=""su-dialog-description"">Are you sure you want to proceed?</p>
+                <div class=""su-dialog-actions"">
+                    <button class=""su-button su-button-secondary"" @onclick=""@(() => showDialog = false)"">Cancel</button>
+                    <button class=""su-button"" @onclick=""HandleConfirm"">Confirm</button>
                 </div>
             </div>
         </FocusTrap>
     </div>
 }
 
-<button @onclick=""@(() => showDialog = true)"">Open Dialog</button>
+<button class=""su-button"" @onclick=""@(() => showDialog = true)"">Open Dialog</button>
 
 @code {
     private void HandleConfirm()
@@ -539,24 +392,24 @@
 
 @if (showModal)
 {
-    <div class=""modal-overlay"" @onclick=""@(() => showModal = false)"">
+    <div class=""su-modal-overlay"" @onclick=""@(() => showModal = false)"">
         <FocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
-            <div class=""modal"" @onclick:stopPropagation=""true"" role=""dialog"" aria-modal=""true"">
-                <h2>Sign Up</h2>
-                <form @onsubmit=""HandleSubmit"">
-                    <div class=""form-field"">
-                        <label for=""name"">Name</label>
-                        <input type=""text"" id=""name"" @bind=""name"" required />
+            <div class=""su-modal"" @onclick:stopPropagation=""true"" role=""dialog"" aria-modal=""true"">
+                <h2 class=""su-modal-title"">Sign Up</h2>
+                <form @onsubmit=""HandleSubmit"" class=""su-form"">
+                    <div class=""su-form-field"">
+                        <label for=""name"" class=""su-label"">Name</label>
+                        <input type=""text"" id=""name"" @bind=""name"" class=""su-input"" required />
                     </div>
-                    <div class=""form-field"">
-                        <label for=""email"">Email</label>
-                        <input type=""email"" id=""email"" @bind=""email"" required />
+                    <div class=""su-form-field"">
+                        <label for=""email"" class=""su-label"">Email</label>
+                        <input type=""email"" id=""email"" @bind=""email"" class=""su-input"" required />
                     </div>
-                    <div class=""form-actions"">
-                        <button type=""button"" @onclick=""@(() => showModal = false)"">
+                    <div class=""su-form-actions"">
+                        <button type=""button"" class=""su-button su-button-secondary"" @onclick=""@(() => showModal = false)"">
                             Cancel
                         </button>
-                        <button type=""submit"">Submit</button>
+                        <button type=""submit"" class=""su-button"">Submit</button>
                     </div>
                 </form>
             </div>
@@ -564,14 +417,14 @@
     </div>
 }
 
-<button @onclick=""@(() => showModal = true)"">Open Sign Up</button>";
+<button class=""su-button"" @onclick=""@(() => showModal = true)"">Open Sign Up</button>";
 
     private const string controlledCode = @"@code {
     private bool isTrapActive = false;
 }
 
-<div class=""control-panel"">
-    <button @onclick=""@(() => isTrapActive = !isTrapActive)"">
+<div class=""su-control-panel"">
+    <button class=""su-button"" @onclick=""@(() => isTrapActive = !isTrapActive)"">
         @(isTrapActive ? ""Deactivate"" : ""Activate"") Focus Trap
     </button>
 </div>
@@ -579,11 +432,11 @@
 <FocusTrap IsActive=""@isTrapActive"" 
            OnActivated=""HandleActivated"" 
            OnDeactivated=""HandleDeactivated"">
-    <div class=""trap-container"">
-        <h3>Focus Trap Area</h3>
-        <input type=""text"" placeholder=""First input"" />
-        <input type=""text"" placeholder=""Second input"" />
-        <button>Action Button</button>
+    <div class=""su-trap-container"">
+        <h3 class=""su-trap-title"">Focus Trap Area</h3>
+        <input type=""text"" class=""su-input"" placeholder=""First input"" />
+        <input type=""text"" class=""su-input"" placeholder=""Second input"" />
+        <button class=""su-button"">Action Button</button>
     </div>
 </FocusTrap>
 
@@ -604,16 +457,16 @@
 }
 
 <FocusTrap @ref=""focusTrap"" IsActive=""true"" AutoFocus=""false"">
-    <div class=""container"">
-        <input type=""text"" placeholder=""First"" />
-        <input type=""text"" placeholder=""Middle"" />
-        <input type=""text"" placeholder=""Last"" />
+    <div class=""su-trap-container"">
+        <input type=""text"" class=""su-input"" placeholder=""First"" />
+        <input type=""text"" class=""su-input"" placeholder=""Middle"" />
+        <input type=""text"" class=""su-input"" placeholder=""Last"" />
     </div>
 </FocusTrap>
 
-<div class=""controls"">
-    <button @onclick=""FocusFirst"">Focus First</button>
-    <button @onclick=""FocusLast"">Focus Last</button>
+<div class=""su-controls"">
+    <button class=""su-button"" @onclick=""FocusFirst"">Focus First</button>
+    <button class=""su-button"" @onclick=""FocusLast"">Focus Last</button>
 </div>
 
 @code {
@@ -638,23 +491,23 @@
     private bool sidebarOpen = false;
 }
 
-<button @onclick=""@(() => sidebarOpen = true)"" aria-expanded=""@sidebarOpen"">
+<button class=""su-button"" @onclick=""@(() => sidebarOpen = true)"" aria-expanded=""@sidebarOpen"">
     Open Menu
 </button>
 
 @if (sidebarOpen)
 {
-    <div class=""sidebar-overlay"" @onclick=""@(() => sidebarOpen = false)"">
+    <div class=""su-sidebar-overlay"" @onclick=""@(() => sidebarOpen = false)"">
         <FocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
-            <nav class=""sidebar"" @onclick:stopPropagation=""true"" role=""navigation"">
-                <button class=""close-btn"" @onclick=""@(() => sidebarOpen = false)"" 
+            <nav class=""su-sidebar"" @onclick:stopPropagation=""true"" role=""navigation"">
+                <button class=""su-close-btn"" @onclick=""@(() => sidebarOpen = false)"" 
                         aria-label=""Close menu"">
                     X
                 </button>
-                <a href=""/home"">Home</a>
-                <a href=""/about"">About</a>
-                <a href=""/services"">Services</a>
-                <a href=""/contact"">Contact</a>
+                <a href=""/home"" class=""su-nav-link"">Home</a>
+                <a href=""/about"" class=""su-nav-link"">About</a>
+                <a href=""/services"" class=""su-nav-link"">Services</a>
+                <a href=""/contact"" class=""su-nav-link"">Contact</a>
             </nav>
         </FocusTrap>
     </div>
@@ -665,75 +518,79 @@
 }
 
 <FocusTrap IsActive=""true"">
-    <div class=""outer-dialog"">
-        <h2>Outer Dialog</h2>
-        <input type=""text"" placeholder=""Outer input"" />
-        <button @onclick=""@(() => showInnerDialog = true)"">Open Inner</button>
+    <div class=""su-outer-dialog"">
+        <h2 class=""su-dialog-title"">Outer Dialog</h2>
+        <input type=""text"" class=""su-input"" placeholder=""Outer input"" />
+        <button class=""su-button"" @onclick=""@(() => showInnerDialog = true)"">Open Inner</button>
         
         @if (showInnerDialog)
         {
             <FocusTrap IsActive=""true"" AutoFocus=""true"">
-                <div class=""inner-dialog"">
-                    <h3>Inner Dialog</h3>
-                    <input type=""text"" placeholder=""Inner input"" />
-                    <button @onclick=""@(() => showInnerDialog = false)"">Close</button>
+                <div class=""su-inner-dialog"">
+                    <h3 class=""su-dialog-title"">Inner Dialog</h3>
+                    <input type=""text"" class=""su-input"" placeholder=""Inner input"" />
+                    <button class=""su-button"" @onclick=""@(() => showInnerDialog = false)"">Close</button>
                 </div>
             </FocusTrap>
         }
     </div>
 </FocusTrap>";
 
-    private const string cssExampleCode = @".dialog-overlay {
+    private const string cssExampleCode = @".su-dialog-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(var(--su-foreground) / 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
 }
 
-.dialog {
-    background: white;
+.su-dialog {
+    background: rgb(var(--su-card));
     padding: 24px;
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgb(var(--su-border));
+    box-shadow: 0 4px 20px rgb(var(--su-foreground) / 0.2);
     max-width: 400px;
     width: 100%;
 }
 
-.dialog h2 {
+.su-dialog-title {
     margin-top: 0;
+    color: rgb(var(--su-foreground));
+    font-weight: 600;
 }
 
-.dialog-actions {
+.su-dialog-actions {
     display: flex;
     gap: 12px;
     justify-content: flex-end;
     margin-top: 24px;
 }
 
-.trap-container {
-    border: 2px solid #0066cc;
+.su-trap-container {
+    border: 2px solid rgb(var(--su-primary));
     padding: 20px;
     border-radius: 8px;
 }
 
-.trap-container[data-focus-trap-active=""true""] {
-    border-color: #00cc66;
+.su-trap-container[data-focus-trap-active=""true""] {
+    border-color: rgb(var(--su-primary));
 }";
 
     private const string accessibleDialogCode = @"<FocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
     <div role=""dialog"" 
+         class=""su-dialog""
          aria-modal=""true"" 
          aria-labelledby=""dialog-title""
          aria-describedby=""dialog-description"">
-        <h2 id=""dialog-title"">Delete Item</h2>
-        <p id=""dialog-description"">
+        <h2 id=""dialog-title"" class=""su-dialog-title"">Delete Item</h2>
+        <p id=""dialog-description"" class=""su-dialog-description"">
             Are you sure you want to delete this item? This action cannot be undone.
         </p>
-        <button @onclick=""Cancel"">Cancel</button>
-        <button @onclick=""Delete"">Delete</button>
+        <button class=""su-button su-button-secondary"" @onclick=""Cancel"">Cancel</button>
+        <button class=""su-button su-button-destructive"" @onclick=""Delete"">Delete</button>
     </div>
 </FocusTrap>";
 }

@@ -15,11 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\SummitUI\SummitUI.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Components\DropDownButton\" />
+      <ProjectReference Include="..\..\SummitUI.Docs.Design\SummitUI.Docs.Design.csproj" />
     </ItemGroup>
 
 </Project>

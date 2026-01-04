@@ -1,0 +1,70 @@
+@namespace SummitUI.Docs.Design
+
+<div class="relative inline-block">
+    @if (_isOpen)
+    {
+        <div class="fixed inset-0 z-40" @onclick="CloseDropdown"></div>
+    }
+
+    <button type="button"
+            class="@FinalButtonClass"
+            @onclick="ToggleDropdown"
+            aria-expanded="@_isOpen"
+            aria-haspopup="true"
+            aria-label="Get AI help with this component"
+            @attributes="OtherAttributes">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+        </svg>
+        LLM
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="@ChevronClass">
+            <path d="m6 9 6 6 6-6"/>
+        </svg>
+    </button>
+
+    @if (_isOpen)
+    {
+        <div class="@DropdownClasses" role="menu">
+            <button type="button" class="@MenuItemClasses" role="menuitem" @onclick="CopyLlmsTxtUrl">
+                <span class="shrink-0 text-su-muted-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <path d="M12 18v-6"/>
+                        <path d="m9 15 3 3 3-3"/>
+                    </svg>
+                </span>
+                <span class="flex flex-col items-start">
+                    <span class="font-normal">Copy llms.txt URL</span>
+                    <span class="@MenuItemDescriptionClasses">Machine-readable docs for AI assistants</span>
+                </span>
+            </button>
+
+            <div class="my-1.5 h-px bg-su-border"></div>
+
+            <button type="button" class="@MenuItemClasses" role="menuitem" @onclick="OpenChatGpt">
+                <span class="shrink-0 text-su-muted-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.8956zm16.0993 3.8558L12.6 8.3829l2.02-1.1638a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
+                    </svg>
+                </span>
+                <span class="flex flex-col items-start">
+                    <span class="font-normal">Ask ChatGPT</span>
+                    <span class="@MenuItemDescriptionClasses">Open ChatGPT with documentation context</span>
+                </span>
+            </button>
+
+            <button type="button" class="@MenuItemClasses" role="menuitem" @onclick="OpenClaude">
+                <span class="shrink-0 text-su-muted-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H4.79l-.081.209v2.588l.081.128-.081.08zm8.845-4.409l.241.161 4.559-2.567-.16-.241-4.559.08-.241.162.16 2.405zm-6.119 6.934l-.162-.241-1.771.965-.08.241.08.16 1.852-.884.08-.241zm11.161-9.098l.16.08 1.691-.965.08-.16v-.241l-1.771.965-.16.32zm-12.77 3.535v-.241l-1.771-.965-.161.08-.08.161v.241l.08.08 1.691.885.241-.241zm6.119 7.094l-2.245-1.287h-.241l-.161.161.08.241 2.326 1.287h.241v-.402zm4.157-2.486l-.241-.161-.08.08-1.771 1.046.08.241.161.161 1.852-1.126v-.241zm-9.662-9.26l.08-.161-.08-.16-1.691-.965-.16.08-.081.161v.16l.08.161 1.691.885.161-.161zM17.074 17.08l.161.08 1.691-.965.08-.16v-.241l-.08-.08-1.691.884-.241.161.08.321zm-3.955-14.553l.08.16 4.559 2.567.241-.161-.08-.241-4.559-2.486-.241.161zm-2.245 0l-.08.161.08.16 4.479 2.567.241-.08.08-.241-4.559-2.567h-.241zm-4.157 2.325l-.08.16.08.241 4.559 2.567.241-.161-.08-.241-4.479-2.566h-.241zm7.549 12.853l-.241-.161-4.479 2.567.08.16.161.081 4.559-2.486-.08-.161zm-5.556-1.207l-.241.161-.08.241 2.326 1.287.16-.08.081-.161v-.241l-2.246-1.207zm8.523 1.287l.08.241.161.08 2.326-1.287-.08-.241-.161-.08h-.08l-2.246 1.287zm-4.157-6.049l.08-.241-.08-.08H8.437l-.08.08.08.241h4.639zm.321 7.014l.241-.16v-2.406l-.16-.16-.241.08-4.559 2.566.08.161.16.08 4.479-.161zm5.556-9.983l-.241.16.08 2.406.161.16.16-.08 1.771-1.046-.08-.16-.08-.161-1.771-1.279zm-11.161.08l-.161-.16-1.771 1.046-.08.241.08.08 1.771 1.126.241-.161-.08-2.172zm4.077-3.455l-.16.08-.081.161v.241l2.246 1.207.241-.161.08-.16-.08-.161-2.246-1.207zm3.955 2.326l.08.16.161.081 2.326-1.287-.08-.241-.161-.08h-.08l-2.246 1.367z"/>
+                    </svg>
+                </span>
+                <span class="flex flex-col items-start">
+                    <span class="font-normal">Ask Claude</span>
+                    <span class="@MenuItemDescriptionClasses">Open Claude with documentation context</span>
+                </span>
+            </button>
+        </div>
+    }
+</div>

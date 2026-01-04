@@ -1,7 +1,7 @@
 <nav class="flex flex-col gap-6" aria-label="Documentation navigation">
     @* Getting Started Section *@
     <div class="flex flex-col gap-1">
-        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Getting Started</h4>
+        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-su-muted-foreground">Getting Started</h4>
         <NavLink href="/docs" Match="NavLinkMatch.All" class="sidebar-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
                 <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
@@ -21,7 +21,7 @@
 
     @* AI & Agents Section *@
     <div class="flex flex-col gap-1">
-        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">AI & Agents</h4>
+        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-su-muted-foreground">AI & Agents</h4>
         <NavLink href="/docs/llms" class="sidebar-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
                 <path d="M12 8V4H8"/>
@@ -43,7 +43,7 @@
 
     @* Components Section *@
     <div class="flex flex-col gap-1">
-        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Components</h4>
+        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-su-muted-foreground">Components</h4>
         <NavLink href="/docs/accordion" class="sidebar-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
                 <rect width="18" height="18" x="3" y="3" rx="2"/>
@@ -109,7 +109,7 @@
 
     @* Utilities Section *@
     <div class="flex flex-col gap-1">
-        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Utilities</h4>
+        <h4 class="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-su-muted-foreground">Utilities</h4>
         <NavLink href="/docs/focustrap" class="sidebar-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
                 <circle cx="12" cy="12" r="10"/>
@@ -135,17 +135,17 @@
         transition-property: color, background-color;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 150ms;
-        color: hsl(var(--muted-foreground));
+        color: rgb(var(--su-muted-foreground));
     }
 
     .sidebar-link:hover {
-        color: hsl(var(--foreground));
-        background-color: hsl(var(--accent));
+        color: rgb(var(--su-foreground));
+        background-color: rgb(var(--su-accent));
     }
 
     .sidebar-link.active {
-        color: hsl(var(--foreground));
-        background-color: hsl(var(--accent));
+        color: rgb(var(--su-foreground));
+        background-color: rgb(var(--su-accent));
     }
 
     .sidebar-link.active::before {
@@ -154,7 +154,7 @@
         left: 0;
         width: 2px;
         height: 1.25rem;
-        background-color: hsl(var(--foreground));
+        background-color: rgb(var(--su-primary));
         border-radius: 0 2px 2px 0;
     }
 </style>

@@ -1,0 +1,13 @@
+@namespace SummitUI.Docs.Design
+
+<section class="@FinalClass" @attributes="OtherAttributes">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <h2 class="text-lg font-semibold text-su-foreground">@Title</h2>
+    }
+    @if (!string.IsNullOrEmpty(Description))
+    {
+        <p class="text-sm text-su-muted-foreground">@Description</p>
+    }
+    @ChildContent
+</section>

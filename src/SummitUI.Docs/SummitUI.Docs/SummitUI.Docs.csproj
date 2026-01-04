@@ -13,8 +13,8 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.1"/>
     </ItemGroup>
 
-    <Target Name="BuildTailwind" BeforeTargets="Build">
-        <Exec Command="npm run build:css" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    <Target Name="NpmBuild" BeforeTargets="Build">
+        <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
     </Target>
 
     <ItemGroup>

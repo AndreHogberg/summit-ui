@@ -9,6 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/SummitUI.Docs/SummitUI.Docs/SummitUI.Docs.csproj", "src/SummitUI.Docs/SummitUI.Docs/"]
 COPY ["src/SummitUI.Docs/SummitUI.Docs.Client/SummitUI.Docs.Client.csproj", "src/SummitUI.Docs/SummitUI.Docs.Client/"]
+COPY ["src/SummitUI.Docs.Design/SummitUI.Docs.Design.csproj", "src/SummitUI.Docs.Design/"]
 RUN dotnet restore "src/SummitUI.Docs/SummitUI.Docs/SummitUI.Docs.csproj"
 COPY . .
 WORKDIR "/src/src/SummitUI.Docs/SummitUI.Docs"

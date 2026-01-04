@@ -1,9 +1,33 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-@source "../../SummitUI.Docs.Client/**/*.razor";
+@source "../../SummitUI.Docs.Client/**/*.{cs,razor}";
+@source "../../../SummitUI.Docs.Design/**/*.{cs,razor}";
 @source "../Components/**/*.razor";
 
+/* ============================================
+   SummitUI Design System Theme
+   Blue/White theme with system dark mode
+   ============================================ */
+
 @theme {
+  /* Design system colors */
+  --color-su-primary: rgb(var(--su-primary));
+  --color-su-primary-foreground: rgb(var(--su-primary-foreground));
+  --color-su-background: rgb(var(--su-background));
+  --color-su-foreground: rgb(var(--su-foreground));
+  --color-su-muted: rgb(var(--su-muted));
+  --color-su-muted-foreground: rgb(var(--su-muted-foreground));
+  --color-su-border: rgb(var(--su-border));
+  --color-su-card: rgb(var(--su-card));
+  --color-su-card-foreground: rgb(var(--su-card-foreground));
+  --color-su-accent: rgb(var(--su-accent));
+  --color-su-accent-foreground: rgb(var(--su-accent-foreground));
+  --color-su-destructive: rgb(var(--su-destructive));
+  --color-su-destructive-foreground: rgb(var(--su-destructive-foreground));
+  --color-su-ring: rgb(var(--su-ring));
+
+  /* Legacy colors (for existing docs) */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
@@ -28,47 +52,118 @@
   --radius-sm: calc(var(--radius) - 4px);
 }
 
+/* ============================================
+   Light Mode (Default)
+   ============================================ */
 :root {
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 6%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 6%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 12%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 12%;
-  --muted-foreground: 0 0% 55%;
-  --accent: 0 0% 12%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 14.9%;
-  --input: 0 0% 14.9%;
-  --ring: 0 0% 83.1%;
+  /* New design system tokens (RGB values for opacity support) */
+  --su-primary: 37 99 235;             /* blue-600 */
+  --su-primary-foreground: 255 255 255; /* white */
+  --su-background: 255 255 255;         /* white */
+  --su-foreground: 3 7 18;              /* gray-950 */
+  --su-muted: 243 244 246;              /* gray-100 */
+  --su-muted-foreground: 75 85 99;       /* gray-600 */
+  --su-border: 229 231 235;             /* gray-200 */
+  --su-card: 255 255 255;               /* white */
+  --su-card-foreground: 3 7 18;         /* gray-950 */
+  --su-accent: 239 246 255;             /* blue-50 */
+  --su-accent-foreground: 30 58 138;    /* blue-900 */
+  --su-destructive: 254 202 202;          /* red-200 */
+  --su-destructive-foreground: 127 29 29;  /* red-900 */
+  --su-ring: 59 130 246;                /* blue-500 */
+
+  /* Legacy HSL tokens */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 217.2 91.2% 59.8%;         /* blue-500 */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 220 9% 34%;          /* gray-600 */
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 96% 89%;                /* red-200 */
+  --destructive-foreground: 0 63% 31%;     /* red-900 */
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 217.2 91.2% 59.8%;            /* blue-500 */
   --radius: 0.5rem;
 }
 
+/* ============================================
+   Dark Mode (System Preference)
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* New design system tokens */
+    --su-primary: 96 165 250;           /* blue-400 */
+    --su-primary-foreground: 3 7 18;    /* gray-950 */
+    --su-background: 3 7 18;            /* gray-950 */
+    --su-foreground: 249 250 251;       /* gray-50 */
+    --su-muted: 31 41 55;               /* gray-800 */
+    --su-muted-foreground: 209 213 219;   /* gray-300 */
+    --su-border: 55 65 81;              /* gray-700 */
+    --su-card: 17 24 39;                /* gray-900 */
+    --su-card-foreground: 249 250 251;  /* gray-50 */
+    --su-accent: 30 58 138;             /* blue-900 */
+    --su-accent-foreground: 219 234 254;/* blue-100 */
+    --su-destructive: 127 29 29;           /* red-900 */
+    --su-destructive-foreground: 254 226 226; /* red-100 */
+    --su-ring: 96 165 250;              /* blue-400 */
+
+    /* Legacy HSL tokens */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 6%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 67.8%;       /* blue-400 */
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 216 12% 84%;       /* gray-300 */
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;              /* red-900 */
+    --destructive-foreground: 0 93% 94%;   /* red-100 */
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 217.2 91.2% 67.8%;          /* blue-400 */
+  }
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
 @layer base {
   * {
-    @apply border-border;
+    @apply border-su-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-su-background text-su-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
+/* ============================================
+   Component Utilities
+   ============================================ */
+
 /* Nav Link Styles */
 .nav-link {
-  @apply px-3 py-2 rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+  @apply px-3 py-2 rounded-md text-su-muted-foreground transition-colors hover:text-su-foreground hover:bg-su-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring;
 }
 
 /* Blazor Error UI */
 #blazor-error-ui {
-  @apply bg-destructive text-destructive-foreground fixed bottom-0 left-0 w-full z-[1000] p-3 hidden shadow-lg;
+  @apply bg-su-destructive text-su-destructive-foreground fixed bottom-0 left-0 w-full z-[1000] p-3 hidden shadow-lg;
 }
 #blazor-error-ui .dismiss {
   @apply cursor-pointer absolute right-3 top-2;
@@ -76,7 +171,7 @@
 
 /* Sidebar and Mobile Layout */
 .mobile-sidebar {
-  @apply fixed top-0 left-0 h-screen w-[280px] bg-background border-r border-border z-100 transition-transform duration-300 ease-in-out -translate-x-full;
+  @apply fixed top-0 left-0 h-screen w-[280px] bg-su-background border-r border-su-border z-100 transition-transform duration-300 ease-in-out -translate-x-full;
 }
 
 .mobile-sidebar[data-state="open"] {
@@ -106,12 +201,12 @@
 }
 
 .sidebar-scroll-area::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--border));
+  background-color: rgb(var(--su-border));
   border-radius: 3px;
 }
 
 .sidebar-scroll-area::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--muted-foreground) / 0.5);
+  background-color: rgb(var(--su-muted-foreground) / 0.5);
 }
 
 /* Code blocks */
@@ -125,17 +220,17 @@ code {
 
 /* Inline code */
 :not(pre) > code {
-  @apply bg-muted px-1.5 py-0.5 rounded text-sm text-foreground;
+  @apply bg-su-muted px-1.5 py-0.5 rounded text-sm text-su-foreground;
 }
 
 /* Code block container */
 .code-block {
-  @apply rounded-lg border border-border overflow-hidden;
+  @apply rounded-lg border border-su-border overflow-hidden;
 }
 
 .code-block pre {
   @apply m-0 p-4 overflow-x-auto text-sm leading-relaxed;
-  background-color: hsl(var(--card)) !important;
+  background-color: rgb(var(--su-card)) !important;
 }
 
 .code-block pre code {
@@ -144,7 +239,7 @@ code {
 
 /* Override highlight.js background */
 .hljs {
-  background: hsl(var(--card)) !important;
+  background: rgb(var(--su-card)) !important;
 }
 
 /* API Reference Tables */
@@ -154,11 +249,11 @@ code {
 }
 
 .api-table th {
-  @apply text-left font-semibold text-foreground bg-muted/50 px-4 py-3 border-b border-border;
+  @apply text-left font-semibold text-su-foreground bg-su-muted/50 px-4 py-3 border-b border-su-border;
 }
 
 .api-table td {
-  @apply px-4 py-3 border-b border-border text-muted-foreground;
+  @apply px-4 py-3 border-b border-su-border text-su-muted-foreground;
 }
 
 .api-table tr:last-child td {
@@ -166,7 +261,7 @@ code {
 }
 
 .api-table td:first-child {
-  @apply text-foreground font-medium;
+  @apply text-su-foreground font-medium;
 }
 
 .api-table code {
@@ -175,6 +270,6 @@ code {
 
 /* Keyboard key styles */
 kbd {
-  @apply inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium bg-muted border border-border rounded text-foreground;
-  box-shadow: 0 1px 0 hsl(var(--border));
+  @apply inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium bg-su-muted border border-su-border rounded text-su-foreground;
+  box-shadow: 0 1px 0 rgb(var(--su-border));
 }

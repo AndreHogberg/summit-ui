@@ -146,3 +146,42 @@ public async ValueTask DisposeAsync()
 ````````
 
 **Why:** In Blazor Server, when a user navigates away or closes the browser, the SignalR circuit disconnects before component disposal completes. Any JS interop calls during `DisposeAsync` will throw `JSDisconnectedException`. Since the browser automatically cleans up JS resources when the connection closes, catching and ignoring this exception is safe and expected.
+
+## Asset Management
+
+### No CDN Dependencies
+
+Never use external CDN links for CSS or JavaScript. All assets must be bundled locally:
+
+- **Why:** External CDNs add latency (DNS lookup, TLS handshake), create single points of failure, and prevent offline functionality
+- **How:** Install packages via npm and bundle with esbuild into `wwwroot/`
+
+**Example - Adding a third-party library:**
+```bash
+# Install the package
+npm install some-library --save
+
+# Create a bundle script in Scripts/
+# Update package.json build step to bundle it
+```
+
+### Bundle and Minify
+
+All JavaScript and CSS assets must be bundled and minified for production:
+
+- Use **esbuild** for JavaScript bundling (already configured in `package.json`)
+- Use **Tailwind CSS** with `--minify` flag for CSS
+- Output files to `wwwroot/` with `.min.js` or `.min.css` extensions
+- Reference assets using the `@Assets["filename"]` pattern for fingerprinted URLs
+
+## SummitUI.Docs Projects
+
+### Use Razor Files
+
+In `SummitUI.Docs` and `SummitUI.Docs.Client` projects, prefer `.razor` files over `.cs` files for components:
+
+- Documentation components benefit from Razor's declarative syntax for readability
+- Use `.razor` files for page components and UI-focused components
+- Use `.cs` files only for services, utilities, and complex logic classes
+
+**Note:** This differs from the main `SummitUI` library, which uses `.cs` files exclusively for headless components.

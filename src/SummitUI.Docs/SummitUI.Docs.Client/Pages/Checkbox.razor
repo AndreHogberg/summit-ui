@@ -2,24 +2,27 @@
 @layout DocsLayout
 @rendermode InteractiveWebAssembly
 
+<PageTitle>SummitUI - Checkbox</PageTitle>
+
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+            <span class="inline-flex items-center rounded-full border border-su-border bg-su-muted/50 px-2.5 py-0.5 text-xs font-medium text-su-muted-foreground">
                 Component
             </span>
         </div>
         <h1 class="text-4xl font-bold tracking-tight">Checkbox</h1>
-        <p class="text-xl text-muted-foreground leading-relaxed">
+        <SuPromptButton ComponentName="Checkbox" />
+        <p class="text-xl text-su-muted-foreground leading-relaxed">
             A control that allows the user to toggle between checked and not checked.
         </p>
     </div>
 
     @* Live Demo *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
-        <div class="rounded-xl border border-border bg-card p-6">
+        <h2 class="text-lg font-semibold text-su-foreground">Demo</h2>
+        <div class="rounded-xl border border-su-border bg-su-card p-6">
             <div class="flex flex-col gap-4">
                 <label class="flex items-center gap-3 cursor-pointer">
                     <CheckboxRoot @bind-Checked="isChecked1" class="demo-checkbox">
@@ -29,7 +32,7 @@
                             </svg>
                         </CheckboxIndicator>
                     </CheckboxRoot>
-                    <span class="text-sm text-foreground">Accept terms and conditions</span>
+                    <span class="text-sm text-su-foreground">Accept terms and conditions</span>
                 </label>
                 
                 <label class="flex items-center gap-3 cursor-pointer">
@@ -40,7 +43,7 @@
                             </svg>
                         </CheckboxIndicator>
                     </CheckboxRoot>
-                    <span class="text-sm text-foreground">Subscribe to newsletter</span>
+                    <span class="text-sm text-su-foreground">Subscribe to newsletter</span>
                 </label>
                 
                 <label class="flex items-center gap-3 cursor-not-allowed opacity-50">
@@ -51,7 +54,7 @@
                             </svg>
                         </CheckboxIndicator>
                     </CheckboxRoot>
-                    <span class="text-sm text-foreground">Disabled option</span>
+                    <span class="text-sm text-su-foreground">Disabled option</span>
                 </label>
             </div>
         </div>
@@ -59,30 +62,30 @@
 
     @* Features *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Features</h2>
-        <ul class="grid gap-2 text-sm text-muted-foreground">
+        <h2 class="text-lg font-semibold text-su-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Three states: checked, unchecked, and indeterminate
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Keyboard navigation (Space to toggle)
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Controlled and uncontrolled modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Support for HTML forms (hidden input)
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Grouping capabilities via CheckboxGroup
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 WCAG compliant with proper ARIA attributes
             </li>
         </ul>
@@ -90,7 +93,7 @@
 
     @* Installation *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <h2 class="text-lg font-semibold text-su-foreground">Installation</h2>
         <div class="code-block">
             <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
         </div>
@@ -98,8 +101,8 @@
 
     @* Anatomy *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
-        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <h2 class="text-lg font-semibold text-su-foreground">Anatomy</h2>
+        <p class="text-sm text-su-muted-foreground">Import the components and structure them as follows:</p>
         <div class="code-block">
             <pre><code class="language-xml">@anatomyCode</code></pre>
         </div>
@@ -107,23 +110,23 @@
 
     @* Sub-components *@
     <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <h2 class="text-lg font-semibold text-su-foreground">Sub-components</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">CheckboxRoot</h3>
-                <p class="mt-1 text-sm text-muted-foreground">The root checkbox component containing the button element.</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">CheckboxRoot</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">The root checkbox component containing the button element.</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">CheckboxIndicator</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Renders when the checkbox is in a checked or indeterminate state.</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">CheckboxIndicator</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">Renders when the checkbox is in a checked or indeterminate state.</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">CheckboxGroup</h3>
-                <p class="mt-1 text-sm text-muted-foreground">A wrapper for managing a group of checkboxes.</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">CheckboxGroup</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">A wrapper for managing a group of checkboxes.</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">CheckboxGroupLabel</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Accessible label for the checkbox group.</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">CheckboxGroupLabel</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">Accessible label for the checkbox group.</p>
             </div>
         </div>
     </section>
@@ -134,8 +137,8 @@
         
         @* CheckboxRoot *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">CheckboxRoot</h3>
-            <p class="text-sm text-muted-foreground">The root checkbox component.</p>
+            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">CheckboxRoot</h3>
+            <p class="text-sm text-su-muted-foreground">The root checkbox component.</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -208,8 +211,8 @@
 
         @* CheckboxIndicator *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">CheckboxIndicator</h3>
-            <p class="text-sm text-muted-foreground">Renders when the checkbox is checked or indeterminate.</p>
+            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">CheckboxIndicator</h3>
+            <p class="text-sm text-su-muted-foreground">Renders when the checkbox is checked or indeterminate.</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -240,8 +243,8 @@
 
         @* CheckboxGroup *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">CheckboxGroup</h3>
-            <p class="text-sm text-muted-foreground">Manages a group of checkboxes.</p>
+            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">CheckboxGroup</h3>
+            <p class="text-sm text-su-muted-foreground">Manages a group of checkboxes.</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -295,7 +298,7 @@
         
         @* Basic *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Basic Usage</h3>
+            <h3 class="text-lg font-semibold text-su-foreground">Basic Usage</h3>
             <div class="code-block">
                 <pre><code class="language-xml">@basicExampleCode</code></pre>
             </div>
@@ -303,8 +306,8 @@
 
         @* With Label *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">With Label</h3>
-            <p class="text-sm text-muted-foreground">Wrap the checkbox in a label for better accessibility and click handling.</p>
+            <h3 class="text-lg font-semibold text-su-foreground">With Label</h3>
+            <p class="text-sm text-su-muted-foreground">Wrap the checkbox in a label for better accessibility and click handling.</p>
             <div class="code-block">
                 <pre><code class="language-xml">@withLabelExampleCode</code></pre>
             </div>
@@ -312,28 +315,28 @@
 
         @* Controlled *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
-            <p class="text-sm text-muted-foreground">Control the checked state externally.</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Controlled Mode</h3>
+            <p class="text-sm text-su-muted-foreground">Control the checked state externally.</p>
             <div class="code-block">
-                <pre><code class="language-cshtml-razor">@controlledExampleCode</code></pre>
+                <pre><code class="language-razor">@controlledExampleCode</code></pre>
             </div>
         </div>
 
         @* Indeterminate *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Indeterminate State</h3>
-            <p class="text-sm text-muted-foreground">Use the indeterminate state for parent checkboxes with partially selected children.</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Indeterminate State</h3>
+            <p class="text-sm text-su-muted-foreground">Use the indeterminate state for parent checkboxes with partially selected children.</p>
             <div class="code-block">
-                <pre><code class="language-cshtml-razor">@indeterminateExampleCode</code></pre>
+                <pre><code class="language-razor">@indeterminateExampleCode</code></pre>
             </div>
         </div>
 
         @* Group *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Checkbox Group</h3>
-            <p class="text-sm text-muted-foreground">Manage multiple checkboxes as a group.</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Checkbox Group</h3>
+            <p class="text-sm text-su-muted-foreground">Manage multiple checkboxes as a group.</p>
             <div class="code-block">
-                <pre><code class="language-cshtml-razor">@groupExampleCode</code></pre>
+                <pre><code class="language-razor">@groupExampleCode</code></pre>
             </div>
         </div>
     </section>
@@ -343,8 +346,8 @@
         <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
         
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
-            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Data Attributes</h3>
+            <p class="text-sm text-su-muted-foreground">Use these data attributes to style different states:</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -371,7 +374,7 @@
         </div>
 
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <h3 class="text-lg font-semibold text-su-foreground">CSS Example</h3>
             <div class="code-block">
                 <pre><code class="language-css">@cssExampleCode</code></pre>
             </div>
@@ -383,7 +386,7 @@
         <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
         
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
+            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation</h3>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -407,22 +410,22 @@
         </div>
 
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
+            <h3 class="text-lg font-semibold text-su-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-su-muted-foreground">
                 <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">role:</span>
+                    <span class="text-su-foreground font-medium shrink-0">role:</span>
                     <span><code>checkbox</code> is set on the root element</span>
                 </li>
                 <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">aria-checked:</span>
+                    <span class="text-su-foreground font-medium shrink-0">aria-checked:</span>
                     <span>Reflects the current state (<code>true</code>, <code>false</code>, or <code>mixed</code>)</span>
                 </li>
                 <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">aria-disabled:</span>
+                    <span class="text-su-foreground font-medium shrink-0">aria-disabled:</span>
                     <span>Set when the checkbox is disabled</span>
                 </li>
                 <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">aria-required:</span>
+                    <span class="text-su-foreground font-medium shrink-0">aria-required:</span>
                     <span>Set when the checkbox is required</span>
                 </li>
             </ul>
@@ -439,20 +442,20 @@
         align-items: center;
         justify-content: center;
         background: transparent;
-        border: 2px solid hsl(var(--border));
+        border: 2px solid rgb(var(--su-border));
         border-radius: 0.25rem;
         cursor: pointer;
         transition: all 0.15s;
     }
     
     .demo-checkbox:hover {
-        border-color: hsl(var(--foreground));
+        border-color: rgb(var(--su-foreground));
     }
     
     .demo-checkbox[data-state="checked"],
     .demo-checkbox[data-state="indeterminate"] {
-        background: hsl(var(--foreground));
-        border-color: hsl(var(--foreground));
+        background: rgb(var(--su-primary));
+        border-color: rgb(var(--su-primary));
     }
     
     .demo-checkbox[data-disabled] {
@@ -461,7 +464,7 @@
     }
     
     .demo-indicator {
-        color: hsl(var(--background));
+        color: rgb(var(--su-background));
         display: flex;
         align-items: center;
         justify-content: center;

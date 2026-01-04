@@ -7,8 +7,8 @@
     <base href="/"/>
     <ResourcePreloader/>
     <link rel="stylesheet" href="@Assets["app.css"]"/>
-    <link rel="stylesheet" href="@Assets["SummitUI.Docs.styles.css"]"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"/>
+    <link rel="stylesheet" href="@Assets["hljs-a11y-light.min.css"]" media="(prefers-color-scheme: light)"/>
+    <link rel="stylesheet" href="@Assets["hljs-a11y-dark.min.css"]" media="(prefers-color-scheme: dark)"/>
     <ImportMap/>
     <HeadOutlet/>
 </head>
@@ -17,11 +17,7 @@
 <Routes/>
 <script src="@Assets["_framework/blazor.web.js"]"></script>
 <script src="@Assets["_content/SummitUI/summitui.js"]" type="module"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cshtml-razor.min.js"></script>
+<script src="@Assets["hljs.bundle.min.js"]"></script>
 <script>
     // Initialize highlight.js with MutationObserver for Blazor compatibility
     function initHighlighting() {

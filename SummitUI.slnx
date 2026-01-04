@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/SummitUI.Docs.Design/SummitUI.Docs.Design.csproj" />
     <Project Path="src/SummitUI.Docs/SummitUI.Docs.Client/SummitUI.Docs.Client.csproj" />
     <Project Path="src/SummitUI.Docs/SummitUI.Docs/SummitUI.Docs.csproj" />
     <Project Path="src/SummitUI/SummitUI.csproj" />

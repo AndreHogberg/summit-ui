@@ -1,0 +1,28 @@
+@namespace SummitUI.Docs.Design
+
+<div class="@FinalContainerClass" @attributes="OtherAttributes">
+    @if (!string.IsNullOrEmpty(Language))
+    {
+        <div class="@HeaderClasses">
+            <span class="@LanguageLabelClasses">@Language</span>
+        </div>
+    }
+    <pre class="@PreClasses">
+        <code class="@CodeClasses">@if (ShowLineNumbers && !string.IsNullOrEmpty(Code))
+{
+    var lines = Code.Split('\n');
+    for (var i = 0; i < lines.Length; i++)
+    {
+        <span class="block"><span class="@LineNumberClasses">@(i + 1)</span>@lines[i]@(i < lines.Length - 1 ? "\n" : "")</span>
+    }
+}
+else if (!string.IsNullOrEmpty(Code))
+{
+    @Code
+}
+else
+{
+    @ChildContent
+}</code>
+    </pre>
+</div>

@@ -1,470 +1,313 @@
 @page "/docs/dropdown-menu"
 @layout DocsLayout
 @rendermode InteractiveWebAssembly
+<PageTitle>SummitUI - Dropdown Menu</PageTitle>
 
-<div class="flex flex-col gap-12">
-    @* Header *@
-    <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                Component
-            </span>
-        </div>
-        <h1 class="text-4xl font-bold tracking-tight">DropdownMenu</h1>
-        <p class="text-xl text-muted-foreground leading-relaxed">
-            A floating menu component with support for items, checkbox items, radio groups, and nested groups.
-        </p>
+<SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+<SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+    DropdownMenu
+    <SuPromptButton ComponentName="DropdownMenu" />
+</SuHeading>
+<SuText Lead="true" Muted="true">
+    A floating menu component with support for items, checkbox items, radio groups, and nested groups.
+</SuText>
+
+<SuSection Title="Demo">
+    <SuCard>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="demo-dropdown-trigger">
+                <span>Options</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6"/>
+                </svg>
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="demo-dropdown-content" SideOffset="4">
+                    <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "New File")">
+                        New File
+                    </DropdownMenuItem>
+                    <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Open File")">
+                        Open File
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator class="demo-dropdown-separator" />
+                    <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Save")">
+                        Save
+                    </DropdownMenuItem>
+                    <DropdownMenuItem class="demo-dropdown-item" Disabled="true">
+                        Export (Disabled)
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+        @if (!string.IsNullOrEmpty(selectedAction))
+        {
+            <SuText Size="SuTextSize.Small" Muted="true" class="mt-4">Last action: @selectedAction</SuText>
+        }
+    </SuCard>
+</SuSection>
+
+<SuSection Title="Features">
+    <ul class="grid gap-2 text-sm text-su-muted-foreground">
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Full keyboard navigation
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Checkbox and radio item support
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Grouped items with labels
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Flexible positioning with collision detection
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            Focus trapping in modal mode
+        </li>
+        <li class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+            WCAG compliant with proper ARIA attributes
+        </li>
+    </ul>
+</SuSection>
+
+<SuSection Title="Installation">
+    <SuCodeBlock Language="bash" Code="dotnet add package SummitUI" />
+</SuSection>
+
+<SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+    <SuCodeBlock Language="xml" Code="@anatomyCode" />
+</SuSection>
+
+<SuSection Title="Sub-components">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        @foreach (var sub in subComponents)
+        {
+            <SuCard>
+                <SuHeading Level="SuHeadingLevel.H3">@sub.Name</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">@sub.Description</SuText>
+            </SuCard>
+        }
     </div>
+</SuSection>
 
-    @* Live Demo *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
-        <div class="rounded-xl border border-border bg-card p-6">
-            <DropdownMenuRoot>
-                <DropdownMenuTrigger class="demo-dropdown-trigger">
-                    <span>Options</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m6 9 6 6 6-6"/>
-                    </svg>
-                </DropdownMenuTrigger>
-                <DropdownMenuPortal>
-                    <DropdownMenuContent class="demo-dropdown-content" SideOffset="4">
-                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "New File")">
-                            New File
-                        </DropdownMenuItem>
-                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Open File")">
-                            Open File
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator class="demo-dropdown-separator" />
-                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Save")">
-                            Save
-                        </DropdownMenuItem>
-                        <DropdownMenuItem class="demo-dropdown-item" Disabled="true">
-                            Export (Disabled)
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenuPortal>
-            </DropdownMenuRoot>
-            @if (!string.IsNullOrEmpty(selectedAction))
+<SuSection Title="API Reference">
+    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2">DropdownMenuRoot</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true">The root component that manages menu state.</SuText>
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Prop</SuTableHead>
+                <SuTableHead>Type</SuTableHead>
+                <SuTableHead>Default</SuTableHead>
+                <SuTableHead>Description</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            @foreach (var prop in rootProps)
             {
-                <p class="mt-4 text-sm text-muted-foreground">Last action: @selectedAction</p>
+                <SuTableRow>
+                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
+                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
+                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
+                    <SuTableCell>@prop.Description</SuTableCell>
+                </SuTableRow>
             }
-        </div>
-    </section>
+        </SuTableBody>
+    </SuTable>
 
-    @* Features *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Features</h2>
-        <ul class="grid gap-2 text-sm text-muted-foreground">
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Full keyboard navigation
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Checkbox and radio item support
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Grouped items with labels
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Flexible positioning with collision detection
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                Focus trapping in modal mode
-            </li>
-            <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-                WCAG compliant with proper ARIA attributes
-            </li>
-        </ul>
-    </section>
+    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">DropdownMenuContent</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true">The floating menu content panel.</SuText>
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Prop</SuTableHead>
+                <SuTableHead>Type</SuTableHead>
+                <SuTableHead>Default</SuTableHead>
+                <SuTableHead>Description</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            @foreach (var prop in contentProps)
+            {
+                <SuTableRow>
+                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
+                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
+                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
+                    <SuTableCell>@prop.Description</SuTableCell>
+                </SuTableRow>
+            }
+        </SuTableBody>
+    </SuTable>
 
-    @* Installation *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
-        <div class="code-block">
-            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
-        </div>
-    </section>
+    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">DropdownMenuItem</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true">A single selectable menu item.</SuText>
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Prop</SuTableHead>
+                <SuTableHead>Type</SuTableHead>
+                <SuTableHead>Default</SuTableHead>
+                <SuTableHead>Description</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            @foreach (var prop in itemProps)
+            {
+                <SuTableRow>
+                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
+                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
+                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
+                    <SuTableCell>@prop.Description</SuTableCell>
+                </SuTableRow>
+            }
+        </SuTableBody>
+    </SuTable>
+</SuSection>
 
-    @* Anatomy *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
-        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
-        <div class="code-block">
-            <pre><code class="language-xml">@anatomyCode</code></pre>
-        </div>
-    </section>
+<SuSection Title="Examples">
+    <SuHeading Level="SuHeadingLevel.H3">Basic Menu</SuHeading>
+    <SuCodeBlock Language="xml" Code="@basicExampleCode" />
 
-    @* Sub-components *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuRoot</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Root container managing menu state.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuTrigger</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Button that toggles the menu.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuPortal</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Renders content at document body level.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuContent</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Floating content panel with positioning.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuItem</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Single selectable menu item.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuCheckboxItem</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Toggle-able checkbox menu item.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuRadioGroup</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Container for radio items.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuRadioItem</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Radio option within a group.</p>
-            </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">DropdownMenuSeparator</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Visual separator between items.</p>
-            </div>
-        </div>
-    </section>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">With Checkbox Items</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Toggle-able menu items.</SuText>
+    <SuCodeBlock Language="razor" Code="@checkboxExampleCode" />
 
-    @* API Reference *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
-        
-        @* DropdownMenuRoot *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">DropdownMenuRoot</h3>
-            <p class="text-sm text-muted-foreground">The root component that manages menu state.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Open</code></td>
-                            <td><code>bool?</code></td>
-                            <td><code>null</code></td>
-                            <td>Controlled open state</td>
-                        </tr>
-                        <tr>
-                            <td><code>DefaultOpen</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Default open state (uncontrolled)</td>
-                        </tr>
-                        <tr>
-                            <td><code>OpenChanged</code></td>
-                            <td><code>EventCallback&lt;bool&gt;</code></td>
-                            <td>-</td>
-                            <td>Callback when open state changes</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnOpen</code></td>
-                            <td><code>EventCallback</code></td>
-                            <td>-</td>
-                            <td>Callback when menu opens</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnClose</code></td>
-                            <td><code>EventCallback</code></td>
-                            <td>-</td>
-                            <td>Callback when menu closes</td>
-                        </tr>
-                        <tr>
-                            <td><code>Modal</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Whether to trap focus</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">With Radio Group</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Mutually exclusive options.</SuText>
+    <SuCodeBlock Language="razor" Code="@radioExampleCode" />
 
-        @* DropdownMenuContent *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">DropdownMenuContent</h3>
-            <p class="text-sm text-muted-foreground">The floating menu content panel.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Side</code></td>
-                            <td><code>Side</code></td>
-                            <td><code>Bottom</code></td>
-                            <td>Placement side</td>
-                        </tr>
-                        <tr>
-                            <td><code>SideOffset</code></td>
-                            <td><code>int</code></td>
-                            <td><code>4</code></td>
-                            <td>Offset from trigger (px)</td>
-                        </tr>
-                        <tr>
-                            <td><code>Align</code></td>
-                            <td><code>Align</code></td>
-                            <td><code>Start</code></td>
-                            <td>Alignment along side axis</td>
-                        </tr>
-                        <tr>
-                            <td><code>AvoidCollisions</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Avoid viewport boundaries</td>
-                        </tr>
-                        <tr>
-                            <td><code>Loop</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Loop keyboard navigation</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Grouped Items</SuHeading>
+    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Organize items into labeled groups.</SuText>
+    <SuCodeBlock Language="xml" Code="@groupedExampleCode" />
+</SuSection>
 
-        @* DropdownMenuItem *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">DropdownMenuItem</h3>
-            <p class="text-sm text-muted-foreground">A single selectable menu item.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Disabled</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Disable item</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnSelect</code></td>
-                            <td><code>EventCallback</code></td>
-                            <td>-</td>
-                            <td>Selection callback</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+<SuSection Title="Styling">
+    <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Attribute</SuTableHead>
+                <SuTableHead>Values</SuTableHead>
+                <SuTableHead>Description</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            <SuTableRow>
+                <SuTableCell><SuCode>data-state</SuCode></SuTableCell>
+                <SuTableCell><SuCode>"open"</SuCode> | <SuCode>"closed"</SuCode></SuTableCell>
+                <SuTableCell>Menu open state</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><SuCode>data-highlighted</SuCode></SuTableCell>
+                <SuTableCell>Present when focused</SuTableCell>
+                <SuTableCell>Item is keyboard-focused</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><SuCode>data-disabled</SuCode></SuTableCell>
+                <SuTableCell>Present when disabled</SuTableCell>
+                <SuTableCell>Item is disabled</SuTableCell>
+            </SuTableRow>
+        </SuTableBody>
+    </SuTable>
 
-    @* Examples *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
-        
-        @* Basic *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Basic Menu</h3>
-            <div class="code-block">
-                <pre><code class="language-xml">@basicExampleCode</code></pre>
-            </div>
-        </div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">CSS Example</SuHeading>
+    <SuCodeBlock Language="css" Code="@cssExampleCode" />
+</SuSection>
 
-        @* Checkbox Items *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">With Checkbox Items</h3>
-            <p class="text-sm text-muted-foreground">Toggle-able menu items.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@checkboxExampleCode</code></pre>
-            </div>
-        </div>
+<SuSection Title="Accessibility">
+    <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+    <SuTable>
+        <SuTableHeader>
+            <SuTableRow>
+                <SuTableHead>Key</SuTableHead>
+                <SuTableHead>Action</SuTableHead>
+            </SuTableRow>
+        </SuTableHeader>
+        <SuTableBody>
+            <SuTableRow>
+                <SuTableCell><kbd>Enter</kbd> / <kbd>Space</kbd></SuTableCell>
+                <SuTableCell>Open menu or select item</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><kbd>ArrowDown</kbd></SuTableCell>
+                <SuTableCell>Move focus to next item</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><kbd>ArrowUp</kbd></SuTableCell>
+                <SuTableCell>Move focus to previous item</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><kbd>Home</kbd></SuTableCell>
+                <SuTableCell>Move focus to first item</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><kbd>End</kbd></SuTableCell>
+                <SuTableCell>Move focus to last item</SuTableCell>
+            </SuTableRow>
+            <SuTableRow>
+                <SuTableCell><kbd>Escape</kbd></SuTableCell>
+                <SuTableCell>Close menu</SuTableCell>
+            </SuTableRow>
+        </SuTableBody>
+    </SuTable>
 
-        @* Radio Group *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">With Radio Group</h3>
-            <p class="text-sm text-muted-foreground">Mutually exclusive options.</p>
-            <div class="code-block">
-                <pre><code class="language-cshtml-razor">@radioExampleCode</code></pre>
-            </div>
-        </div>
-
-        @* Grouped *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Grouped Items</h3>
-            <p class="text-sm text-muted-foreground">Organize items into labeled groups.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@groupedExampleCode</code></pre>
-            </div>
-        </div>
-    </section>
-
-    @* Styling *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Attribute</th>
-                            <th>Values</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>data-state</code></td>
-                            <td><code>"open"</code> | <code>"closed"</code></td>
-                            <td>Menu open state</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-highlighted</code></td>
-                            <td>Present when focused</td>
-                            <td>Item is keyboard-focused</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-disabled</code></td>
-                            <td>Present when disabled</td>
-                            <td>Item is disabled</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
-            <div class="code-block">
-                <pre><code class="language-css">@cssExampleCode</code></pre>
-            </div>
-        </div>
-    </section>
-
-    @* Accessibility *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
-                            <td>Open menu or select item</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowDown</kbd></td>
-                            <td>Move focus to next item</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowUp</kbd></td>
-                            <td>Move focus to previous item</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Home</kbd></td>
-                            <td>Move focus to first item</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>End</kbd></td>
-                            <td>Move focus to last item</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Escape</kbd></td>
-                            <td>Close menu</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">Trigger:</span>
-                    <span>Has <code>aria-haspopup="menu"</code> and <code>aria-expanded</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">Content:</span>
-                    <span>Has <code>role="menu"</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">Items:</span>
-                    <span>Have <code>role="menuitem"</code>, checkbox items have <code>role="menuitemcheckbox"</code></span>
-                </li>
-            </ul>
-        </div>
-    </section>
-</div>
+    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">ARIA Attributes</SuHeading>
+    <ul class="grid gap-2 text-sm text-su-muted-foreground mt-4">
+        <li class="flex items-start gap-2">
+            <SuText class="font-medium shrink-0">Trigger:</SuText>
+            <SuText>Has <SuCode>aria-haspopup="menu"</SuCode> and <SuCode>aria-expanded</SuCode></SuText>
+        </li>
+        <li class="flex items-start gap-2">
+            <SuText class="font-medium shrink-0">Content:</SuText>
+            <SuText>Has <SuCode>role="menu"</SuCode></SuText>
+        </li>
+        <li class="flex items-start gap-2">
+            <SuText class="font-medium shrink-0">Items:</SuText>
+            <SuText>Have <SuCode>role="menuitem"</SuCode>, checkbox items have <SuCode>role="menuitemcheckbox"</SuCode></SuText>
+        </li>
+    </ul>
+</SuSection>
 
 <style>
-    /* Demo DropdownMenu Styles */
     .demo-dropdown-trigger {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         padding: 0.5rem 1rem;
-        background: hsl(var(--background));
-        border: 1px solid hsl(var(--border));
+        background: rgb(var(--su-background));
+        border: 1px solid rgb(var(--su-border));
         border-radius: 0.375rem;
         font-size: 0.875rem;
         font-weight: 500;
         cursor: pointer;
-        color: hsl(var(--foreground));
+        color: rgb(var(--su-foreground));
         transition: all 0.15s;
     }
     
     .demo-dropdown-trigger:hover {
-        background: hsl(var(--muted));
+        background: rgb(var(--su-muted));
+    }
+    
+    .demo-dropdown-trigger:focus-visible {
+        outline: 2px solid rgb(var(--su-primary));
+        outline-offset: 2px;
     }
     
     .demo-dropdown-trigger[data-state="open"] {
-        background: hsl(var(--muted));
+        background: rgb(var(--su-muted));
     }
     
     .demo-dropdown-content {
         min-width: 12rem;
-        background: hsl(var(--card));
-        border: 1px solid hsl(var(--border));
+        background: rgb(var(--su-card));
+        border: 1px solid rgb(var(--su-border));
         border-radius: 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 12px rgb(var(--su-foreground) / 0.15);
         padding: 0.25rem;
         z-index: 50;
     }
@@ -476,53 +319,88 @@
         border-radius: 0.25rem;
         font-size: 0.875rem;
         cursor: pointer;
-        color: hsl(var(--foreground));
+        color: rgb(var(--su-foreground));
         outline: none;
     }
     
     .demo-dropdown-item[data-highlighted] {
-        background: hsl(var(--muted));
+        background: rgb(var(--su-accent));
+        color: rgb(var(--su-accent-foreground));
     }
     
     .demo-dropdown-item[data-disabled] {
         opacity: 0.5;
         cursor: not-allowed;
     }
-    
-    .demo-dropdown-separator {
-        height: 1px;
-        background: hsl(var(--border));
-        margin: 0.25rem 0;
-    }
 </style>
 
 @code {
     private string? selectedAction;
 
+    private record SubComponent(string Name, string Description);
+
+    private readonly List<SubComponent> subComponents = new()
+    {
+        new("DropdownMenuRoot", "Root container managing menu state."),
+        new("DropdownMenuTrigger", "Button that toggles the menu."),
+        new("DropdownMenuPortal", "Renders content at document body level."),
+        new("DropdownMenuContent", "Floating content panel with positioning."),
+        new("DropdownMenuItem", "Single selectable menu item."),
+        new("DropdownMenuCheckboxItem", "Toggle-able checkbox menu item."),
+        new("DropdownMenuRadioGroup", "Container for radio items."),
+        new("DropdownMenuRadioItem", "Radio option within a group."),
+        new("DropdownMenuSeparator", "Visual separator between items.")
+    };
+
+    private readonly List<SuApiProperty> rootProps = new()
+    {
+        new() { Name = "Open", Type = "bool?", Default = "null", Description = "Controlled open state" },
+        new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state (uncontrolled)" },
+        new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Callback when open state changes" },
+        new() { Name = "OnOpen", Type = "EventCallback", Description = "Callback when menu opens" },
+        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback when menu closes" },
+        new() { Name = "Modal", Type = "bool", Default = "true", Description = "Whether to trap focus" }
+    };
+
+    private readonly List<SuApiProperty> contentProps = new()
+    {
+        new() { Name = "Side", Type = "Side", Default = "Bottom", Description = "Placement side" },
+        new() { Name = "SideOffset", Type = "int", Default = "4", Description = "Offset from trigger (px)" },
+        new() { Name = "Align", Type = "Align", Default = "Start", Description = "Alignment along side axis" },
+        new() { Name = "AvoidCollisions", Type = "bool", Default = "true", Description = "Avoid viewport boundaries" },
+        new() { Name = "Loop", Type = "bool", Default = "true", Description = "Loop keyboard navigation" }
+    };
+
+    private readonly List<SuApiProperty> itemProps = new()
+    {
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable item" },
+        new() { Name = "OnSelect", Type = "EventCallback", Description = "Selection callback" }
+    };
+
     private const string anatomyCode = @"<DropdownMenuRoot>
-    <DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+    <DropdownMenuTrigger class=""su-dropdown-trigger"">Open Menu</DropdownMenuTrigger>
     <DropdownMenuPortal>
-        <DropdownMenuContent>
-            <DropdownMenuItem>Item 1</DropdownMenuItem>
-            <DropdownMenuItem>Item 2</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Item 3</DropdownMenuItem>
+        <DropdownMenuContent class=""su-dropdown-content"">
+            <DropdownMenuItem class=""su-dropdown-item"">Item 1</DropdownMenuItem>
+            <DropdownMenuItem class=""su-dropdown-item"">Item 2</DropdownMenuItem>
+            <DropdownMenuSeparator class=""su-dropdown-separator"" />
+            <DropdownMenuItem class=""su-dropdown-item"">Item 3</DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenuPortal>
 </DropdownMenuRoot>";
 
     private const string basicExampleCode = @"<DropdownMenuRoot>
-    <DropdownMenuTrigger class=""btn"">Options</DropdownMenuTrigger>
+    <DropdownMenuTrigger class=""su-dropdown-trigger"">Options</DropdownMenuTrigger>
     <DropdownMenuPortal>
-        <DropdownMenuContent class=""dropdown-content"" SideOffset=""4"">
-            <DropdownMenuItem OnSelect=""@(() => HandleAction(""new""))"">
+        <DropdownMenuContent class=""su-dropdown-content"" SideOffset=""4"">
+            <DropdownMenuItem class=""su-dropdown-item"" OnSelect=""@(() => HandleAction(""new""))"">
                 New File
             </DropdownMenuItem>
-            <DropdownMenuItem OnSelect=""@(() => HandleAction(""open""))"">
+            <DropdownMenuItem class=""su-dropdown-item"" OnSelect=""@(() => HandleAction(""open""))"">
                 Open File
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem OnSelect=""@(() => HandleAction(""save""))"">
+            <DropdownMenuSeparator class=""su-dropdown-separator"" />
+            <DropdownMenuItem class=""su-dropdown-item"" OnSelect=""@(() => HandleAction(""save""))"">
                 Save
             </DropdownMenuItem>
         </DropdownMenuContent>
@@ -535,14 +413,14 @@
 }
 
 <DropdownMenuRoot>
-    <DropdownMenuTrigger>View</DropdownMenuTrigger>
+    <DropdownMenuTrigger class=""su-dropdown-trigger"">View</DropdownMenuTrigger>
     <DropdownMenuPortal>
-        <DropdownMenuContent>
-            <DropdownMenuCheckboxItem @bind-Checked=""showToolbar"">
+        <DropdownMenuContent class=""su-dropdown-content"">
+            <DropdownMenuCheckboxItem class=""su-dropdown-item"" @bind-Checked=""showToolbar"">
                 @(context.Checked ? ""✓"" : """")
                 <span>Show Toolbar</span>
             </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem @bind-Checked=""showSidebar"">
+            <DropdownMenuCheckboxItem class=""su-dropdown-item"" @bind-Checked=""showSidebar"">
                 @(context.Checked ? ""✓"" : """")
                 <span>Show Sidebar</span>
             </DropdownMenuCheckboxItem>
@@ -555,17 +433,17 @@
 }
 
 <DropdownMenuRoot>
-    <DropdownMenuTrigger>Theme</DropdownMenuTrigger>
+    <DropdownMenuTrigger class=""su-dropdown-trigger"">Theme</DropdownMenuTrigger>
     <DropdownMenuPortal>
-        <DropdownMenuContent>
+        <DropdownMenuContent class=""su-dropdown-content"">
             <DropdownMenuRadioGroup @bind-Value=""selectedTheme"" AriaLabel=""Theme"">
-                <DropdownMenuRadioItem Value=""light"">
+                <DropdownMenuRadioItem class=""su-dropdown-item"" Value=""light"">
                     @(context.IsSelected ? ""●"" : ""○"") Light
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem Value=""dark"">
+                <DropdownMenuRadioItem class=""su-dropdown-item"" Value=""dark"">
                     @(context.IsSelected ? ""●"" : ""○"") Dark
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem Value=""system"">
+                <DropdownMenuRadioItem class=""su-dropdown-item"" Value=""system"">
                     @(context.IsSelected ? ""●"" : ""○"") System
                 </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
@@ -574,73 +452,85 @@
 </DropdownMenuRoot>";
 
     private const string groupedExampleCode = @"<DropdownMenuRoot>
-    <DropdownMenuTrigger>Edit</DropdownMenuTrigger>
+    <DropdownMenuTrigger class=""su-dropdown-trigger"">Edit</DropdownMenuTrigger>
     <DropdownMenuPortal>
-        <DropdownMenuContent>
+        <DropdownMenuContent class=""su-dropdown-content"">
             <DropdownMenuGroup>
-                <DropdownMenuGroupLabel>Clipboard</DropdownMenuGroupLabel>
-                <DropdownMenuItem>Cut</DropdownMenuItem>
-                <DropdownMenuItem>Copy</DropdownMenuItem>
-                <DropdownMenuItem>Paste</DropdownMenuItem>
+                <DropdownMenuGroupLabel class=""su-dropdown-label"">Clipboard</DropdownMenuGroupLabel>
+                <DropdownMenuItem class=""su-dropdown-item"">Cut</DropdownMenuItem>
+                <DropdownMenuItem class=""su-dropdown-item"">Copy</DropdownMenuItem>
+                <DropdownMenuItem class=""su-dropdown-item"">Paste</DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator class=""su-dropdown-separator"" />
             <DropdownMenuGroup>
-                <DropdownMenuGroupLabel>Selection</DropdownMenuGroupLabel>
-                <DropdownMenuItem>Select All</DropdownMenuItem>
-                <DropdownMenuItem>Deselect</DropdownMenuItem>
+                <DropdownMenuGroupLabel class=""su-dropdown-label"">Selection</DropdownMenuGroupLabel>
+                <DropdownMenuItem class=""su-dropdown-item"">Select All</DropdownMenuItem>
+                <DropdownMenuItem class=""su-dropdown-item"">Deselect</DropdownMenuItem>
             </DropdownMenuGroup>
         </DropdownMenuContent>
     </DropdownMenuPortal>
 </DropdownMenuRoot>";
 
     private const string cssExampleCode = @"/* Trigger */
-.dropdown-trigger {
+.su-dropdown-trigger {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    background: white;
-    border: 1px solid #ccc;
+    background: rgb(var(--su-background));
+    border: 1px solid rgb(var(--su-border));
     border-radius: 4px;
     cursor: pointer;
+    color: rgb(var(--su-foreground));
 }
 
-.dropdown-trigger[data-state=""open""] {
-    background: #f0f0f0;
+.su-dropdown-trigger[data-state=""open""] {
+    background: rgb(var(--su-muted));
 }
 
 /* Content */
-.dropdown-content {
+.su-dropdown-content {
     min-width: 200px;
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: rgb(var(--su-card));
+    border: 1px solid rgb(var(--su-border));
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgb(var(--su-foreground) / 0.15);
     padding: 4px;
 }
 
 /* Item */
-.dropdown-item {
+.su-dropdown-item {
     display: flex;
     align-items: center;
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
+    color: rgb(var(--su-foreground));
+    outline: none;
 }
 
-.dropdown-item[data-highlighted] {
-    background: #f0f0f0;
+.su-dropdown-item[data-highlighted] {
+    background: rgb(var(--su-accent));
+    color: rgb(var(--su-accent-foreground));
 }
 
-.dropdown-item[data-disabled] {
+.su-dropdown-item[data-disabled] {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
+/* Label */
+.su-dropdown-label {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgb(var(--su-muted-foreground));
+}
+
 /* Separator */
-.dropdown-separator {
+.su-dropdown-separator {
     height: 1px;
-    background: #e0e0e0;
+    background: rgb(var(--su-border));
     margin: 4px 0;
 }";
 }

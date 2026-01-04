@@ -4,7 +4,7 @@
     @* Main Button *@
     <a href="@LlmTxtUrl" 
        target="_blank"
-       class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground border border-primary rounded-s-lg hover:bg-primary/90 focus:z-10 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background transition-colors">
+       class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-su-primary text-su-primary-foreground border border-su-primary rounded-s-lg hover:bg-su-primary/90 focus:z-10 focus:ring-2 focus:ring-su-ring focus:ring-offset-2 focus:ring-offset-su-background transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
@@ -17,7 +17,7 @@
     
     @* Dropdown Trigger *@
     <DropdownMenuRoot>
-        <DropdownMenuTrigger class="inline-flex items-center px-2 py-2 text-sm font-medium bg-primary text-primary-foreground border-l border-primary-foreground/20 rounded-e-lg hover:bg-primary/90 focus:z-10 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background transition-colors">
+        <DropdownMenuTrigger class="inline-flex items-center px-2 py-2 text-sm font-medium bg-su-primary text-su-primary-foreground border-l border-su-primary-foreground/20 rounded-e-lg hover:bg-su-primary/90 focus:z-10 focus:ring-2 focus:ring-su-ring focus:ring-offset-2 focus:ring-offset-su-background transition-colors">
             <span class="sr-only">Open options</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m6 9 6 6 6-6"/>
@@ -49,10 +49,10 @@
 
 <style>
     .prompt-button-dropdown {
-        background: hsl(var(--popover));
-        border-radius: var(--radius);
+        background: rgb(var(--su-card));
+        border-radius: 0.5rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-        border: 1px solid hsl(var(--border));
+        border: 1px solid rgb(var(--su-border));
         min-width: 200px;
         padding: 4px;
         z-index: 50;
@@ -62,17 +62,17 @@
         display: flex;
         align-items: center;
         padding: 8px 12px;
-        border-radius: calc(var(--radius) - 2px);
+        border-radius: 0.375rem;
         font-size: 0.875rem;
         cursor: pointer;
         outline: none;
         user-select: none;
-        color: hsl(var(--popover-foreground));
+        color: rgb(var(--su-foreground));
     }
 
     .prompt-button-item[data-highlighted] {
-        background: hsl(var(--accent));
-        color: hsl(var(--accent-foreground));
+        background: rgb(var(--su-accent));
+        color: rgb(var(--su-accent-foreground));
     }
 
     .prompt-button-item a {

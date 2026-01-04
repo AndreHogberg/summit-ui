@@ -1,25 +1,28 @@
 @page "/docs/tabs"
 @layout DocsLayout
 @rendermode InteractiveWebAssembly
+@using SummitUI.Docs.Design
+<PageTitle>SummitUI - Tabs</PageTitle>
 
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+            <span class="inline-flex items-center rounded-full border border-su-border bg-su-muted/50 px-2.5 py-0.5 text-xs font-medium text-su-muted-foreground">
                 Component
             </span>
         </div>
         <h1 class="text-4xl font-bold tracking-tight">Tabs</h1>
-        <p class="text-xl text-muted-foreground leading-relaxed">
+        <SuPromptButton ComponentName="Tabs" />
+        <p class="text-xl text-su-muted-foreground leading-relaxed">
             A set of layered sections of content, known as tab panels, that are displayed one at a time.
         </p>
     </div>
 
     @* Live Demo *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
-        <div class="rounded-xl border border-border bg-card p-6">
+        <h2 class="text-lg font-semibold text-su-foreground">Demo</h2>
+        <div class="rounded-xl border border-su-border bg-su-card p-6">
             <TabsRoot DefaultValue="account">
                 <TabsList class="demo-tabs-list">
                     <TabsTrigger Value="account" class="demo-tabs-trigger">Account</TabsTrigger>
@@ -27,16 +30,16 @@
                     <TabsTrigger Value="notifications" class="demo-tabs-trigger">Notifications</TabsTrigger>
                 </TabsList>
                 <TabsContent Value="account" class="demo-tabs-content">
-                    <h3 class="font-medium text-foreground mb-2">Account Settings</h3>
-                    <p class="text-sm text-muted-foreground">Manage your account information and preferences here.</p>
+                    <h3 class="font-medium text-su-foreground mb-2">Account Settings</h3>
+                    <p class="text-sm text-su-muted-foreground">Manage your account information and preferences here.</p>
                 </TabsContent>
                 <TabsContent Value="password" class="demo-tabs-content">
-                    <h3 class="font-medium text-foreground mb-2">Password Settings</h3>
-                    <p class="text-sm text-muted-foreground">Change your password and security options.</p>
+                    <h3 class="font-medium text-su-foreground mb-2">Password Settings</h3>
+                    <p class="text-sm text-su-muted-foreground">Change your password and security options.</p>
                 </TabsContent>
                 <TabsContent Value="notifications" class="demo-tabs-content">
-                    <h3 class="font-medium text-foreground mb-2">Notification Preferences</h3>
-                    <p class="text-sm text-muted-foreground">Configure how you receive notifications.</p>
+                    <h3 class="font-medium text-su-foreground mb-2">Notification Preferences</h3>
+                    <p class="text-sm text-su-muted-foreground">Configure how you receive notifications.</p>
                 </TabsContent>
             </TabsRoot>
         </div>
@@ -44,30 +47,30 @@
 
     @* Features *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Features</h2>
-        <ul class="grid gap-2 text-sm text-muted-foreground">
+        <h2 class="text-lg font-semibold text-su-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Full keyboard navigation
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Horizontal and vertical orientations
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Auto and manual activation modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Controlled and uncontrolled modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 Disabled tabs support
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
                 WCAG compliant with proper ARIA attributes
             </li>
         </ul>
@@ -75,7 +78,7 @@
 
     @* Installation *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <h2 class="text-lg font-semibold text-su-foreground">Installation</h2>
         <div class="code-block">
             <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
         </div>
@@ -83,8 +86,8 @@
 
     @* Anatomy *@
     <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
-        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <h2 class="text-lg font-semibold text-su-foreground">Anatomy</h2>
+        <p class="text-sm text-su-muted-foreground">Import the components and structure them as follows:</p>
         <div class="code-block">
             <pre><code class="language-xml">@anatomyCode</code></pre>
         </div>
@@ -92,23 +95,23 @@
 
     @* Sub-components *@
     <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <h2 class="text-lg font-semibold text-su-foreground">Sub-components</h2>
         <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">TabsRoot</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Root container managing tabs state.</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">TabsRoot</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">Root container managing tabs state.</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">TabsList</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Container for tab triggers (tablist role).</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">TabsList</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">Container for tab triggers (tablist role).</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">TabsTrigger</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Individual tab button (tab role).</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">TabsTrigger</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">Individual tab button (tab role).</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <h3 class="font-medium text-foreground">TabsContent</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Tab content panel (tabpanel role).</p>
+            <div class="rounded-lg border border-su-border p-4">
+                <h3 class="font-medium text-su-foreground">TabsContent</h3>
+                <p class="mt-1 text-sm text-su-muted-foreground">Tab content panel (tabpanel role).</p>
             </div>
         </div>
     </section>
@@ -119,8 +122,8 @@
         
         @* TabsRoot *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsRoot</h3>
-            <p class="text-sm text-muted-foreground">The root component that manages tabs state.</p>
+            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsRoot</h3>
+            <p class="text-sm text-su-muted-foreground">The root component that manages tabs state.</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -181,8 +184,8 @@
 
         @* TabsList *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsList</h3>
-            <p class="text-sm text-muted-foreground">Container for tab triggers.</p>
+            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsList</h3>
+            <p class="text-sm text-su-muted-foreground">Container for tab triggers.</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -207,8 +210,8 @@
 
         @* TabsTrigger *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsTrigger</h3>
-            <p class="text-sm text-muted-foreground">Individual tab button.</p>
+            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsTrigger</h3>
+            <p class="text-sm text-su-muted-foreground">Individual tab button.</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -223,7 +226,7 @@
                         <tr>
                             <td><code>Value</code></td>
                             <td><code>string</code></td>
-                            <td><span class="text-destructive">Required</span></td>
+                            <td><span class="text-su-destructive">Required</span></td>
                             <td>Unique tab identifier</td>
                         </tr>
                         <tr>
@@ -245,8 +248,8 @@
 
         @* TabsContent *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsContent</h3>
-            <p class="text-sm text-muted-foreground">Tab content panel.</p>
+            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsContent</h3>
+            <p class="text-sm text-su-muted-foreground">Tab content panel.</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -261,7 +264,7 @@
                         <tr>
                             <td><code>Value</code></td>
                             <td><code>string</code></td>
-                            <td><span class="text-destructive">Required</span></td>
+                            <td><span class="text-su-destructive">Required</span></td>
                             <td>Matching TabsTrigger value</td>
                         </tr>
                         <tr>
@@ -282,7 +285,7 @@
         
         @* Basic *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Basic Usage</h3>
+            <h3 class="text-lg font-semibold text-su-foreground">Basic Usage</h3>
             <div class="code-block">
                 <pre><code class="language-xml">@basicExampleCode</code></pre>
             </div>
@@ -290,8 +293,8 @@
 
         @* Vertical *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Vertical Orientation</h3>
-            <p class="text-sm text-muted-foreground">Use vertical orientation for sidebar-style navigation.</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Vertical Orientation</h3>
+            <p class="text-sm text-su-muted-foreground">Use vertical orientation for sidebar-style navigation.</p>
             <div class="code-block">
                 <pre><code class="language-xml">@verticalExampleCode</code></pre>
             </div>
@@ -299,17 +302,17 @@
 
         @* Controlled *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
-            <p class="text-sm text-muted-foreground">Control the active tab externally.</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Controlled Mode</h3>
+            <p class="text-sm text-su-muted-foreground">Control the active tab externally.</p>
             <div class="code-block">
-                <pre><code class="language-cshtml-razor">@controlledExampleCode</code></pre>
+                <pre><code class="language-razor">@controlledExampleCode</code></pre>
             </div>
         </div>
 
         @* Disabled *@
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Disabled Tabs</h3>
-            <p class="text-sm text-muted-foreground">Disable specific tabs.</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Disabled Tabs</h3>
+            <p class="text-sm text-su-muted-foreground">Disable specific tabs.</p>
             <div class="code-block">
                 <pre><code class="language-xml">@disabledExampleCode</code></pre>
             </div>
@@ -321,8 +324,8 @@
         <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
         
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
-            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
+            <h3 class="text-lg font-semibold text-su-foreground">Data Attributes</h3>
+            <p class="text-sm text-su-muted-foreground">Use these data attributes to style different states:</p>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -354,7 +357,7 @@
         </div>
 
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <h3 class="text-lg font-semibold text-su-foreground">CSS Example</h3>
             <div class="code-block">
                 <pre><code class="language-css">@cssExampleCode</code></pre>
             </div>
@@ -366,7 +369,7 @@
         <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
         
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation (Horizontal)</h3>
+            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation (Horizontal)</h3>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -402,7 +405,7 @@
         </div>
 
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation (Vertical)</h3>
+            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation (Vertical)</h3>
             <div class="overflow-x-auto">
                 <table class="api-table">
                     <thead>
@@ -434,18 +437,18 @@
         </div>
 
         <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-muted-foreground">
+            <h3 class="text-lg font-semibold text-su-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-su-muted-foreground">
                 <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">TabsList:</span>
+                    <span class="text-su-foreground font-medium shrink-0">TabsList:</span>
                     <span>Has <code>role="tablist"</code> with <code>aria-orientation</code></span>
                 </li>
                 <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">TabsTrigger:</span>
+                    <span class="text-su-foreground font-medium shrink-0">TabsTrigger:</span>
                     <span>Has <code>role="tab"</code> with <code>aria-selected</code> and <code>aria-controls</code></span>
                 </li>
                 <li class="flex items-start gap-2">
-                    <span class="text-foreground font-medium shrink-0">TabsContent:</span>
+                    <span class="text-su-foreground font-medium shrink-0">TabsContent:</span>
                     <span>Has <code>role="tabpanel"</code> with <code>aria-labelledby</code></span>
                 </li>
             </ul>
@@ -457,7 +460,7 @@
     /* Demo Tabs Styles */
     .demo-tabs-list {
         display: flex;
-        border-bottom: 1px solid hsl(var(--border));
+        border-bottom: 1px solid rgb(var(--su-border));
         gap: 0.25rem;
     }
     
@@ -469,17 +472,17 @@
         cursor: pointer;
         font-weight: 500;
         font-size: 0.875rem;
-        color: hsl(var(--muted-foreground));
+        color: rgb(var(--su-muted-foreground));
         transition: all 0.15s;
     }
     
     .demo-tabs-trigger:hover {
-        color: hsl(var(--foreground));
+        color: rgb(var(--su-foreground));
     }
     
     .demo-tabs-trigger[data-state="active"] {
-        color: hsl(var(--foreground));
-        border-bottom-color: hsl(var(--foreground));
+        color: rgb(var(--su-primary));
+        border-bottom-color: rgb(var(--su-primary));
     }
     
     .demo-tabs-trigger[data-disabled] {
@@ -488,7 +491,7 @@
     }
     
     .demo-tabs-trigger:focus-visible {
-        outline: 2px solid hsl(var(--ring));
+        outline: 2px solid rgb(var(--su-ring));
         outline-offset: -2px;
     }
     
