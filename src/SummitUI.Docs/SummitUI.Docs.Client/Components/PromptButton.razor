@@ -1,0 +1,92 @@
+@namespace SummitUI.Docs.Client.Components
+
+<div class="inline-flex rounded-md shadow-sm" role="group">
+    @* Main Button *@
+    <a href="@LlmTxtUrl" 
+       target="_blank"
+       class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground border border-primary rounded-s-lg hover:bg-primary/90 focus:z-10 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Copy Page
+    </a>
+    
+    @* Dropdown Trigger *@
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="inline-flex items-center px-2 py-2 text-sm font-medium bg-primary text-primary-foreground border-l border-primary-foreground/20 rounded-e-lg hover:bg-primary/90 focus:z-10 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background transition-colors">
+            <span class="sr-only">Open options</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"/>
+            </svg>
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="prompt-button-dropdown" Side="Side.Bottom" Align="Align.Center" SideOffset="4">
+                <DropdownMenuItem class="prompt-button-item" TextValue="ChatGPT">
+                    <a href="@ChatGptUrl" target="_blank" rel="noopener noreferrer" class="flex w-full items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Open with ChatGPT
+                    </a>
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem class="prompt-button-item" TextValue="Claude">
+                    <a href="@ClaudeUrl" target="_blank" rel="noopener noreferrer" class="flex w-full items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                        </svg>
+                        Open with Claude
+                    </a>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+</div>
+
+<style>
+    .prompt-button-dropdown {
+        background: hsl(var(--popover));
+        border-radius: var(--radius);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        border: 1px solid hsl(var(--border));
+        min-width: 200px;
+        padding: 4px;
+        z-index: 50;
+    }
+
+    .prompt-button-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: calc(var(--radius) - 2px);
+        font-size: 0.875rem;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+        color: hsl(var(--popover-foreground));
+    }
+
+    .prompt-button-item[data-highlighted] {
+        background: hsl(var(--accent));
+        color: hsl(var(--accent-foreground));
+    }
+
+    .prompt-button-item a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .prompt-button-item a:hover {
+        text-decoration: none;
+    }
+</style>
+
+@code {
+    [Parameter] public string LlmTxtUrl { get; set; } = "/llms.txt";
+    [Parameter] public string ChatGptUrl { get; set; } = "#";
+    [Parameter] public string ClaudeUrl { get; set; } = "#";
+}

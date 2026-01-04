@@ -1,4 +1,5 @@
 @page "/docs/accordion"
+@using SummitUI.Docs.Client.Components
 @layout DocsLayout
 @rendermode InteractiveWebAssembly
 
@@ -10,7 +11,7 @@
                 Component
             </span>
         </div>
-        <h1 class="text-4xl font-bold tracking-tight">Accordion</h1>
+        <h1 class="flex flex-row gap-4 text-4xl font-bold tracking-tight"><PromptButton/> Accordion</h1>
         <p class="text-xl text-muted-foreground leading-relaxed">
             A vertically stacked set of interactive headings that each reveal an associated section of content.
         </p>
@@ -390,7 +391,7 @@
             <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
             <p class="text-sm text-muted-foreground">Control the expanded state externally.</p>
             <div class="code-block">
-                <pre><code class="language-csharp">@controlledExampleCode</code></pre>
+                <pre><code class="language-cshtml-razor">@controlledExampleCode</code></pre>
             </div>
         </div>
 

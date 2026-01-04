@@ -21,18 +21,40 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cshtml-razor.min.js"></script>
 <script>
-    // Initialize highlight.js on page load and after Blazor navigation
+    // Initialize highlight.js with MutationObserver for Blazor compatibility
     function initHighlighting() {
         document.querySelectorAll('pre code:not(.hljs)').forEach((block) => {
             hljs.highlightElement(block);
         });
     }
-    
-    // Run on initial load
-    document.addEventListener('DOMContentLoaded', initHighlighting);
-    
-    // Run after Blazor enhanced navigation
+
+    // Watch for dynamically added code blocks (Blazor renders after page load)
+    const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    // Check if the node itself is a code block
+                    if (node.matches?.('pre code:not(.hljs)')) {
+                        hljs.highlightElement(node);
+                    }
+                    // Check for code blocks within the added node
+                    node.querySelectorAll?.('pre code:not(.hljs)').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                }
+            }
+        }
+    });
+
+    // Start observing when document is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        initHighlighting();
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+
+    // Also run after Blazor enhanced navigation
     Blazor.addEventListener('enhancedload', initHighlighting);
 </script>
 </body>
