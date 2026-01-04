@@ -18,7 +18,7 @@ Inspired by [bits-ui](https://github.com/huntabyte/bits-ui).
 Install the package via NuGet:
 
 ```bash
-dotnet add package SummitUI --version 0.0.3-alpha
+dotnet add package SummitUI
 ```
 
 ## Setup
