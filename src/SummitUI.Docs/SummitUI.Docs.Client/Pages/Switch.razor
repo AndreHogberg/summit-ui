@@ -1,0 +1,453 @@
+@page "/docs/switch"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Component
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">Switch</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            A control that allows the user to toggle between checked and not checked.
+        </p>
+    </div>
+
+    @* Live Demo *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
+        <div class="rounded-xl border border-border bg-card p-6">
+            <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <SwitchRoot @bind-Checked="isChecked1" class="demo-switch">
+                        <SwitchThumb class="demo-thumb" />
+                    </SwitchRoot>
+                    <span class="text-sm text-foreground">Airplane mode</span>
+                </label>
+                
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <SwitchRoot @bind-Checked="isChecked2" class="demo-switch">
+                        <SwitchThumb class="demo-thumb" />
+                    </SwitchRoot>
+                    <span class="text-sm text-foreground">Dark mode</span>
+                </label>
+                
+                <label class="flex items-center gap-3 cursor-not-allowed opacity-50">
+                    <SwitchRoot Disabled="true" class="demo-switch">
+                        <SwitchThumb class="demo-thumb" />
+                    </SwitchRoot>
+                    <span class="text-sm text-foreground">Disabled switch</span>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    @* Features *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Two states: checked and unchecked
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Keyboard navigation (Space/Enter to toggle)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Support for HTML forms (hidden input)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </section>
+
+    @* Installation *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <div class="code-block">
+            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+        </div>
+    </section>
+
+    @* Anatomy *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
+        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@anatomyCode</code></pre>
+        </div>
+    </section>
+
+    @* Sub-components *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SwitchRoot</h3>
+                <p class="mt-1 text-sm text-muted-foreground">The root switch component containing the button element.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SwitchThumb</h3>
+                <p class="mt-1 text-sm text-muted-foreground">The thumb that visually indicates the checked state.</p>
+            </div>
+        </div>
+    </section>
+
+    @* API Reference *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
+        
+        @* SwitchRoot *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SwitchRoot</h3>
+            <p class="text-sm text-muted-foreground">The root switch component.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Checked</code></td>
+                            <td><code>bool?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled checked state</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultChecked</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Default checked state for uncontrolled mode</td>
+                        </tr>
+                        <tr>
+                            <td><code>CheckedChanged</code></td>
+                            <td><code>EventCallback&lt;bool&gt;</code></td>
+                            <td>-</td>
+                            <td>Callback when checked state changes</td>
+                        </tr>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Prevents interaction with the switch</td>
+                        </tr>
+                        <tr>
+                            <td><code>Required</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Indicates switch must be checked for form submission</td>
+                        </tr>
+                        <tr>
+                            <td><code>Name</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Form field name for hidden input</td>
+                        </tr>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>"on"</code></td>
+                            <td>Value submitted with form data</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SwitchThumb *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SwitchThumb</h3>
+            <p class="text-sm text-muted-foreground">The thumb that visually indicates the checked state.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ChildContent</code></td>
+                            <td><code>RenderFragment?</code></td>
+                            <td>-</td>
+                            <td>Optional content to render inside the thumb</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Examples *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
+        
+        @* Basic *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Basic Usage</h3>
+            <div class="code-block">
+                <pre><code class="language-xml">@basicExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* With Label *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">With Label</h3>
+            <p class="text-sm text-muted-foreground">Associate the switch with a label for better accessibility.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@withLabelExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Controlled *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
+            <p class="text-sm text-muted-foreground">Control the checked state externally.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@controlledExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Form Integration *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Form Integration</h3>
+            <p class="text-sm text-muted-foreground">Use with EditForm for form submissions.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@formExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Values</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>data-state</code></td>
+                            <td><code>"checked"</code> | <code>"unchecked"</code></td>
+                            <td>Current state of the switch</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-disabled</code></td>
+                            <td>Present when disabled</td>
+                            <td>Indicates disabled state</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <div class="code-block">
+                <pre><code class="language-css">@cssExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Accessibility *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>Space</kbd></td>
+                            <td>Toggles the switch state</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Enter</kbd></td>
+                            <td>Toggles the switch state</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">role:</span>
+                    <span><code>switch</code> is set on the root element</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">aria-checked:</span>
+                    <span>Reflects the current state (<code>true</code> or <code>false</code>)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">aria-disabled:</span>
+                    <span>Set when the switch is disabled</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Demo Switch Styles */
+    .demo-switch {
+        width: 2.75rem;
+        height: 1.5rem;
+        background: hsl(var(--muted));
+        border-radius: 9999px;
+        position: relative;
+        border: none;
+        cursor: pointer;
+        transition: background 0.15s;
+        padding: 0;
+    }
+    
+    .demo-switch:hover {
+        background: hsl(var(--muted-foreground) / 0.3);
+    }
+    
+    .demo-switch[data-state="checked"] {
+        background: hsl(var(--foreground));
+    }
+    
+    .demo-switch[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-thumb {
+        display: block;
+        width: 1.25rem;
+        height: 1.25rem;
+        background: hsl(var(--background));
+        border-radius: 9999px;
+        transition: transform 0.15s;
+        transform: translateX(2px);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    
+    .demo-switch[data-state="checked"] .demo-thumb {
+        transform: translateX(calc(2.75rem - 1.25rem - 2px));
+    }
+</style>
+
+@code {
+    private bool isChecked1 = false;
+    private bool isChecked2 = true;
+
+    private const string anatomyCode = @"<SwitchRoot>
+    <SwitchThumb />
+</SwitchRoot>";
+
+    private const string basicExampleCode = @"<SwitchRoot DefaultChecked=""true"">
+    <SwitchThumb />
+</SwitchRoot>";
+
+    private const string withLabelExampleCode = @"<label style=""display: flex; gap: 0.5rem; align-items: center;"">
+    <SwitchRoot id=""airplane-mode"">
+        <SwitchThumb />
+    </SwitchRoot>
+    Airplane mode
+</label>";
+
+    private const string controlledExampleCode = @"@code {
+    private bool isChecked = true;
+}
+
+<SwitchRoot @bind-Checked=""isChecked"">
+    <SwitchThumb />
+</SwitchRoot>
+
+<p>Switch is @(isChecked ? ""on"" : ""off"")</p>";
+
+    private const string formExampleCode = @"<EditForm Model=""@model"" OnValidSubmit=""HandleSubmit"">
+    <DataAnnotationsValidator />
+    
+    <label>
+        <SwitchRoot @bind-Checked=""model.EnableNotifications"" Name=""notifications"">
+            <SwitchThumb />
+        </SwitchRoot>
+        Enable Notifications
+    </label>
+    
+    <button type=""submit"">Submit</button>
+</EditForm>";
+
+    private const string cssExampleCode = @"/* Switch root styles */
+.switch {
+    width: 2.75rem;
+    height: 1.5rem;
+    background: #e0e0e0;
+    border-radius: 9999px;
+    position: relative;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.switch:hover {
+    background: #d0d0d0;
+}
+
+.switch[data-state=""checked""] {
+    background: #0066cc;
+}
+
+.switch[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Thumb styles */
+.switch-thumb {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: white;
+    border-radius: 9999px;
+    transition: transform 0.15s;
+    transform: translateX(2px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.switch[data-state=""checked""] .switch-thumb {
+    transform: translateX(calc(2.75rem - 1.25rem - 2px));
+}";
+}

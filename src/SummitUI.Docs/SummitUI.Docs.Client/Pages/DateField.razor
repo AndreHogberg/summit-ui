@@ -1,0 +1,556 @@
+@page "/docs/datefield"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Component
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">DateField</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            A segmented date/time input component with culture-aware formatting and full keyboard navigation.
+        </p>
+    </div>
+
+    @* Live Demo *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
+        <div class="rounded-xl border border-border bg-card p-6">
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-2">
+                    <DateFieldRoot @bind-Value="selectedDate">
+                        <DateFieldLabel class="text-sm font-medium text-foreground">Select a date</DateFieldLabel>
+                        <DateFieldInput class="demo-datefield-input" />
+                    </DateFieldRoot>
+                    <p class="text-xs text-muted-foreground">Selected: @(selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime" Granularity="DateFieldGranularity.Minute">
+                        <DateFieldLabel class="text-sm font-medium text-foreground">Date and time</DateFieldLabel>
+                        <DateFieldInput class="demo-datefield-input" />
+                    </DateFieldRoot>
+                    <p class="text-xs text-muted-foreground">Selected: @(selectedDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @* Features *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Segmented editing (each part is independently editable)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Culture-aware date formatting
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Support for both DateOnly and DateTime types
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Configurable granularity (day, hour, minute, second)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                12-hour and 24-hour time formats
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Min/max validation and EditForm integration
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </section>
+
+    @* Installation *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <div class="code-block">
+            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+        </div>
+    </section>
+
+    @* Anatomy *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
+        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@anatomyCode</code></pre>
+        </div>
+    </section>
+
+    @* Sub-components *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DateFieldRoot</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Root container managing date field state.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DateFieldLabel</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Accessible label for the date field.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DateFieldInput</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Container that renders date/time segments.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DateFieldSegment</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Individual editable segment (auto-generated).</p>
+            </div>
+        </div>
+    </section>
+
+    @* API Reference *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
+        
+        @* DateFieldRoot *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">DateFieldRoot</h3>
+            <p class="text-sm text-muted-foreground">The root component that manages date field state.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>DateOnly?</code></td>
+                            <td><code>null</code></td>
+                            <td>Bound DateOnly value</td>
+                        </tr>
+                        <tr>
+                            <td><code>ValueChanged</code></td>
+                            <td><code>EventCallback&lt;DateOnly?&gt;</code></td>
+                            <td>-</td>
+                            <td>DateOnly value change callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>DateTimeValue</code></td>
+                            <td><code>DateTime?</code></td>
+                            <td><code>null</code></td>
+                            <td>Bound DateTime value</td>
+                        </tr>
+                        <tr>
+                            <td><code>DateTimeValueChanged</code></td>
+                            <td><code>EventCallback&lt;DateTime?&gt;</code></td>
+                            <td>-</td>
+                            <td>DateTime value change callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>Granularity</code></td>
+                            <td><code>DateFieldGranularity</code></td>
+                            <td><code>Day</code></td>
+                            <td>Controls which segments are displayed</td>
+                        </tr>
+                        <tr>
+                            <td><code>HourCycle</code></td>
+                            <td><code>HourCycle</code></td>
+                            <td><code>Auto</code></td>
+                            <td>12-hour or 24-hour time format</td>
+                        </tr>
+                        <tr>
+                            <td><code>Locale</code></td>
+                            <td><code>CultureInfo?</code></td>
+                            <td>Current culture</td>
+                            <td>Culture for date formatting</td>
+                        </tr>
+                        <tr>
+                            <td><code>DatePattern</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Custom date format pattern</td>
+                        </tr>
+                        <tr>
+                            <td><code>MinValue</code></td>
+                            <td><code>DateOnly?</code></td>
+                            <td><code>null</code></td>
+                            <td>Minimum allowed DateOnly value</td>
+                        </tr>
+                        <tr>
+                            <td><code>MaxValue</code></td>
+                            <td><code>DateOnly?</code></td>
+                            <td><code>null</code></td>
+                            <td>Maximum allowed DateOnly value</td>
+                        </tr>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Disables the entire date field</td>
+                        </tr>
+                        <tr>
+                            <td><code>ReadOnly</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Makes the field read-only</td>
+                        </tr>
+                        <tr>
+                            <td><code>Invalid</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Indicates validation error state</td>
+                        </tr>
+                        <tr>
+                            <td><code>Required</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Marks the field as required</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Enums *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Enums</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">DateFieldGranularity</h3>
+            <div class="code-block">
+                <pre><code class="language-csharp">@granularityEnumCode</code></pre>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">HourCycle</h3>
+            <div class="code-block">
+                <pre><code class="language-csharp">@hourCycleEnumCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Examples *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
+        
+        @* Basic *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Basic DateOnly Field</h3>
+            <div class="code-block">
+                <pre><code class="language-csharp">@basicExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* DateTime *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">DateTime with Time</h3>
+            <p class="text-sm text-muted-foreground">Use Granularity to show time segments.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@dateTimeExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Min/Max *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Min/Max Validation</h3>
+            <p class="text-sm text-muted-foreground">Constrain the date range.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@minMaxExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Form Integration *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">EditForm Integration</h3>
+            <p class="text-sm text-muted-foreground">Use with Blazor forms and validation.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@formExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Values</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>data-disabled</code></td>
+                            <td>Present when disabled</td>
+                            <td>Date field is disabled</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-readonly</code></td>
+                            <td>Present when read-only</td>
+                            <td>Date field is read-only</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-invalid</code></td>
+                            <td>Present when invalid</td>
+                            <td>Validation error state</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-placeholder</code></td>
+                            <td>Present when no value</td>
+                            <td>Showing placeholder</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-segment</code></td>
+                            <td>Segment type</td>
+                            <td>Identifies segment type for styling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <div class="code-block">
+                <pre><code class="language-css">@cssExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Accessibility *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>ArrowUp</kbd></td>
+                            <td>Increment the focused segment value</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowDown</kbd></td>
+                            <td>Decrement the focused segment value</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowLeft</kbd></td>
+                            <td>Move focus to previous segment</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowRight</kbd></td>
+                            <td>Move focus to next segment</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Tab</kbd></td>
+                            <td>Move focus to next segment (or next element)</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>0-9</kbd></td>
+                            <td>Type numeric value directly into segment</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Backspace</kbd> / <kbd>Delete</kbd></td>
+                            <td>Clear the value (sets to null)</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>A</kbd> / <kbd>P</kbd></td>
+                            <td>Toggle AM/PM on DayPeriod segment</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Root:</span>
+                    <span>Has <code>role="group"</code> with <code>aria-labelledby</code> pointing to label</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Segments:</span>
+                    <span>Each has <code>role="spinbutton"</code> with <code>aria-valuemin</code>, <code>aria-valuemax</code>, <code>aria-valuenow</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Literals:</span>
+                    <span>Separator segments have <code>aria-hidden="true"</code></span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Demo DateField Styles */
+    .demo-datefield-input {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        padding: 0.5rem 0.75rem;
+        background: hsl(var(--background));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-family: inherit;
+        margin-top: 0.5rem;
+    }
+    
+    .demo-datefield-input:focus-within {
+        border-color: hsl(var(--ring));
+        box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+    }
+</style>
+
+@code {
+    private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateTime? selectedDateTime = DateTime.Now;
+
+    private const string anatomyCode = @"<DateFieldRoot @bind-Value=""date"">
+    <DateFieldLabel>Select a date</DateFieldLabel>
+    <DateFieldInput />
+</DateFieldRoot>";
+
+    private const string granularityEnumCode = @"public enum DateFieldGranularity
+{
+    Day,    // Show only date segments (Year, Month, Day)
+    Hour,   // Show date and hour segments
+    Minute, // Show date, hour, and minute segments
+    Second  // Show date, hour, minute, and second segments
+}";
+
+    private const string hourCycleEnumCode = @"public enum HourCycle
+{
+    Auto, // Use the locale's default hour cycle
+    H12,  // 12-hour cycle with AM/PM (1-12)
+    H23,  // 24-hour cycle (0-23)
+    H24,  // 24-hour cycle (1-24)
+    H11   // 12-hour cycle (0-11)
+}";
+
+    private const string basicExampleCode = @"@code {
+    private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
+}
+
+<DateFieldRoot @bind-Value=""selectedDate"">
+    <DateFieldLabel>Select a date</DateFieldLabel>
+    <DateFieldInput class=""datefield-input"" />
+</DateFieldRoot>
+
+<p>Selected: @(selectedDate?.ToString(""yyyy-MM-dd"") ?? ""None"")</p>";
+
+    private const string dateTimeExampleCode = @"@code {
+    private DateTime? selectedDateTime = DateTime.Now;
+}
+
+<DateFieldRoot @bind-DateTimeValue=""selectedDateTime"" 
+               Granularity=""DateFieldGranularity.Minute"">
+    <DateFieldLabel>Select date and time</DateFieldLabel>
+    <DateFieldInput class=""datefield-input"" />
+</DateFieldRoot>
+
+<p>Selected: @(selectedDateTime?.ToString(""yyyy-MM-dd HH:mm"") ?? ""None"")</p>";
+
+    private const string minMaxExampleCode = @"@code {
+    private DateOnly? date = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly minDate = new DateOnly(2025, 1, 1);
+    private DateOnly maxDate = new DateOnly(2025, 12, 31);
+}
+
+<DateFieldRoot @bind-Value=""date"" 
+               MinValue=""@minDate"" 
+               MaxValue=""@maxDate"">
+    <DateFieldLabel>Select a date (Jan - Dec 2025)</DateFieldLabel>
+    <DateFieldInput class=""datefield-input"" />
+</DateFieldRoot>";
+
+    private const string formExampleCode = @"<EditForm EditContext=""editContext"" OnSubmit=""HandleSubmit"">
+    <DataAnnotationsValidator />
+    
+    <DateFieldRoot @bind-Value=""model.BirthDate""
+                   Name=""birthDate""
+                   Required=""true""
+                   Invalid=""@(submitted && model.BirthDate == null)"">
+        <DateFieldLabel>Birth Date (Required)</DateFieldLabel>
+        <DateFieldInput class=""datefield-input"" />
+    </DateFieldRoot>
+    <ValidationMessage For=""@(() => model.BirthDate)"" />
+
+    <button type=""submit"">Submit</button>
+</EditForm>";
+
+    private const string cssExampleCode = @"/* Input container */
+.datefield-input {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.datefield-input:focus-within {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+[data-disabled] .datefield-input {
+    background: #f5f5f5;
+    cursor: not-allowed;
+}
+
+[data-invalid] .datefield-input {
+    border-color: #dc3545;
+}
+
+/* Segment styling */
+[data-segment]:not([data-segment=""literal""]) {
+    padding: 0.125rem 0.25rem;
+    border-radius: 4px;
+    min-width: 1.5em;
+    text-align: center;
+}
+
+[data-segment]:not([data-segment=""literal""]):focus {
+    background: #e7f1ff;
+    color: #0066cc;
+    outline: none;
+}
+
+[data-segment=""literal""] {
+    color: #666;
+}
+
+[data-segment][data-placeholder] {
+    color: #999;
+}";
+}

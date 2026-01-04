@@ -92,6 +92,18 @@ public class AccordionRoot : ComponentBase
     [Parameter]
     public bool Collapsible { get; set; } = true;
 
+    /// <summary>
+    /// HTML element to render. Defaults to "div".
+    /// </summary>
+    [Parameter]
+    public string As { get; set; } = "div";
+
+    /// <summary>
+    /// Additional HTML attributes to apply.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
     private readonly AccordionContext _context = new();
     private HashSet<string> _internalValues = [];
 
@@ -157,11 +169,18 @@ public class AccordionRoot : ComponentBase
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenComponent<CascadingValue<AccordionContext>>(0);
-        builder.AddComponentParameter(1, "Value", _context);
-        builder.AddComponentParameter(2, "IsFixed", false);
-        builder.AddComponentParameter(3, "ChildContent", ChildContent);
+        builder.OpenElement(0, As);
+        builder.AddMultipleAttributes(1, AdditionalAttributes);
+        builder.AddAttribute(2, "data-summit-accordion-root", true);
+        builder.AddAttribute(3, "data-orientation", Orientation.ToString().ToLowerInvariant());
+
+        builder.OpenComponent<CascadingValue<AccordionContext>>(4);
+        builder.AddComponentParameter(5, "Value", _context);
+        builder.AddComponentParameter(6, "IsFixed", false);
+        builder.AddComponentParameter(7, "ChildContent", ChildContent);
         builder.CloseComponent();
+
+        builder.CloseElement();
     }
 
     private async Task FocusTriggerAsync(string value)

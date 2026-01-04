@@ -1,0 +1,102 @@
+# SummitUI
+
+> A Blazor component library focused on WCAG-compliant, fully customizable headless components for .NET applications.
+
+SummitUI provides accessible, unstyled UI components for Blazor applications. All components work across WebAssembly, Server-Side Rendering (SSR), and Interactive Server render modes.
+
+## Key Concepts
+
+- **Headless Components**: No default styling, full CSS control via data attributes
+- **WCAG 2.1 Compliant**: Proper ARIA attributes, roles, and keyboard navigation built-in
+- **Data Attributes for Styling**: Use `data-state`, `data-disabled`, `data-orientation` for CSS selectors
+- **Controlled & Uncontrolled**: All components support both patterns
+- **Cross-Render-Mode**: Works with Blazor WASM, SSR, and Interactive Server
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Component Documentation
+
+- [Accordion](docs/accordion.md): Collapsible content sections with keyboard navigation
+- [Checkbox](docs/checkbox.md): Toggle control with indeterminate state support
+- [DateField](docs/datefield.md): Date input with segment-based editing
+- [DropdownMenu](docs/dropdownmenu.md): Context menus with items, checkboxes, and radio groups
+- [Popover](docs/popover.md): Floating content panels with flexible positioning
+- [Select](docs/select.md): Dropdown selection with full accessibility
+- [Switch](docs/switch.md): Binary toggle control
+- [Tabs](docs/tabs.md): Tabbed interface with keyboard navigation
+
+## Utilities
+
+- [FocusTrap](docs/focustrap.md): Utility to trap keyboard focus within a container
+
+## Common Patterns
+
+### Controlled vs Uncontrolled
+
+```razor
+@* Uncontrolled (internal state) *@
+<AccordionRoot DefaultValue="item-1">...</AccordionRoot>
+
+@* Controlled (external state) *@
+<AccordionRoot Value="@expandedItem" ValueChanged="@(v => expandedItem = v)">...</AccordionRoot>
+```
+
+### Styling with Data Attributes
+
+All components expose data attributes for CSS styling:
+
+```css
+/* Style based on state */
+[data-state="open"] { background-color: #f0f0f0; }
+[data-state="closed"] { background-color: white; }
+
+/* Style disabled elements */
+[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* Style based on orientation */
+[data-orientation="vertical"] { flex-direction: column; }
+[data-orientation="horizontal"] { flex-direction: row; }
+```
+
+### Custom Element Rendering
+
+Most components support the `As` parameter to render as different HTML elements:
+
+```razor
+<AccordionHeader As="h2" Level="2">...</AccordionHeader>
+<PopoverTrigger As="div">...</PopoverTrigger>
+```
+
+## Project Structure
+
+```
+SummitUI/
+├── src/SummitUI/                    # Main component library
+│   ├── Components/                  # All component implementations
+│   │   ├── Accordion/              # Accordion component files
+│   │   ├── Checkbox/               # Checkbox component files
+│   │   ├── DateField/              # DateField component files
+│   │   ├── DropdownMenu/           # DropdownMenu component files
+│   │   ├── Popover/                # Popover component files
+│   │   ├── Select/                 # Select component files
+│   │   ├── Switch/                 # Switch component files
+│   │   ├── Tabs/                   # Tabs component files
+│   │   └── Utilities/              # Utility components (FocusTrap)
+│   ├── Interop/                    # JavaScript interop classes
+│   └── Scripts/                    # JavaScript modules
+├── docs/                           # Component documentation (markdown)
+└── tests/                          # Test projects
+```
+
+## Documentation
+
+- Full documentation: https://summitui.dev/docs
+- GitHub: https://github.com/andrehogberg/summit-ui
+
+## Optional
+
+- [General Documentation](docs/index.md): Overview and getting started guide

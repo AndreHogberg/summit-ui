@@ -1,0 +1,615 @@
+@page "/docs/tabs"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Component
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">Tabs</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            A set of layered sections of content, known as tab panels, that are displayed one at a time.
+        </p>
+    </div>
+
+    @* Live Demo *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
+        <div class="rounded-xl border border-border bg-card p-6">
+            <TabsRoot DefaultValue="account" class="w-full">
+                <TabsList class="demo-tabs-list">
+                    <TabsTrigger Value="account" class="demo-tabs-trigger">Account</TabsTrigger>
+                    <TabsTrigger Value="password" class="demo-tabs-trigger">Password</TabsTrigger>
+                    <TabsTrigger Value="notifications" class="demo-tabs-trigger">Notifications</TabsTrigger>
+                </TabsList>
+                <TabsContent Value="account" class="demo-tabs-content">
+                    <h3 class="font-medium text-foreground mb-2">Account Settings</h3>
+                    <p class="text-sm text-muted-foreground">Manage your account information and preferences here.</p>
+                </TabsContent>
+                <TabsContent Value="password" class="demo-tabs-content">
+                    <h3 class="font-medium text-foreground mb-2">Password Settings</h3>
+                    <p class="text-sm text-muted-foreground">Change your password and security options.</p>
+                </TabsContent>
+                <TabsContent Value="notifications" class="demo-tabs-content">
+                    <h3 class="font-medium text-foreground mb-2">Notification Preferences</h3>
+                    <p class="text-sm text-muted-foreground">Configure how you receive notifications.</p>
+                </TabsContent>
+            </TabsRoot>
+        </div>
+    </section>
+
+    @* Features *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Horizontal and vertical orientations
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Auto and manual activation modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Disabled tabs support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </section>
+
+    @* Installation *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <div class="code-block">
+            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+        </div>
+    </section>
+
+    @* Anatomy *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
+        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@anatomyCode</code></pre>
+        </div>
+    </section>
+
+    @* Sub-components *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">TabsRoot</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Root container managing tabs state.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">TabsList</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Container for tab triggers (tablist role).</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">TabsTrigger</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Individual tab button (tab role).</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">TabsContent</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Tab content panel (tabpanel role).</p>
+            </div>
+        </div>
+    </section>
+
+    @* API Reference *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
+        
+        @* TabsRoot *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsRoot</h3>
+            <p class="text-sm text-muted-foreground">The root component that manages tabs state.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled active tab value</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultValue</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Default active tab (uncontrolled)</td>
+                        </tr>
+                        <tr>
+                            <td><code>ValueChanged</code></td>
+                            <td><code>EventCallback&lt;string?&gt;</code></td>
+                            <td>-</td>
+                            <td>Value change callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnValueChange</code></td>
+                            <td><code>EventCallback&lt;string?&gt;</code></td>
+                            <td>-</td>
+                            <td>Tab activation callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>Orientation</code></td>
+                            <td><code>TabsOrientation</code></td>
+                            <td><code>Horizontal</code></td>
+                            <td>Affects keyboard navigation</td>
+                        </tr>
+                        <tr>
+                            <td><code>ActivationMode</code></td>
+                            <td><code>TabsActivationMode</code></td>
+                            <td><code>Auto</code></td>
+                            <td>Auto (on focus) or Manual (on Enter/Space)</td>
+                        </tr>
+                        <tr>
+                            <td><code>Loop</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>true</code></td>
+                            <td>Whether keyboard nav loops</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* TabsList *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsList</h3>
+            <p class="text-sm text-muted-foreground">Container for tab triggers.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>As</code></td>
+                            <td><code>string</code></td>
+                            <td><code>"div"</code></td>
+                            <td>HTML element</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* TabsTrigger *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsTrigger</h3>
+            <p class="text-sm text-muted-foreground">Individual tab button.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>string</code></td>
+                            <td><span class="text-destructive">Required</span></td>
+                            <td>Unique tab identifier</td>
+                        </tr>
+                        <tr>
+                            <td><code>As</code></td>
+                            <td><code>string</code></td>
+                            <td><code>"button"</code></td>
+                            <td>HTML element</td>
+                        </tr>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Disable this tab</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* TabsContent *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">TabsContent</h3>
+            <p class="text-sm text-muted-foreground">Tab content panel.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>string</code></td>
+                            <td><span class="text-destructive">Required</span></td>
+                            <td>Matching TabsTrigger value</td>
+                        </tr>
+                        <tr>
+                            <td><code>As</code></td>
+                            <td><code>string</code></td>
+                            <td><code>"div"</code></td>
+                            <td>HTML element</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Examples *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
+        
+        @* Basic *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Basic Usage</h3>
+            <div class="code-block">
+                <pre><code class="language-xml">@basicExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Vertical *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Vertical Orientation</h3>
+            <p class="text-sm text-muted-foreground">Use vertical orientation for sidebar-style navigation.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@verticalExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Controlled *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
+            <p class="text-sm text-muted-foreground">Control the active tab externally.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@controlledExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Disabled *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Disabled Tabs</h3>
+            <p class="text-sm text-muted-foreground">Disable specific tabs.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@disabledExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Values</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>data-state</code></td>
+                            <td><code>"active"</code> | <code>"inactive"</code></td>
+                            <td>Tab/panel activation state</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-disabled</code></td>
+                            <td>Present when disabled</td>
+                            <td>Tab is disabled</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-orientation</code></td>
+                            <td><code>"horizontal"</code> | <code>"vertical"</code></td>
+                            <td>Current orientation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <div class="code-block">
+                <pre><code class="language-css">@cssExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Accessibility *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation (Horizontal)</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>ArrowRight</kbd></td>
+                            <td>Move focus to next tab</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowLeft</kbd></td>
+                            <td>Move focus to previous tab</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Home</kbd></td>
+                            <td>Move focus to first tab</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>End</kbd></td>
+                            <td>Move focus to last tab</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
+                            <td>Activate focused tab (manual mode)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation (Vertical)</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>ArrowDown</kbd></td>
+                            <td>Move focus to next tab</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowUp</kbd></td>
+                            <td>Move focus to previous tab</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Home</kbd></td>
+                            <td>Move focus to first tab</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>End</kbd></td>
+                            <td>Move focus to last tab</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">TabsList:</span>
+                    <span>Has <code>role="tablist"</code> with <code>aria-orientation</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">TabsTrigger:</span>
+                    <span>Has <code>role="tab"</code> with <code>aria-selected</code> and <code>aria-controls</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">TabsContent:</span>
+                    <span>Has <code>role="tabpanel"</code> with <code>aria-labelledby</code></span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Demo Tabs Styles */
+    .demo-tabs-list {
+        display: flex;
+        border-bottom: 1px solid hsl(var(--border));
+        gap: 0.25rem;
+    }
+    
+    .demo-tabs-trigger {
+        padding: 0.75rem 1rem;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+        transition: all 0.15s;
+    }
+    
+    .demo-tabs-trigger:hover {
+        color: hsl(var(--foreground));
+    }
+    
+    .demo-tabs-trigger[data-state="active"] {
+        color: hsl(var(--foreground));
+        border-bottom-color: hsl(var(--foreground));
+    }
+    
+    .demo-tabs-trigger[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-tabs-trigger:focus-visible {
+        outline: 2px solid hsl(var(--ring));
+        outline-offset: -2px;
+    }
+    
+    .demo-tabs-content {
+        padding: 1.5rem 0;
+    }
+    
+    .demo-tabs-content[data-state="inactive"] {
+        display: none;
+    }
+</style>
+
+@code {
+    private const string anatomyCode = @"<TabsRoot DefaultValue=""tab1"">
+    <TabsList>
+        <TabsTrigger Value=""tab1"">Tab 1</TabsTrigger>
+        <TabsTrigger Value=""tab2"">Tab 2</TabsTrigger>
+    </TabsList>
+    <TabsContent Value=""tab1"">Content 1</TabsContent>
+    <TabsContent Value=""tab2"">Content 2</TabsContent>
+</TabsRoot>";
+
+    private const string basicExampleCode = @"<TabsRoot DefaultValue=""account"">
+    <TabsList class=""tabs-list"">
+        <TabsTrigger Value=""account"" class=""tabs-trigger"">Account</TabsTrigger>
+        <TabsTrigger Value=""password"" class=""tabs-trigger"">Password</TabsTrigger>
+    </TabsList>
+    
+    <TabsContent Value=""account"" class=""tabs-content"">
+        <h3>Account Settings</h3>
+        <p>Manage your account information here.</p>
+    </TabsContent>
+    <TabsContent Value=""password"" class=""tabs-content"">
+        <h3>Password Settings</h3>
+        <p>Change your password and security options.</p>
+    </TabsContent>
+</TabsRoot>";
+
+    private const string verticalExampleCode = @"<TabsRoot DefaultValue=""general"" Orientation=""TabsOrientation.Vertical"">
+    <div class=""tabs-container-vertical"">
+        <TabsList class=""tabs-list-vertical"">
+            <TabsTrigger Value=""general"">General</TabsTrigger>
+            <TabsTrigger Value=""privacy"">Privacy</TabsTrigger>
+            <TabsTrigger Value=""security"">Security</TabsTrigger>
+        </TabsList>
+        
+        <div class=""tabs-content-container"">
+            <TabsContent Value=""general"">General settings...</TabsContent>
+            <TabsContent Value=""privacy"">Privacy settings...</TabsContent>
+            <TabsContent Value=""security"">Security settings...</TabsContent>
+        </div>
+    </div>
+</TabsRoot>";
+
+    private const string controlledExampleCode = @"@code {
+    private string activeTab = ""overview"";
+}
+
+<TabsRoot Value=""@activeTab"" ValueChanged=""@(v => activeTab = v)"">
+    <TabsList>
+        <TabsTrigger Value=""overview"">Overview</TabsTrigger>
+        <TabsTrigger Value=""details"">Details</TabsTrigger>
+    </TabsList>
+    
+    <TabsContent Value=""overview"">Overview content...</TabsContent>
+    <TabsContent Value=""details"">Details content...</TabsContent>
+</TabsRoot>
+
+<p>Active tab: @activeTab</p>
+<button @onclick=""@(() => activeTab = ""details"")"">Go to Details</button>";
+
+    private const string disabledExampleCode = @"<TabsRoot DefaultValue=""active1"">
+    <TabsList>
+        <TabsTrigger Value=""active1"">Active Tab</TabsTrigger>
+        <TabsTrigger Value=""disabled"" Disabled=""true"">Disabled Tab</TabsTrigger>
+        <TabsTrigger Value=""active2"">Another Active</TabsTrigger>
+    </TabsList>
+    
+    <TabsContent Value=""active1"">This tab is accessible.</TabsContent>
+    <TabsContent Value=""disabled"">This content is not accessible.</TabsContent>
+    <TabsContent Value=""active2"">This tab is also accessible.</TabsContent>
+</TabsRoot>";
+
+    private const string cssExampleCode = @"/* Tab list styles */
+.tabs-list {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 4px;
+}
+
+/* Tab trigger styles */
+.tabs-trigger {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.tabs-trigger:hover {
+    color: #333;
+    background: #f5f5f5;
+}
+
+.tabs-trigger[data-state=""active""] {
+    color: #0066cc;
+    border-bottom-color: #0066cc;
+}
+
+.tabs-trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Tab content styles */
+.tabs-content {
+    padding: 24px;
+}
+
+.tabs-content[data-state=""inactive""] {
+    display: none;
+}";
+}

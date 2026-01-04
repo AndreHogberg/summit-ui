@@ -1,0 +1,548 @@
+@page "/docs/popover"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Component
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">Popover</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            A floating content panel that appears next to a trigger element, commonly used for tooltips, dropdowns, and informational overlays.
+        </p>
+    </div>
+
+    @* Live Demo *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
+        <div class="rounded-xl border border-border bg-card p-6">
+            <PopoverRoot>
+                <PopoverTrigger class="demo-popover-trigger">
+                    Click me
+                </PopoverTrigger>
+                <PopoverPortal>
+                    <PopoverContent class="demo-popover-content" SideOffset="8">
+                        <div class="flex flex-col gap-3">
+                            <h3 class="font-medium text-foreground">Popover Title</h3>
+                            <p class="text-sm text-muted-foreground">This is a simple popover with some content. Click outside or press Escape to close.</p>
+                            <PopoverClose class="demo-popover-close">Close</PopoverClose>
+                        </div>
+                    </PopoverContent>
+                </PopoverPortal>
+            </PopoverRoot>
+        </div>
+    </section>
+
+    @* Features *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Flexible positioning with collision detection
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Optional overlay backdrop
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Focus trapping support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Close button component
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </section>
+
+    @* Installation *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <div class="code-block">
+            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+        </div>
+    </section>
+
+    @* Anatomy *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
+        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@anatomyCode</code></pre>
+        </div>
+    </section>
+
+    @* Sub-components *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">PopoverRoot</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Root container managing popover state.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">PopoverTrigger</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Button that toggles the popover.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">PopoverPortal</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Renders content in fixed-position container.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">PopoverContent</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Floating content panel with positioning.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">PopoverOverlay</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Optional backdrop overlay.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">PopoverClose</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Close button within popover.</p>
+            </div>
+        </div>
+    </section>
+
+    @* API Reference *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
+        
+        @* PopoverRoot *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">PopoverRoot</h3>
+            <p class="text-sm text-muted-foreground">The root component that manages popover state.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Open</code></td>
+                            <td><code>bool?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled open state</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultOpen</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Default open state (uncontrolled)</td>
+                        </tr>
+                        <tr>
+                            <td><code>OpenChanged</code></td>
+                            <td><code>EventCallback&lt;bool&gt;</code></td>
+                            <td>-</td>
+                            <td>Open state change callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnOpen</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Callback when popover opens</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnClose</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Callback when popover closes</td>
+                        </tr>
+                        <tr>
+                            <td><code>Modal</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Whether to trap focus</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* PopoverContent *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">PopoverContent</h3>
+            <p class="text-sm text-muted-foreground">The floating content panel.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Side</code></td>
+                            <td><code>Side</code></td>
+                            <td><code>Bottom</code></td>
+                            <td>Placement side</td>
+                        </tr>
+                        <tr>
+                            <td><code>SideOffset</code></td>
+                            <td><code>int</code></td>
+                            <td><code>0</code></td>
+                            <td>Offset from trigger (px)</td>
+                        </tr>
+                        <tr>
+                            <td><code>Align</code></td>
+                            <td><code>Align</code></td>
+                            <td><code>Center</code></td>
+                            <td>Alignment along side axis</td>
+                        </tr>
+                        <tr>
+                            <td><code>AvoidCollisions</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>true</code></td>
+                            <td>Avoid viewport boundaries</td>
+                        </tr>
+                        <tr>
+                            <td><code>TrapFocus</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Whether to trap focus</td>
+                        </tr>
+                        <tr>
+                            <td><code>EscapeKeyBehavior</code></td>
+                            <td><code>EscapeKeyBehavior</code></td>
+                            <td><code>Close</code></td>
+                            <td>Escape key behavior</td>
+                        </tr>
+                        <tr>
+                            <td><code>OutsideClickBehavior</code></td>
+                            <td><code>OutsideClickBehavior</code></td>
+                            <td><code>Close</code></td>
+                            <td>Outside click behavior</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Examples *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
+        
+        @* Basic *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Basic Popover</h3>
+            <div class="code-block">
+                <pre><code class="language-xml">@basicExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* With Overlay *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">With Overlay</h3>
+            <p class="text-sm text-muted-foreground">Add a backdrop overlay for modal-like behavior.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@overlayExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Positions *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Different Positions</h3>
+            <p class="text-sm text-muted-foreground">Position the popover on different sides.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@positionsExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Controlled *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
+            <p class="text-sm text-muted-foreground">Control the open state externally.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@controlledExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Values</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>data-state</code></td>
+                            <td><code>"open"</code> | <code>"closed"</code></td>
+                            <td>Popover open state</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-side</code></td>
+                            <td><code>"top"</code> | <code>"right"</code> | <code>"bottom"</code> | <code>"left"</code></td>
+                            <td>Current placement side</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-align</code></td>
+                            <td><code>"start"</code> | <code>"center"</code> | <code>"end"</code></td>
+                            <td>Current alignment</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <div class="code-block">
+                <pre><code class="language-css">@cssExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Accessibility *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
+                            <td>Toggle popover (on trigger)</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Escape</kbd></td>
+                            <td>Close popover</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Tab</kbd></td>
+                            <td>Move focus within popover (when focus trapped)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Trigger:</span>
+                    <span>Has <code>aria-haspopup="dialog"</code> and <code>aria-expanded</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Content:</span>
+                    <span>Linked to trigger via <code>aria-controls</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Close:</span>
+                    <span>Has <code>aria-label</code> for screen readers</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Focus Management</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li>When opened, focus moves to the first focusable element in the content</li>
+                <li>When closed, focus returns to the trigger</li>
+                <li>Optional focus trapping keeps focus within the popover</li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Demo Popover Styles */
+    .demo-popover-trigger {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: hsl(var(--foreground));
+        color: hsl(var(--background));
+        border: none;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+    
+    .demo-popover-trigger:hover {
+        opacity: 0.9;
+    }
+    
+    .demo-popover-content {
+        width: 18rem;
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 1rem;
+        z-index: 50;
+    }
+    
+    .demo-popover-content[data-state="closed"] {
+        display: none;
+    }
+    
+    .demo-popover-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.375rem 0.75rem;
+        background: hsl(var(--muted));
+        border: none;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        color: hsl(var(--foreground));
+    }
+    
+    .demo-popover-close:hover {
+        background: hsl(var(--muted-foreground) / 0.2);
+    }
+</style>
+
+@code {
+    private const string anatomyCode = @"<PopoverRoot>
+    <PopoverTrigger>Open</PopoverTrigger>
+    <PopoverPortal>
+        <PopoverContent>
+            <p>Popover content</p>
+            <PopoverClose>Close</PopoverClose>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>";
+
+    private const string basicExampleCode = @"<PopoverRoot>
+    <PopoverTrigger class=""btn"">Click me</PopoverTrigger>
+    <PopoverPortal>
+        <PopoverContent class=""popover-content"" SideOffset=""8"">
+            <h3>Basic Popover</h3>
+            <p>This is a simple popover with some content.</p>
+            <PopoverClose class=""btn"">Close</PopoverClose>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>";
+
+    private const string overlayExampleCode = @"<PopoverRoot>
+    <PopoverTrigger class=""btn"">Open with Overlay</PopoverTrigger>
+    <PopoverPortal>
+        <PopoverOverlay class=""popover-overlay"" />
+        <PopoverContent class=""popover-content"" SideOffset=""8"">
+            <h3>Modal-like Popover</h3>
+            <p>Click the overlay or press Escape to close.</p>
+            <PopoverClose class=""btn"">Done</PopoverClose>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>";
+
+    private const string positionsExampleCode = @"@* Bottom (default) *@
+<PopoverContent Side=""Side.Bottom"" SideOffset=""8"">
+    Content appears below
+</PopoverContent>
+
+@* Top *@
+<PopoverContent Side=""Side.Top"" SideOffset=""8"">
+    Content appears above
+</PopoverContent>
+
+@* Left *@
+<PopoverContent Side=""Side.Left"" SideOffset=""8"">
+    Content appears to the left
+</PopoverContent>
+
+@* Right *@
+<PopoverContent Side=""Side.Right"" SideOffset=""8"">
+    Content appears to the right
+</PopoverContent>";
+
+    private const string controlledExampleCode = @"@code {
+    private bool isOpen = false;
+}
+
+<PopoverRoot Open=""@isOpen"" OpenChanged=""@(v => isOpen = v)"">
+    <PopoverTrigger class=""btn"">
+        @(isOpen ? ""Close"" : ""Open"")
+    </PopoverTrigger>
+    <PopoverPortal>
+        <PopoverContent class=""popover-content"" SideOffset=""8"">
+            <p>Controlled popover content</p>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>
+
+<button @onclick=""@(() => isOpen = !isOpen)"">
+    Toggle Externally
+</button>";
+
+    private const string cssExampleCode = @"/* Trigger */
+.popover-trigger {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.popover-trigger[data-state=""open""] {
+    background: #f0f0f0;
+}
+
+/* Overlay */
+.popover-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Content */
+.popover-content {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    min-width: 280px;
+    max-width: 400px;
+    padding: 16px;
+}
+
+.popover-content[data-state=""closed""] {
+    display: none;
+}";
+}

@@ -15,9 +15,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+      <ProjectReference Include="..\..\SummitUI\SummitUI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\" />
     </ItemGroup>
 
 </Project>

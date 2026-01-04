@@ -1,0 +1,577 @@
+@page "/docs/checkbox"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Component
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">Checkbox</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            A control that allows the user to toggle between checked and not checked.
+        </p>
+    </div>
+
+    @* Live Demo *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
+        <div class="rounded-xl border border-border bg-card p-6">
+            <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <CheckboxRoot @bind-Checked="isChecked1" class="demo-checkbox">
+                        <CheckboxIndicator class="demo-indicator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    <span class="text-sm text-foreground">Accept terms and conditions</span>
+                </label>
+                
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <CheckboxRoot @bind-Checked="isChecked2" class="demo-checkbox">
+                        <CheckboxIndicator class="demo-indicator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    <span class="text-sm text-foreground">Subscribe to newsletter</span>
+                </label>
+                
+                <label class="flex items-center gap-3 cursor-not-allowed opacity-50">
+                    <CheckboxRoot Disabled="true" class="demo-checkbox">
+                        <CheckboxIndicator class="demo-indicator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    <span class="text-sm text-foreground">Disabled option</span>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    @* Features *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Three states: checked, unchecked, and indeterminate
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Keyboard navigation (Space to toggle)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Support for HTML forms (hidden input)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Grouping capabilities via CheckboxGroup
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </section>
+
+    @* Installation *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <div class="code-block">
+            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+        </div>
+    </section>
+
+    @* Anatomy *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
+        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@anatomyCode</code></pre>
+        </div>
+    </section>
+
+    @* Sub-components *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">CheckboxRoot</h3>
+                <p class="mt-1 text-sm text-muted-foreground">The root checkbox component containing the button element.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">CheckboxIndicator</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Renders when the checkbox is in a checked or indeterminate state.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">CheckboxGroup</h3>
+                <p class="mt-1 text-sm text-muted-foreground">A wrapper for managing a group of checkboxes.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">CheckboxGroupLabel</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Accessible label for the checkbox group.</p>
+            </div>
+        </div>
+    </section>
+
+    @* API Reference *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
+        
+        @* CheckboxRoot *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">CheckboxRoot</h3>
+            <p class="text-sm text-muted-foreground">The root checkbox component.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Checked</code></td>
+                            <td><code>bool?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled checked state</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultChecked</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Default checked state for uncontrolled mode</td>
+                        </tr>
+                        <tr>
+                            <td><code>CheckedChanged</code></td>
+                            <td><code>EventCallback&lt;bool&gt;</code></td>
+                            <td>-</td>
+                            <td>Callback when checked state changes</td>
+                        </tr>
+                        <tr>
+                            <td><code>Indeterminate</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Controlled indeterminate state</td>
+                        </tr>
+                        <tr>
+                            <td><code>IndeterminateChanged</code></td>
+                            <td><code>EventCallback&lt;bool&gt;</code></td>
+                            <td>-</td>
+                            <td>Callback when indeterminate state changes</td>
+                        </tr>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Prevents interaction with the checkbox</td>
+                        </tr>
+                        <tr>
+                            <td><code>Required</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Indicates checkbox must be checked for form submission</td>
+                        </tr>
+                        <tr>
+                            <td><code>Name</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Form field name for hidden input</td>
+                        </tr>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>"on"</code></td>
+                            <td>Value submitted with form data</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* CheckboxIndicator *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">CheckboxIndicator</h3>
+            <p class="text-sm text-muted-foreground">Renders when the checkbox is checked or indeterminate.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ForceMount</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Always render in DOM (useful for CSS animations)</td>
+                        </tr>
+                        <tr>
+                            <td><code>ChildContent</code></td>
+                            <td><code>RenderFragment?</code></td>
+                            <td>-</td>
+                            <td>Content to render when checked or indeterminate</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* CheckboxGroup *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">CheckboxGroup</h3>
+            <p class="text-sm text-muted-foreground">Manages a group of checkboxes.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Values</code></td>
+                            <td><code>IReadOnlyList&lt;string&gt;?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled values of checked items</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultValues</code></td>
+                            <td><code>IReadOnlyList&lt;string&gt;?</code></td>
+                            <td><code>null</code></td>
+                            <td>Default values for uncontrolled mode</td>
+                        </tr>
+                        <tr>
+                            <td><code>ValuesChanged</code></td>
+                            <td><code>EventCallback&lt;IReadOnlyList&lt;string&gt;&gt;</code></td>
+                            <td>-</td>
+                            <td>Callback when values change</td>
+                        </tr>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Disable entire group</td>
+                        </tr>
+                        <tr>
+                            <td><code>Name</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Form name for hidden inputs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Examples *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
+        
+        @* Basic *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Basic Usage</h3>
+            <div class="code-block">
+                <pre><code class="language-xml">@basicExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* With Label *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">With Label</h3>
+            <p class="text-sm text-muted-foreground">Wrap the checkbox in a label for better accessibility and click handling.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@withLabelExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Controlled *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Controlled Mode</h3>
+            <p class="text-sm text-muted-foreground">Control the checked state externally.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@controlledExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Indeterminate *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Indeterminate State</h3>
+            <p class="text-sm text-muted-foreground">Use the indeterminate state for parent checkboxes with partially selected children.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@indeterminateExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Group *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Checkbox Group</h3>
+            <p class="text-sm text-muted-foreground">Manage multiple checkboxes as a group.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@groupExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Values</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>data-state</code></td>
+                            <td><code>"checked"</code> | <code>"unchecked"</code> | <code>"indeterminate"</code></td>
+                            <td>Current state of the checkbox</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-disabled</code></td>
+                            <td>Present when disabled</td>
+                            <td>Indicates disabled state</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <div class="code-block">
+                <pre><code class="language-css">@cssExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Accessibility *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>Space</kbd></td>
+                            <td>Toggles the checkbox state</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Enter</kbd></td>
+                            <td>Default behavior is prevented to adhere to WAI-ARIA patterns</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">role:</span>
+                    <span><code>checkbox</code> is set on the root element</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">aria-checked:</span>
+                    <span>Reflects the current state (<code>true</code>, <code>false</code>, or <code>mixed</code>)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">aria-disabled:</span>
+                    <span>Set when the checkbox is disabled</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">aria-required:</span>
+                    <span>Set when the checkbox is required</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Demo Checkbox Styles */
+    .demo-checkbox {
+        width: 1.25rem;
+        height: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 2px solid hsl(var(--border));
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+    
+    .demo-checkbox:hover {
+        border-color: hsl(var(--foreground));
+    }
+    
+    .demo-checkbox[data-state="checked"],
+    .demo-checkbox[data-state="indeterminate"] {
+        background: hsl(var(--foreground));
+        border-color: hsl(var(--foreground));
+    }
+    
+    .demo-checkbox[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-indicator {
+        color: hsl(var(--background));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+@code {
+    private bool isChecked1 = true;
+    private bool isChecked2 = false;
+
+    private const string anatomyCode = @"<CheckboxRoot>
+    <CheckboxIndicator>
+        <span>✓</span>
+    </CheckboxIndicator>
+</CheckboxRoot>";
+
+    private const string basicExampleCode = @"<CheckboxRoot DefaultChecked=""true"">
+    <CheckboxIndicator>
+        <span>✓</span>
+    </CheckboxIndicator>
+</CheckboxRoot>";
+
+    private const string withLabelExampleCode = @"<label style=""display: flex; gap: 0.5rem; align-items: center;"">
+    <CheckboxRoot id=""c1"">
+        <CheckboxIndicator>
+            <span>✓</span>
+        </CheckboxIndicator>
+    </CheckboxRoot>
+    Accept terms and conditions
+</label>";
+
+    private const string controlledExampleCode = @"@code {
+    private bool isChecked = true;
+}
+
+<CheckboxRoot @bind-Checked=""isChecked"">
+    <CheckboxIndicator>
+        <span>✓</span>
+    </CheckboxIndicator>
+</CheckboxRoot>";
+
+    private const string indeterminateExampleCode = @"@code {
+    private bool isIndeterminate = true;
+}
+
+<CheckboxRoot @bind-Indeterminate=""isIndeterminate"">
+    <CheckboxIndicator>
+        @if (isIndeterminate)
+        {
+            <span>-</span>
+        }
+        else
+        {
+            <span>✓</span>
+        }
+    </CheckboxIndicator>
+</CheckboxRoot>";
+
+    private const string groupExampleCode = @"@code {
+    private IReadOnlyList<string> values = new[] { ""apple"" };
+}
+
+<CheckboxGroup @bind-Values=""values"">
+    <CheckboxGroupLabel>Favorite Fruits</CheckboxGroupLabel>
+    
+    <label>
+        <CheckboxRoot Value=""apple"">
+            <CheckboxIndicator>✓</CheckboxIndicator>
+        </CheckboxRoot>
+        Apple
+    </label>
+    
+    <label>
+        <CheckboxRoot Value=""banana"">
+            <CheckboxIndicator>✓</CheckboxIndicator>
+        </CheckboxRoot>
+        Banana
+    </label>
+</CheckboxGroup>";
+
+    private const string cssExampleCode = @"/* Checkbox styles */
+.checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.checkbox:hover {
+    border-color: #666;
+}
+
+.checkbox[data-state=""checked""],
+.checkbox[data-state=""indeterminate""] {
+    background: #0066cc;
+    border-color: #0066cc;
+}
+
+.checkbox[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Indicator styles */
+.checkbox-indicator {
+    color: white;
+}";
+}

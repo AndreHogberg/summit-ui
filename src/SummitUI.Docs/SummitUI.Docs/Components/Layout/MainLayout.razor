@@ -1,9 +1,32 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-@Body
+<div class="min-h-screen bg-background text-foreground">
+    <header class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div class="container mx-auto flex h-14 items-center justify-between px-6">
+            <div class="flex items-center gap-2">
+                <a href="/" class="flex items-center gap-2 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md transition-colors" aria-label="SummitUI Home">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                    </svg>
+                    <span class="inline-block">SummitUI</span>
+                </a>
+            </div>
+            <nav class="flex items-center gap-6 text-sm font-medium" aria-label="Main Navigation">
+                <NavLink tabindex="0" href="/docs" class="transition-colors hover:text-foreground/80 text-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm">Components</NavLink>
+                <NavLink tabindex="0" href="https://github.com/andrehogberg/summit-ui" target="_blank" class="transition-colors hover:text-foreground/80 text-foreground/60 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm" rel="noopener noreferrer">
+                    GitHub
+                </NavLink>
+            </nav>
+        </div>
+    </header>
 
-<div id="blazor-error-ui" data-nosnippet>
+    <main id="main-content" class="flex-1">
+        @Body
+    </main>
+</div>
+
+<div id="blazor-error-ui">
     An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
+    <a href="" class="reload focus-ring">Reload</a>
     <span class="dismiss">🗙</span>
 </div>

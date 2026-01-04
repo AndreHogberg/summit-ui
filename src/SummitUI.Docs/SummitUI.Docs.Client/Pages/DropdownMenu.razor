@@ -1,0 +1,646 @@
+@page "/docs/dropdown-menu"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Component
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">DropdownMenu</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            A floating menu component with support for items, checkbox items, radio groups, and nested groups.
+        </p>
+    </div>
+
+    @* Live Demo *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
+        <div class="rounded-xl border border-border bg-card p-6">
+            <DropdownMenuRoot>
+                <DropdownMenuTrigger class="demo-dropdown-trigger">
+                    <span>Options</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m6 9 6 6 6-6"/>
+                    </svg>
+                </DropdownMenuTrigger>
+                <DropdownMenuPortal>
+                    <DropdownMenuContent class="demo-dropdown-content" SideOffset="4">
+                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "New File")">
+                            New File
+                        </DropdownMenuItem>
+                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Open File")">
+                            Open File
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator class="demo-dropdown-separator" />
+                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Save")">
+                            Save
+                        </DropdownMenuItem>
+                        <DropdownMenuItem class="demo-dropdown-item" Disabled="true">
+                            Export (Disabled)
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenuPortal>
+            </DropdownMenuRoot>
+            @if (!string.IsNullOrEmpty(selectedAction))
+            {
+                <p class="mt-4 text-sm text-muted-foreground">Last action: @selectedAction</p>
+            }
+        </div>
+    </section>
+
+    @* Features *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Checkbox and radio item support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Grouped items with labels
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Flexible positioning with collision detection
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Focus trapping in modal mode
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </section>
+
+    @* Installation *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <div class="code-block">
+            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+        </div>
+    </section>
+
+    @* Anatomy *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
+        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@anatomyCode</code></pre>
+        </div>
+    </section>
+
+    @* Sub-components *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuRoot</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Root container managing menu state.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuTrigger</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Button that toggles the menu.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuPortal</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Renders content at document body level.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuContent</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Floating content panel with positioning.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuItem</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Single selectable menu item.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuCheckboxItem</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Toggle-able checkbox menu item.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuRadioGroup</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Container for radio items.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuRadioItem</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Radio option within a group.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">DropdownMenuSeparator</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Visual separator between items.</p>
+            </div>
+        </div>
+    </section>
+
+    @* API Reference *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
+        
+        @* DropdownMenuRoot *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">DropdownMenuRoot</h3>
+            <p class="text-sm text-muted-foreground">The root component that manages menu state.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Open</code></td>
+                            <td><code>bool?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled open state</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultOpen</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Default open state (uncontrolled)</td>
+                        </tr>
+                        <tr>
+                            <td><code>OpenChanged</code></td>
+                            <td><code>EventCallback&lt;bool&gt;</code></td>
+                            <td>-</td>
+                            <td>Callback when open state changes</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnOpen</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Callback when menu opens</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnClose</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Callback when menu closes</td>
+                        </tr>
+                        <tr>
+                            <td><code>Modal</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>true</code></td>
+                            <td>Whether to trap focus</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* DropdownMenuContent *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">DropdownMenuContent</h3>
+            <p class="text-sm text-muted-foreground">The floating menu content panel.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Side</code></td>
+                            <td><code>Side</code></td>
+                            <td><code>Bottom</code></td>
+                            <td>Placement side</td>
+                        </tr>
+                        <tr>
+                            <td><code>SideOffset</code></td>
+                            <td><code>int</code></td>
+                            <td><code>4</code></td>
+                            <td>Offset from trigger (px)</td>
+                        </tr>
+                        <tr>
+                            <td><code>Align</code></td>
+                            <td><code>Align</code></td>
+                            <td><code>Start</code></td>
+                            <td>Alignment along side axis</td>
+                        </tr>
+                        <tr>
+                            <td><code>AvoidCollisions</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>true</code></td>
+                            <td>Avoid viewport boundaries</td>
+                        </tr>
+                        <tr>
+                            <td><code>Loop</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>true</code></td>
+                            <td>Loop keyboard navigation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* DropdownMenuItem *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">DropdownMenuItem</h3>
+            <p class="text-sm text-muted-foreground">A single selectable menu item.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Disable item</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnSelect</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Selection callback</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Examples *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
+        
+        @* Basic *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Basic Menu</h3>
+            <div class="code-block">
+                <pre><code class="language-xml">@basicExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Checkbox Items *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">With Checkbox Items</h3>
+            <p class="text-sm text-muted-foreground">Toggle-able menu items.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@checkboxExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Radio Group *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">With Radio Group</h3>
+            <p class="text-sm text-muted-foreground">Mutually exclusive options.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@radioExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Grouped *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Grouped Items</h3>
+            <p class="text-sm text-muted-foreground">Organize items into labeled groups.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@groupedExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Values</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>data-state</code></td>
+                            <td><code>"open"</code> | <code>"closed"</code></td>
+                            <td>Menu open state</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-highlighted</code></td>
+                            <td>Present when focused</td>
+                            <td>Item is keyboard-focused</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-disabled</code></td>
+                            <td>Present when disabled</td>
+                            <td>Item is disabled</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <div class="code-block">
+                <pre><code class="language-css">@cssExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Accessibility *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
+                            <td>Open menu or select item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowDown</kbd></td>
+                            <td>Move focus to next item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowUp</kbd></td>
+                            <td>Move focus to previous item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Home</kbd></td>
+                            <td>Move focus to first item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>End</kbd></td>
+                            <td>Move focus to last item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Escape</kbd></td>
+                            <td>Close menu</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Trigger:</span>
+                    <span>Has <code>aria-haspopup="menu"</code> and <code>aria-expanded</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Content:</span>
+                    <span>Has <code>role="menu"</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Items:</span>
+                    <span>Have <code>role="menuitem"</code>, checkbox items have <code>role="menuitemcheckbox"</code></span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Demo DropdownMenu Styles */
+    .demo-dropdown-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: hsl(var(--background));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        color: hsl(var(--foreground));
+        transition: all 0.15s;
+    }
+    
+    .demo-dropdown-trigger:hover {
+        background: hsl(var(--muted));
+    }
+    
+    .demo-dropdown-trigger[data-state="open"] {
+        background: hsl(var(--muted));
+    }
+    
+    .demo-dropdown-content {
+        min-width: 12rem;
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        z-index: 50;
+    }
+    
+    .demo-dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        cursor: pointer;
+        color: hsl(var(--foreground));
+        outline: none;
+    }
+    
+    .demo-dropdown-item[data-highlighted] {
+        background: hsl(var(--muted));
+    }
+    
+    .demo-dropdown-item[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-dropdown-separator {
+        height: 1px;
+        background: hsl(var(--border));
+        margin: 0.25rem 0;
+    }
+</style>
+
+@code {
+    private string? selectedAction;
+
+    private const string anatomyCode = @"<DropdownMenuRoot>
+    <DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent>
+            <DropdownMenuItem>Item 1</DropdownMenuItem>
+            <DropdownMenuItem>Item 2</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Item 3</DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>";
+
+    private const string basicExampleCode = @"<DropdownMenuRoot>
+    <DropdownMenuTrigger class=""btn"">Options</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent class=""dropdown-content"" SideOffset=""4"">
+            <DropdownMenuItem OnSelect=""@(() => HandleAction(""new""))"">
+                New File
+            </DropdownMenuItem>
+            <DropdownMenuItem OnSelect=""@(() => HandleAction(""open""))"">
+                Open File
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem OnSelect=""@(() => HandleAction(""save""))"">
+                Save
+            </DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>";
+
+    private const string checkboxExampleCode = @"@code {
+    private bool showToolbar = true;
+    private bool showSidebar = false;
+}
+
+<DropdownMenuRoot>
+    <DropdownMenuTrigger>View</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent>
+            <DropdownMenuCheckboxItem @bind-Checked=""showToolbar"">
+                @(context.Checked ? ""✓"" : """")
+                <span>Show Toolbar</span>
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked=""showSidebar"">
+                @(context.Checked ? ""✓"" : """")
+                <span>Show Sidebar</span>
+            </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>";
+
+    private const string radioExampleCode = @"@code {
+    private string? selectedTheme = ""system"";
+}
+
+<DropdownMenuRoot>
+    <DropdownMenuTrigger>Theme</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent>
+            <DropdownMenuRadioGroup @bind-Value=""selectedTheme"" AriaLabel=""Theme"">
+                <DropdownMenuRadioItem Value=""light"">
+                    @(context.IsSelected ? ""●"" : ""○"") Light
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value=""dark"">
+                    @(context.IsSelected ? ""●"" : ""○"") Dark
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value=""system"">
+                    @(context.IsSelected ? ""●"" : ""○"") System
+                </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>";
+
+    private const string groupedExampleCode = @"<DropdownMenuRoot>
+    <DropdownMenuTrigger>Edit</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent>
+            <DropdownMenuGroup>
+                <DropdownMenuGroupLabel>Clipboard</DropdownMenuGroupLabel>
+                <DropdownMenuItem>Cut</DropdownMenuItem>
+                <DropdownMenuItem>Copy</DropdownMenuItem>
+                <DropdownMenuItem>Paste</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+                <DropdownMenuGroupLabel>Selection</DropdownMenuGroupLabel>
+                <DropdownMenuItem>Select All</DropdownMenuItem>
+                <DropdownMenuItem>Deselect</DropdownMenuItem>
+            </DropdownMenuGroup>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>";
+
+    private const string cssExampleCode = @"/* Trigger */
+.dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dropdown-trigger[data-state=""open""] {
+    background: #f0f0f0;
+}
+
+/* Content */
+.dropdown-content {
+    min-width: 200px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 4px;
+}
+
+/* Item */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dropdown-item[data-highlighted] {
+    background: #f0f0f0;
+}
+
+.dropdown-item[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Separator */
+.dropdown-separator {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 4px 0;
+}";
+}

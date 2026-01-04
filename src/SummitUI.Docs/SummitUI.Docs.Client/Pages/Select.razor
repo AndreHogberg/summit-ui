@@ -1,0 +1,1239 @@
+@page "/docs/select"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Component
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">Select</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            A custom dropdown select component with full keyboard navigation and accessibility support. Supports strings, enums, and complex objects.
+        </p>
+    </div>
+
+    @* Live Demo *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Demo</h2>
+        <div class="rounded-xl border border-border bg-card p-6">
+            <div class="flex flex-col gap-4">
+                <SelectRoot TValue="string" @bind-Value="selectedFruit">
+                    <SelectTrigger TValue="string" class="demo-trigger">
+                        <SelectValue TValue="string" Placeholder="Select a fruit..." />
+                        <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </SelectTrigger>
+                    <SelectPortal TValue="string">
+                        <SelectContent TValue="string" class="demo-content" SideOffset="4">
+                            <SelectViewport TValue="string" class="demo-viewport">
+                                <SelectItem TValue="string" Value="@("apple")" Label="Apple" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Apple</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("banana")" Label="Banana" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Banana</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Cherry</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("orange")" Label="Orange" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Orange</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("grape")" Label="Grape" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Grape</SelectItemText>
+                                </SelectItem>
+                            </SelectViewport>
+                        </SelectContent>
+                    </SelectPortal>
+                </SelectRoot>
+                <p class="text-sm text-muted-foreground">Selected: @(selectedFruit ?? "None")</p>
+            </div>
+        </div>
+    </section>
+
+    @* Features *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Features</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Generic type support (string, enums, objects)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation with typeahead
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Grouped items with labels
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Flexible positioning with collision detection
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                EditForm integration with validation
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </section>
+
+    @* Installation *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Installation</h2>
+        <div class="code-block">
+            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+        </div>
+    </section>
+
+    @* Anatomy *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-lg font-semibold text-foreground">Anatomy</h2>
+        <p class="text-sm text-muted-foreground">Import the components and structure them as follows:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@anatomyCode</code></pre>
+        </div>
+    </section>
+
+    @* Sub-components *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-lg font-semibold text-foreground">Sub-components</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectRoot&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Generic root container managing select state.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectTrigger&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Button that opens the dropdown (combobox role).</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectValue&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Displays selected value or placeholder text.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectPortal&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Renders content in fixed-position container.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectContent&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Floating listbox panel with positioning.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectViewport&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Scrollable container for items.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectItem&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Selectable option with option role.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectItemText</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Text content wrapper for items.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectGroup&lt;TValue&gt;</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Groups related items together.</p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground">SelectGroupLabel</h3>
+                <p class="mt-1 text-sm text-muted-foreground">Label for a group of items.</p>
+            </div>
+        </div>
+    </section>
+
+    @* API Reference *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
+        
+        @* SelectRoot *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectRoot&lt;TValue&gt;</h3>
+            <p class="text-sm text-muted-foreground">The root component that manages select state and provides cascading context.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>TValue?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled selected value</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultValue</code></td>
+                            <td><code>TValue?</code></td>
+                            <td><code>null</code></td>
+                            <td>Default value (uncontrolled)</td>
+                        </tr>
+                        <tr>
+                            <td><code>ValueChanged</code></td>
+                            <td><code>EventCallback&lt;TValue?&gt;</code></td>
+                            <td>-</td>
+                            <td>Value change callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>ValueExpression</code></td>
+                            <td><code>Expression&lt;Func&lt;TValue?&gt;&gt;?</code></td>
+                            <td><code>null</code></td>
+                            <td>For EditForm validation</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnValueChange</code></td>
+                            <td><code>EventCallback&lt;TValue?&gt;</code></td>
+                            <td>-</td>
+                            <td>Alternative value change callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>Open</code></td>
+                            <td><code>bool?</code></td>
+                            <td><code>null</code></td>
+                            <td>Controlled open state</td>
+                        </tr>
+                        <tr>
+                            <td><code>DefaultOpen</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Default open state</td>
+                        </tr>
+                        <tr>
+                            <td><code>OpenChanged</code></td>
+                            <td><code>EventCallback&lt;bool&gt;</code></td>
+                            <td>-</td>
+                            <td>Open state change callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Disable entire select</td>
+                        </tr>
+                        <tr>
+                            <td><code>Required</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>For form validation</td>
+                        </tr>
+                        <tr>
+                            <td><code>Invalid</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>For error styling</td>
+                        </tr>
+                        <tr>
+                            <td><code>Name</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Form field name for hidden input</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectTrigger *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectTrigger&lt;TValue&gt;</h3>
+            <p class="text-sm text-muted-foreground">Button that opens the dropdown list.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>As</code></td>
+                            <td><code>string</code></td>
+                            <td><code>"button"</code></td>
+                            <td>HTML element to render</td>
+                        </tr>
+                        <tr>
+                            <td><code>AriaLabel</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Direct aria-label</td>
+                        </tr>
+                        <tr>
+                            <td><code>AriaLabelledBy</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>ID of external label</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectValue *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectValue&lt;TValue&gt;</h3>
+            <p class="text-sm text-muted-foreground">Displays the selected value or placeholder.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Placeholder</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Placeholder when no value selected</td>
+                        </tr>
+                        <tr>
+                            <td><code>ChildContent</code></td>
+                            <td><code>RenderFragment?</code></td>
+                            <td><code>null</code></td>
+                            <td>Custom content</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectContent *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectContent&lt;TValue&gt;</h3>
+            <p class="text-sm text-muted-foreground">Floating listbox panel with positioning options.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>As</code></td>
+                            <td><code>string</code></td>
+                            <td><code>"div"</code></td>
+                            <td>HTML element to render</td>
+                        </tr>
+                        <tr>
+                            <td><code>Side</code></td>
+                            <td><code>Side</code></td>
+                            <td><code>Bottom</code></td>
+                            <td>Placement side</td>
+                        </tr>
+                        <tr>
+                            <td><code>SideOffset</code></td>
+                            <td><code>int</code></td>
+                            <td><code>4</code></td>
+                            <td>Offset from trigger (px)</td>
+                        </tr>
+                        <tr>
+                            <td><code>Align</code></td>
+                            <td><code>Align</code></td>
+                            <td><code>Start</code></td>
+                            <td>Alignment along side axis</td>
+                        </tr>
+                        <tr>
+                            <td><code>AlignOffset</code></td>
+                            <td><code>int</code></td>
+                            <td><code>0</code></td>
+                            <td>Alignment offset (px)</td>
+                        </tr>
+                        <tr>
+                            <td><code>AvoidCollisions</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>true</code></td>
+                            <td>Avoid viewport boundaries</td>
+                        </tr>
+                        <tr>
+                            <td><code>CollisionPadding</code></td>
+                            <td><code>int</code></td>
+                            <td><code>8</code></td>
+                            <td>Viewport padding (px)</td>
+                        </tr>
+                        <tr>
+                            <td><code>EscapeKeyBehavior</code></td>
+                            <td><code>EscapeKeyBehavior</code></td>
+                            <td><code>Close</code></td>
+                            <td>Escape key behavior</td>
+                        </tr>
+                        <tr>
+                            <td><code>OutsideClickBehavior</code></td>
+                            <td><code>OutsideClickBehavior</code></td>
+                            <td><code>Close</code></td>
+                            <td>Outside click behavior</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnInteractOutside</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Outside click callback</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnEscapeKeyDown</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Escape key callback</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectViewport *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectViewport&lt;TValue&gt;</h3>
+            <p class="text-sm text-muted-foreground">Scrollable container for items.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ChildContent</code></td>
+                            <td><code>RenderFragment?</code></td>
+                            <td><code>null</code></td>
+                            <td>SelectItem components</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectItem *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectItem&lt;TValue&gt;</h3>
+            <p class="text-sm text-muted-foreground">Selectable option within the dropdown.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Value</code></td>
+                            <td><code>TValue</code></td>
+                            <td><span class="text-destructive">Required</span></td>
+                            <td>Value of this item</td>
+                        </tr>
+                        <tr>
+                            <td><code>Key</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Optional string key for JS interop</td>
+                        </tr>
+                        <tr>
+                            <td><code>Label</code></td>
+                            <td><code>string?</code></td>
+                            <td><code>null</code></td>
+                            <td>Label for typeahead and display</td>
+                        </tr>
+                        <tr>
+                            <td><code>Disabled</code></td>
+                            <td><code>bool</code></td>
+                            <td><code>false</code></td>
+                            <td>Disable item</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnSelect</code></td>
+                            <td><code>EventCallback</code></td>
+                            <td>-</td>
+                            <td>Selection callback</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectItemText *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectItemText</h3>
+            <p class="text-sm text-muted-foreground">Text content wrapper for items.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ChildContent</code></td>
+                            <td><code>RenderFragment?</code></td>
+                            <td><code>null</code></td>
+                            <td>Text content</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectGroup *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectGroup&lt;TValue&gt;</h3>
+            <p class="text-sm text-muted-foreground">Groups related items together.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ChildContent</code></td>
+                            <td><code>RenderFragment?</code></td>
+                            <td><code>null</code></td>
+                            <td>Group content</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* SelectGroupLabel *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground border-b border-border pb-2">SelectGroupLabel</h3>
+            <p class="text-sm text-muted-foreground">Label for a group of items.</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ChildContent</code></td>
+                            <td><code>RenderFragment?</code></td>
+                            <td><code>null</code></td>
+                            <td>Label content</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Enums *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Enums</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Side</h3>
+            <div class="code-block">
+                <pre><code class="language-csharp">@sideEnumCode</code></pre>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Align</h3>
+            <div class="code-block">
+                <pre><code class="language-csharp">@alignEnumCode</code></pre>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">EscapeKeyBehavior</h3>
+            <div class="code-block">
+                <pre><code class="language-csharp">@escapeEnumCode</code></pre>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">OutsideClickBehavior</h3>
+            <div class="code-block">
+                <pre><code class="language-csharp">@outsideClickEnumCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Examples *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
+        
+        @* Basic *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Basic String Select</h3>
+            <div class="code-block">
+                <pre><code class="language-xml">@basicExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Enum *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">With Enum Values</h3>
+            <p class="text-sm text-muted-foreground">Use strongly-typed enum values.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@enumExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Complex Objects *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">With Complex Objects</h3>
+            <p class="text-sm text-muted-foreground">Use custom objects as values.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@objectExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Grouped *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Grouped Items</h3>
+            <p class="text-sm text-muted-foreground">Organize items into logical groups.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@groupedExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* EditForm *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">EditForm Integration</h3>
+            <p class="text-sm text-muted-foreground">Use with Blazor EditForm for validation.</p>
+            <div class="code-block">
+                <pre><code class="language-csharp">@editFormExampleCode</code></pre>
+            </div>
+        </div>
+
+        @* Disabled *@
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Disabled State</h3>
+            <p class="text-sm text-muted-foreground">Disable entire select or individual items.</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@disabledExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+            <p class="text-sm text-muted-foreground">Use these data attributes to style different states:</p>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Values</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>data-state</code></td>
+                            <td><code>"open"</code> | <code>"closed"</code></td>
+                            <td>Dropdown open state (on trigger/content)</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-state</code></td>
+                            <td><code>"checked"</code> | <code>"unchecked"</code></td>
+                            <td>Item selection state</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-highlighted</code></td>
+                            <td>Present when focused</td>
+                            <td>Item is keyboard-focused</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-disabled</code></td>
+                            <td>Present when disabled</td>
+                            <td>Item or trigger is disabled</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-placeholder</code></td>
+                            <td>Present when no value</td>
+                            <td>Showing placeholder text</td>
+                        </tr>
+                        <tr>
+                            <td><code>data-invalid</code></td>
+                            <td>Present when invalid</td>
+                            <td>For form validation errors</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">CSS Example</h3>
+            <div class="code-block">
+                <pre><code class="language-css">@cssExampleCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Accessibility *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Keyboard Navigation</h3>
+            <div class="overflow-x-auto">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
+                            <td>Open dropdown or select highlighted item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowDown</kbd></td>
+                            <td>Open dropdown or move to next item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>ArrowUp</kbd></td>
+                            <td>Move to previous item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Home</kbd></td>
+                            <td>Move to first item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>End</kbd></td>
+                            <td>Move to last item</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Escape</kbd></td>
+                            <td>Close dropdown</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>A-Z</kbd> / <kbd>a-z</kbd></td>
+                            <td>Typeahead - jump to matching item</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Typeahead</h3>
+            <p class="text-sm text-muted-foreground">
+                Typing characters while the dropdown is open will jump to items that match the typed text. The search buffer resets after a short delay.
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">ARIA Attributes</h3>
+            <ul class="grid gap-2 text-sm text-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">SelectTrigger:</span>
+                    <span>Has <code>role="combobox"</code>, <code>aria-haspopup="listbox"</code>, and <code>aria-expanded</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">SelectContent:</span>
+                    <span>Has <code>role="listbox"</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">SelectItem:</span>
+                    <span>Has <code>role="option"</code> with <code>aria-selected</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">SelectGroup:</span>
+                    <span>Has <code>role="group"</code> with <code>aria-labelledby</code></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-foreground font-medium shrink-0">Disabled items:</span>
+                    <span>Have <code>aria-disabled</code></span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Demo Select Styles */
+    .demo-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.5rem;
+        cursor: pointer;
+        color: hsl(var(--foreground));
+        font-size: 0.875rem;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    
+    .demo-trigger:hover {
+        border-color: hsl(var(--muted-foreground) / 0.5);
+    }
+    
+    .demo-trigger:focus {
+        outline: none;
+        border-color: hsl(var(--primary));
+        box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
+    }
+    
+    .demo-trigger[data-state="open"] {
+        border-color: hsl(var(--primary));
+    }
+    
+    .demo-trigger[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-trigger[data-placeholder] {
+        color: hsl(var(--muted-foreground));
+    }
+    
+    .demo-chevron {
+        transition: transform 0.2s ease;
+        color: hsl(var(--muted-foreground));
+    }
+    
+    .demo-trigger[data-state="open"] .demo-chevron {
+        transform: rotate(180deg);
+    }
+    
+    .demo-content {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px hsl(var(--foreground) / 0.1);
+        overflow: hidden;
+        min-width: 200px;
+    }
+    
+    .demo-viewport {
+        padding: 0.25rem;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .demo-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        color: hsl(var(--foreground));
+        transition: background-color 0.1s;
+    }
+    
+    .demo-item:hover,
+    .demo-item[data-highlighted] {
+        background: hsl(var(--muted));
+    }
+    
+    .demo-item[data-state="checked"] {
+        background: hsl(var(--primary) / 0.1);
+    }
+    
+    .demo-item[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-item-check {
+        visibility: hidden;
+        color: hsl(var(--primary));
+        display: flex;
+        align-items: center;
+    }
+    
+    .demo-item[data-state="checked"] .demo-item-check {
+        visibility: visible;
+    }
+</style>
+
+@code {
+    private string? selectedFruit;
+
+    private const string anatomyCode = @"<SelectRoot TValue=""string"">
+    <SelectTrigger TValue=""string"">
+        <SelectValue TValue=""string"" Placeholder=""Select an option..."" />
+    </SelectTrigger>
+    <SelectPortal TValue=""string"">
+        <SelectContent TValue=""string"">
+            <SelectViewport TValue=""string"">
+                <SelectItem TValue=""string"" Value=""@(""option-1"")"">
+                    <SelectItemText>Option 1</SelectItemText>
+                </SelectItem>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>";
+
+    private const string sideEnumCode = @"public enum Side
+{
+    Top,
+    Right,
+    Bottom,
+    Left
+}";
+
+    private const string alignEnumCode = @"public enum Align
+{
+    Start,
+    Center,
+    End
+}";
+
+    private const string escapeEnumCode = @"public enum EscapeKeyBehavior
+{
+    Close,
+    Ignore
+}";
+
+    private const string outsideClickEnumCode = @"public enum OutsideClickBehavior
+{
+    Close,
+    Ignore
+}";
+
+    private const string basicExampleCode = @"@code {
+    private string? selectedFruit;
+}
+
+<SelectRoot TValue=""string"" @bind-Value=""selectedFruit"">
+    <SelectTrigger TValue=""string"" class=""select-trigger"">
+        <SelectValue TValue=""string"" Placeholder=""Select a fruit..."" />
+        <span class=""select-icon"">▼</span>
+    </SelectTrigger>
+    <SelectPortal TValue=""string"">
+        <SelectContent TValue=""string"" class=""select-content"" SideOffset=""4"">
+            <SelectViewport TValue=""string"" class=""select-viewport"">
+                <SelectItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">
+                    <SelectItemText>Apple</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">
+                    <SelectItemText>Banana</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue=""string"" Value=""@(""cherry"")"" Label=""Cherry"">
+                    <SelectItemText>Cherry</SelectItemText>
+                </SelectItem>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>
+
+<p>Selected: @(selectedFruit ?? ""None"")</p>";
+
+    private const string enumExampleCode = @"@code {
+    public enum Priority { Low, Medium, High, Critical }
+    private Priority selectedPriority = Priority.Medium;
+}
+
+<SelectRoot TValue=""Priority"" @bind-Value=""selectedPriority"">
+    <SelectTrigger TValue=""Priority"" class=""select-trigger"">
+        <SelectValue TValue=""Priority"" Placeholder=""Select priority..."" />
+    </SelectTrigger>
+    <SelectPortal TValue=""Priority"">
+        <SelectContent TValue=""Priority"" class=""select-content"">
+            <SelectViewport TValue=""Priority"">
+                <SelectItem TValue=""Priority"" Value=""Priority.Low"" Label=""Low"">
+                    <SelectItemText>Low Priority</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue=""Priority"" Value=""Priority.Medium"" Label=""Medium"">
+                    <SelectItemText>Medium Priority</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue=""Priority"" Value=""Priority.High"" Label=""High"">
+                    <SelectItemText>High Priority</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue=""Priority"" Value=""Priority.Critical"" Label=""Critical"">
+                    <SelectItemText>Critical Priority</SelectItemText>
+                </SelectItem>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>";
+
+    private const string objectExampleCode = @"@code {
+    public record Country(string Code, string Name);
+    
+    private List<Country> countries = new()
+    {
+        new(""US"", ""United States""),
+        new(""UK"", ""United Kingdom""),
+        new(""CA"", ""Canada""),
+        new(""AU"", ""Australia"")
+    };
+    
+    private Country? selectedCountry;
+}
+
+<SelectRoot TValue=""Country"" @bind-Value=""selectedCountry"">
+    <SelectTrigger TValue=""Country"" class=""select-trigger"">
+        <SelectValue TValue=""Country"" Placeholder=""Select a country..."" />
+    </SelectTrigger>
+    <SelectPortal TValue=""Country"">
+        <SelectContent TValue=""Country"" class=""select-content"">
+            <SelectViewport TValue=""Country"">
+                @foreach (var country in countries)
+                {
+                    <SelectItem TValue=""Country"" 
+                                Value=""country"" 
+                                Key=""@country.Code"" 
+                                Label=""@country.Name"">
+                        <SelectItemText>@country.Name (@country.Code)</SelectItemText>
+                    </SelectItem>
+                }
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>";
+
+    private const string groupedExampleCode = @"<SelectRoot TValue=""string"" @bind-Value=""selectedFood"">
+    <SelectTrigger TValue=""string"" class=""select-trigger"">
+        <SelectValue TValue=""string"" Placeholder=""Select food..."" />
+    </SelectTrigger>
+    <SelectPortal TValue=""string"">
+        <SelectContent TValue=""string"" class=""select-content"">
+            <SelectViewport TValue=""string"">
+                <SelectGroup TValue=""string"">
+                    <SelectGroupLabel class=""select-group-label"">Fruits</SelectGroupLabel>
+                    <SelectItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">
+                        <SelectItemText>Apple</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">
+                        <SelectItemText>Banana</SelectItemText>
+                    </SelectItem>
+                </SelectGroup>
+                <SelectGroup TValue=""string"">
+                    <SelectGroupLabel class=""select-group-label"">Vegetables</SelectGroupLabel>
+                    <SelectItem TValue=""string"" Value=""@(""carrot"")"" Label=""Carrot"">
+                        <SelectItemText>Carrot</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue=""string"" Value=""@(""broccoli"")"" Label=""Broccoli"">
+                        <SelectItemText>Broccoli</SelectItemText>
+                    </SelectItem>
+                </SelectGroup>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>";
+
+    private const string editFormExampleCode = @"@code {
+    public class FormModel
+    {
+        [Required(ErrorMessage = ""Category is required"")]
+        public string? Category { get; set; }
+    }
+    
+    private FormModel formModel = new();
+    private EditContext? editContext;
+    
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(formModel);
+    }
+    
+    private void HandleSubmit()
+    {
+        if (editContext!.Validate())
+        {
+            // Process form
+        }
+    }
+}
+
+<EditForm EditContext=""editContext"" OnSubmit=""HandleSubmit"">
+    <DataAnnotationsValidator />
+    
+    <div class=""form-field"">
+        <label for=""category"">Category</label>
+        <SelectRoot TValue=""string"" 
+                    @bind-Value=""formModel.Category"" 
+                    Name=""category"" 
+                    Required=""true"">
+            <SelectTrigger TValue=""string"" class=""select-trigger"" id=""category"">
+                <SelectValue TValue=""string"" Placeholder=""Select category..."" />
+            </SelectTrigger>
+            <SelectPortal TValue=""string"">
+                <SelectContent TValue=""string"" class=""select-content"">
+                    <SelectViewport TValue=""string"">
+                        <SelectItem TValue=""string"" Value=""@(""electronics"")"" Label=""Electronics"">
+                            <SelectItemText>Electronics</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue=""string"" Value=""@(""clothing"")"" Label=""Clothing"">
+                            <SelectItemText>Clothing</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue=""string"" Value=""@(""books"")"" Label=""Books"">
+                            <SelectItemText>Books</SelectItemText>
+                        </SelectItem>
+                    </SelectViewport>
+                </SelectContent>
+            </SelectPortal>
+        </SelectRoot>
+        <ValidationMessage For=""@(() => formModel.Category)"" />
+    </div>
+    
+    <button type=""submit"">Submit</button>
+</EditForm>";
+
+    private const string disabledExampleCode = @"@* Disabled entire select *@
+<SelectRoot TValue=""string"" Disabled=""true"">
+    <SelectTrigger TValue=""string"" class=""select-trigger"">
+        <SelectValue TValue=""string"" Placeholder=""Disabled..."" />
+    </SelectTrigger>
+    ...
+</SelectRoot>
+
+@* Disabled individual items *@
+<SelectRoot TValue=""string"" @bind-Value=""selectedValue"">
+    <SelectTrigger TValue=""string"" class=""select-trigger"">
+        <SelectValue TValue=""string"" Placeholder=""Select..."" />
+    </SelectTrigger>
+    <SelectPortal TValue=""string"">
+        <SelectContent TValue=""string"" class=""select-content"">
+            <SelectViewport TValue=""string"">
+                <SelectItem TValue=""string"" Value=""@(""option1"")"" Label=""Option 1"">
+                    <SelectItemText>Option 1</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue=""string"" Value=""@(""option2"")"" Label=""Option 2"" Disabled=""true"">
+                    <SelectItemText>Option 2 (Disabled)</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue=""string"" Value=""@(""option3"")"" Label=""Option 3"">
+                    <SelectItemText>Option 3</SelectItemText>
+                </SelectItem>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>";
+
+    private const string cssExampleCode = @".select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.select-trigger[data-state=""open""] {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+.select-trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.select-trigger[data-placeholder] {
+    color: #999;
+}
+
+.select-content {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.select-viewport {
+    padding: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.select-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.select-item[data-highlighted] {
+    background: #f0f0f0;
+}
+
+.select-item[data-state=""checked""] {
+    background: #e6f0ff;
+}
+
+.select-item[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.select-group-label {
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+}";
+}

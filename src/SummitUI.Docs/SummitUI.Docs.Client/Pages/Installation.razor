@@ -1,0 +1,314 @@
+@page "/docs/installation"
+@layout DocsLayout
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                Getting Started
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">Installation</h1>
+        <p class="text-xl text-muted-foreground leading-relaxed">
+            Get started with SummitUI in your Blazor project. Follow these steps to install and configure the library.
+        </p>
+    </div>
+
+    @* Prerequisites *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">Prerequisites</h2>
+        <ul class="grid gap-2 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                .NET 10 or later
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                Blazor WebAssembly, Blazor Server, or Blazor Web App project
+            </li>
+        </ul>
+    </section>
+
+    @* Install Package *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">1. Install the Package</h2>
+        <p class="text-sm text-muted-foreground">Add SummitUI to your project using the .NET CLI or NuGet Package Manager.</p>
+        
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">.NET CLI</h3>
+            <div class="code-block">
+                <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">Package Manager Console</h3>
+            <div class="code-block">
+                <pre><code class="language-powershell">Install-Package SummitUI</code></pre>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-foreground">PackageReference</h3>
+            <p class="text-sm text-muted-foreground">Or add directly to your .csproj file:</p>
+            <div class="code-block">
+                <pre><code class="language-xml">@packageReferenceCode</code></pre>
+            </div>
+        </div>
+    </section>
+
+    @* Add Imports *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">2. Add Imports</h2>
+        <p class="text-sm text-muted-foreground">Add the following to your <code>_Imports.razor</code> file to make SummitUI components available throughout your application:</p>
+        <div class="code-block">
+            <pre><code class="language-csharp">@importsCode</code></pre>
+        </div>
+        <p class="text-sm text-muted-foreground">
+            Alternatively, you can import specific component namespaces as needed in individual files.
+        </p>
+    </section>
+
+    @* Add JavaScript (Optional) *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">3. JavaScript Interop (Automatic)</h2>
+        <p class="text-sm text-muted-foreground">
+            SummitUI uses ES6 modules for JavaScript interop which are loaded automatically when needed. 
+            No manual script includes are required - the library handles this for you.
+        </p>
+        <div class="rounded-lg border border-border bg-muted/30 p-4">
+            <div class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground shrink-0 mt-0.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                </svg>
+                <div class="text-sm text-muted-foreground">
+                    <strong class="text-foreground">Note:</strong> JavaScript modules are lazy-loaded only when components that require them are rendered. 
+                    This ensures optimal performance and minimal bundle size.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @* Usage *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">4. Start Using Components</h2>
+        <p class="text-sm text-muted-foreground">You're ready to use SummitUI components! Here's a quick example:</p>
+        <div class="code-block">
+            <pre><code class="language-xml">@usageExampleCode</code></pre>
+        </div>
+    </section>
+
+    @* Render Modes *@
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold tracking-tight">Render Mode Support</h2>
+        <p class="text-sm text-muted-foreground">
+            SummitUI components work across all Blazor render modes. Here's what you need to know for each:
+        </p>
+        
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                    Static SSR
+                </h3>
+                <p class="mt-2 text-sm text-muted-foreground">
+                    Components render their initial state. Interactive features require upgrading to Interactive mode.
+                </p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                    </svg>
+                    Interactive Server
+                </h3>
+                <p class="mt-2 text-sm text-muted-foreground">
+                    Full interactivity via SignalR. Components work out of the box with real-time updates.
+                </p>
+            </div>
+            <div class="rounded-lg border border-border p-4">
+                <h3 class="font-medium text-foreground flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                        <path d="M12 2a10 10 0 1 0 10 10H12V2Z"/>
+                        <path d="M12 2a10 10 0 0 1 10 10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                    </svg>
+                    WebAssembly
+                </h3>
+                <p class="mt-2 text-sm text-muted-foreground">
+                    Full interactivity in the browser. Components run entirely client-side after initial load.
+                </p>
+            </div>
+        </div>
+
+        <div class="rounded-lg border border-border bg-muted/30 p-4">
+            <div class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground shrink-0 mt-0.5">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                </svg>
+                <div class="text-sm text-muted-foreground">
+                    <strong class="text-foreground">Blazor Web App (Auto mode):</strong> When using the Auto render mode, components will 
+                    initially render on the server and then switch to WebAssembly once loaded. SummitUI handles this transition seamlessly.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @* Styling *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
+        <p class="text-sm text-muted-foreground">
+            SummitUI components are headless - they provide structure and behavior without opinionated styles. 
+            This gives you complete control over the visual appearance using your preferred CSS approach.
+        </p>
+        
+        <h3 class="text-lg font-semibold text-foreground">Data Attributes</h3>
+        <p class="text-sm text-muted-foreground">
+            Components expose state through data attributes for easy CSS targeting:
+        </p>
+        <div class="code-block">
+            <pre><code class="language-css">@stylingExampleCode</code></pre>
+        </div>
+        
+        <p class="text-sm text-muted-foreground mt-4">
+            See individual component documentation for a full list of available data attributes.
+        </p>
+    </section>
+
+    @* TypeScript/JavaScript *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">For AI/LLM Integration</h2>
+        <p class="text-sm text-muted-foreground">
+            SummitUI is designed with AI agents in mind. Check out our AI-friendly resources:
+        </p>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <a href="/docs/llms" class="rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors">
+                <h3 class="font-medium text-foreground flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8"/>
+                        <rect width="16" height="12" x="4" y="8" rx="2"/>
+                        <path d="M2 14h2"/>
+                        <path d="M20 14h2"/>
+                        <path d="M15 13v2"/>
+                        <path d="M9 13v2"/>
+                    </svg>
+                    llms.txt
+                </h3>
+                <p class="mt-2 text-sm text-muted-foreground">
+                    Machine-readable documentation index for LLMs and AI coding assistants.
+                </p>
+            </a>
+            <a href="/docs/agent-skills" class="rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors">
+                <h3 class="font-medium text-foreground flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                    </svg>
+                    Agent Skills
+                </h3>
+                <p class="mt-2 text-sm text-muted-foreground">
+                    Pre-built skill files for AI coding agents like Claude and OpenCode.
+                </p>
+            </a>
+        </div>
+    </section>
+
+    @* Next Steps *@
+    <section class="flex flex-col gap-4">
+        <h2 class="text-2xl font-bold tracking-tight">Next Steps</h2>
+        <p class="text-sm text-muted-foreground">Now that you have SummitUI installed, explore the components:</p>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/docs/accordion" class="flex items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted/50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/>
+                    <path d="M3 9h18"/>
+                    <path d="M3 15h18"/>
+                </svg>
+                <span class="text-sm font-medium text-foreground">Accordion</span>
+            </a>
+            <a href="/docs/select" class="flex items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted/50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                    <path d="m7 15 5 5 5-5"/>
+                    <path d="m7 9 5-5 5 5"/>
+                </svg>
+                <span class="text-sm font-medium text-foreground">Select</span>
+            </a>
+            <a href="/docs/tabs" class="flex items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted/50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                    <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+                </svg>
+                <span class="text-sm font-medium text-foreground">Tabs</span>
+            </a>
+            <a href="/docs/popover" class="flex items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted/50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/>
+                    <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3"/>
+                    <path d="M9 11.2h5"/>
+                </svg>
+                <span class="text-sm font-medium text-foreground">Popover</span>
+            </a>
+            <a href="/docs/checkbox" class="flex items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted/50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/>
+                    <path d="m9 12 2 2 4-4"/>
+                </svg>
+                <span class="text-sm font-medium text-foreground">Checkbox</span>
+            </a>
+            <a href="/docs/switch" class="flex items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted/50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                    <rect width="20" height="12" x="2" y="6" rx="6" ry="6"/>
+                    <circle cx="16" cy="12" r="2"/>
+                </svg>
+                <span class="text-sm font-medium text-foreground">Switch</span>
+            </a>
+        </div>
+    </section>
+</div>
+
+@code {
+    private const string packageReferenceCode = @"<PackageReference Include=""SummitUI"" Version=""*"" />";
+
+    private const string importsCode = @"@using SummitUI";
+
+    private const string usageExampleCode = @"<AccordionRoot DefaultValue=""item-1"">
+    <AccordionItem Value=""item-1"">
+        <AccordionHeader>
+            <AccordionTrigger class=""accordion-trigger"">
+                What is SummitUI?
+            </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent class=""accordion-content"">
+            <p>SummitUI is a headless Blazor component library focused on accessibility.</p>
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>";
+
+    private const string stylingExampleCode = @"/* Target based on component state */
+.accordion-trigger[data-state=""open""] {
+    background-color: #f5f5f5;
+}
+
+.accordion-trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Animate content based on state */
+.accordion-content[data-state=""open""] {
+    height: var(--summit-accordion-content-height);
+}
+
+.accordion-content[data-state=""closed""] {
+    height: 0;
+}";
+}

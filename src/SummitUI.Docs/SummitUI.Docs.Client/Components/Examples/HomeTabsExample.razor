@@ -1,0 +1,46 @@
+
+<div class="rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden">
+    <div class="flex flex-col space-y-1.5 p-6 border-b border-border bg-muted/30">
+        <h3 class="font-semibold leading-none tracking-tight">Interactive Demo</h3>
+        <p class="text-sm text-muted-foreground">Try out the keyboard-accessible tabs component.</p>
+    </div>
+            
+    <div class="p-6">
+        <TabsRoot DefaultValue="account">
+            <TabsList class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground w-full grid grid-cols-2">
+                <TabsTrigger Value="account" class="inline-flex w-full items-center justify-center white-space-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Account</TabsTrigger>
+                <TabsTrigger Value="password" class="inline-flex w-full items-center justify-center white-space-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Password</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="account" class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <p class="text-sm text-muted-foreground mb-4">
+                    Make changes to your account here. Click save when you're done.
+                </p>
+                <div class="grid gap-2 mb-4">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="username">Username</label>
+                    <input id="username" type="text" value="hogberg" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                </div>
+                <button class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-full">Save changes</button>
+            </TabsContent>
+            <TabsContent Value="password" class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <p class="text-sm text-muted-foreground mb-4">
+                    Change your password here. After saving, you'll be logged out.
+                </p>
+                <div class="grid gap-4">
+                    <div class="grid gap-2">
+                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="current-password">Current Password</label>
+                        <input id="current-password" type="password" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                    </div>
+                    <div class="grid gap-2 mb-4">
+                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="new-password">New Password</label>
+                        <input id="new-password" type="password" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                    </div>
+                </div>
+                <button class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-full">Change password</button>
+            </TabsContent>
+        </TabsRoot>
+    </div>
+</div>
+
+@code {
+    
+}
