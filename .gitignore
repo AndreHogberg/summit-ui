@@ -4,7 +4,7 @@
 ## Get latest from `dotnet new gitignore`
 
 opencode.jsonc
-
+**/wwwroot/app.css
 # dotenv files
 .env
 summitui.js
