@@ -22,14 +22,14 @@ public class CheckboxAccessibilityTests : PageTest
     [Test]
     public async Task Checkbox_ShouldHave_RoleCheckbox()
     {
-        var checkbox = Page.Locator("[data-ark-checkbox]").First;
+        var checkbox = Page.Locator("[data-summit-checkbox]").First;
         await Expect(checkbox).ToHaveAttributeAsync("role", "checkbox");
     }
 
     [Test]
     public async Task Checkbox_ShouldHave_TypeButton()
     {
-        var checkbox = Page.Locator("[data-ark-checkbox]").First;
+        var checkbox = Page.Locator("[data-summit-checkbox]").First;
         await Expect(checkbox).ToHaveAttributeAsync("type", "button");
     }
 
@@ -79,7 +79,7 @@ public class CheckboxAccessibilityTests : PageTest
     [Test]
     public async Task Checkbox_ShouldHave_UniqueId()
     {
-        var checkboxes = Page.Locator("[data-ark-checkbox]");
+        var checkboxes = Page.Locator("[data-summit-checkbox]");
         var count = await checkboxes.CountAsync();
 
         var ids = new List<string>();
@@ -259,7 +259,7 @@ public class CheckboxAccessibilityTests : PageTest
     [Test]
     public async Task Checkbox_ShouldReceiveFocus_OnClick()
     {
-        var checkbox = Page.Locator("[data-ark-checkbox]").First;
+        var checkbox = Page.Locator("[data-summit-checkbox]").First;
         await checkbox.ClickAsync();
 
         await Expect(checkbox).ToBeFocusedAsync();
@@ -268,7 +268,7 @@ public class CheckboxAccessibilityTests : PageTest
     [Test]
     public async Task Checkbox_ShouldRetainFocus_AfterToggle()
     {
-        var checkbox = Page.Locator("[data-ark-checkbox]").First;
+        var checkbox = Page.Locator("[data-summit-checkbox]").First;
         await checkbox.FocusAsync();
         await Expect(checkbox).ToBeFocusedAsync();
 
@@ -288,7 +288,7 @@ public class CheckboxAccessibilityTests : PageTest
     [Test]
     public async Task Checkbox_ShouldShowFocusIndicator()
     {
-        var checkbox = Page.Locator("[data-ark-checkbox]").First;
+        var checkbox = Page.Locator("[data-summit-checkbox]").First;
         await checkbox.FocusAsync();
 
         // Checkbox should be focusable (has focus)
@@ -303,9 +303,9 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroup_ShouldHave_RoleGroup()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
-        var group = Page.Locator("[data-ark-checkbox-group]").First;
+        var group = Page.Locator("[data-summit-checkbox-group]").First;
         await Expect(group).ToHaveAttributeAsync("role", "group");
     }
 
@@ -313,9 +313,9 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroup_ShouldHave_AriaLabelledby()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
-        var group = Page.Locator("[data-ark-checkbox-group]").First;
+        var group = Page.Locator("[data-summit-checkbox-group]").First;
         var ariaLabelledby = await group.GetAttributeAsync("aria-labelledby");
 
         await Assert.That(ariaLabelledby).IsNotNull();
@@ -329,12 +329,12 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroupLabel_ShouldHave_MatchingId()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
-        var group = Page.Locator("[data-ark-checkbox-group]").First;
+        var group = Page.Locator("[data-summit-checkbox-group]").First;
         var ariaLabelledby = await group.GetAttributeAsync("aria-labelledby");
 
-        var label = Page.Locator("[data-ark-checkbox-group-label]").First;
+        var label = Page.Locator("[data-summit-checkbox-group-label]").First;
         var labelId = await label.GetAttributeAsync("id");
 
         await Assert.That(ariaLabelledby).IsEqualTo(labelId);
@@ -344,13 +344,13 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task CheckboxGroup_ShouldManageValues()
     {
         var groupHeading = Page.Locator("h2:has-text('Checkbox Group')").First;
-        await groupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(groupHeading).ToBeVisibleAsync();
 
         // Feature 1 and Feature 3 are checked by default
-        var feature1Checkbox = Page.Locator("[data-ark-checkbox-group]").First
-            .Locator("label:has-text('Feature 1')").Locator("[data-ark-checkbox]");
-        var feature2Checkbox = Page.Locator("[data-ark-checkbox-group]").First
-            .Locator("label:has-text('Feature 2')").Locator("[data-ark-checkbox]");
+        var feature1Checkbox = Page.Locator("[data-summit-checkbox-group]").First
+            .Locator("label:has-text('Feature 1')").Locator("[data-summit-checkbox]");
+        var feature2Checkbox = Page.Locator("[data-summit-checkbox-group]").First
+            .Locator("label:has-text('Feature 2')").Locator("[data-summit-checkbox]");
 
         await Expect(feature1Checkbox).ToHaveAttributeAsync("data-state", "checked");
         await Expect(feature2Checkbox).ToHaveAttributeAsync("data-state", "unchecked");
@@ -368,9 +368,9 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task DisabledGroup_ShouldHave_AriaDisabled()
     {
         var disabledGroupHeading = Page.Locator("h2:has-text('Disabled Group')");
-        await disabledGroupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(disabledGroupHeading).ToBeVisibleAsync();
 
-        var group = Page.Locator("[data-ark-checkbox-group][data-disabled]").First;
+        var group = Page.Locator("[data-summit-checkbox-group][data-disabled]").First;
         await Expect(group).ToHaveAttributeAsync("aria-disabled", "true");
     }
 
@@ -378,10 +378,10 @@ public class CheckboxAccessibilityTests : PageTest
     public async Task DisabledGroup_ShouldDisable_AllCheckboxes()
     {
         var disabledGroupHeading = Page.Locator("h2:has-text('Disabled Group')");
-        await disabledGroupHeading.ScrollIntoViewIfNeededAsync();
+        await Expect(disabledGroupHeading).ToBeVisibleAsync();
 
-        var group = Page.Locator("[data-ark-checkbox-group][data-disabled]").First;
-        var checkboxes = group.Locator("[data-ark-checkbox]");
+        var group = Page.Locator("[data-summit-checkbox-group][data-disabled]").First;
+        var checkboxes = group.Locator("[data-summit-checkbox]");
         var count = await checkboxes.CountAsync();
 
         for (var i = 0; i < count; i++)
@@ -510,7 +510,7 @@ public class CheckboxAccessibilityTests : PageTest
         // Find the checked custom checkbox
         var checkedCheckbox = Page.Locator("[data-testid='custom-checked']");
 
-        var indicator = checkedCheckbox.Locator("[data-ark-checkbox-indicator]");
+        var indicator = checkedCheckbox.Locator("[data-summit-checkbox-indicator]");
         await Expect(indicator).ToBeVisibleAsync();
         await Expect(indicator).ToHaveAttributeAsync("data-state", "checked");
     }
@@ -521,7 +521,7 @@ public class CheckboxAccessibilityTests : PageTest
         // Find the unchecked custom checkbox
         var uncheckedCheckbox = Page.Locator("[data-testid='custom-unchecked']");
 
-        var indicator = uncheckedCheckbox.Locator("[data-ark-checkbox-indicator]");
+        var indicator = uncheckedCheckbox.Locator("[data-summit-checkbox-indicator]");
         await Expect(indicator).ToHaveCountAsync(0);
     }
 

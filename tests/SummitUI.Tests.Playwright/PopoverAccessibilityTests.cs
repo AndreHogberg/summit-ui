@@ -22,21 +22,21 @@ public class PopoverAccessibilityTests : PageTest
 [Test]
     public async Task Trigger_ShouldHave_AriaHaspopupDialog()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("aria-haspopup", "dialog");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_AriaExpandedFalse_WhenClosed()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_AriaExpandedTrue_WhenOpen()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
@@ -45,12 +45,12 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldHave_AriaControls_MatchingContentId()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         var ariaControls = await trigger.GetAttributeAsync("aria-controls");
 
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         var contentId = await content.GetAttributeAsync("id");
 
         await Assert.That(ariaControls).IsNotNull();
@@ -60,14 +60,14 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task Trigger_ShouldHave_DataStateClosed_WhenClosed()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await Expect(trigger).ToHaveAttributeAsync("data-state", "closed");
     }
 
     [Test]
     public async Task Trigger_ShouldHave_DataStateOpen_WhenOpen()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
         await Expect(trigger).ToHaveAttributeAsync("data-state", "open");
@@ -80,10 +80,10 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task Content_ShouldHave_RoleDialog()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToHaveAttributeAsync("role", "dialog");
     }
 
@@ -91,10 +91,10 @@ public class PopoverAccessibilityTests : PageTest
     public async Task Content_ShouldHave_AriaModalFalse_WhenNotTrapFocus()
     {
         // Basic popover without TrapFocus
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToHaveAttributeAsync("aria-modal", "false");
     }
 
@@ -105,27 +105,27 @@ public class PopoverAccessibilityTests : PageTest
         var triggerWithOverlay = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Open with Overlay" });
         await triggerWithOverlay.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToHaveAttributeAsync("aria-modal", "true");
     }
 
     [Test]
     public async Task Content_ShouldHave_TabIndexNegativeOne()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToHaveAttributeAsync("tabindex", "-1");
     }
 
     [Test]
     public async Task Content_ShouldHave_DataStateOpen_WhenOpen()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToHaveAttributeAsync("data-state", "open");
     }
 
@@ -136,10 +136,10 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task CloseButton_ShouldHave_AriaLabel()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var closeButton = Page.Locator("[data-ark-popover-close]").First;
+        var closeButton = Page.Locator("[data-summit-popover-close]").First;
         var ariaLabel = await closeButton.GetAttributeAsync("aria-label");
 
         await Assert.That(ariaLabel).IsNotNull();
@@ -148,13 +148,13 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task CloseButton_ShouldClose_Popover()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var closeButton = Page.Locator("[data-ark-popover-close]").First;
+        var closeButton = Page.Locator("[data-summit-popover-close]").First;
         await closeButton.ClickAsync();
 
         await Expect(content).Not.ToBeVisibleAsync();
@@ -167,10 +167,10 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task Popover_ShouldClose_OnEscapeKey()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         await Page.Keyboard.PressAsync("Escape");
@@ -181,29 +181,29 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task Popover_ShouldOpen_OnEnterKey()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("Enter");
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Popover_ShouldOpen_OnSpaceKey()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync(" ");
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Trigger_ShouldUpdateAriaExpanded_AfterEscapeClose()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
@@ -220,10 +220,10 @@ public class PopoverAccessibilityTests : PageTest
     [Test]
     public async Task Popover_ShouldClose_OnOutsideClick()
     {
-        var trigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var trigger = Page.Locator("[data-summit-popover-trigger]").First;
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Click outside the popover
@@ -239,12 +239,12 @@ public class PopoverAccessibilityTests : PageTest
         var triggerWithOverlay = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Open with Overlay" });
         await triggerWithOverlay.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Get focusable elements inside the popover
         var input = content.Locator("input");
-        var closeButton = content.Locator("[data-ark-popover-close]");
+        var closeButton = content.Locator("[data-summit-popover-close]");
 
         // Focus the input
         await input.FocusAsync();
@@ -265,7 +265,7 @@ public class PopoverAccessibilityTests : PageTest
         var triggerWithOverlay = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Open with Overlay" });
         await triggerWithOverlay.ClickAsync();
 
-        var overlay = Page.Locator("[data-ark-popover-overlay]");
+        var overlay = Page.Locator("[data-summit-popover-overlay]");
         await Expect(overlay).ToHaveAttributeAsync("aria-hidden", "true");
     }
 
@@ -275,10 +275,10 @@ public class PopoverAccessibilityTests : PageTest
         var triggerWithOverlay = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Open with Overlay" });
         await triggerWithOverlay.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var overlay = Page.Locator("[data-ark-popover-overlay]");
+        var overlay = Page.Locator("[data-summit-popover-overlay]");
         await overlay.ClickAsync();
 
         await Expect(content).Not.ToBeVisibleAsync();
@@ -297,8 +297,8 @@ public class PopoverAccessibilityTests : PageTest
     {
         var trigger = Page.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = buttonText, Exact = true });
         
-        // Scroll trigger to center of viewport to ensure enough space for popover placement
-        await trigger.ScrollIntoViewIfNeededAsync();
+        // Wait for trigger to be visible, then scroll to center of viewport for placement test
+        await Expect(trigger).ToBeVisibleAsync();
         await Page.EvaluateAsync(@"(element) => {
             const rect = element.getBoundingClientRect();
             const scrollY = window.scrollY + rect.top - (window.innerHeight / 2);
@@ -307,7 +307,7 @@ public class PopoverAccessibilityTests : PageTest
         
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-popover-content]").First;
+        var content = Page.Locator("[data-summit-popover-content]").First;
         await Expect(content).ToHaveAttributeAsync("data-side", expectedSide);
     }
 
@@ -319,10 +319,10 @@ public class PopoverAccessibilityTests : PageTest
     public async Task OpeningSecondPopover_ShouldClose_FirstPopover_ViaClick()
     {
         // Open the first popover
-        var firstTrigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var firstTrigger = Page.Locator("[data-summit-popover-trigger]").First;
         await firstTrigger.ClickAsync();
 
-        var firstContent = Page.Locator("[data-ark-popover-content]").First;
+        var firstContent = Page.Locator("[data-summit-popover-content]").First;
         await Expect(firstContent).ToBeVisibleAsync();
 
         // Click on another popover trigger (e.g., "Top" button)
@@ -334,7 +334,7 @@ public class PopoverAccessibilityTests : PageTest
         await Expect(secondTrigger).ToHaveAttributeAsync("aria-expanded", "true");
 
         // Only one popover content should be visible
-        var visibleContents = Page.Locator("[data-ark-popover-content][data-state='open']");
+        var visibleContents = Page.Locator("[data-summit-popover-content][data-state='open']");
         await Expect(visibleContents).ToHaveCountAsync(1);
     }
 
@@ -342,14 +342,14 @@ public class PopoverAccessibilityTests : PageTest
     public async Task OpeningSecondPopover_ShouldClose_FirstPopover_ViaKeyboard()
     {
         // Open the first popover
-        var firstTrigger = Page.Locator("[data-ark-popover-trigger]").First;
+        var firstTrigger = Page.Locator("[data-summit-popover-trigger]").First;
         await firstTrigger.ClickAsync();
 
-        var firstContent = Page.Locator("[data-ark-popover-content]").First;
+        var firstContent = Page.Locator("[data-summit-popover-content]").First;
         await Expect(firstContent).ToBeVisibleAsync();
 
         // Tab to the close button, then tab out to next trigger
-        var closeButton = firstContent.Locator("[data-ark-popover-close]");
+        var closeButton = firstContent.Locator("[data-summit-popover-close]");
         await closeButton.FocusAsync();
         
         // Tab multiple times to reach another popover trigger
@@ -364,7 +364,7 @@ public class PopoverAccessibilityTests : PageTest
         await Expect(secondTrigger).ToHaveAttributeAsync("aria-expanded", "true");
 
         // Only one popover content should be visible
-        var visibleContents = Page.Locator("[data-ark-popover-content][data-state='open']");
+        var visibleContents = Page.Locator("[data-summit-popover-content][data-state='open']");
         await Expect(visibleContents).ToHaveCountAsync(1);
     }
 

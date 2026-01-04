@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<PopoverJsInterop>();
         services.AddScoped<PopoverService>();
         services.AddScoped<SelectJsInterop>();
+        services.AddScoped<DateFieldJsInterop>();
 
         return services;
     }

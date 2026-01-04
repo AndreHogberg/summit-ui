@@ -1,0 +1,387 @@
+@page "/datefield"
+@rendermode InteractiveAuto
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+<h1>DateField Component Demo</h1>
+
+<section data-testid="basic-section">
+    <h2>Basic DateOnly Field</h2>
+    <p>A simple date field with default culture (current system culture). Use Arrow keys to navigate and increment/decrement, or type numbers directly.</p>
+    
+    <DateFieldRoot @bind-Value="basicDate">
+        <DateFieldLabel class="datefield-label">Select a date</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="basic-value">@(basicDate?.ToString("yyyy-MM-dd") ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="datetime-section">
+    <h2>DateTime Field (with time)</h2>
+    <p>A date-time field showing date and time segments.</p>
+    
+    <DateFieldRoot @bind-DateTimeValue="basicDateTime" Granularity="DateFieldGranularity.Minute">
+        <DateFieldLabel class="datefield-label">Select date and time</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="datetime-value">@(basicDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="swedish-section">
+    <h2>Swedish Locale (sv-SE)</h2>
+    <p>Date field with Swedish culture formatting (yyyy-MM-dd).</p>
+    
+    <DateFieldRoot @bind-Value="swedishDate" Locale="@swedishCulture">
+        <DateFieldLabel class="datefield-label">Välj ett datum</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="swedish-value">@(swedishDate?.ToString("yyyy-MM-dd") ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="us-section">
+    <h2>US Locale (en-US)</h2>
+    <p>Date field with US culture formatting (M/d/yyyy).</p>
+    
+    <DateFieldRoot @bind-Value="usDate" Locale="@usCulture">
+        <DateFieldLabel class="datefield-label">Select a date</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="us-value">@(usDate?.ToString("M/d/yyyy", usCulture) ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="japanese-section">
+    <h2>Japanese Locale (ja-JP)</h2>
+    <p>Date field with Japanese culture formatting (yyyy/MM/dd).</p>
+    
+    <DateFieldRoot @bind-Value="japaneseDate" Locale="@japaneseCulture">
+        <DateFieldLabel class="datefield-label">日付を選択</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="japanese-value">@(japaneseDate?.ToString("yyyy/MM/dd", japaneseCulture) ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="arabic-section">
+    <h2>Arabic Locale (ar-SA)</h2>
+    <p>Date field with Arabic (Saudi Arabia) culture.</p>
+    
+    <DateFieldRoot @bind-Value="arabicDate" Locale="@arabicCulture">
+        <DateFieldLabel class="datefield-label">اختر تاريخ</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="arabic-value">@(arabicDate?.ToString("d", arabicCulture) ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="minmax-section">
+    <h2>Min/Max Validation</h2>
+    <p>Date field with minimum and maximum date constraints. The field shows invalid state when out of range.</p>
+    
+    <DateFieldRoot @bind-Value="constrainedDate" MinValue="@minDate" MaxValue="@maxDate">
+        <DateFieldLabel class="datefield-label">Select a date (Jan 1, 2025 - Dec 31, 2025)</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">
+        Selected: <strong data-testid="minmax-value">@(constrainedDate?.ToString("yyyy-MM-dd") ?? "None")</strong>
+        @if (constrainedDate.HasValue && (constrainedDate < minDate || constrainedDate > maxDate))
+        {
+            <span style="color: #dc3545; margin-left: 0.5rem;" data-testid="minmax-error">Date must be between @minDate.ToString("yyyy-MM-dd") and @maxDate.ToString("yyyy-MM-dd")</span>
+        }
+    </p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="placeholder-section">
+    <h2>With Placeholder</h2>
+    <p>Date field with a placeholder date shown when no value is set. Press Backspace to clear.</p>
+    
+    <DateFieldRoot Value="@nullableDate" ValueChanged="v => nullableDate = v" Placeholder="@placeholderDate">
+        <DateFieldLabel class="datefield-label">Date with placeholder</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="placeholder-value">@(nullableDate?.ToString("yyyy-MM-dd") ?? "None (showing placeholder)")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="disabled-section">
+    <h2>Disabled State</h2>
+    <p>The date field can be disabled.</p>
+    
+    <DateFieldRoot Value="@disabledDate" Disabled="true">
+        <DateFieldLabel class="datefield-label">Disabled date field</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="readonly-section">
+    <h2>Read-Only State</h2>
+    <p>The date field can be read-only (visible but not editable).</p>
+    
+    <DateFieldRoot Value="@readOnlyDate" ReadOnly="true">
+        <DateFieldLabel class="datefield-label">Read-only date field</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="invalid-section">
+    <h2>Invalid State</h2>
+    <p>The date field showing an invalid/error state.</p>
+    
+    <DateFieldRoot @bind-Value="invalidDate" Invalid="true">
+        <DateFieldLabel class="datefield-label">Date with error</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    <p style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">Please enter a valid date</p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="seconds-section">
+    <h2>Full DateTime with Seconds</h2>
+    <p>DateTime field with second-level granularity.</p>
+    
+    <DateFieldRoot @bind-DateTimeValue="fullDateTime" Granularity="DateFieldGranularity.Second">
+        <DateFieldLabel class="datefield-label">Full date and time</DateFieldLabel>
+        <DateFieldInput class="datefield-input" />
+    </DateFieldRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="seconds-value">@(fullDateTime?.ToString("yyyy-MM-dd HH:mm:ss") ?? "None")</strong></p>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="editform-section">
+    <h2>EditForm Integration</h2>
+    <p>DateField integrated with Blazor EditForm for model validation.</p>
+
+    <EditForm EditContext="editContext" OnSubmit="HandleEditFormSubmit" FormName="dateFieldEditForm">
+        <DataAnnotationsValidator />
+
+        <div style="margin-bottom: 1rem;">
+            <DateFieldRoot @bind-Value="formModel.BirthDate"
+                           Name="birthDate"
+                           Required="true"
+                           Invalid="@(editFormSubmitted && formModel.BirthDate == null)">
+                <DateFieldLabel class="datefield-label" data-testid="editform-birthdate-label">Birth Date (Required)</DateFieldLabel>
+                <DateFieldInput class="datefield-input" data-testid="editform-birthdate-input" />
+            </DateFieldRoot>
+            <ValidationMessage For="@(() => formModel.BirthDate)" />
+            @if (editFormSubmitted && formModel.BirthDate == null)
+            {
+                <p class="validation-error" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">Birth date is required</p>
+            }
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <DateFieldRoot @bind-DateTimeValue="formModel.AppointmentTime"
+                           Granularity="DateFieldGranularity.Minute"
+                           Name="appointmentTime"
+                           MinDateTime="@DateTime.Now"
+                           MaxDateTime="@DateTime.Now.AddYears(1)">
+                <DateFieldLabel class="datefield-label" data-testid="editform-appointment-label">Appointment (Optional, future dates only)</DateFieldLabel>
+                <DateFieldInput class="datefield-input" data-testid="editform-appointment-input" />
+            </DateFieldRoot>
+        </div>
+
+        <button type="submit" class="btn btn-primary" data-testid="editform-submit">Submit</button>
+    </EditForm>
+
+    <div style="margin-top: 1rem;" data-testid="editform-result">
+        <p>Birth Date: <strong data-testid="editform-birthdate-value">@(formModel.BirthDate?.ToString("yyyy-MM-dd") ?? "None")</strong></p>
+        <p>Appointment: <strong data-testid="editform-appointment-value">@(formModel.AppointmentTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</strong></p>
+        @if (editFormSubmitSuccess)
+        {
+            <p style="color: #198754;" data-testid="editform-success-message">Form submitted successfully!</p>
+        }
+    </div>
+</section>
+
+<section style="margin-top: 2rem;" data-testid="form-section">
+    <h2>Basic Form</h2>
+    <p>DateField with form name for native form submission.</p>
+
+    <form @onsubmit="HandleBasicFormSubmit" @onsubmit:preventDefault>
+        <div style="margin-bottom: 1rem;">
+            <DateFieldRoot @bind-Value="basicFormDate" Name="eventDate" Required="true">
+                <DateFieldLabel class="datefield-label">Event Date</DateFieldLabel>
+                <DateFieldInput class="datefield-input" data-testid="form-date-input" />
+            </DateFieldRoot>
+        </div>
+        <button type="submit" class="btn btn-primary" data-testid="form-submit">Submit Form</button>
+    </form>
+    
+    <p style="margin-top: 1rem;">Selected: <strong data-testid="form-value">@(basicFormDate?.ToString("yyyy-MM-dd") ?? "None")</strong></p>
+    @if (basicFormSubmitted)
+    {
+        <p style="color: #198754;" data-testid="form-success-message">Form submitted!</p>
+    }
+</section>
+
+@code {
+    // Basic examples
+    private DateOnly? basicDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateTime? basicDateTime = DateTime.Now;
+    
+    // Locale examples
+    private DateOnly? swedishDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? usDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? japaneseDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? arabicDate = DateOnly.FromDateTime(DateTime.Today);
+    
+    // Cultures
+    private CultureInfo swedishCulture = new CultureInfo("sv-SE");
+    private CultureInfo usCulture = new CultureInfo("en-US");
+    private CultureInfo japaneseCulture = new CultureInfo("ja-JP");
+    private CultureInfo arabicCulture = new CultureInfo("ar-SA");
+    
+    // Min/Max validation
+    private DateOnly? constrainedDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly minDate = new DateOnly(2025, 1, 1);
+    private DateOnly maxDate = new DateOnly(2025, 12, 31);
+    
+    // Placeholder example
+    private DateOnly? nullableDate = null;
+    private DateOnly placeholderDate = new DateOnly(2025, 1, 1);
+    
+    // States
+    private DateOnly? disabledDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? readOnlyDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? invalidDate = null;
+    
+    // Full DateTime
+    private DateTime? fullDateTime = DateTime.Now;
+    
+    // EditForm
+    private DateFieldFormModel formModel = new();
+    private EditContext? editContext;
+    private bool editFormSubmitted;
+    private bool editFormSubmitSuccess;
+    
+    // Basic form
+    private DateOnly? basicFormDate = DateOnly.FromDateTime(DateTime.Today);
+    private bool basicFormSubmitted;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(formModel);
+    }
+
+    private void HandleEditFormSubmit()
+    {
+        editFormSubmitted = true;
+        editFormSubmitSuccess = false;
+
+        if (formModel.BirthDate != null)
+        {
+            editFormSubmitSuccess = true;
+        }
+    }
+
+    private void HandleBasicFormSubmit()
+    {
+        basicFormSubmitted = true;
+    }
+
+    public class DateFieldFormModel
+    {
+        [Required(ErrorMessage = "Birth date is required")]
+        public DateOnly? BirthDate { get; set; }
+
+        public DateTime? AppointmentTime { get; set; }
+    }
+}
+
+<style>
+    .datefield-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #333;
+    }
+    
+    .datefield-input {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-family: inherit;
+    }
+    
+    .datefield-input:focus-within {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    }
+    
+    [data-disabled] .datefield-input {
+        background: #f5f5f5;
+        color: #999;
+        cursor: not-allowed;
+    }
+    
+    [data-readonly] .datefield-input {
+        background: #f9f9f9;
+    }
+    
+    [data-invalid] .datefield-input {
+        border-color: #dc3545;
+    }
+    
+    [data-invalid] .datefield-input:focus-within {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+    }
+    
+    /* Segment styling */
+    [data-segment]:not([data-segment="literal"]) {
+        padding: 0.125rem 0.25rem;
+        border-radius: 4px;
+        outline: none;
+        min-width: 1.5em;
+        text-align: center;
+    }
+    
+    [data-segment]:not([data-segment="literal"]):focus {
+        background: #e7f1ff;
+        color: #0d6efd;
+    }
+    
+    [data-segment="literal"] {
+        color: #666;
+        padding: 0 0.125rem;
+    }
+    
+    [data-segment][data-placeholder] {
+        color: #999;
+    }
+    
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    section h2 {
+        margin-top: 0;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        cursor: pointer;
+    }
+    
+    .btn-primary {
+        background: #0d6efd;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #0b5ed7;
+    }
+</style>

@@ -32,7 +32,7 @@ public class FocusTrapAccessibilityTests : PageTest
         await Page.WaitForTimeoutAsync(200);
 
         // Verify the focus trap is active
-        var focusTrapContainer = Page.Locator("[data-ark-focus-trap]");
+        var focusTrapContainer = Page.Locator("[data-summit-focus-trap]");
         await Expect(focusTrapContainer).ToBeVisibleAsync();
 
         // Verify focus is somewhere within the dialog area

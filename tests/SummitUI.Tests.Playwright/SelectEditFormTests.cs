@@ -29,11 +29,11 @@ public class SelectEditFormTests : PageTest
         await trigger.ClickAsync();
 
         // Wait for content to be visible
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Select "Electronics"
-        var electronicsItem = content.Locator("[data-ark-select-item][data-value='electronics']");
+        var electronicsItem = content.Locator("[data-summit-select-item][data-value='electronics']");
         await electronicsItem.ClickAsync();
 
         // Verify the value is bound to the model
@@ -50,10 +50,10 @@ public class SelectEditFormTests : PageTest
         var categoryTrigger = section.Locator("[data-testid='editform-category-trigger']");
         await categoryTrigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var clothingItem = content.Locator("[data-ark-select-item][data-value='clothing']");
+        var clothingItem = content.Locator("[data-summit-select-item][data-value='clothing']");
         await clothingItem.ClickAsync();
 
         // Wait for dropdown to close
@@ -66,10 +66,10 @@ public class SelectEditFormTests : PageTest
         var priorityTrigger = section.Locator("[data-testid='editform-priority-trigger']");
         await priorityTrigger.ClickAsync();
 
-        content = Page.Locator("[data-ark-select-content]").First;
+        content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var highItem = content.Locator("[data-ark-select-item][data-value='high']");
+        var highItem = content.Locator("[data-summit-select-item][data-value='high']");
         await highItem.ClickAsync();
 
         // Verify both values are bound
@@ -88,10 +88,10 @@ public class SelectEditFormTests : PageTest
 
         // Select first option
         await trigger.ClickAsync();
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var electronicsItem = content.Locator("[data-ark-select-item][data-value='electronics']");
+        var electronicsItem = content.Locator("[data-summit-select-item][data-value='electronics']");
         await electronicsItem.ClickAsync();
 
         await Expect(content).Not.ToBeVisibleAsync();
@@ -99,10 +99,10 @@ public class SelectEditFormTests : PageTest
 
         // Select different option
         await trigger.ClickAsync();
-        content = Page.Locator("[data-ark-select-content]").First;
+        content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var booksItem = content.Locator("[data-ark-select-item][data-value='books']");
+        var booksItem = content.Locator("[data-summit-select-item][data-value='books']");
         await booksItem.ClickAsync();
 
         // Verify model is updated to new value
@@ -123,10 +123,10 @@ public class SelectEditFormTests : PageTest
         var categoryTrigger = section.Locator("[data-testid='editform-category-trigger']");
         await categoryTrigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var electronicsItem = content.Locator("[data-ark-select-item][data-value='electronics']");
+        var electronicsItem = content.Locator("[data-summit-select-item][data-value='electronics']");
         await electronicsItem.ClickAsync();
 
         await Expect(content).Not.ToBeVisibleAsync();
@@ -173,10 +173,10 @@ public class SelectEditFormTests : PageTest
         var categoryTrigger = section.Locator("[data-testid='editform-category-trigger']");
         await categoryTrigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var electronicsItem = content.Locator("[data-ark-select-item][data-value='electronics']");
+        var electronicsItem = content.Locator("[data-summit-select-item][data-value='electronics']");
         await electronicsItem.ClickAsync();
 
         await Expect(content).Not.ToBeVisibleAsync();
@@ -202,10 +202,10 @@ public class SelectEditFormTests : PageTest
         // Select a value
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var electronicsItem = content.Locator("[data-ark-select-item][data-value='electronics']");
+        var electronicsItem = content.Locator("[data-summit-select-item][data-value='electronics']");
         await electronicsItem.ClickAsync();
 
         // Verify hidden input has the selected value
@@ -222,10 +222,10 @@ public class SelectEditFormTests : PageTest
         // Select first value
         await trigger.ClickAsync();
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var electronicsItem = content.Locator("[data-ark-select-item][data-value='electronics']");
+        var electronicsItem = content.Locator("[data-summit-select-item][data-value='electronics']");
         await electronicsItem.ClickAsync();
 
         var hiddenInput = section.Locator("input[type='hidden'][name='category']");
@@ -236,10 +236,10 @@ public class SelectEditFormTests : PageTest
         await Page.WaitForTimeoutAsync(150);
 
         await trigger.ClickAsync();
-        content = Page.Locator("[data-ark-select-content]").First;
+        content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
-        var clothingItem = content.Locator("[data-ark-select-item][data-value='clothing']");
+        var clothingItem = content.Locator("[data-summit-select-item][data-value='clothing']");
         await clothingItem.ClickAsync();
 
         // Hidden input should be updated
@@ -292,7 +292,7 @@ public class SelectEditFormTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("Enter");
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Navigate to second item
@@ -316,7 +316,7 @@ public class SelectEditFormTests : PageTest
         await trigger.FocusAsync();
         await Page.Keyboard.PressAsync("Enter");
 
-        var content = Page.Locator("[data-ark-select-content]").First;
+        var content = Page.Locator("[data-summit-select-content]").First;
         await Expect(content).ToBeVisibleAsync();
 
         // Select first item

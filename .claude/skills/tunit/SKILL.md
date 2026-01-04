@@ -5,12 +5,12 @@ description: Run TUnit tests with Playwright. Use when user asks to run tests, e
 
 # Running TUnit Tests
 
-This project uses TUnit with Playwright for testing. Tests are located in `SummitUI.Tests.Playwright/`.
+This project uses TUnit with Playwright for testing. Tests are located in `tests/SummitUI.Tests.Playwright/`.
 
 ## Run All Tests
 
 ```bash
-dotnet run --project SummitUI.Tests.Playwright
+dotnet run --project tests/SummitUI.Tests.Playwright
 ```
 
 ## Run Tests with Limited Parallelism (Recommended)
@@ -19,14 +19,11 @@ To prevent system overload when running Playwright tests, limit parallel test ex
 
 ```bash
 # Run with maximum 1 parallel test (sequential)
-dotnet run --project SummitUI.Tests.Playwright -- --maximum-parallel-tests 1
+dotnet run --project tests/SummitUI.Tests.Playwright -- --maximum-parallel-tests 1
 
 # Run with maximum 2 parallel tests
-dotnet run --project SummitUI.Tests.Playwright -- --maximum-parallel-tests 2
+dotnet run --project tests/SummitUI.Tests.Playwright -- --maximum-parallel-tests 2
 ```
-
-**Note:** All tests run sequentially via `[assembly: NotInParallel]` in GlobalSetup.cs to prevent system overload and reduce flakiness.
-
 ## Run Tests with Filters
 
 TUnit uses `--treenode-filter` with path pattern: `/assembly/namespace/class/test`
@@ -44,16 +41,16 @@ dotnet run --project SummitUI.Tests.Playwright -- --treenode-filter '/*/*/*/Test
 Examples:
 ```bash
 # Run all Select accessibility tests
-dotnet run --project SummitUI.Tests.Playwright -- --treenode-filter '/*/*/SelectAccessibilityTests/*'
+dotnet run --project tests/SummitUI.Tests.Playwright -- --treenode-filter '/*/*/SelectAccessibilityTests/*'
 
 # Run specific test by name
-dotnet run --project SummitUI.Tests.Playwright -- --treenode-filter '/*/*/*/Trigger_ShouldHave_RoleCombobox'
+dotnet run --project tests/SummitUI.Tests.Playwright -- --treenode-filter '/*/*/*/Trigger_ShouldHave_RoleCombobox'
 
 # Run tests matching pattern (wildcard in test name)
-dotnet run --project SummitUI.Tests.Playwright -- --treenode-filter '/*/*/*/Keyboard*'
+dotnet run --project tests/SummitUI.Tests.Playwright -- --treenode-filter '/*/*/*/Keyboard*'
 
 # Run all tests in namespace
-dotnet run --project SummitUI.Tests.Playwright -- --treenode-filter '/*/SummitUI.Tests.Playwright/*/*'
+dotnet run --project tests/SummitUI.Tests.Playwright -- --treenode-filter '/*/SummitUI.Tests.Playwright/*/*'
 ```
 
 ## Run Tests in Debug Mode
@@ -65,10 +62,10 @@ When a debugger is attached, Playwright will run in debug mode (`PWDEBUG=1`) aut
 Add `--report` flags for different output formats:
 ```bash
 # Console output with details
-dotnet run --project SummitUI.Tests.Playwright -- --output-format console-detailed
+dotnet run --project tests/SummitUI.Tests.Playwright -- --output-format console-detailed
 
 # Generate TRX report
-dotnet run --project SummitUI.Tests.Playwright -- --report-trx
+dotnet run --project tests/SummitUI.Tests.Playwright -- --report-trx
 ```
 
 ## Flakiness Mitigation

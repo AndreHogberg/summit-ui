@@ -1,0 +1,363 @@
+using TUnit.Playwright;
+
+namespace SummitUI.Tests.Playwright;
+
+/// <summary>
+/// Tests for the DateField component's integration with Blazor EditForm.
+/// Verifies model binding, validation, hidden input, and form submission behavior.
+/// </summary>
+public class DateFieldEditFormTests : PageTest
+{
+    private const string DateFieldDemoUrl = "datefield";
+
+    [Before(Test)]
+    public async Task NavigateToDateFieldDemo()
+    {
+        await Page.GotoAsync(Hooks.ServerUrl + DateFieldDemoUrl);
+        await Page.WaitForLoadStateAsync(Microsoft.Playwright.LoadState.NetworkIdle);
+    }
+
+    #region Model Binding
+
+    [Test]
+    public async Task EditForm_ShouldBindValue_ToModel()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var daySegment = section.Locator("[data-testid='editform-birthdate-input']").Locator("[data-segment='day']");
+        
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("15");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        var birthDateValue = section.Locator("[data-testid='editform-birthdate-value']");
+        var text = await birthDateValue.TextContentAsync();
+        
+        await Assert.That(text!).Contains("15");
+    }
+
+    [Test]
+    public async Task EditForm_ShouldUpdateModel_WhenDateChanges()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        var monthSegment = input.Locator("[data-segment='month']");
+        
+        // Set day to 25
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("25");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Set month to 12
+        await monthSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("12");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        var birthDateValue = section.Locator("[data-testid='editform-birthdate-value']");
+        var text = await birthDateValue.TextContentAsync();
+        
+        await Assert.That(text!).Contains("12");
+        await Assert.That(text!).Contains("25");
+    }
+
+    [Test]
+    public async Task EditForm_ShouldBindDateTime_WithTimeSegments()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-appointment-input']");
+        var hourSegment = input.Locator("[data-segment='hour']");
+        var minuteSegment = input.Locator("[data-segment='minute']");
+        
+        // Set hour
+        await hourSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("14");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Set minute
+        await minuteSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("30");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        var appointmentValue = section.Locator("[data-testid='editform-appointment-value']");
+        var text = await appointmentValue.TextContentAsync();
+        
+        await Assert.That(text!).Contains("14:30");
+    }
+
+    #endregion
+
+    #region Form Submission
+
+    [Test]
+    public async Task EditForm_ShouldSubmitSuccessfully_WhenRequiredFieldsFilled()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        
+        // Set a value for required field
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("15");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Submit form
+        var submitButton = section.Locator("[data-testid='editform-submit']");
+        await submitButton.ClickAsync();
+        
+        // Verify success message appears
+        var successMessage = section.Locator("[data-testid='editform-success-message']");
+        await Expect(successMessage).ToBeVisibleAsync();
+        await Expect(successMessage).ToHaveTextAsync("Form submitted successfully!");
+    }
+
+    [Test]
+    public async Task EditForm_ShouldShowValidationError_WhenRequiredFieldEmpty()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        
+        // Clear the field by pressing backspace
+        await daySegment.FocusAsync();
+        await Page.Keyboard.PressAsync("Backspace");
+        
+        // Submit form without value
+        var submitButton = section.Locator("[data-testid='editform-submit']");
+        await submitButton.ClickAsync();
+        
+        // Verify validation error appears
+        var validationError = section.Locator(".validation-error");
+        await Expect(validationError).ToBeVisibleAsync();
+        await Expect(validationError).ToHaveTextAsync("Birth date is required");
+    }
+
+    #endregion
+
+    #region Hidden Input for Form Submission
+
+    [Test]
+    public async Task EditForm_ShouldRenderHiddenInput_WithCorrectName()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        
+        // Find the hidden input with the expected name
+        var hiddenInput = section.Locator("input[type='hidden'][name='birthDate']");
+        await Expect(hiddenInput).ToHaveCountAsync(1);
+    }
+
+    [Test]
+    public async Task EditForm_ShouldRenderHiddenInput_WithDateValue()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        var monthSegment = input.Locator("[data-segment='month']");
+        var yearSegment = input.Locator("[data-segment='year']");
+        
+        // Set date to 2025-06-15
+        await yearSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("2025");
+        
+        await monthSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("06");
+        
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("15");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Verify hidden input has ISO format value
+        var hiddenInput = section.Locator("input[type='hidden'][name='birthDate']");
+        var value = await hiddenInput.GetAttributeAsync("value");
+        
+        await Assert.That(value).IsEqualTo("2025-06-15");
+    }
+
+    [Test]
+    public async Task EditForm_ShouldUpdateHiddenInput_WhenValueChanges()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        
+        // Set initial value
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("10");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        var hiddenInput = section.Locator("input[type='hidden'][name='birthDate']");
+        var initialValue = await hiddenInput.GetAttributeAsync("value");
+        await Assert.That(initialValue!).Contains("10");
+        
+        // Change the value
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("25");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        var newValue = await hiddenInput.GetAttributeAsync("value");
+        await Assert.That(newValue!).Contains("25");
+    }
+
+    #endregion
+
+    #region Invalid State with EditForm
+
+    [Test]
+    public async Task EditForm_RootShouldHaveDataInvalid_WhenValidationFails()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        
+        // Clear the field
+        await daySegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.PressAsync("Backspace");
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Submit without filling required field
+        var submitButton = section.Locator("[data-testid='editform-submit']");
+        await submitButton.ClickAsync();
+        
+        // Root should have data-invalid attribute - use role='group' selector
+        var root = section.Locator("[role='group']").First;
+        await Expect(root).ToHaveAttributeAsync("data-invalid", "");
+    }
+
+    #endregion
+
+    #region Required Attribute
+
+    [Test]
+    public async Task EditForm_HiddenInputShouldHaveRequired_WhenRequired()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        
+        // Birth date field is required
+        var hiddenInput = section.Locator("input[type='hidden'][name='birthDate']");
+        await Expect(hiddenInput).ToHaveAttributeAsync("required", "");
+    }
+
+    #endregion
+
+    #region Basic Form Section
+
+    [Test]
+    public async Task BasicForm_ShouldSubmit_WhenDateProvided()
+    {
+        var section = Page.Locator("[data-testid='form-section']");
+        var input = section.Locator("[data-testid='form-date-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        
+        // Set a value
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("20");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Submit form
+        var submitButton = section.Locator("[data-testid='form-submit']");
+        await submitButton.ClickAsync();
+        
+        // Verify success message appears
+        var successMessage = section.Locator("[data-testid='form-success-message']");
+        await Expect(successMessage).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task BasicForm_ShouldShowValue_AfterInput()
+    {
+        var section = Page.Locator("[data-testid='form-section']");
+        var input = section.Locator("[data-testid='form-date-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        
+        // Set day to 28
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("28");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        var formValue = section.Locator("[data-testid='form-value']");
+        var text = await formValue.TextContentAsync();
+        
+        await Assert.That(text!).Contains("28");
+    }
+
+    #endregion
+
+    #region Keyboard Interaction with EditForm
+
+    [Test]
+    public async Task EditForm_ShouldBindValue_WhenNavigatedViaKeyboard()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var segments = input.Locator("[role='spinbutton']");
+        
+        // Focus first segment and use arrow keys
+        var firstSegment = segments.First;
+        await firstSegment.FocusAsync();
+        
+        await Page.Keyboard.PressAsync("ArrowUp");
+        await Page.Keyboard.PressAsync("ArrowUp");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Verify value was updated
+        var birthDateValue = section.Locator("[data-testid='editform-birthdate-value']");
+        var text = await birthDateValue.TextContentAsync();
+        await Assert.That(text).IsNotEqualTo("None");
+    }
+
+    [Test]
+    public async Task EditForm_ShouldSubmit_ViaKeyboard()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var daySegment = input.Locator("[data-segment='day']");
+        
+        // Set value via keyboard
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("15");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Tab to submit button and press Enter
+        var submitButton = section.Locator("[data-testid='editform-submit']");
+        await submitButton.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+        
+        // Verify success
+        var successMessage = section.Locator("[data-testid='editform-success-message']");
+        await Expect(successMessage).ToBeVisibleAsync();
+    }
+
+    #endregion
+
+    #region DateTime Hidden Input Format
+
+    [Test]
+    public async Task EditForm_DateTimeHiddenInput_ShouldHaveISOFormat()
+    {
+        var section = Page.Locator("[data-testid='editform-section']");
+        var input = section.Locator("[data-testid='editform-appointment-input']");
+        var hourSegment = input.Locator("[data-segment='hour']");
+        
+        // Verify appointment input has time segments
+        await Expect(hourSegment).ToBeVisibleAsync();
+        
+        // The hidden input for datetime should exist with appointmentTime name
+        var hiddenInput = section.Locator("input[type='hidden'][name='appointmentTime']");
+        await Expect(hiddenInput).ToHaveCountAsync(1);
+    }
+
+    #endregion
+}
