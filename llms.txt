@@ -20,18 +20,18 @@ dotnet add package SummitUI
 
 ## Component Documentation
 
-- [Accordion](docs/accordion.md): Collapsible content sections with keyboard navigation
-- [Checkbox](docs/checkbox.md): Toggle control with indeterminate state support
-- [DateField](docs/datefield.md): Date input with segment-based editing
-- [DropdownMenu](docs/dropdownmenu.md): Context menus with items, checkboxes, and radio groups
-- [Popover](docs/popover.md): Floating content panels with flexible positioning
-- [Select](docs/select.md): Dropdown selection with full accessibility
-- [Switch](docs/switch.md): Binary toggle control
-- [Tabs](docs/tabs.md): Tabbed interface with keyboard navigation
+- [Accordion](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/accordion.md): Collapsible content sections with keyboard navigation
+- [Checkbox](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/checkbox.md): Toggle control with indeterminate state support
+- [DateField](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/datefield.md): Date input with segment-based editing
+- [DropdownMenu](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/dropdownmenu.md): Context menus with items, checkboxes, and radio groups
+- [Popover](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/popover.md): Floating content panels with flexible positioning
+- [Select](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/select.md): Dropdown selection with full accessibility
+- [Switch](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/switch.md): Binary toggle control
+- [Tabs](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/tabs.md): Tabbed interface with keyboard navigation
 
 ## Utilities
 
-- [FocusTrap](docs/focustrap.md): Utility to trap keyboard focus within a container
+- [FocusTrap](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/focustrap.md): Utility to trap keyboard focus within a container
 
 ## Common Patterns
 
@@ -99,4 +99,4 @@ SummitUI/
 
 ## Optional
 
-- [General Documentation](docs/index.md): Overview and getting started guide
+- [General Documentation](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/index.md): Overview and getting started guide
