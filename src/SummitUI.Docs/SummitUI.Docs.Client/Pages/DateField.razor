@@ -82,6 +82,76 @@
         <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
     </SuSection>
 
+    @* WebAssembly Globalization *@
+    <SuSection Title="WebAssembly Globalization">
+        <div class="flex flex-col gap-6">
+            <SuAlert Variant="SuAlertVariant.Warning">
+                <SuAlertTitle>Important for Non-US Locales</SuAlertTitle>
+                <SuAlertDescription>
+                    By default, Blazor WebAssembly uses invariant globalization. All cultures will return <code>MM/dd/yyyy</code> as the date pattern, regardless of the configured locale.
+                </SuAlertDescription>
+            </SuAlert>
+            
+            <div class="flex flex-col gap-3">
+                <SuText>
+                    If you need culture-specific date formats (e.g., <code>yyyy-MM-dd</code> for Swedish, <code>dd/MM/yyyy</code> for UK), 
+                    you must enable full globalization in your <strong>Client</strong> project's <code>.csproj</code>:
+                </SuText>
+                <SuCodeBlock Code="@wasmGlobalizationCode" Language="xml" />
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H4">Why This Matters</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Scenario</SuTableHead>
+                            <SuTableHead>Date Pattern for sv-SE (Swedish)</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell>Blazor Server</SuTableCell>
+                            <SuTableCell class="font-mono text-green-600">yyyy-MM-dd (correct)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell>Blazor WASM (default)</SuTableCell>
+                            <SuTableCell class="font-mono text-red-600">MM/dd/yyyy (invariant)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell>Blazor WASM (with settings above)</SuTableCell>
+                            <SuTableCell class="font-mono text-green-600">yyyy-MM-dd (correct)</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H4">Trade-offs</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        Enabling full globalization adds ~2-3MB to the initial download (ICU data)
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        Without it, all locales behave like <code>InvariantCulture</code>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        The browser's locale (<code>navigator.language</code>) is <strong>not</strong> automatically used
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H4">Setting Culture from Browser</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">To use the browser's preferred language:</SuText>
+                <SuCodeBlock Code="@browserCultureCode" Language="csharp" />
+            </div>
+        </div>
+    </SuSection>
+
     @* Anatomy *@
     <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
         <SuCodeBlock Code="@anatomyCode" Language="razor" />
@@ -315,6 +385,18 @@
     <DateFieldLabel>Select a date</DateFieldLabel>
     <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
 </DateFieldRoot>";
+
+    private const string wasmGlobalizationCode = @"<PropertyGroup>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+</PropertyGroup>";
+
+    private const string browserCultureCode = @"// In Program.cs (Client project)
+var js = app.Services.GetRequiredService<IJSRuntime>();
+var browserLang = await js.InvokeAsync<string>(""eval"", ""navigator.language"");
+var culture = new CultureInfo(browserLang);
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;";
 
     private const string granularityEnumCode = @"public enum DateFieldGranularity
 {

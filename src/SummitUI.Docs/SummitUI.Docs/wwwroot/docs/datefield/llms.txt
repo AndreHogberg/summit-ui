@@ -20,6 +20,46 @@ The DateField component is part of SummitUI, a Blazor component library focused 
 dotnet add package SummitUI
 ```
 
+## WebAssembly Globalization (Important)
+
+By default, Blazor WebAssembly uses **invariant globalization** to reduce download size. This means all cultures return `MM/dd/yyyy` as the date pattern, regardless of the configured locale.
+
+If you need culture-specific date formats (e.g., `yyyy-MM-dd` for Swedish, `dd/MM/yyyy` for UK), you must enable full globalization in your **Client** project's `.csproj`:
+
+```xml
+<PropertyGroup>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+</PropertyGroup>
+```
+
+### Why This Matters
+
+| Scenario | Date Pattern for sv-SE (Swedish) |
+|----------|----------------------------------|
+| Blazor Server | `yyyy-MM-dd` (correct) |
+| Blazor WASM (default) | `MM/dd/yyyy` (invariant) |
+| Blazor WASM (with settings above) | `yyyy-MM-dd` (correct) |
+
+### Trade-offs
+
+- Enabling full globalization adds ~2-3MB to the initial download (ICU data)
+- Without it, all locales behave like `InvariantCulture`
+- The browser's locale (`navigator.language`) is **not** automatically used - you must explicitly set `CultureInfo.CurrentCulture` in your app
+
+### Setting Culture from Browser
+
+To use the browser's preferred language:
+
+```csharp
+// In Program.cs (Client project)
+var js = app.Services.GetRequiredService<IJSRuntime>();
+var browserLang = await js.InvokeAsync<string>("eval", "navigator.language");
+var culture = new CultureInfo(browserLang);
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
+```
+
 ## Anatomy
 
 Import the components and structure them as follows:
