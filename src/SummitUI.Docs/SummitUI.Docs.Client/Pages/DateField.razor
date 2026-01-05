@@ -16,7 +16,7 @@
             <SuPromptButton ComponentName="DateField" />
         </SuHeading>
         <SuText Lead="true" Muted="true">
-            A segmented date/time input component with culture-aware formatting and full keyboard navigation.
+            A segmented date/time input component with explicit format strings and full keyboard navigation.
         </SuText>
     </div>
 
@@ -25,7 +25,7 @@
         <SuCard>
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
-                    <DateFieldRoot @bind-Value="selectedDate" class="group">
+                    <DateFieldRoot @bind-Value="selectedDate" Format="yyyy-MM-dd" class="group">
                         <DateFieldLabel class="text-sm font-medium text-su-foreground">Select a date</DateFieldLabel>
                         <DateFieldInput class="@dateFieldInputClasses" />
                     </DateFieldRoot>
@@ -33,11 +33,19 @@
                 </div>
                 
                 <div class="flex flex-col gap-2">
-                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime" Granularity="DateFieldGranularity.Minute" class="group">
-                        <DateFieldLabel class="text-sm font-medium text-su-foreground">Date and time</DateFieldLabel>
+                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime" Format="yyyy-MM-dd" class="group">
+                        <DateFieldLabel class="text-sm font-medium text-su-foreground">Date and time (24-hour)</DateFieldLabel>
                         <DateFieldInput class="@dateFieldInputClasses" />
                     </DateFieldRoot>
                     <p class="text-xs text-su-muted-foreground">Selected: @(selectedDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</p>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime12" Format="MM/dd/yyyy" TimeFormat="hh:mm" class="group">
+                        <DateFieldLabel class="text-sm font-medium text-su-foreground">Date and time (12-hour)</DateFieldLabel>
+                        <DateFieldInput class="@dateFieldInputClasses" />
+                    </DateFieldRoot>
+                    <p class="text-xs text-su-muted-foreground">Selected: @(selectedDateTime12?.ToString("MM/dd/yyyy hh:mm tt") ?? "None")</p>
                 </div>
             </div>
         </SuCard>
@@ -52,7 +60,7 @@
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                Culture-aware date formatting
+                Explicit format strings - no CultureInfo dependency, no extra WASM downloads
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
@@ -60,11 +68,11 @@
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                Configurable granularity (day, hour, minute)
+                12-hour and 24-hour time formats via TimeFormat parameter
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                12-hour and 24-hour time formats
+                Localized segment labels and AM/PM from browser's Intl API
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
@@ -80,76 +88,6 @@
     @* Installation *@
     <SuSection Title="Installation">
         <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
-    </SuSection>
-
-    @* WebAssembly Globalization *@
-    <SuSection Title="WebAssembly Globalization">
-        <div class="flex flex-col gap-6">
-            <SuAlert Variant="SuAlertVariant.Warning">
-                <SuAlertTitle>Important for Non-US Locales</SuAlertTitle>
-                <SuAlertDescription>
-                    By default, Blazor WebAssembly uses invariant globalization. All cultures will return <code>MM/dd/yyyy</code> as the date pattern, regardless of the configured locale.
-                </SuAlertDescription>
-            </SuAlert>
-            
-            <div class="flex flex-col gap-3">
-                <SuText>
-                    If you need culture-specific date formats (e.g., <code>yyyy-MM-dd</code> for Swedish, <code>dd/MM/yyyy</code> for UK), 
-                    you must enable full globalization in your <strong>Client</strong> project's <code>.csproj</code>:
-                </SuText>
-                <SuCodeBlock Code="@wasmGlobalizationCode" Language="xml" />
-            </div>
-
-            <div class="flex flex-col gap-3">
-                <SuHeading Level="SuHeadingLevel.H4">Why This Matters</SuHeading>
-                <SuTable>
-                    <SuTableHeader>
-                        <SuTableRow>
-                            <SuTableHead>Scenario</SuTableHead>
-                            <SuTableHead>Date Pattern for sv-SE (Swedish)</SuTableHead>
-                        </SuTableRow>
-                    </SuTableHeader>
-                    <SuTableBody>
-                        <SuTableRow>
-                            <SuTableCell>Blazor Server</SuTableCell>
-                            <SuTableCell class="font-mono text-green-600">yyyy-MM-dd (correct)</SuTableCell>
-                        </SuTableRow>
-                        <SuTableRow>
-                            <SuTableCell>Blazor WASM (default)</SuTableCell>
-                            <SuTableCell class="font-mono text-red-600">MM/dd/yyyy (invariant)</SuTableCell>
-                        </SuTableRow>
-                        <SuTableRow>
-                            <SuTableCell>Blazor WASM (with settings above)</SuTableCell>
-                            <SuTableCell class="font-mono text-green-600">yyyy-MM-dd (correct)</SuTableCell>
-                        </SuTableRow>
-                    </SuTableBody>
-                </SuTable>
-            </div>
-
-            <div class="flex flex-col gap-3">
-                <SuHeading Level="SuHeadingLevel.H4">Trade-offs</SuHeading>
-                <ul class="grid gap-2 text-sm text-su-muted-foreground">
-                    <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                        Enabling full globalization adds ~2-3MB to the initial download (ICU data)
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                        Without it, all locales behave like <code>InvariantCulture</code>
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                        The browser's locale (<code>navigator.language</code>) is <strong>not</strong> automatically used
-                    </li>
-                </ul>
-            </div>
-
-            <div class="flex flex-col gap-3">
-                <SuHeading Level="SuHeadingLevel.H4">Setting Culture from Browser</SuHeading>
-                <SuText Size="SuTextSize.Small" Muted="true">To use the browser's preferred language:</SuText>
-                <SuCodeBlock Code="@browserCultureCode" Language="csharp" />
-            </div>
-        </div>
     </SuSection>
 
     @* Anatomy *@
@@ -215,17 +153,84 @@
         </div>
     </SuSection>
 
-    @* Enums *@
-    <SuSection Title="Enums">
-        <div class="flex flex-col gap-8">
+    @* Format Strings *@
+    <SuSection Title="Format Strings">
+        <div class="flex flex-col gap-6">
+            <SuAlert Variant="SuAlertVariant.Info">
+                <SuAlertTitle>No CultureInfo Required</SuAlertTitle>
+                <SuAlertDescription>
+                    DateField uses explicit format strings instead of CultureInfo. This means no need to enable 
+                    <code>BlazorWebAssemblyLoadAllGlobalizationData</code> (which adds ~2-3MB to your WASM bundle).
+                    Screen reader labels and AM/PM text are still localized using the browser's Intl API.
+                </SuAlertDescription>
+            </SuAlert>
+
             <div class="flex flex-col gap-4">
-                <SuHeading Level="SuHeadingLevel.H3">DateFieldGranularity</SuHeading>
-                <SuCodeBlock Code="@granularityEnumCode" Language="csharp" />
+                <SuHeading Level="SuHeadingLevel.H4">Date Format Examples</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Format</SuTableHead>
+                            <SuTableHead>Region</SuTableHead>
+                            <SuTableHead>Example Output</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono">yyyy-MM-dd</SuTableCell>
+                            <SuTableCell>ISO / Sweden</SuTableCell>
+                            <SuTableCell class="font-mono">2025-01-15</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono">MM/dd/yyyy</SuTableCell>
+                            <SuTableCell>United States</SuTableCell>
+                            <SuTableCell class="font-mono">01/15/2025</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono">dd/MM/yyyy</SuTableCell>
+                            <SuTableCell>United Kingdom</SuTableCell>
+                            <SuTableCell class="font-mono">15/01/2025</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono">dd.MM.yyyy</SuTableCell>
+                            <SuTableCell>Germany</SuTableCell>
+                            <SuTableCell class="font-mono">15.01.2025</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
             </div>
 
             <div class="flex flex-col gap-4">
-                <SuHeading Level="SuHeadingLevel.H3">HourCycle</SuHeading>
-                <SuCodeBlock Code="@hourCycleEnumCode" Language="csharp" />
+                <SuHeading Level="SuHeadingLevel.H4">Time Format Examples</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>TimeFormat</SuTableHead>
+                            <SuTableHead>Clock Type</SuTableHead>
+                            <SuTableHead>Example Output</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono">HH:mm</SuTableCell>
+                            <SuTableCell>24-hour (default)</SuTableCell>
+                            <SuTableCell class="font-mono">14:30</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono">hh:mm</SuTableCell>
+                            <SuTableCell>12-hour with AM/PM</SuTableCell>
+                            <SuTableCell class="font-mono">02:30 PM</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono">HH.mm</SuTableCell>
+                            <SuTableCell>24-hour with dot separator</SuTableCell>
+                            <SuTableCell class="font-mono">14.30</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Use lowercase <code>h</code> for 12-hour format (shows AM/PM), uppercase <code>H</code> for 24-hour format.
+                </SuText>
             </div>
         </div>
     </SuSection>
@@ -240,8 +245,14 @@
 
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">DateTime with Time</SuHeading>
-                <SuText Size="SuTextSize.Small" Muted="true">Use Granularity to show time segments.</SuText>
+                <SuText Size="SuTextSize.Small" Muted="true">Bind to DateTimeValue to show time segments.</SuText>
                 <SuCodeBlock Code="@dateTimeExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">12-Hour Time Format</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use lowercase 'h' in TimeFormat for 12-hour clock with AM/PM.</SuText>
+                <SuCodeBlock Code="@time12HourExampleCode" Language="razor" />
             </div>
 
             <div class="flex flex-col gap-4">
@@ -327,6 +338,10 @@
                         <span>Each has <code>role="spinbutton"</code> with <code>aria-valuemin</code>, <code>aria-valuemax</code>, <code>aria-valuenow</code></span>
                     </li>
                     <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Labels:</span>
+                        <span>Segment labels (Year, Month, etc.) are localized from the browser's Intl.DisplayNames API</span>
+                    </li>
+                    <li class="flex items-start gap-2">
                         <span class="text-su-foreground font-medium shrink-0">Literals:</span>
                         <span>Separator segments have <code>aria-hidden="true"</code></span>
                     </li>
@@ -341,22 +356,26 @@
 
     private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
     private DateTime? selectedDateTime = DateTime.Now;
+    private DateTime? selectedDateTime12 = DateTime.Now;
 
     private List<SuApiProperty> dateFieldRootProperties = new()
     {
-        new() { Name = "Value", Type = "DateOnly?", Default = "null", Description = "Bound DateOnly value" },
+        new() { Name = "Format", Type = "string", Required = true, Description = "Date format pattern (e.g., \"yyyy-MM-dd\", \"MM/dd/yyyy\")" },
+        new() { Name = "TimeFormat", Type = "string", Default = "\"HH:mm\"", Description = "Time format pattern. Use \"hh:mm\" for 12-hour, \"HH:mm\" for 24-hour" },
+        new() { Name = "Value", Type = "DateOnly?", Default = "null", Description = "Bound DateOnly value (date only, no time)" },
         new() { Name = "ValueChanged", Type = "EventCallback<DateOnly?>", Description = "DateOnly value change callback" },
-        new() { Name = "DateTimeValue", Type = "DateTime?", Default = "null", Description = "Bound DateTime value" },
+        new() { Name = "DateTimeValue", Type = "DateTime?", Default = "null", Description = "Bound DateTime value (shows time segments)" },
         new() { Name = "DateTimeValueChanged", Type = "EventCallback<DateTime?>", Description = "DateTime value change callback" },
-        new() { Name = "Granularity", Type = "DateFieldGranularity", Default = "Day", Description = "Controls which segments are displayed" },
-        new() { Name = "HourCycle", Type = "HourCycle", Default = "Auto", Description = "12-hour or 24-hour time format" },
-        new() { Name = "Locale", Type = "CultureInfo?", Default = "Current culture", Description = "Culture for date formatting" },
-        new() { Name = "DatePattern", Type = "string?", Default = "null", Description = "Custom date format pattern" },
+        new() { Name = "Placeholder", Type = "DateOnly", Default = "Today", Description = "Placeholder date shown when Value is null" },
+        new() { Name = "DateTimePlaceholder", Type = "DateTime", Default = "Now", Description = "Placeholder datetime shown when DateTimeValue is null" },
         new() { Name = "MinValue", Type = "DateOnly?", Default = "null", Description = "Minimum allowed DateOnly value" },
         new() { Name = "MaxValue", Type = "DateOnly?", Default = "null", Description = "Maximum allowed DateOnly value" },
+        new() { Name = "MinDateTime", Type = "DateTime?", Default = "null", Description = "Minimum allowed DateTime value" },
+        new() { Name = "MaxDateTime", Type = "DateTime?", Default = "null", Description = "Maximum allowed DateTime value" },
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disables the entire date field" },
         new() { Name = "ReadOnly", Type = "bool", Default = "false", Description = "Makes the field read-only" },
         new() { Name = "Invalid", Type = "bool", Default = "false", Description = "Indicates validation error state" },
+        new() { Name = "Name", Type = "string?", Default = "null", Description = "Form field name for submission" },
         new() { Name = "Required", Type = "bool", Default = "false", Description = "Marks the field as required" }
     };
 
@@ -381,46 +400,18 @@
         new() { Name = "A / P", Description = "Toggle AM/PM on DayPeriod segment", Type = "" }
     };
 
-    private const string anatomyCode = @"<DateFieldRoot @bind-Value=""date"" class=""group"">
+    private const string anatomyCode = @"<DateFieldRoot @bind-Value=""date"" Format=""yyyy-MM-dd"" class=""group"">
     <DateFieldLabel>Select a date</DateFieldLabel>
-    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
+    <DateFieldInput class=""..."" />
 </DateFieldRoot>";
-
-    private const string wasmGlobalizationCode = @"<PropertyGroup>
-    <InvariantGlobalization>false</InvariantGlobalization>
-    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
-</PropertyGroup>";
-
-    private const string browserCultureCode = @"// In Program.cs (Client project)
-var js = app.Services.GetRequiredService<IJSRuntime>();
-var browserLang = await js.InvokeAsync<string>(""eval"", ""navigator.language"");
-var culture = new CultureInfo(browserLang);
-CultureInfo.DefaultThreadCurrentCulture = culture;
-CultureInfo.DefaultThreadCurrentUICulture = culture;";
-
-    private const string granularityEnumCode = @"public enum DateFieldGranularity
-{
-    Day,    // Show only date segments (Year, Month, Day)
-    Hour,   // Show date and hour segments
-    Minute  // Show date, hour, and minute segments
-}";
-
-    private const string hourCycleEnumCode = @"public enum HourCycle
-{
-    Auto, // Use the locale's default hour cycle
-    H12,  // 12-hour cycle with AM/PM (1-12)
-    H23,  // 24-hour cycle (0-23)
-    H24,  // 24-hour cycle (1-24)
-    H11   // 12-hour cycle (0-11)
-}";
 
     private const string basicExampleCode = @"@code {
     private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
 }
 
-<DateFieldRoot @bind-Value=""selectedDate"" class=""group"">
+<DateFieldRoot @bind-Value=""selectedDate"" Format=""yyyy-MM-dd"" class=""group"">
     <DateFieldLabel>Select a date</DateFieldLabel>
-    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
+    <DateFieldInput class=""..."" />
 </DateFieldRoot>
 
 <p>Selected: @(selectedDate?.ToString(""yyyy-MM-dd"") ?? ""None"")</p>";
@@ -430,13 +421,27 @@ CultureInfo.DefaultThreadCurrentUICulture = culture;";
 }
 
 <DateFieldRoot @bind-DateTimeValue=""selectedDateTime"" 
-               Granularity=""DateFieldGranularity.Minute""
+               Format=""yyyy-MM-dd""
                class=""group"">
     <DateFieldLabel>Select date and time</DateFieldLabel>
-    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
+    <DateFieldInput class=""..."" />
 </DateFieldRoot>
 
 <p>Selected: @(selectedDateTime?.ToString(""yyyy-MM-dd HH:mm"") ?? ""None"")</p>";
+
+    private const string time12HourExampleCode = @"@code {
+    private DateTime? dateTime = DateTime.Now;
+}
+
+<DateFieldRoot @bind-DateTimeValue=""dateTime"" 
+               Format=""MM/dd/yyyy""
+               TimeFormat=""hh:mm""
+               class=""group"">
+    <DateFieldLabel>Select date and time</DateFieldLabel>
+    <DateFieldInput class=""..."" />
+</DateFieldRoot>
+
+<p>Selected: @(dateTime?.ToString(""MM/dd/yyyy hh:mm tt"") ?? ""None"")</p>";
 
     private const string minMaxExampleCode = @"@code {
     private DateOnly? date = DateOnly.FromDateTime(DateTime.Today);
@@ -445,23 +450,25 @@ CultureInfo.DefaultThreadCurrentUICulture = culture;";
 }
 
 <DateFieldRoot @bind-Value=""date"" 
+               Format=""yyyy-MM-dd""
                MinValue=""@minDate"" 
                MaxValue=""@maxDate""
                class=""group"">
     <DateFieldLabel>Select a date (Jan - Dec 2025)</DateFieldLabel>
-    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
+    <DateFieldInput class=""..."" />
 </DateFieldRoot>";
 
     private const string formExampleCode = @"<EditForm EditContext=""editContext"" OnSubmit=""HandleSubmit"">
     <DataAnnotationsValidator />
     
     <DateFieldRoot @bind-Value=""model.BirthDate""
+                   Format=""yyyy-MM-dd""
                    Name=""birthDate""
                    Required=""true""
                    Invalid=""@(submitted && model.BirthDate == null)""
                    class=""group"">
         <DateFieldLabel>Birth Date (Required)</DateFieldLabel>
-        <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
+        <DateFieldInput class=""..."" />
     </DateFieldRoot>
     <ValidationMessage For=""@(() => model.BirthDate)"" />
 
@@ -469,5 +476,18 @@ CultureInfo.DefaultThreadCurrentUICulture = culture;";
 </EditForm>";
 
     private const string tailwindExampleCode = @"<!-- DateFieldInput with Tailwind classes -->
-<DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />";
+<DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background 
+    border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] 
+    focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 
+    group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed 
+    group-data-[invalid]:border-su-destructive 
+    [&_[data-segment]:not([data-segment='literal'])]:px-1.5 
+    [&_[data-segment]:not([data-segment='literal'])]:py-0.5 
+    [&_[data-segment]:not([data-segment='literal'])]:rounded-md 
+    [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] 
+    [&_[data-segment]:not([data-segment='literal'])]:text-center 
+    [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 
+    [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary 
+    [&_[data-segment='literal']]:text-su-muted-foreground 
+    [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />";
 }

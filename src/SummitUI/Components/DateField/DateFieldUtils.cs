@@ -8,22 +8,17 @@ namespace SummitUI;
 internal static class DateFieldUtils
 {
     /// <summary>
-    /// Gets segments for the date field based on granularity and culture.
+    /// Gets segments for the date field based on format and mode.
     /// </summary>
-    public static List<DateFieldSegmentState> GetSegments(
-        DateFieldContext context)
+    public static List<DateFieldSegmentState> GetSegments(DateFieldContext context)
     {
         var segments = new List<DateFieldSegmentState>();
-        var culture = context.Culture;
         
-        // Use custom date pattern if provided, otherwise fall back to culture's short date pattern
-        var datePattern = !string.IsNullOrEmpty(context.DatePattern) 
-            ? context.DatePattern 
-            : culture.DateTimeFormat.ShortDatePattern;
-        segments.AddRange(ParsePattern(datePattern));
+        // Parse date format into segments
+        segments.AddRange(ParsePattern(context.Format));
         
-        // Add time segments if granularity requires it
-        if (context.Granularity != DateFieldGranularity.Day)
+        // Add time segments if in DateTime mode
+        if (context.IsDateTimeMode)
         {
             // Add separator between date and time
             segments.Add(new DateFieldSegmentState 
@@ -32,7 +27,7 @@ internal static class DateFieldUtils
                 LiteralValue = " " 
             });
             
-            // Get time segments based on granularity and hour cycle
+            // Get time segments based on TimeFormat
             var timeSegments = GetTimeSegments(context);
             segments.AddRange(timeSegments);
         }
@@ -108,28 +103,24 @@ internal static class DateFieldUtils
     }
 
     /// <summary>
-    /// Gets time segments based on granularity and hour cycle settings.
+    /// Gets time segments based on TimeFormat setting.
     /// </summary>
     private static List<DateFieldSegmentState> GetTimeSegments(DateFieldContext context)
     {
         var segments = new List<DateFieldSegmentState>();
-        var culture = context.Culture;
+        var timeSeparator = context.GetTimeSeparator();
         var use12Hour = context.Uses12HourClock();
-        var timeSeparator = culture.DateTimeFormat.TimeSeparator;
         
         // Hour
         segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.Hour });
         
-        // Hour:Minute separator
-        if (context.Granularity >= DateFieldGranularity.Minute)
-        {
-            segments.Add(new DateFieldSegmentState 
-            { 
-                Type = DateFieldSegmentType.Literal, 
-                LiteralValue = timeSeparator 
-            });
-            segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.Minute });
-        }
+        // Hour:Minute separator and minute
+        segments.Add(new DateFieldSegmentState 
+        { 
+            Type = DateFieldSegmentType.Literal, 
+            LiteralValue = timeSeparator 
+        });
+        segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.Minute });
         
         // AM/PM indicator for 12-hour clocks
         if (use12Hour)
@@ -216,30 +207,6 @@ internal static class DateFieldUtils
     }
 
     /// <summary>
-    /// Formats a segment value for display.
-    /// </summary>
-    public static string FormatSegmentValue(DateFieldSegmentType type, DateTime dateTime, DateFieldContext context)
-    {
-        var culture = context.Culture;
-        var use12Hour = context.Uses12HourClock();
-        
-        return type switch
-        {
-            DateFieldSegmentType.Year => dateTime.Year.ToString("0000"),
-            DateFieldSegmentType.Month => dateTime.Month.ToString("00"),
-            DateFieldSegmentType.Day => dateTime.Day.ToString("00"),
-            DateFieldSegmentType.Hour => use12Hour 
-                ? (dateTime.Hour % 12 == 0 ? 12 : dateTime.Hour % 12).ToString("00")
-                : dateTime.Hour.ToString("00"),
-            DateFieldSegmentType.Minute => dateTime.Minute.ToString("00"),
-            DateFieldSegmentType.DayPeriod => dateTime.Hour < 12 
-                ? culture.DateTimeFormat.AMDesignator 
-                : culture.DateTimeFormat.PMDesignator,
-            _ => ""
-        };
-    }
-
-    /// <summary>
     /// Gets the placeholder text for a segment type.
     /// Returns lowercase format indicators like "yyyy", "mm", "dd".
     /// </summary>
@@ -252,7 +219,7 @@ internal static class DateFieldUtils
             DateFieldSegmentType.Day => "dd",
             DateFieldSegmentType.Hour => "hh",
             DateFieldSegmentType.Minute => "mm",
-            DateFieldSegmentType.DayPeriod => context.Culture.DateTimeFormat.AMDesignator.ToLowerInvariant(),
+            DateFieldSegmentType.DayPeriod => context.GetAmDesignator().ToLowerInvariant(),
             _ => ""
         };
     }
@@ -277,8 +244,8 @@ internal static class DateFieldUtils
                 return GetSegmentPlaceholder(type, context);
             }
             return isPm.Value 
-                ? context.Culture.DateTimeFormat.PMDesignator 
-                : context.Culture.DateTimeFormat.AMDesignator;
+                ? context.GetPmDesignator() 
+                : context.GetAmDesignator();
         }
         
         // Get the value from context

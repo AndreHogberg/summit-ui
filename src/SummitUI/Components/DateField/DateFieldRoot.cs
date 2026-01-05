@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -6,7 +5,7 @@ namespace SummitUI;
 
 /// <summary>
 /// Root component for a date/time field with segmented editing.
-/// Supports both DateOnly and DateTime values with culture-aware formatting.
+/// Supports both DateOnly and DateTime values with explicit format strings.
 /// </summary>
 public class DateFieldRoot : ComponentBase
 {
@@ -20,17 +19,20 @@ public class DateFieldRoot : ComponentBase
     [Parameter] public EventCallback<DateTime?> DateTimeValueChanged { get; set; }
     [Parameter] public DateTime DateTimePlaceholder { get; set; } = DateTime.Now;
     
-    // Configuration
-    [Parameter] public DateFieldGranularity Granularity { get; set; } = DateFieldGranularity.Day;
-    [Parameter] public HourCycle HourCycle { get; set; } = HourCycle.Auto;
-    [Parameter] public CultureInfo? Locale { get; set; }
+    // Format configuration
+    /// <summary>
+    /// Date format pattern using standard .NET date format specifiers.
+    /// Examples: "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy".
+    /// </summary>
+    [Parameter, EditorRequired] public string Format { get; set; } = default!;
     
     /// <summary>
-    /// Custom date pattern to override the culture's default short date pattern.
-    /// Use standard .NET date format specifiers (e.g., "yyyy-MM-dd", "dd.MM.yyyy").
-    /// Only affects date segments; time segments are derived from culture and granularity.
+    /// Time format pattern for DateTime mode. Only used when binding to DateTimeValue.
+    /// Use "HH:mm" for 24-hour format, "hh:mm" for 12-hour format (shows AM/PM).
+    /// The separator character in the pattern determines the time separator displayed.
+    /// Defaults to "HH:mm" (24-hour format with colon separator).
     /// </summary>
-    [Parameter] public string? DatePattern { get; set; }
+    [Parameter] public string TimeFormat { get; set; } = "HH:mm";
     
     // Validation constraints
     [Parameter] public DateOnly? MinValue { get; set; }
@@ -54,16 +56,12 @@ public class DateFieldRoot : ComponentBase
     
     /// <summary>
     /// Determines if we're in DateTime mode based on which binding is provided.
-    /// If DateTimeValue or DateTimeValueChanged is set, or Granularity includes time, use DateTime mode.
+    /// If DateTimeValue or DateTimeValueChanged is set, use DateTime mode.
     /// </summary>
-    private bool IsDateTimeMode => DateTimeValueChanged.HasDelegate || 
-                                   DateTimeValue.HasValue || 
-                                   Granularity != DateFieldGranularity.Day;
+    private bool IsDateTimeMode => DateTimeValueChanged.HasDelegate || DateTimeValue.HasValue;
 
     protected override void OnParametersSet()
     {
-        var culture = Locale ?? CultureInfo.CurrentCulture;
-        
         // Determine validation state
         var isInvalid = Invalid || IsOutOfRange();
         
@@ -72,10 +70,8 @@ public class DateFieldRoot : ComponentBase
             _context.SetDateTimeState(
                 DateTimeValue,
                 DateTimePlaceholder,
-                Granularity,
-                HourCycle,
-                culture,
-                DatePattern,
+                Format,
+                TimeFormat,
                 Disabled,
                 ReadOnly,
                 isInvalid,
@@ -88,10 +84,7 @@ public class DateFieldRoot : ComponentBase
             _context.SetDateState(
                 Value,
                 Placeholder,
-                Granularity,
-                HourCycle,
-                culture,
-                DatePattern,
+                Format,
                 Disabled,
                 ReadOnly,
                 isInvalid,

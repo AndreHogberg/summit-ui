@@ -5,7 +5,7 @@ using SummitUI.Interop;
 namespace SummitUI;
 
 /// <summary>
-/// Container for date field segments. Generates segments based on culture and granularity.
+/// Container for date field segments. Generates segments based on format configuration.
 /// </summary>
 public class DateFieldInput : ComponentBase, IDisposable
 {
@@ -21,7 +21,7 @@ public class DateFieldInput : ComponentBase, IDisposable
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private List<DateFieldSegmentState> _segments = new();
-    private bool _labelsLoaded;
+    private bool _localizationLoaded;
 
     protected override void OnInitialized()
     {
@@ -39,11 +39,19 @@ public class DateFieldInput : ComponentBase, IDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !_labelsLoaded)
+        if (firstRender && !_localizationLoaded)
         {
-            _labelsLoaded = true;
-            var labels = await JsInterop.GetSegmentLabelsAsync(Context.Culture.Name);
+            _localizationLoaded = true;
+            
+            // Get browser locale and use it for segment labels and AM/PM designators
+            var browserLocale = await JsInterop.GetBrowserLocaleAsync();
+            
+            var labels = await JsInterop.GetSegmentLabelsAsync(browserLocale);
             Context.SetSegmentLabels(labels);
+            
+            var designators = await JsInterop.GetDayPeriodDesignatorsAsync(browserLocale);
+            Context.SetDayPeriodDesignators(designators.Am, designators.Pm);
+            
             StateHasChanged();
         }
     }

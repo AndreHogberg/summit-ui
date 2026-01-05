@@ -10,6 +10,14 @@ const elementHandlers = new Map();
 const inputBuffers = new Map();
 
 /**
+ * Gets the browser's current locale.
+ * @returns {string} The browser locale (e.g., "en-US", "sv-SE").
+ */
+export function getBrowserLocale() {
+    return navigator.language || 'en-US';
+}
+
+/**
  * Gets localized segment labels using Intl.DisplayNames.
  * Falls back to English if the API is not available or fails.
  * @param {string} locale - The locale to use (e.g., "en-US", "sv-SE").
@@ -40,6 +48,39 @@ export function getSegmentLabels(locale) {
             minute: dn.of('minute') ?? fallback.minute,
             second: dn.of('second') ?? fallback.second,
             dayPeriod: dn.of('dayPeriod') ?? fallback.dayPeriod
+        };
+    } catch {
+        return fallback;
+    }
+}
+
+/**
+ * Gets localized AM/PM designators using Intl.DateTimeFormat.
+ * @param {string} locale - The locale to use (e.g., "en-US", "sv-SE").
+ * @returns {Object} Object containing 'am' and 'pm' designator strings.
+ */
+export function getDayPeriodDesignators(locale) {
+    const fallback = { am: 'AM', pm: 'PM' };
+    
+    try {
+        const formatter = new Intl.DateTimeFormat(locale, {
+            hour: 'numeric',
+            hour12: true
+        });
+        
+        // Format a time in AM (6:00 AM)
+        const amDate = new Date(2000, 0, 1, 6, 0, 0);
+        const amParts = formatter.formatToParts(amDate);
+        const amPart = amParts.find(p => p.type === 'dayPeriod');
+        
+        // Format a time in PM (18:00 / 6:00 PM)
+        const pmDate = new Date(2000, 0, 1, 18, 0, 0);
+        const pmParts = formatter.formatToParts(pmDate);
+        const pmPart = pmParts.find(p => p.type === 'dayPeriod');
+        
+        return {
+            am: amPart?.value ?? fallback.am,
+            pm: pmPart?.value ?? fallback.pm
         };
     } catch {
         return fallback;

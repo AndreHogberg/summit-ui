@@ -79,7 +79,9 @@ export {
 export {
     initializeSegment as dateField_initializeSegment,
     destroySegment as dateField_destroySegment,
-    getSegmentLabels as dateField_getSegmentLabels
+    getBrowserLocale as dateField_getBrowserLocale,
+    getSegmentLabels as dateField_getSegmentLabels,
+    getDayPeriodDesignators as dateField_getDayPeriodDesignators
 } from './date-field.js';
 
 // Dropdown Menu exports (portal and trigger functionality only - keyboard nav handled by Blazor)

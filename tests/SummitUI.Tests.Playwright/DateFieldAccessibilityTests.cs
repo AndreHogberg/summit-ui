@@ -570,10 +570,10 @@ public class DateFieldAccessibilityTests : PageTest
 
     #endregion
 
-    #region Locale-Specific Tests
+    #region Format-Specific Tests
 
     [Test]
-    public async Task SwedishLocale_ShouldShow_YearFirst()
+    public async Task SwedishFormat_ShouldShow_YearFirst()
     {
         var section = Page.Locator("[data-testid='swedish-section']");
         var input = section.Locator(".datefield-input");
@@ -585,38 +585,66 @@ public class DateFieldAccessibilityTests : PageTest
     }
 
     [Test]
-    public async Task USLocale_ShouldShow_MonthFirst()
+    public async Task USFormat_ShouldShow_MonthFirst()
     {
         var section = Page.Locator("[data-testid='us-section']");
         var input = section.Locator(".datefield-input");
         var segments = input.Locator("[role='spinbutton']");
         
-        // US format is M/d/yyyy, so month should be first
+        // US format is MM/dd/yyyy, so month should be first
         var firstSegment = segments.First;
         await Expect(firstSegment).ToHaveAttributeAsync("data-segment", "month");
     }
 
     [Test]
-    public async Task JapaneseLocale_ShouldShow_YearFirst()
+    public async Task UKFormat_ShouldShow_DayFirst()
     {
-        var section = Page.Locator("[data-testid='japanese-section']");
+        var section = Page.Locator("[data-testid='uk-section']");
         var input = section.Locator(".datefield-input");
         var segments = input.Locator("[role='spinbutton']");
         
-        // Japanese format is yyyy/MM/dd, so year should be first
+        // UK format is dd/MM/yyyy, so day should be first
         var firstSegment = segments.First;
-        await Expect(firstSegment).ToHaveAttributeAsync("data-segment", "year");
+        await Expect(firstSegment).ToHaveAttributeAsync("data-segment", "day");
     }
 
     [Test]
-    public async Task SwedishLocale_ShouldHave_SwedishLabel()
+    public async Task GermanFormat_ShouldShow_DayFirst()
     {
-        var section = Page.Locator("[data-testid='swedish-section']");
+        var section = Page.Locator("[data-testid='german-section']");
+        var input = section.Locator(".datefield-input");
+        var segments = input.Locator("[role='spinbutton']");
+        
+        // German format is dd.MM.yyyy, so day should be first
+        var firstSegment = segments.First;
+        await Expect(firstSegment).ToHaveAttributeAsync("data-segment", "day");
+    }
+
+    [Test]
+    public async Task GermanFormat_ShouldUse_DotSeparators()
+    {
+        var section = Page.Locator("[data-testid='german-section']");
+        var input = section.Locator(".datefield-input");
+        var literals = input.Locator("[data-segment='literal']");
+        
+        // German format uses dots as separators
+        var firstLiteral = literals.First;
+        var text = await firstLiteral.TextContentAsync();
+        await Assert.That(text).IsEqualTo(".");
+    }
+
+    [Test]
+    public async Task Segment_ShouldHave_LocalizedAriaLabel_FromBrowser()
+    {
+        var section = Page.Locator("[data-testid='basic-section']");
         var daySegment = section.Locator("[data-segment='day']");
         var ariaLabel = await daySegment.GetAttributeAsync("aria-label");
         
-        // Swedish label for day should be "dag"
-        await Assert.That(ariaLabel!.ToLowerInvariant()).IsEqualTo("dag");
+        // The aria-label should be set from browser's Intl API
+        // We can't assert the exact value since it depends on browser locale
+        // but we can verify it exists and isn't empty
+        await Assert.That(ariaLabel).IsNotNull();
+        await Assert.That(ariaLabel!.Length).IsGreaterThan(0);
     }
 
     #endregion

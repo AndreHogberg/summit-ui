@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
 
 namespace SummitUI;
@@ -22,11 +21,9 @@ public class DateFieldContext
     // Indicates whether we're working with DateTime (true) or DateOnly (false)
     public bool IsDateTimeMode { get; private set; }
     
-    // Configuration
-    public DateFieldGranularity Granularity { get; private set; } = DateFieldGranularity.Day;
-    public HourCycle HourCycle { get; private set; } = HourCycle.Auto;
-    public CultureInfo Culture { get; private set; } = CultureInfo.CurrentCulture;
-    public string? DatePattern { get; private set; }
+    // Format configuration
+    public string Format { get; private set; } = "yyyy-MM-dd";
+    public string TimeFormat { get; private set; } = "HH:mm";
     
     // Validation constraints
     public DateOnly? MinDate { get; private set; }
@@ -45,6 +42,10 @@ public class DateFieldContext
     
     // Cached segment labels from JavaScript Intl.DisplayNames
     private Dictionary<DateFieldSegmentType, string>? _segmentLabels;
+    
+    // Cached AM/PM designators from JavaScript Intl.DateTimeFormat
+    private string _amDesignator = "AM";
+    private string _pmDesignator = "PM";
     
     // Per-segment state tracking for partial value entry
     private HashSet<DateFieldSegmentType> _filledSegments = new();
@@ -112,7 +113,7 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Gets whether the current value is out of the min/max range.
+    /// Gets the current value is out of the min/max range.
     /// </summary>
     public bool IsOutOfRange
     {
@@ -140,10 +141,7 @@ public class DateFieldContext
     public void SetDateState(
         DateOnly? value,
         DateOnly placeholder,
-        DateFieldGranularity granularity,
-        HourCycle hourCycle,
-        CultureInfo culture,
-        string? datePattern,
+        string format,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -154,10 +152,8 @@ public class DateFieldContext
         IsDateTimeMode = false;
         DateValue = value;
         DatePlaceholder = placeholder;
-        Granularity = granularity;
-        HourCycle = hourCycle;
-        Culture = culture;
-        DatePattern = datePattern;
+        Format = format;
+        TimeFormat = "HH:mm"; // Not used in DateOnly mode, but keep default
         Disabled = disabled;
         ReadOnly = readOnly;
         Invalid = invalid;
@@ -180,10 +176,8 @@ public class DateFieldContext
     public void SetDateTimeState(
         DateTime? value,
         DateTime placeholder,
-        DateFieldGranularity granularity,
-        HourCycle hourCycle,
-        CultureInfo culture,
-        string? datePattern,
+        string format,
+        string timeFormat,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -194,10 +188,8 @@ public class DateFieldContext
         IsDateTimeMode = true;
         DateTimeValue = value;
         DateTimePlaceholder = placeholder;
-        Granularity = granularity;
-        HourCycle = hourCycle;
-        Culture = culture;
-        DatePattern = datePattern;
+        Format = format;
+        TimeFormat = timeFormat;
         Disabled = disabled;
         ReadOnly = readOnly;
         Invalid = invalid;
@@ -510,12 +502,13 @@ public class DateFieldContext
             DateFieldSegmentType.Day
         };
         
-        if (Granularity >= DateFieldGranularity.Hour)
+        if (IsDateTimeMode)
+        {
             _filledSegments.Add(DateFieldSegmentType.Hour);
-        if (Granularity >= DateFieldGranularity.Minute)
             _filledSegments.Add(DateFieldSegmentType.Minute);
-        if (Uses12HourClock())
-            _filledSegments.Add(DateFieldSegmentType.DayPeriod);
+            if (Uses12HourClock())
+                _filledSegments.Add(DateFieldSegmentType.DayPeriod);
+        }
     }
     
     /// <summary>
@@ -550,7 +543,7 @@ public class DateFieldContext
     }
     
     /// <summary>
-    /// Checks if all required segments for the current granularity are filled.
+    /// Checks if all required segments for the current mode are filled.
     /// </summary>
     private bool AllRequiredSegmentsFilled()
     {
@@ -559,11 +552,12 @@ public class DateFieldContext
         if (!_filledSegments.Contains(DateFieldSegmentType.Month)) return false;
         if (!_filledSegments.Contains(DateFieldSegmentType.Day)) return false;
         
-        // Time segments based on granularity
-        if (Granularity >= DateFieldGranularity.Hour && !_filledSegments.Contains(DateFieldSegmentType.Hour))
-            return false;
-        if (Granularity >= DateFieldGranularity.Minute && !_filledSegments.Contains(DateFieldSegmentType.Minute))
-            return false;
+        // Time segments required in DateTime mode
+        if (IsDateTimeMode)
+        {
+            if (!_filledSegments.Contains(DateFieldSegmentType.Hour)) return false;
+            if (!_filledSegments.Contains(DateFieldSegmentType.Minute)) return false;
+        }
         
         return true;
     }
@@ -681,19 +675,42 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Determines if the culture uses 12-hour time format.
+    /// Determines if the time format uses 12-hour clock.
+    /// Checks for lowercase 'h' in the TimeFormat pattern.
     /// </summary>
     public bool Uses12HourClock()
     {
-        if (HourCycle == HourCycle.H12 || HourCycle == HourCycle.H11)
-            return true;
-        if (HourCycle == HourCycle.H23 || HourCycle == HourCycle.H24)
-            return false;
-        
-        // Auto: detect from culture
-        var pattern = Culture.DateTimeFormat.ShortTimePattern;
-        return pattern.Contains("h") || pattern.Contains("t");
+        // Look for lowercase 'h' which indicates 12-hour format
+        // Uppercase 'H' indicates 24-hour format
+        return TimeFormat.Contains('h');
     }
+
+    /// <summary>
+    /// Gets the time separator from the TimeFormat pattern.
+    /// </summary>
+    public string GetTimeSeparator()
+    {
+        // Find the separator between hour and minute in the format
+        // e.g., "HH:mm" -> ":", "HH.mm" -> "."
+        foreach (char c in TimeFormat)
+        {
+            if (c != 'H' && c != 'h' && c != 'm' && c != 's')
+            {
+                return c.ToString();
+            }
+        }
+        return ":"; // Default fallback
+    }
+
+    /// <summary>
+    /// Gets the AM designator.
+    /// </summary>
+    public string GetAmDesignator() => _amDesignator;
+
+    /// <summary>
+    /// Gets the PM designator.
+    /// </summary>
+    public string GetPmDesignator() => _pmDesignator;
 
     public void NotifyStateChanged() => OnStateChanged?.Invoke();
 
@@ -711,6 +728,15 @@ public class DateFieldContext
             [DateFieldSegmentType.Minute] = labels.GetValueOrDefault("minute", "Minute"),
             [DateFieldSegmentType.DayPeriod] = labels.GetValueOrDefault("dayPeriod", "AM/PM")
         };
+    }
+
+    /// <summary>
+    /// Sets the cached AM/PM designators from JavaScript Intl.DateTimeFormat.
+    /// </summary>
+    public void SetDayPeriodDesignators(string am, string pm)
+    {
+        _amDesignator = am;
+        _pmDesignator = pm;
     }
 
     /// <summary>
