@@ -1,0 +1,122 @@
+@page "/tests/select/animated"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Test page for Select with CSS animations.
+    Tests that keyboard navigation works correctly with animated content.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <SelectRoot TValue="string" @bind-Value="selectedValue">
+        <SelectTrigger TValue="string" data-testid="trigger">
+            <SelectValue TValue="string" Placeholder="Select with animation..." />
+        </SelectTrigger>
+        <SelectPortal TValue="string">
+            <SelectContent TValue="string" data-testid="content" class="animated-content" SideOffset="4">
+                <SelectViewport TValue="string">
+                    <SelectItem TValue="string" Value="@("first")" Label="First" data-testid="item-first">
+                        <SelectItemText>First Option</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("second")" Label="Second" data-testid="item-second">
+                        <SelectItemText>Second Option</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("third")" Label="Third" data-testid="item-third">
+                        <SelectItemText>Third Option</SelectItemText>
+                    </SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+    
+    <p data-testid="selected-value" style="margin-top: 1rem;">
+        Selected: <strong>@(selectedValue ?? "None")</strong>
+    </p>
+</div>
+
+}
+
+@code {
+    private string? selectedValue;
+}
+
+<style>
+    [data-testid="trigger"] {
+        display: inline-flex;
+        align-items: center;
+        min-width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    
+    [data-testid="trigger"]:focus {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    .animated-content {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        padding: 0.25rem;
+    }
+    
+    .animated-content[data-state="open"] {
+        animation: contentShow 150ms ease-out;
+    }
+    
+    .animated-content[data-state="closed"] {
+        animation: contentHide 150ms ease-in;
+    }
+    
+    [data-summit-select-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-select-item][data-state="checked"] {
+        background: #e7f1ff;
+        font-weight: 500;
+    }
+    
+    [data-summit-select-value][data-placeholder] {
+        color: #999;
+    }
+    
+    @@keyframes contentShow {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @@keyframes contentHide {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+    }
+</style>

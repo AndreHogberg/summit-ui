@@ -1,0 +1,126 @@
+@page "/tests/select/typeahead"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Test page for Select typeahead/search functionality.
+    Contains a single select with many items for typeahead testing.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <SelectRoot TValue="string" @bind-Value="selectedValue">
+        <SelectTrigger TValue="string" data-testid="trigger">
+            <SelectValue TValue="string" Placeholder="Type to search..." />
+        </SelectTrigger>
+        <SelectPortal TValue="string">
+            <SelectContent TValue="string" data-testid="content" SideOffset="4">
+                <SelectViewport TValue="string">
+                    <SelectItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                        <SelectItemText>Apple</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("apricot")" Label="Apricot" data-testid="item-apricot">
+                        <SelectItemText>Apricot</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                        <SelectItemText>Banana</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("blueberry")" Label="Blueberry" data-testid="item-blueberry">
+                        <SelectItemText>Blueberry</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("cherry")" Label="Cherry" data-testid="item-cherry">
+                        <SelectItemText>Cherry</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("grape")" Label="Grape" data-testid="item-grape">
+                        <SelectItemText>Grape</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("grapefruit")" Label="Grapefruit" data-testid="item-grapefruit">
+                        <SelectItemText>Grapefruit</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
+                        <SelectItemText>Mango</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                        <SelectItemText>Orange</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("papaya")" Label="Papaya" data-testid="item-papaya">
+                        <SelectItemText>Papaya</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("peach")" Label="Peach" data-testid="item-peach">
+                        <SelectItemText>Peach</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("pear")" Label="Pear" data-testid="item-pear">
+                        <SelectItemText>Pear</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("pineapple")" Label="Pineapple" data-testid="item-pineapple">
+                        <SelectItemText>Pineapple</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("strawberry")" Label="Strawberry" data-testid="item-strawberry">
+                        <SelectItemText>Strawberry</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("watermelon")" Label="Watermelon" data-testid="item-watermelon">
+                        <SelectItemText>Watermelon</SelectItemText>
+                    </SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+</div>
+
+}
+
+@code {
+    private string? selectedValue;
+}
+
+<style>
+    [data-testid="trigger"] {
+        display: inline-flex;
+        align-items: center;
+        min-width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    
+    [data-testid="trigger"]:focus {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-testid="content"] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        padding: 0.25rem;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    [data-summit-select-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-select-item][data-state="checked"] {
+        background: #e7f1ff;
+        font-weight: 500;
+    }
+    
+    [data-summit-select-value][data-placeholder] {
+        color: #999;
+    }
+</style>

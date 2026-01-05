@@ -1,0 +1,95 @@
+@page "/tests/select/basic"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Minimal test page for Select ARIA and basic accessibility tests.
+    Contains a single select component with all necessary elements for testing.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <SelectRoot TValue="string" @bind-Value="selectedValue">
+        <SelectTrigger TValue="string" data-testid="trigger">
+            <SelectValue TValue="string" Placeholder="Select a fruit..." />
+        </SelectTrigger>
+        <SelectPortal TValue="string">
+            <SelectContent TValue="string" data-testid="content" SideOffset="4">
+                <SelectViewport TValue="string">
+                    <SelectItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                        <SelectItemText>Apple</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                        <SelectItemText>Banana</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                        <SelectItemText>Orange</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("grape")" Label="Grape" data-testid="item-grape">
+                        <SelectItemText>Grape</SelectItemText>
+                    </SelectItem>
+                    <SelectItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
+                        <SelectItemText>Mango</SelectItemText>
+                    </SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+</div>
+
+}
+
+@code {
+    private string? selectedValue;
+}
+
+<style>
+    [data-testid="trigger"] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    
+    [data-testid="trigger"]:focus {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-testid="content"] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        padding: 0.25rem;
+    }
+    
+    [data-summit-select-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-select-item][data-state="checked"] {
+        background: #e7f1ff;
+        font-weight: 500;
+    }
+    
+    [data-summit-select-value][data-placeholder] {
+        color: #999;
+    }
+</style>

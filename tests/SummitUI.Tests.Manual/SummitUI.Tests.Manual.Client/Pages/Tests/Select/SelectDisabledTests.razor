@@ -1,0 +1,128 @@
+@page "/tests/select/disabled"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Test page for disabled Select states.
+    Contains:
+    - Fully disabled select
+    - Select with disabled items
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <section data-testid="disabled-select-section" style="margin-bottom: 2rem;">
+        <h2>Disabled Select</h2>
+        <SelectRoot TValue="string" Value="@("preset")" Disabled="true">
+            <SelectTrigger TValue="string" data-testid="disabled-trigger">
+                <SelectValue TValue="string" Placeholder="Disabled select" />
+            </SelectTrigger>
+            <SelectPortal TValue="string">
+                <SelectContent TValue="string" SideOffset="4">
+                    <SelectViewport TValue="string">
+                        <SelectItem TValue="string" Value="@("preset")" Label="Preset Value">
+                            <SelectItemText>Preset Value</SelectItemText>
+                        </SelectItem>
+                    </SelectViewport>
+                </SelectContent>
+            </SelectPortal>
+        </SelectRoot>
+    </section>
+
+    <section data-testid="disabled-items-section">
+        <h2>Select with Disabled Items</h2>
+        <SelectRoot TValue="string" @bind-Value="selectedPlan">
+            <SelectTrigger TValue="string" data-testid="disabled-items-trigger">
+                <SelectValue TValue="string" Placeholder="Choose a plan..." />
+            </SelectTrigger>
+            <SelectPortal TValue="string">
+                <SelectContent TValue="string" data-testid="disabled-items-content" SideOffset="4">
+                    <SelectViewport TValue="string">
+                        <SelectItem TValue="string" Value="@("free")" Label="Free" data-testid="item-free">
+                            <SelectItemText>Free</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue="string" Value="@("pro")" Label="Pro" data-testid="item-pro">
+                            <SelectItemText>Pro - $9/month</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue="string" Value="@("enterprise")" Label="Enterprise" Disabled="true" data-testid="item-enterprise">
+                            <SelectItemText>Enterprise (Coming Soon)</SelectItemText>
+                        </SelectItem>
+                    </SelectViewport>
+                </SelectContent>
+            </SelectPortal>
+        </SelectRoot>
+    </section>
+</div>
+}
+
+@code {
+    private string? selectedPlan;
+}
+
+<style>
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+    
+    section h2 {
+        margin-top: 0;
+        font-size: 1rem;
+    }
+
+    [data-summit-select-trigger] {
+        display: inline-flex;
+        align-items: center;
+        min-width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-trigger][data-disabled] {
+        background: #f5f5f5;
+        color: #999;
+        cursor: not-allowed;
+    }
+    
+    [data-summit-select-trigger]:focus {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-summit-select-content] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        padding: 0.25rem;
+    }
+    
+    [data-summit-select-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-select-item][data-disabled] {
+        color: #999;
+        cursor: not-allowed;
+    }
+    
+    [data-summit-select-value][data-placeholder] {
+        color: #999;
+    }
+</style>

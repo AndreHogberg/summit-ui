@@ -1,0 +1,68 @@
+@page "/tests/accordion/multiple"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Accordion Multiple Mode Tests</h1>
+
+    <!-- Multiple mode accordion - allows multiple items open -->
+    <AccordionRoot Type="AccordionType.Multiple" DefaultValues="@(["feature-1", "feature-2"])" data-testid="accordion">
+        <AccordionItem Value="feature-1" data-testid="item-1">
+            <AccordionHeader>
+                <AccordionTrigger data-testid="trigger-1">Feature 1</AccordionTrigger>
+            </AccordionHeader>
+            <AccordionContent data-testid="content-1">
+                <p>Feature 1 content.</p>
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="feature-2" data-testid="item-2">
+            <AccordionHeader>
+                <AccordionTrigger data-testid="trigger-2">Feature 2</AccordionTrigger>
+            </AccordionHeader>
+            <AccordionContent data-testid="content-2">
+                <p>Feature 2 content.</p>
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="feature-3" data-testid="item-3">
+            <AccordionHeader>
+                <AccordionTrigger data-testid="trigger-3">Feature 3</AccordionTrigger>
+            </AccordionHeader>
+            <AccordionContent data-testid="content-3">
+                <p>Feature 3 content.</p>
+            </AccordionContent>
+        </AccordionItem>
+    </AccordionRoot>
+</div>
+}
+
+<style>
+    [data-summit-accordion-item] {
+        border: 1px solid #ccc;
+        margin-bottom: 4px;
+    }
+
+    [data-summit-accordion-trigger] {
+        display: flex;
+        width: 100%;
+        padding: 12px 16px;
+        background: #f5f5f5;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    [data-summit-accordion-trigger][data-state="open"] {
+        background: #e0e0e0;
+    }
+
+    [data-summit-accordion-content] {
+        padding: 12px 16px;
+    }
+</style>

@@ -1,0 +1,59 @@
+@page "/tests/accordion/non-collapsible"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Accordion Non-Collapsible Tests</h1>
+
+    <!-- Non-collapsible accordion - at least one item must always be open -->
+    <AccordionRoot DefaultValue="always-1" Collapsible="false" data-testid="accordion">
+        <AccordionItem Value="always-1" data-testid="item-1">
+            <AccordionHeader>
+                <AccordionTrigger data-testid="trigger-1">Always One Open</AccordionTrigger>
+            </AccordionHeader>
+            <AccordionContent data-testid="content-1">
+                <p>In non-collapsible mode, at least one item must always be open.</p>
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="always-2" data-testid="item-2">
+            <AccordionHeader>
+                <AccordionTrigger data-testid="trigger-2">Try Closing Me</AccordionTrigger>
+            </AccordionHeader>
+            <AccordionContent data-testid="content-2">
+                <p>You can switch to this item, but you can't close the last open item.</p>
+            </AccordionContent>
+        </AccordionItem>
+    </AccordionRoot>
+</div>
+}
+
+<style>
+    [data-summit-accordion-item] {
+        border: 1px solid #ccc;
+        margin-bottom: 4px;
+    }
+
+    [data-summit-accordion-trigger] {
+        display: flex;
+        width: 100%;
+        padding: 12px 16px;
+        background: #f5f5f5;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    [data-summit-accordion-trigger][data-state="open"] {
+        background: #e0e0e0;
+    }
+
+    [data-summit-accordion-content] {
+        padding: 12px 16px;
+    }
+</style>

@@ -1,0 +1,112 @@
+@page "/tests/select/grouped"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Test page for grouped Select items.
+    Contains a select with grouped items and labels.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <SelectRoot TValue="string" @bind-Value="selectedFood">
+        <SelectTrigger TValue="string" data-testid="trigger">
+            <SelectValue TValue="string" Placeholder="Choose food..." />
+        </SelectTrigger>
+        <SelectPortal TValue="string">
+            <SelectContent TValue="string" data-testid="content" SideOffset="4">
+                <SelectViewport TValue="string">
+                    <SelectGroup TValue="string" data-testid="group-fruits">
+                        <SelectGroupLabel class="select-group-label" data-testid="label-fruits">Fruits</SelectGroupLabel>
+                        <SelectItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                            <SelectItemText>Apple</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                            <SelectItemText>Banana</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                            <SelectItemText>Orange</SelectItemText>
+                        </SelectItem>
+                    </SelectGroup>
+                    <SelectGroup TValue="string" data-testid="group-vegetables">
+                        <SelectGroupLabel class="select-group-label" data-testid="label-vegetables">Vegetables</SelectGroupLabel>
+                        <SelectItem TValue="string" Value="@("carrot")" Label="Carrot" data-testid="item-carrot">
+                            <SelectItemText>Carrot</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue="string" Value="@("broccoli")" Label="Broccoli" data-testid="item-broccoli">
+                            <SelectItemText>Broccoli</SelectItemText>
+                        </SelectItem>
+                        <SelectItem TValue="string" Value="@("spinach")" Label="Spinach" data-testid="item-spinach">
+                            <SelectItemText>Spinach</SelectItemText>
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+</div>
+
+}
+
+@code {
+    private string? selectedFood;
+}
+
+<style>
+    [data-testid="trigger"] {
+        display: inline-flex;
+        align-items: center;
+        min-width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    
+    [data-testid="trigger"]:focus {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-testid="content"] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        padding: 0.25rem;
+    }
+    
+    .select-group-label {
+        padding: 0.5rem 0.75rem 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    [data-summit-select-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-select-item][data-state="checked"] {
+        background: #e7f1ff;
+        font-weight: 500;
+    }
+    
+    [data-summit-select-value][data-placeholder] {
+        color: #999;
+    }
+</style>

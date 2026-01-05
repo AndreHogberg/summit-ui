@@ -1,0 +1,191 @@
+@page "/tests/select/editform"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Test page for Select with EditForm integration.
+    Contains form validation, required fields, and hidden input tests.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <EditForm EditContext="editContext" OnSubmit="HandleSubmit" FormName="selectEditForm">
+        <DataAnnotationsValidator />
+
+        <div style="margin-bottom: 1rem;">
+            <label id="category-label" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+                Category (Required)
+            </label>
+            <SelectRoot TValue="string"
+                        @bind-Value="formModel.Category"
+                        Name="category"
+                        Required="true"
+                        Invalid="@(formSubmitted && string.IsNullOrEmpty(formModel.Category))">
+                <SelectTrigger TValue="string" data-testid="category-trigger" AriaLabelledBy="category-label">
+                    <SelectValue TValue="string" Placeholder="Select a category..." />
+                </SelectTrigger>
+                <SelectPortal TValue="string">
+                    <SelectContent TValue="string" data-testid="category-content" SideOffset="4">
+                        <SelectViewport TValue="string">
+                            <SelectItem TValue="string" Value="@("electronics")" Label="Electronics" data-testid="item-electronics">
+                                <SelectItemText>Electronics</SelectItemText>
+                            </SelectItem>
+                            <SelectItem TValue="string" Value="@("clothing")" Label="Clothing" data-testid="item-clothing">
+                                <SelectItemText>Clothing</SelectItemText>
+                            </SelectItem>
+                            <SelectItem TValue="string" Value="@("books")" Label="Books" data-testid="item-books">
+                                <SelectItemText>Books</SelectItemText>
+                            </SelectItem>
+                            <SelectItem TValue="string" Value="@("home")" Label="Home & Garden" data-testid="item-home">
+                                <SelectItemText>Home & Garden</SelectItemText>
+                            </SelectItem>
+                        </SelectViewport>
+                    </SelectContent>
+                </SelectPortal>
+            </SelectRoot>
+            <ValidationMessage For="@(() => formModel.Category)" />
+            @if (formSubmitted && string.IsNullOrEmpty(formModel.Category))
+            {
+                <p data-testid="category-error" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">
+                    Category is required
+                </p>
+            }
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label id="priority-label" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+                Priority Level (Optional)
+            </label>
+            <SelectRoot TValue="string" @bind-Value="formModel.Priority" Name="priority">
+                <SelectTrigger TValue="string" data-testid="priority-trigger" AriaLabelledBy="priority-label">
+                    <SelectValue TValue="string" Placeholder="Select priority..." />
+                </SelectTrigger>
+                <SelectPortal TValue="string">
+                    <SelectContent TValue="string" data-testid="priority-content" SideOffset="4">
+                        <SelectViewport TValue="string">
+                            <SelectItem TValue="string" Value="@("low")" Label="Low" data-testid="item-low">
+                                <SelectItemText>Low</SelectItemText>
+                            </SelectItem>
+                            <SelectItem TValue="string" Value="@("medium")" Label="Medium" data-testid="item-medium">
+                                <SelectItemText>Medium</SelectItemText>
+                            </SelectItem>
+                            <SelectItem TValue="string" Value="@("high")" Label="High" data-testid="item-high">
+                                <SelectItemText>High</SelectItemText>
+                            </SelectItem>
+                        </SelectViewport>
+                    </SelectContent>
+                </SelectPortal>
+            </SelectRoot>
+        </div>
+
+        <button type="submit" data-testid="submit-button">Submit</button>
+    </EditForm>
+
+    <div style="margin-top: 1rem;" data-testid="form-result">
+        <p>Category: <strong data-testid="category-value">@(formModel.Category ?? "None")</strong></p>
+        <p>Priority: <strong data-testid="priority-value">@(formModel.Priority ?? "None")</strong></p>
+        @if (formSubmitSuccess)
+        {
+            <p data-testid="success-message" style="color: #198754;">Form submitted successfully!</p>
+        }
+    </div>
+</div>
+}
+
+@code {
+    private SelectFormModel formModel = new();
+    private EditContext? editContext;
+    private bool formSubmitted;
+    private bool formSubmitSuccess;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(formModel);
+    }
+
+    private void HandleSubmit()
+    {
+        formSubmitted = true;
+        formSubmitSuccess = false;
+
+        if (editContext!.Validate() && !string.IsNullOrEmpty(formModel.Category))
+        {
+            formSubmitSuccess = true;
+        }
+    }
+
+    public class SelectFormModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Category is required")]
+        public string? Category { get; set; }
+
+        public string? Priority { get; set; }
+    }
+}
+
+<style>
+    [data-summit-select-trigger] {
+        display: inline-flex;
+        align-items: center;
+        min-width: 200px;
+        padding: 0.5rem 0.75rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-trigger]:focus {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-summit-select-trigger][data-invalid] {
+        border-color: #dc3545;
+    }
+    
+    [data-summit-select-content] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        padding: 0.25rem;
+    }
+    
+    [data-summit-select-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-select-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-select-item][data-state="checked"] {
+        background: #e7f1ff;
+        font-weight: 500;
+    }
+    
+    [data-summit-select-value][data-placeholder] {
+        color: #999;
+    }
+    
+    button[type="submit"] {
+        padding: 0.5rem 1rem;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    button[type="submit"]:hover {
+        background: #0b5ed7;
+    }
+</style>
