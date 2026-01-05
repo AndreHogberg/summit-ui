@@ -6,20 +6,20 @@ SummitUI is a headless component library for Blazor that provides high-quality, 
 
 ## Components
 
-- [Accordion](/docs/accordion/llms.txt)
-- [Checkbox](/docs/checkbox/llms.txt)
-- [DateField](/docs/datefield/llms.txt)
-- [DropdownMenu](/docs/dropdownmenu/llms.txt)
-- [FocusTrap](/docs/focustrap/llms.txt)
-- [Popover](/docs/popover/llms.txt)
-- [Select](/docs/select/llms.txt)
-- [Switch](/docs/switch/llms.txt)
-- [Tabs](/docs/tabs/llms.txt)
+- [Accordion](https://www.summitui.com/docs/accordion/llms.txt)
+- [Checkbox](https://www.summitui.com/docs/checkbox/llms.txt)
+- [DateField](https://www.summitui.com/docs/datefield/llms.txt)
+- [DropdownMenu](https://www.summitui.com/docs/dropdownmenu/llms.txt)
+- [FocusTrap](https://www.summitui.com/docs/focustrap/llms.txt)
+- [Popover](https://www.summitui.com/docs/popover/llms.txt)
+- [Select](https://www.summitui.com/docs/select/llms.txt)
+- [Switch](https://www.summitui.com/docs/switch/llms.txt)
+- [Tabs](https://www.summitui.com/docs/tabs/llms.txt)
 
 ## Getting Started
 
-- [Installation](/installation)
-- [Agent Skills](/agent-skills)
+- [Installation](https://www.summitui.com/installation)
+- [Agent Skills](https://www.summitui.com/agent-skills)
 
 ## Principles
 

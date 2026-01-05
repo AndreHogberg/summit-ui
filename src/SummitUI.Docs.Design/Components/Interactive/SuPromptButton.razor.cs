@@ -19,7 +19,7 @@ public partial class SuPromptButton : ComponentBase
     /// <summary>
     /// The base URL for the documentation site. Used to construct llms.txt URL.
     /// </summary>
-    [Parameter] public string BaseUrl { get; set; } = "https://summitui.com";
+    [Parameter] public string BaseUrl { get; set; } = "https://www.summitui.com";
     /// <summary>
     /// Additional HTML attributes to apply to the button element.
     /// </summary>
