@@ -40,6 +40,13 @@ public class FocusTrap : ComponentBase, IAsyncDisposable
     public bool ReturnFocus { get; set; } = true;
 
     /// <summary>
+    /// CSS selector for the element to focus initially.
+    /// If specified and found, this element will be focused instead of the first focusable element.
+    /// </summary>
+    [Parameter]
+    public string? InitialFocusSelector { get; set; }
+
+    /// <summary>
     /// Callback invoked when the focus trap is activated.
     /// </summary>
     [Parameter]
@@ -86,7 +93,8 @@ public class FocusTrap : ComponentBase, IAsyncDisposable
             var options = new FocusTrapOptions
             {
                 AutoFocus = AutoFocus,
-                ReturnFocus = ReturnFocus
+                ReturnFocus = ReturnFocus,
+                InitialFocusSelector = InitialFocusSelector
             };
 
             _trapId = await JsInterop.ActivateAsync(_containerRef, options);

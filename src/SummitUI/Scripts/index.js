@@ -89,3 +89,13 @@ export {
     initializeTrigger as dropdownMenu_initializeTrigger,
     destroyTrigger as dropdownMenu_destroyTrigger
 } from './dropdown-menu.js';
+
+// Dialog exports (scroll lock and portal management)
+export {
+    lockScroll as dialog_lockScroll,
+    unlockScroll as dialog_unlockScroll,
+    forceUnlockScroll as dialog_forceUnlockScroll,
+    createPortal as dialog_createPortal,
+    destroyPortal as dialog_destroyPortal,
+    getScrollLockCount as dialog_getScrollLockCount
+} from './dialog.js';

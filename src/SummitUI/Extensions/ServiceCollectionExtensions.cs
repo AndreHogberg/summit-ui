@@ -29,6 +29,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<PopoverService>();
         services.AddScoped<SelectJsInterop>();
         services.AddScoped<DateFieldJsInterop>();
+        services.AddScoped<DialogJsInterop>();
+
+        // Alert dialog service (singleton so it's shared across components)
+        services.AddScoped<IAlertDialogService, AlertDialogService>();
 
         return services;
     }

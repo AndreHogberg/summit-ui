@@ -116,4 +116,10 @@ public sealed class FocusTrapOptions
     /// Default: true.
     /// </summary>
     public bool ReturnFocus { get; set; } = true;
+
+    /// <summary>
+    /// CSS selector for the element to focus initially.
+    /// If specified and found, this element will be focused instead of the first focusable element.
+    /// </summary>
+    public string? InitialFocusSelector { get; set; }
 }

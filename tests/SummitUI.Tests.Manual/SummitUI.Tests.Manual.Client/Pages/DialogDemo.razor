@@ -1,0 +1,337 @@
+@page "/dialog"
+@rendermode InteractiveWebAssembly
+@inject IAlertDialogService AlertDialog
+
+<h1>Dialog Component Demo</h1>
+
+<section>
+    <h2>Basic Dialog</h2>
+    <p>A simple modal dialog with title, description, and close button.</p>
+    
+    <DialogRoot>
+        <DialogTrigger class="btn btn-primary">
+            Open Dialog
+        </DialogTrigger>
+        <DialogPortal>
+            <DialogOverlay class="dialog-overlay" />
+            <DialogContent class="dialog-content">
+                <DialogTitle>Basic Dialog</DialogTitle>
+                <DialogDescription>
+                    This is a simple dialog with focus trapping and scroll locking.
+                    Press Escape or click outside to close.
+                </DialogDescription>
+                <div class="dialog-actions">
+                    <DialogClose class="btn btn-secondary">Close</DialogClose>
+                </div>
+            </DialogContent>
+        </DialogPortal>
+    </DialogRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Dialog with Form</h2>
+    <p>A dialog containing a form with multiple focusable elements.</p>
+    
+    <DialogRoot>
+        <DialogTrigger class="btn btn-primary">
+            Edit Profile
+        </DialogTrigger>
+        <DialogPortal>
+            <DialogOverlay class="dialog-overlay" />
+            <DialogContent class="dialog-content">
+                <DialogTitle>Edit Profile</DialogTitle>
+                <DialogDescription>
+                    Make changes to your profile here. Click save when you're done.
+                </DialogDescription>
+                <div class="dialog-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" />
+                    </div>
+                </div>
+                <div class="dialog-actions">
+                    <DialogClose class="btn btn-secondary">Cancel</DialogClose>
+                    <DialogClose class="btn btn-primary">Save Changes</DialogClose>
+                </div>
+            </DialogContent>
+        </DialogPortal>
+    </DialogRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Nested Dialogs</h2>
+    <p>Dialogs can be nested within each other. CSS variables track nesting depth.</p>
+    
+    <DialogRoot>
+        <DialogTrigger class="btn btn-info">
+            Open Parent Dialog
+        </DialogTrigger>
+        <DialogPortal>
+            <DialogOverlay class="dialog-overlay" />
+            <DialogContent class="dialog-content">
+                <DialogTitle>Parent Dialog (Depth 0)</DialogTitle>
+                <DialogDescription>
+                    This is the parent dialog. Open a nested dialog below.
+                </DialogDescription>
+                
+                <DialogRoot>
+                    <DialogTrigger class="btn btn-warning">
+                        Open Nested Dialog
+                    </DialogTrigger>
+                    <DialogPortal>
+                        <DialogOverlay class="dialog-overlay nested" />
+                        <DialogContent class="dialog-content nested">
+                            <DialogTitle>Nested Dialog (Depth 1)</DialogTitle>
+                            <DialogDescription>
+                                This dialog is nested inside another dialog.
+                                Notice the overlay stacking and z-index handling.
+                            </DialogDescription>
+                            
+                            <DialogRoot>
+                                <DialogTrigger class="btn btn-danger">
+                                    Go Deeper
+                                </DialogTrigger>
+                                <DialogPortal>
+                                    <DialogOverlay class="dialog-overlay nested-deep" />
+                                    <DialogContent class="dialog-content nested-deep">
+                                        <DialogTitle>Deep Nested (Depth 2)</DialogTitle>
+                                        <DialogDescription>
+                                            How deep can we go?
+                                        </DialogDescription>
+                                        <div class="dialog-actions">
+                                            <DialogClose class="btn btn-secondary">Close</DialogClose>
+                                        </div>
+                                    </DialogContent>
+                                </DialogPortal>
+                            </DialogRoot>
+                            
+                            <div class="dialog-actions">
+                                <DialogClose class="btn btn-secondary">Close</DialogClose>
+                            </div>
+                        </DialogContent>
+                    </DialogPortal>
+                </DialogRoot>
+                
+                <div class="dialog-actions" style="margin-top: 1rem;">
+                    <DialogClose class="btn btn-secondary">Close Parent</DialogClose>
+                </div>
+            </DialogContent>
+        </DialogPortal>
+    </DialogRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Controlled Dialog</h2>
+    <p>Dialog state can be controlled externally.</p>
+    
+    <div style="margin-bottom: 1rem;">
+        <button class="btn btn-success" @onclick="() => isControlledOpen = !isControlledOpen">
+            Toggle Externally (@(isControlledOpen ? "Open" : "Closed"))
+        </button>
+    </div>
+    
+    <DialogRoot Open="@isControlledOpen" OpenChanged="@(v => isControlledOpen = v)">
+        <DialogTrigger class="btn btn-secondary">
+            Controlled Dialog
+        </DialogTrigger>
+        <DialogPortal>
+            <DialogOverlay class="dialog-overlay" />
+            <DialogContent class="dialog-content">
+                <DialogTitle>Controlled Dialog</DialogTitle>
+                <DialogDescription>
+                    This dialog's state is managed externally. Try the toggle button above.
+                </DialogDescription>
+                <div class="dialog-actions">
+                    <DialogClose class="btn btn-primary">Got it</DialogClose>
+                </div>
+            </DialogContent>
+        </DialogPortal>
+    </DialogRoot>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2>Alert Dialog Service</h2>
+    <p>Programmatic confirmation dialogs using IAlertDialogService.</p>
+    
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button class="btn btn-primary" @onclick="ShowSimpleConfirm">
+            Simple Confirm
+        </button>
+        <button class="btn btn-danger" @onclick="ShowDestructiveConfirm">
+            Delete Item
+        </button>
+    </div>
+    
+    @if (!string.IsNullOrEmpty(alertResult))
+    {
+        <div class="alert @(lastConfirmed ? "alert-success" : "alert-secondary")" style="margin-top: 1rem;">
+            @alertResult
+        </div>
+    }
+</section>
+
+@code {
+    private bool isControlledOpen = false;
+    private string alertResult = "";
+    private bool lastConfirmed = false;
+
+    private async Task ShowSimpleConfirm()
+    {
+        var confirmed = await AlertDialog.ConfirmAsync(
+            "Are you sure you want to proceed with this action?",
+            new AlertDialogOptions
+            {
+                Title = "Confirm Action",
+                ConfirmText = "Yes, proceed",
+                CancelText = "No, cancel"
+            });
+        
+        lastConfirmed = confirmed;
+        alertResult = confirmed ? "You confirmed the action!" : "You cancelled the action.";
+    }
+
+    private async Task ShowDestructiveConfirm()
+    {
+        var confirmed = await AlertDialog.ConfirmAsync(
+            "This action cannot be undone. This will permanently delete the item and all associated data.",
+            new AlertDialogOptions
+            {
+                Title = "Delete Item",
+                ConfirmText = "Delete",
+                CancelText = "Cancel",
+                IsDestructive = true
+            });
+        
+        lastConfirmed = confirmed;
+        alertResult = confirmed ? "Item deleted!" : "Deletion cancelled.";
+    }
+}
+
+<style>
+    .dialog-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        animation: overlayShow 150ms ease-out;
+    }
+
+    .dialog-overlay[data-state="closed"] {
+        animation: overlayHide 150ms ease-in;
+    }
+
+    .dialog-overlay.nested {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .dialog-overlay.nested-deep {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .dialog-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        padding: 1.5rem;
+        min-width: 400px;
+        max-width: 90vw;
+        max-height: 85vh;
+        overflow-y: auto;
+        z-index: 1001;
+        animation: contentShow 150ms ease-out;
+    }
+
+    .dialog-content[data-state="closed"] {
+        animation: contentHide 150ms ease-in;
+    }
+
+    .dialog-content.nested {
+        z-index: 1003;
+    }
+
+    .dialog-content.nested-deep {
+        z-index: 1005;
+    }
+
+    .dialog-content h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+    }
+
+    .dialog-content p {
+        margin: 0 0 1rem 0;
+        color: #666;
+    }
+
+    .dialog-form {
+        margin: 1rem 0;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-weight: 500;
+    }
+
+    .dialog-actions {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+
+    section {
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    section h2 {
+        margin-top: 0;
+    }
+
+    @@keyframes overlayShow {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @@keyframes overlayHide {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    @@keyframes contentShow {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    }
+
+    @@keyframes contentHide {
+        from {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+    }
+</style>

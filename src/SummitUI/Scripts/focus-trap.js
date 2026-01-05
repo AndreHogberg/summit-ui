@@ -38,6 +38,7 @@ function getFocusableElements(container) {
  * @param {boolean} options.autoFocus - Whether to auto-focus first element (default: true)
  * @param {boolean} options.returnFocus - Whether to return focus on deactivate (default: true)
  * @param {HTMLElement} options.initialFocus - Element to focus initially (optional)
+ * @param {string} options.initialFocusSelector - CSS selector for element to focus initially (optional)
  * @param {HTMLElement} options.returnFocusTo - Element to return focus to (optional)
  * @returns {string} Trap ID for later reference
  */
@@ -46,10 +47,16 @@ export function activate(containerEl, options = {}) {
 
     const trapId = `trap-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
+    // Resolve initial focus element from selector if provided
+    let initialFocusEl = options.initialFocus || null;
+    if (!initialFocusEl && options.initialFocusSelector) {
+        initialFocusEl = containerEl.querySelector(options.initialFocusSelector);
+    }
+
     const config = {
         autoFocus: options.autoFocus !== false,
         returnFocus: options.returnFocus !== false,
-        initialFocus: options.initialFocus || null,
+        initialFocus: initialFocusEl,
         returnFocusTo: options.returnFocusTo || document.activeElement
     };
 
