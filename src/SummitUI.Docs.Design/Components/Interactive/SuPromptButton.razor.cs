@@ -36,11 +36,11 @@ public partial class SuPromptButton : ComponentBase
         "transition-colors duration-150";
 
     private const string DropdownClasses =
-        "absolute left-0 top-full mt-2 w-50 rounded-lg border border-su-border bg-su-card p-1.5 shadow-xl z-50 antialiased font-sans";
+        "w-50 rounded-lg border border-su-border bg-su-card p-1.5 shadow-xl z-50 antialiased font-sans";
 
     private const string MenuItemClasses =
         "flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-su-foreground " +
-        "hover:bg-su-accent transition-colors cursor-pointer text-left";
+        "hover:bg-su-accent data-[highlighted]:bg-su-accent transition-colors cursor-pointer text-left";
 
     private string FinalButtonClass => SuStyles.Cn(ButtonClasses, UserClass);
 
@@ -51,15 +51,10 @@ public partial class SuPromptButton : ComponentBase
 
     private string ChevronClass => _isOpen ? "transform rotate-180 transition-transform" : "transition-transform";
 
-    private void ToggleDropdown() => _isOpen = !_isOpen;
-
-    private void CloseDropdown() => _isOpen = false;
-
     private async Task CopyLlmsTxtUrl()
     {
         var url = BuildLlmsTxtUrl();
         await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
-        _isOpen = false;
     }
 
     private string BuildLlmsTxtUrl()
@@ -81,7 +76,6 @@ public partial class SuPromptButton : ComponentBase
         var encodedPrompt = Uri.EscapeDataString(prompt);
         var url = $"https://chat.openai.com/?q={encodedPrompt}";
         await JsRuntime.InvokeVoidAsync("window.open", url, "_blank");
-        _isOpen = false;
     }
 
     private async Task OpenClaude()
@@ -89,7 +83,6 @@ public partial class SuPromptButton : ComponentBase
         var prompt = BuildPrompt();
         await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", prompt);
         await JsRuntime.InvokeVoidAsync("window.open", "https://claude.ai/new", "_blank");
-        _isOpen = false;
     }
 
     private string BuildPrompt()
