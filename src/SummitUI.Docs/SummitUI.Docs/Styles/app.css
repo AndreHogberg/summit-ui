@@ -17,7 +17,7 @@
 /* Regular */
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-Regular.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -25,7 +25,7 @@
 
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-Italic.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -34,7 +34,7 @@
 /* Medium */
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-Medium.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -42,7 +42,7 @@
 
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-MediumItalic.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-MediumItalic.woff2') format('woff2');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -51,7 +51,7 @@
 /* SemiBold */
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-SemiBold.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -59,7 +59,7 @@
 
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-SemiBoldItalic.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-SemiBoldItalic.woff2') format('woff2');
   font-weight: 600;
   font-style: italic;
   font-display: swap;
@@ -68,7 +68,7 @@
 /* Bold */
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-Bold.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -76,7 +76,7 @@
 
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-BoldItalic.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-BoldItalic.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
