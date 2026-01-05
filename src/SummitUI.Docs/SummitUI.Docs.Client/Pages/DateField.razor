@@ -25,17 +25,17 @@
         <SuCard>
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
-                    <DateFieldRoot @bind-Value="selectedDate">
+                    <DateFieldRoot @bind-Value="selectedDate" class="group">
                         <DateFieldLabel class="text-sm font-medium text-su-foreground">Select a date</DateFieldLabel>
-                        <DateFieldInput class="su-datefield-input" />
+                        <DateFieldInput class="@dateFieldInputClasses" />
                     </DateFieldRoot>
                     <p class="text-xs text-su-muted-foreground">Selected: @(selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
                 </div>
                 
                 <div class="flex flex-col gap-2">
-                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime" Granularity="DateFieldGranularity.Minute">
+                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime" Granularity="DateFieldGranularity.Minute" class="group">
                         <DateFieldLabel class="text-sm font-medium text-su-foreground">Date and time</DateFieldLabel>
-                        <DateFieldInput class="su-datefield-input" />
+                        <DateFieldInput class="@dateFieldInputClasses" />
                     </DateFieldRoot>
                     <p class="text-xs text-su-muted-foreground">Selected: @(selectedDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</p>
                 </div>
@@ -215,8 +215,8 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
-                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+                <SuHeading Level="SuHeadingLevel.H3">Tailwind Example</SuHeading>
+                <SuCodeBlock Code="@tailwindExampleCode" Language="html" />
             </div>
         </div>
     </SuSection>
@@ -266,28 +266,9 @@
     </SuSection>
 </div>
 
-<style>
-    /* Demo DateField Styles */
-    .su-datefield-input {
-        display: inline-flex;
-        align-items: center;
-        gap: 0;
-        padding: 0.5rem 0.75rem;
-        background: rgb(var(--su-background));
-        border: 1px solid rgb(var(--su-border));
-        border-radius: 0.375rem;
-        font-size: 0.875rem;
-        font-family: inherit;
-        margin-top: 0.5rem;
-    }
-    
-    .su-datefield-input:focus-within {
-        border-color: rgb(var(--su-primary));
-        box-shadow: 0 0 0 2px rgb(var(--su-primary) / 0.2);
-    }
-</style>
-
 @code {
+    private string dateFieldInputClasses = "inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60";
+
     private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
     private DateTime? selectedDateTime = DateTime.Now;
 
@@ -330,9 +311,9 @@
         new() { Name = "A / P", Description = "Toggle AM/PM on DayPeriod segment", Type = "" }
     };
 
-    private const string anatomyCode = @"<DateFieldRoot @bind-Value=""date"">
+    private const string anatomyCode = @"<DateFieldRoot @bind-Value=""date"" class=""group"">
     <DateFieldLabel>Select a date</DateFieldLabel>
-    <DateFieldInput class=""su-datefield-input"" />
+    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
 </DateFieldRoot>";
 
     private const string granularityEnumCode = @"public enum DateFieldGranularity
@@ -356,9 +337,9 @@
     private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
 }
 
-<DateFieldRoot @bind-Value=""selectedDate"">
+<DateFieldRoot @bind-Value=""selectedDate"" class=""group"">
     <DateFieldLabel>Select a date</DateFieldLabel>
-    <DateFieldInput class=""su-datefield-input"" />
+    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
 </DateFieldRoot>
 
 <p>Selected: @(selectedDate?.ToString(""yyyy-MM-dd"") ?? ""None"")</p>";
@@ -368,9 +349,10 @@
 }
 
 <DateFieldRoot @bind-DateTimeValue=""selectedDateTime"" 
-               Granularity=""DateFieldGranularity.Minute"">
+               Granularity=""DateFieldGranularity.Minute""
+               class=""group"">
     <DateFieldLabel>Select date and time</DateFieldLabel>
-    <DateFieldInput class=""su-datefield-input"" />
+    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
 </DateFieldRoot>
 
 <p>Selected: @(selectedDateTime?.ToString(""yyyy-MM-dd HH:mm"") ?? ""None"")</p>";
@@ -383,9 +365,10 @@
 
 <DateFieldRoot @bind-Value=""date"" 
                MinValue=""@minDate"" 
-               MaxValue=""@maxDate"">
+               MaxValue=""@maxDate""
+               class=""group"">
     <DateFieldLabel>Select a date (Jan - Dec 2025)</DateFieldLabel>
-    <DateFieldInput class=""su-datefield-input"" />
+    <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
 </DateFieldRoot>";
 
     private const string formExampleCode = @"<EditForm EditContext=""editContext"" OnSubmit=""HandleSubmit"">
@@ -394,58 +377,16 @@
     <DateFieldRoot @bind-Value=""model.BirthDate""
                    Name=""birthDate""
                    Required=""true""
-                   Invalid=""@(submitted && model.BirthDate == null)"">
+                   Invalid=""@(submitted && model.BirthDate == null)""
+                   class=""group"">
         <DateFieldLabel>Birth Date (Required)</DateFieldLabel>
-        <DateFieldInput class=""su-datefield-input"" />
+        <DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />
     </DateFieldRoot>
     <ValidationMessage For=""@(() => model.BirthDate)"" />
 
     <button type=""submit"">Submit</button>
 </EditForm>";
 
-    private const string cssExampleCode = @"/* Input container */
-.su-datefield-input {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 0.75rem;
-    background: rgb(var(--su-background));
-    border: 1px solid rgb(var(--su-border));
-    border-radius: 6px;
-}
-
-.su-datefield-input:focus-within {
-    border-color: rgb(var(--su-primary));
-    box-shadow: 0 0 0 3px rgb(var(--su-primary) / 0.25);
-}
-
-[data-disabled] .su-datefield-input {
-    background: rgb(var(--su-muted));
-    cursor: not-allowed;
-}
-
-[data-invalid] .su-datefield-input {
-    border-color: rgb(var(--su-destructive));
-}
-
-/* Segment styling */
-[data-segment]:not([data-segment=""literal""]) {
-    padding: 0.125rem 0.25rem;
-    border-radius: 4px;
-    min-width: 1.5em;
-    text-align: center;
-}
-
-[data-segment]:not([data-segment=""literal""]):focus {
-    background: rgb(var(--su-accent));
-    color: rgb(var(--su-accent-foreground));
-    outline: none;
-}
-
-[data-segment=""literal""] {
-    color: rgb(var(--su-muted-foreground));
-}
-
-[data-segment][data-placeholder] {
-    color: rgb(var(--su-muted-foreground) / 0.5);
-}";
+    private const string tailwindExampleCode = @"<!-- DateFieldInput with Tailwind classes -->
+<DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed group-data-[invalid]:border-su-destructive [&_[data-segment]:not([data-segment='literal'])]:px-1.5 [&_[data-segment]:not([data-segment='literal'])]:py-0.5 [&_[data-segment]:not([data-segment='literal'])]:rounded-md [&_[data-segment]:not([data-segment='literal'])]:min-w-[1.5em] [&_[data-segment]:not([data-segment='literal'])]:text-center [&_[data-segment]:not([data-segment='literal'])]:cursor-text [&_[data-segment]:not([data-segment='literal'])]:transition-colors [&_[data-segment]:not([data-segment='literal'])]:focus:bg-su-primary/10 [&_[data-segment]:not([data-segment='literal'])]:focus:text-su-primary [&_[data-segment]:not([data-segment='literal'])]:focus:outline-none [&_[data-segment='literal']]:text-su-muted-foreground [&_[data-segment='literal']]:px-0.5 [&_[data-segment][data-placeholder]]:text-su-muted-foreground/60"" />";
 }

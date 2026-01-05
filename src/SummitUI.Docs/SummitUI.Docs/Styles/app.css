@@ -178,8 +178,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* New design system tokens */
-    --su-primary: 25 60 184;           /* #193CB8 - blue-800 */
-    --su-primary-foreground: 255 255 255; /* white */
+    --su-primary: 96 165 250;           /* #60A5FA - blue-400 */
+    --su-primary-foreground: 3 7 18;    /* gray-950 */
     --su-background: 3 7 18;            /* gray-950 */
     --su-foreground: 249 250 251;       /* gray-50 */
     --su-muted: 31 41 55;               /* gray-800 */
@@ -191,7 +191,7 @@
     --su-accent-foreground: 219 234 254;/* blue-100 */
     --su-destructive: 127 29 29;           /* red-900 */
     --su-destructive-foreground: 254 226 226; /* red-100 */
-    --su-ring: 25 60 184;              /* #193CB8 - blue-800 */
+    --su-ring: 96 165 250;              /* #60A5FA - blue-400 */
 
     /* Legacy HSL tokens */
     --background: 222.2 84% 4.9%;
@@ -200,8 +200,8 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 226.8 76.1% 41%;         /* #193CB8 - blue-800 */
-    --primary-foreground: 0 0% 100%;
+    --primary: 213.1 93.9% 67.8%;         /* #60A5FA - blue-400 */
+    --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;

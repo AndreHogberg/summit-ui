@@ -60,7 +60,7 @@ public partial class SuButton : ComponentBase
 
     private string VariantClasses => Variant switch
     {
-        SuButtonVariant.Primary => "bg-su-primary text-su-primary-foreground shadow-sm hover:bg-blue-600 dark:hover:bg-blue-500",
+        SuButtonVariant.Primary => "bg-su-primary text-su-primary-foreground shadow-sm hover:bg-blue-900",
         SuButtonVariant.Secondary => "bg-su-muted text-su-foreground shadow-sm hover:bg-gray-200 dark:hover:bg-gray-700",
         SuButtonVariant.Ghost => "text-su-foreground hover:bg-su-accent hover:text-su-accent-foreground",
         SuButtonVariant.Outline => "border border-su-border bg-su-background text-su-foreground shadow-sm hover:bg-su-accent hover:text-su-accent-foreground",
