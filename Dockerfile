@@ -1,3 +1,9 @@
+# Dockerfile for SummitUI.Docs
+# Build context: repository root
+#
+# Build: docker build -t summitui-docs .
+# Run:   docker run -p 8080:8080 summitui-docs
+
 # Stage 1: Build frontend assets (CSS/JS)
 FROM node:22-alpine AS node-build
 
@@ -33,16 +39,16 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy project files for restore (layer caching)
-COPY ["src/SummitUI.Docs/SummitUI.Docs/SummitUI.Docs.csproj", "src/SummitUI.Docs/SummitUI.Docs/"]
-COPY ["src/SummitUI.Docs/SummitUI.Docs.Client/SummitUI.Docs.Client.csproj", "src/SummitUI.Docs/SummitUI.Docs.Client/"]
-COPY ["src/SummitUI.Docs.Design/SummitUI.Docs.Design.csproj", "src/SummitUI.Docs.Design/"]
-COPY ["src/SummitUI/SummitUI.csproj", "src/SummitUI/"]
+COPY src/SummitUI.Docs/SummitUI.Docs/SummitUI.Docs.csproj src/SummitUI.Docs/SummitUI.Docs/
+COPY src/SummitUI.Docs/SummitUI.Docs.Client/SummitUI.Docs.Client.csproj src/SummitUI.Docs/SummitUI.Docs.Client/
+COPY src/SummitUI.Docs.Design/SummitUI.Docs.Design.csproj src/SummitUI.Docs.Design/
+COPY src/SummitUI/SummitUI.csproj src/SummitUI/
 
 # Restore dependencies
-RUN dotnet restore "src/SummitUI.Docs/SummitUI.Docs/SummitUI.Docs.csproj"
+RUN dotnet restore src/SummitUI.Docs/SummitUI.Docs/SummitUI.Docs.csproj
 
 # Copy all source code
-COPY . .
+COPY src/ src/
 
 # Copy pre-built frontend assets from node stage
 COPY --from=node-build /src/src/SummitUI/wwwroot src/SummitUI/wwwroot
@@ -50,7 +56,7 @@ COPY --from=node-build /src/src/SummitUI.Docs/SummitUI.Docs/wwwroot src/SummitUI
 
 # Publish the application
 WORKDIR /src/src/SummitUI.Docs/SummitUI.Docs
-RUN dotnet publish "SummitUI.Docs.csproj" \
+RUN dotnet publish SummitUI.Docs.csproj \
     -c $BUILD_CONFIGURATION \
     -o /app/publish \
     -p:RunNpmBuild=false \

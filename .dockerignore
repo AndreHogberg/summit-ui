@@ -29,8 +29,8 @@ tests/
 !README.md
 LICENSE
 
-# Docker
-**/Dockerfile*
+# Docker (exclude nested Dockerfiles, keep root)
+src/**/Dockerfile*
 **/.dockerignore
 docker-compose*.yml
 
