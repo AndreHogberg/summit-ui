@@ -138,18 +138,6 @@
     <p style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">Please enter a valid date</p>
 </section>
 
-<section style="margin-top: 2rem;" data-testid="seconds-section">
-    <h2>Full DateTime with Seconds</h2>
-    <p>DateTime field with second-level granularity.</p>
-    
-    <DateFieldRoot @bind-DateTimeValue="fullDateTime" Granularity="DateFieldGranularity.Second">
-        <DateFieldLabel class="datefield-label">Full date and time</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
-    
-    <p style="margin-top: 1rem;">Selected: <strong data-testid="seconds-value">@(fullDateTime?.ToString("yyyy-MM-dd HH:mm:ss") ?? "None")</strong></p>
-</section>
-
 <section style="margin-top: 2rem;" data-testid="editform-section">
     <h2>EditForm Integration</h2>
     <p>DateField integrated with Blazor EditForm for model validation.</p>
@@ -175,6 +163,7 @@
         <div style="margin-bottom: 1rem;">
             <DateFieldRoot @bind-DateTimeValue="formModel.AppointmentTime"
                            Granularity="DateFieldGranularity.Minute"
+                           HourCycle="HourCycle.H23"
                            Name="appointmentTime"
                            MinDateTime="@DateTime.Now"
                            MaxDateTime="@DateTime.Now.AddYears(1)">
@@ -247,9 +236,6 @@
     private DateOnly? disabledDate = DateOnly.FromDateTime(DateTime.Today);
     private DateOnly? readOnlyDate = DateOnly.FromDateTime(DateTime.Today);
     private DateOnly? invalidDate = null;
-    
-    // Full DateTime
-    private DateTime? fullDateTime = DateTime.Now;
     
     // EditForm
     private DateFieldFormModel formModel = new();

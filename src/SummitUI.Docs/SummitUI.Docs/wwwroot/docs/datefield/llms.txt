@@ -9,7 +9,7 @@ The DateField component is part of SummitUI, a Blazor component library focused 
 - Segmented editing (each part is independently editable)
 - Culture-aware date formatting
 - Support for both DateOnly and DateTime types
-- Configurable granularity (day, hour, minute, second)
+- Configurable granularity (day, hour, minute)
 - 12-hour and 24-hour time formats
 - Min/max validation and EditForm integration
 - WCAG compliant with proper ARIA attributes
@@ -75,8 +75,7 @@ public enum DateFieldGranularity
 {
     Day,    // Show only date segments (Year, Month, Day)
     Hour,   // Show date and hour segments
-    Minute, // Show date, hour, and minute segments
-    Second  // Show date, hour, minute, and second segments
+    Minute  // Show date, hour, and minute segments
 }
 ```
 

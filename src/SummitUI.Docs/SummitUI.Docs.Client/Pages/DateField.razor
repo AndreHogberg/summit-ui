@@ -60,7 +60,7 @@
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                Configurable granularity (day, hour, minute, second)
+                Configurable granularity (day, hour, minute)
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
@@ -320,8 +320,7 @@
 {
     Day,    // Show only date segments (Year, Month, Day)
     Hour,   // Show date and hour segments
-    Minute, // Show date, hour, and minute segments
-    Second  // Show date, hour, minute, and second segments
+    Minute  // Show date, hour, and minute segments
 }";
 
     private const string hourCycleEnumCode = @"public enum HourCycle

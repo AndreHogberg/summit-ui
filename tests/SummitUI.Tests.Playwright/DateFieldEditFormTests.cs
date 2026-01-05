@@ -23,8 +23,16 @@ public class DateFieldEditFormTests : PageTest
     public async Task EditForm_ShouldBindValue_ToModel()
     {
         var section = Page.Locator("[data-testid='editform-section']");
-        var daySegment = section.Locator("[data-testid='editform-birthdate-input']").Locator("[data-segment='day']");
+        var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var yearSegment = input.Locator("[data-segment='year']");
+        var monthSegment = input.Locator("[data-segment='month']");
+        var daySegment = input.Locator("[data-segment='day']");
         
+        // Fill all required segments to set a value
+        await yearSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("2025");
+        await monthSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("06");
         await daySegment.FocusAsync();
         await Page.Keyboard.TypeAsync("15");
         
@@ -34,6 +42,7 @@ public class DateFieldEditFormTests : PageTest
         var text = await birthDateValue.TextContentAsync();
         
         await Assert.That(text!).Contains("15");
+        await Assert.That(text!).Contains("2025");
     }
 
     [Test]
@@ -41,16 +50,26 @@ public class DateFieldEditFormTests : PageTest
     {
         var section = Page.Locator("[data-testid='editform-section']");
         var input = section.Locator("[data-testid='editform-birthdate-input']");
-        var daySegment = input.Locator("[data-segment='day']");
+        var yearSegment = input.Locator("[data-segment='year']");
         var monthSegment = input.Locator("[data-segment='month']");
+        var daySegment = input.Locator("[data-segment='day']");
         
-        // Set day to 25
+        // First set all segments to establish a value
+        await yearSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("2025");
+        await monthSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("06");
+        await daySegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("20");
+        
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Now change individual segments
         await daySegment.FocusAsync();
         await Page.Keyboard.TypeAsync("25");
         
         await Page.WaitForTimeoutAsync(100);
         
-        // Set month to 12
         await monthSegment.FocusAsync();
         await Page.Keyboard.TypeAsync("12");
         
@@ -68,20 +87,38 @@ public class DateFieldEditFormTests : PageTest
     {
         var section = Page.Locator("[data-testid='editform-section']");
         var input = section.Locator("[data-testid='editform-appointment-input']");
+        var yearSegment = input.Locator("[data-segment='year']");
+        var monthSegment = input.Locator("[data-segment='month']");
+        var daySegment = input.Locator("[data-segment='day']");
         var hourSegment = input.Locator("[data-segment='hour']");
         var minuteSegment = input.Locator("[data-segment='minute']");
         
-        // Set hour
-        await hourSegment.FocusAsync();
-        await Page.Keyboard.TypeAsync("14");
-        
+        // Fill all required segments (date + time)
+        await yearSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("2025");
         await Page.WaitForTimeoutAsync(100);
         
-        // Set minute
+        await monthSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("06");
+        await Page.WaitForTimeoutAsync(100);
+        
+        await daySegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("15");
+        await Page.WaitForTimeoutAsync(100);
+        
+        await hourSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("14");
+        await Page.WaitForTimeoutAsync(100);
+        
         await minuteSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
         await Page.Keyboard.TypeAsync("30");
         
-        await Page.WaitForTimeoutAsync(100);
+        await Page.WaitForTimeoutAsync(200);
         
         var appointmentValue = section.Locator("[data-testid='editform-appointment-value']");
         var text = await appointmentValue.TextContentAsync();
@@ -98,9 +135,15 @@ public class DateFieldEditFormTests : PageTest
     {
         var section = Page.Locator("[data-testid='editform-section']");
         var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var yearSegment = input.Locator("[data-segment='year']");
+        var monthSegment = input.Locator("[data-segment='month']");
         var daySegment = input.Locator("[data-segment='day']");
         
-        // Set a value for required field
+        // Set all required segments to establish a value
+        await yearSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("2025");
+        await monthSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("06");
         await daySegment.FocusAsync();
         await Page.Keyboard.TypeAsync("15");
         
@@ -120,14 +163,8 @@ public class DateFieldEditFormTests : PageTest
     public async Task EditForm_ShouldShowValidationError_WhenRequiredFieldEmpty()
     {
         var section = Page.Locator("[data-testid='editform-section']");
-        var input = section.Locator("[data-testid='editform-birthdate-input']");
-        var daySegment = input.Locator("[data-segment='day']");
         
-        // Clear the field by pressing backspace
-        await daySegment.FocusAsync();
-        await Page.Keyboard.PressAsync("Backspace");
-        
-        // Submit form without value
+        // Submit form without filling any segments (value is null)
         var submitButton = section.Locator("[data-testid='editform-submit']");
         await submitButton.ClickAsync();
         
@@ -184,9 +221,15 @@ public class DateFieldEditFormTests : PageTest
     {
         var section = Page.Locator("[data-testid='editform-section']");
         var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var yearSegment = input.Locator("[data-segment='year']");
+        var monthSegment = input.Locator("[data-segment='month']");
         var daySegment = input.Locator("[data-segment='day']");
         
-        // Set initial value
+        // Set initial complete value
+        await yearSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("2025");
+        await monthSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("06");
         await daySegment.FocusAsync();
         await Page.Keyboard.TypeAsync("10");
         
@@ -196,7 +239,7 @@ public class DateFieldEditFormTests : PageTest
         var initialValue = await hiddenInput.GetAttributeAsync("value");
         await Assert.That(initialValue!).Contains("10");
         
-        // Change the value
+        // Change the day value
         await daySegment.FocusAsync();
         await Page.Keyboard.TypeAsync("25");
         
@@ -300,18 +343,26 @@ public class DateFieldEditFormTests : PageTest
     {
         var section = Page.Locator("[data-testid='editform-section']");
         var input = section.Locator("[data-testid='editform-birthdate-input']");
-        var segments = input.Locator("[role='spinbutton']");
+        var yearSegment = input.Locator("[data-segment='year']");
+        var monthSegment = input.Locator("[data-segment='month']");
+        var daySegment = input.Locator("[data-segment='day']");
         
-        // Focus first segment and use arrow keys
-        var firstSegment = segments.First;
-        await firstSegment.FocusAsync();
+        // Use arrow keys to set values for all segments
+        await yearSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.PressAsync("ArrowUp"); // Sets year from placeholder
         
-        await Page.Keyboard.PressAsync("ArrowUp");
-        await Page.Keyboard.PressAsync("ArrowUp");
+        await monthSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.PressAsync("ArrowUp"); // Sets month from placeholder
+        
+        await daySegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.PressAsync("ArrowUp"); // Sets day from placeholder
         
         await Page.WaitForTimeoutAsync(100);
         
-        // Verify value was updated
+        // Verify value was set (all segments filled)
         var birthDateValue = section.Locator("[data-testid='editform-birthdate-value']");
         var text = await birthDateValue.TextContentAsync();
         await Assert.That(text).IsNotEqualTo("None");
@@ -322,9 +373,15 @@ public class DateFieldEditFormTests : PageTest
     {
         var section = Page.Locator("[data-testid='editform-section']");
         var input = section.Locator("[data-testid='editform-birthdate-input']");
+        var yearSegment = input.Locator("[data-segment='year']");
+        var monthSegment = input.Locator("[data-segment='month']");
         var daySegment = input.Locator("[data-segment='day']");
         
-        // Set value via keyboard
+        // Set all segments via keyboard
+        await yearSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("2025");
+        await monthSegment.FocusAsync();
+        await Page.Keyboard.TypeAsync("06");
         await daySegment.FocusAsync();
         await Page.Keyboard.TypeAsync("15");
         

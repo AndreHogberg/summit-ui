@@ -169,26 +169,10 @@ public class DateFieldAccessibilityTests : PageTest
     }
 
     [Test]
-    public async Task SecondSegment_ShouldHave_RoleSpinbutton()
-    {
-        var section = Page.Locator("[data-testid='seconds-section']");
-        var segment = section.Locator("[data-segment='second']");
-        await Expect(segment).ToHaveAttributeAsync("role", "spinbutton");
-    }
-
-    [Test]
     public async Task MinuteSegment_ShouldHave_AriaValuemax59()
     {
         var section = Page.Locator("[data-testid='datetime-section']");
         var segment = section.Locator("[data-segment='minute']");
-        await Expect(segment).ToHaveAttributeAsync("aria-valuemax", "59");
-    }
-
-    [Test]
-    public async Task SecondSegment_ShouldHave_AriaValuemax59()
-    {
-        var section = Page.Locator("[data-testid='seconds-section']");
-        var segment = section.Locator("[data-segment='second']");
         await Expect(segment).ToHaveAttributeAsync("aria-valuemax", "59");
     }
 
@@ -424,6 +408,35 @@ public class DateFieldAccessibilityTests : PageTest
     }
 
     [Test]
+    public async Task Backspace_ShouldClearOnlyFocusedSegment()
+    {
+        var section = Page.Locator("[data-testid='basic-section']");
+        var daySegment = section.Locator("[data-segment='day']");
+        var monthSegment = section.Locator("[data-segment='month']");
+        var yearSegment = section.Locator("[data-segment='year']");
+        
+        // Verify initial state - all segments have values (no placeholder attribute)
+        await Expect(daySegment).Not.ToHaveAttributeAsync("data-placeholder", "");
+        await Expect(monthSegment).Not.ToHaveAttributeAsync("data-placeholder", "");
+        await Expect(yearSegment).Not.ToHaveAttributeAsync("data-placeholder", "");
+        
+        // Press backspace on day segment
+        await daySegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.PressAsync("Backspace");
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Day should show placeholder, others should retain values
+        await Expect(daySegment).ToHaveAttributeAsync("data-placeholder", "");
+        await Expect(monthSegment).Not.ToHaveAttributeAsync("data-placeholder", "");
+        await Expect(yearSegment).Not.ToHaveAttributeAsync("data-placeholder", "");
+        
+        // Day should show "dd" placeholder text
+        var dayText = await daySegment.TextContentAsync();
+        await Assert.That(dayText).IsEqualTo("dd");
+    }
+
+    [Test]
     public async Task Delete_ShouldClear_Segment()
     {
         var section = Page.Locator("[data-testid='basic-section']");
@@ -434,6 +447,104 @@ public class DateFieldAccessibilityTests : PageTest
         
         // After delete, the segment should show placeholder state
         await Expect(daySegment).ToHaveAttributeAsync("data-placeholder", "");
+    }
+
+    #endregion
+
+    #region Placeholder Format Display
+
+    [Test]
+    public async Task NullValue_ShouldShowPlaceholderFormat()
+    {
+        var section = Page.Locator("[data-testid='placeholder-section']");
+        var daySegment = section.Locator("[data-segment='day']");
+        var monthSegment = section.Locator("[data-segment='month']");
+        var yearSegment = section.Locator("[data-segment='year']");
+        
+        // All segments should show placeholder format text
+        await Assert.That(await daySegment.TextContentAsync()).IsEqualTo("dd");
+        await Assert.That(await monthSegment.TextContentAsync()).IsEqualTo("mm");
+        await Assert.That(await yearSegment.TextContentAsync()).IsEqualTo("yyyy");
+    }
+
+    [Test]
+    public async Task PartialEntry_ShouldShowMixedState()
+    {
+        var section = Page.Locator("[data-testid='placeholder-section']");
+        var yearSegment = section.Locator("[data-segment='year']");
+        var monthSegment = section.Locator("[data-segment='month']");
+        var daySegment = section.Locator("[data-segment='day']");
+        
+        // Type year only
+        await yearSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("2025");
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Year should have value, month and day should show placeholders
+        await Assert.That(await yearSegment.TextContentAsync()).IsEqualTo("2025");
+        await Assert.That(await monthSegment.TextContentAsync()).IsEqualTo("mm");
+        await Assert.That(await daySegment.TextContentAsync()).IsEqualTo("dd");
+        
+        // Year should not have placeholder attribute, others should
+        await Expect(yearSegment).Not.ToHaveAttributeAsync("data-placeholder", "");
+        await Expect(monthSegment).ToHaveAttributeAsync("data-placeholder", "");
+        await Expect(daySegment).ToHaveAttributeAsync("data-placeholder", "");
+        
+        // Bound value should still be null
+        var valueDisplay = Page.Locator("[data-testid='placeholder-value']");
+        await Expect(valueDisplay).ToContainTextAsync("None");
+    }
+
+    [Test]
+    public async Task AllSegmentsFilled_ShouldSetBoundValue()
+    {
+        var section = Page.Locator("[data-testid='placeholder-section']");
+        var yearSegment = section.Locator("[data-segment='year']");
+        var monthSegment = section.Locator("[data-segment='month']");
+        var daySegment = section.Locator("[data-segment='day']");
+        
+        // Fill all segments
+        await yearSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("2025");
+        await monthSegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("06");
+        await daySegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.TypeAsync("15");
+        
+        await Page.WaitForTimeoutAsync(200);
+        
+        // Bound value should now be set
+        var valueDisplay = Page.Locator("[data-testid='placeholder-value']");
+        await Expect(valueDisplay).ToContainTextAsync("2025-06-15");
+    }
+
+    [Test]
+    public async Task ClearedSegment_CanBeReentered()
+    {
+        var section = Page.Locator("[data-testid='basic-section']");
+        var daySegment = section.Locator("[data-segment='day']");
+        
+        // Clear the segment
+        await daySegment.FocusAsync();
+        await Page.WaitForTimeoutAsync(100);
+        await Page.Keyboard.PressAsync("Backspace");
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Should show placeholder
+        await Expect(daySegment).ToHaveAttributeAsync("data-placeholder", "");
+        await Assert.That(await daySegment.TextContentAsync()).IsEqualTo("dd");
+        
+        // Re-enter a value
+        await Page.Keyboard.TypeAsync("25");
+        await Page.WaitForTimeoutAsync(100);
+        
+        // Should now show the value
+        await Expect(daySegment).Not.ToHaveAttributeAsync("data-placeholder", "");
+        await Assert.That(await daySegment.TextContentAsync()).IsEqualTo("25");
     }
 
     #endregion

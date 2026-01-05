@@ -54,8 +54,8 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
 
     private void BuildEditableSegment(RenderTreeBuilder builder)
     {
-        var effectiveDateTime = Context.EffectiveDateTime;
-        var segmentText = DateFieldUtils.FormatSegmentValue(Segment.Type, effectiveDateTime, Context);
+        var segmentHasValue = Context.SegmentHasValue(Segment.Type);
+        var segmentText = DateFieldUtils.FormatSegmentValue(Segment.Type, Context);
         var ariaLabel = Context.GetSegmentLabel(Segment.Type);
         var min = DateFieldUtils.GetSegmentMin(Segment.Type, Context);
         var max = DateFieldUtils.GetSegmentMax(Segment.Type, Context);
@@ -79,7 +79,7 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
         
         if (Context.Disabled) builder.AddAttribute(10, "data-disabled", "");
         if (Context.ReadOnly) builder.AddAttribute(11, "data-readonly", "");
-        if (!Context.HasValue) builder.AddAttribute(12, "data-placeholder", "");
+        if (!segmentHasValue) builder.AddAttribute(12, "data-placeholder", "");
         
         builder.AddMultipleAttributes(13, AdditionalAttributes);
         builder.AddElementReferenceCapture(14, el => _elementRef = el);
@@ -141,20 +141,18 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
 
     private int? GetValueNow()
     {
-        if (!Context.HasValue && Segment.Type != DateFieldSegmentType.DayPeriod)
-        {
-            return null;
-        }
-        
         if (Segment.Type == DateFieldSegmentType.DayPeriod)
         {
             return null; // DayPeriod doesn't have a numeric value
         }
         
-        return DateFieldUtils.GetSegmentValue(
-            Segment.Type, 
-            Context.EffectiveDateTime, 
-            Context.Uses12HourClock());
+        // Check if this specific segment has a value
+        if (!Context.SegmentHasValue(Segment.Type))
+        {
+            return null;
+        }
+        
+        return Context.GetSegmentValue(Segment.Type);
     }
 
     public async ValueTask DisposeAsync()

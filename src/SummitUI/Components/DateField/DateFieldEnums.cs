@@ -10,7 +10,6 @@ public enum DateFieldSegmentType
     Year,
     Hour,
     Minute,
-    Second,
     DayPeriod,
     Literal
 }
@@ -34,12 +33,7 @@ public enum DateFieldGranularity
     /// <summary>
     /// Show date, hour, and minute segments.
     /// </summary>
-    Minute,
-    
-    /// <summary>
-    /// Show date, hour, minute, and second segments.
-    /// </summary>
-    Second
+    Minute
 }
 
 /// <summary>

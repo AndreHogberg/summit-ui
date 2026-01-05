@@ -131,17 +131,6 @@ internal static class DateFieldUtils
             segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.Minute });
         }
         
-        // Minute:Second separator
-        if (context.Granularity >= DateFieldGranularity.Second)
-        {
-            segments.Add(new DateFieldSegmentState 
-            { 
-                Type = DateFieldSegmentType.Literal, 
-                LiteralValue = timeSeparator 
-            });
-            segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.Second });
-        }
-        
         // AM/PM indicator for 12-hour clocks
         if (use12Hour)
         {
@@ -188,7 +177,6 @@ internal static class DateFieldUtils
             DateFieldSegmentType.Day => 1,
             DateFieldSegmentType.Hour => context.Uses12HourClock() ? 1 : 0,
             DateFieldSegmentType.Minute => 0,
-            DateFieldSegmentType.Second => 0,
             _ => 0
         };
     }
@@ -207,7 +195,6 @@ internal static class DateFieldUtils
             DateFieldSegmentType.Day => DateTime.DaysInMonth(effectiveDate.Year, effectiveDate.Month),
             DateFieldSegmentType.Hour => context.Uses12HourClock() ? 12 : 23,
             DateFieldSegmentType.Minute => 59,
-            DateFieldSegmentType.Second => 59,
             _ => 0
         };
     }
@@ -224,7 +211,6 @@ internal static class DateFieldUtils
             DateFieldSegmentType.Day => dateTime.Day,
             DateFieldSegmentType.Hour => use12Hour ? (dateTime.Hour % 12 == 0 ? 12 : dateTime.Hour % 12) : dateTime.Hour,
             DateFieldSegmentType.Minute => dateTime.Minute,
-            DateFieldSegmentType.Second => dateTime.Second,
             _ => 0
         };
     }
@@ -246,10 +232,70 @@ internal static class DateFieldUtils
                 ? (dateTime.Hour % 12 == 0 ? 12 : dateTime.Hour % 12).ToString("00")
                 : dateTime.Hour.ToString("00"),
             DateFieldSegmentType.Minute => dateTime.Minute.ToString("00"),
-            DateFieldSegmentType.Second => dateTime.Second.ToString("00"),
             DateFieldSegmentType.DayPeriod => dateTime.Hour < 12 
                 ? culture.DateTimeFormat.AMDesignator 
                 : culture.DateTimeFormat.PMDesignator,
+            _ => ""
+        };
+    }
+
+    /// <summary>
+    /// Gets the placeholder text for a segment type.
+    /// Returns lowercase format indicators like "yyyy", "mm", "dd".
+    /// </summary>
+    public static string GetSegmentPlaceholder(DateFieldSegmentType type, DateFieldContext context)
+    {
+        return type switch
+        {
+            DateFieldSegmentType.Year => "yyyy",
+            DateFieldSegmentType.Month => "mm",
+            DateFieldSegmentType.Day => "dd",
+            DateFieldSegmentType.Hour => "hh",
+            DateFieldSegmentType.Minute => "mm",
+            DateFieldSegmentType.DayPeriod => context.Culture.DateTimeFormat.AMDesignator.ToLowerInvariant(),
+            _ => ""
+        };
+    }
+
+    /// <summary>
+    /// Formats a segment value for display, showing placeholder if segment has no value.
+    /// </summary>
+    public static string FormatSegmentValue(DateFieldSegmentType type, DateFieldContext context)
+    {
+        // Check if this segment has a value
+        if (!context.SegmentHasValue(type))
+        {
+            return GetSegmentPlaceholder(type, context);
+        }
+        
+        // DayPeriod is special - uses boolean flag
+        if (type == DateFieldSegmentType.DayPeriod)
+        {
+            var isPm = context.GetPartialIsPm();
+            if (!isPm.HasValue)
+            {
+                return GetSegmentPlaceholder(type, context);
+            }
+            return isPm.Value 
+                ? context.Culture.DateTimeFormat.PMDesignator 
+                : context.Culture.DateTimeFormat.AMDesignator;
+        }
+        
+        // Get the value from context
+        var value = context.GetSegmentValue(type);
+        if (!value.HasValue)
+        {
+            return GetSegmentPlaceholder(type, context);
+        }
+        
+        // Format the value
+        return type switch
+        {
+            DateFieldSegmentType.Year => value.Value.ToString("0000"),
+            DateFieldSegmentType.Month => value.Value.ToString("00"),
+            DateFieldSegmentType.Day => value.Value.ToString("00"),
+            DateFieldSegmentType.Hour => value.Value.ToString("00"),
+            DateFieldSegmentType.Minute => value.Value.ToString("00"),
             _ => ""
         };
     }
