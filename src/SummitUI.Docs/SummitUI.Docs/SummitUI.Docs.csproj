@@ -13,18 +13,24 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.1"/>
     </ItemGroup>
 
-    <Target Name="NpmBuild" BeforeTargets="Build">
+    <PropertyGroup>
+        <RunNpmBuild Condition="'$(RunNpmBuild)' == ''">true</RunNpmBuild>
+    </PropertyGroup>
+
+    <Target Name="NpmBuild" BeforeTargets="Build" Condition="'$(RunNpmBuild)' == 'true'">
         <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
     </Target>
 
     <ItemGroup>
-      <Content Include="..\..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+      <Folder Include="wwwroot\fonts\" />
     </ItemGroup>
 
+    <!-- Exclude npm-related files from publish -->
     <ItemGroup>
-      <Folder Include="wwwroot\fonts\" />
+      <Content Update="package.json" CopyToPublishDirectory="Never" />
+      <Content Update="package-lock.json" CopyToPublishDirectory="Never" />
+      <None Update="package.json" CopyToPublishDirectory="Never" />
+      <None Update="package-lock.json" CopyToPublishDirectory="Never" />
     </ItemGroup>
 
 </Project>

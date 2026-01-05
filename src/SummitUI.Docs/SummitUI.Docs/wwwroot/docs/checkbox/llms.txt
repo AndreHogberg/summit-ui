@@ -1,0 +1,240 @@
+# Checkbox
+
+> A control that allows the user to toggle between checked and not checked.
+
+The Checkbox component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Three states: checked, unchecked, and indeterminate
+- Keyboard navigation (Space to toggle)
+- Controlled and uncontrolled modes
+- Support for HTML forms (hidden input)
+- Grouping capabilities via CheckboxGroup
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<CheckboxRoot>
+    <CheckboxIndicator>
+        <span>✓</span>
+    </CheckboxIndicator>
+</CheckboxRoot>
+```
+
+## Sub-components
+
+### CheckboxRoot
+The root checkbox component containing the button element.
+
+### CheckboxIndicator
+Renders when the checkbox is in a checked or indeterminate state.
+
+### CheckboxGroup
+A wrapper for managing a group of checkboxes.
+
+### CheckboxGroupLabel
+Accessible label for the checkbox group.
+
+## API Reference
+
+### CheckboxRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Checked | bool? | null | Controlled checked state |
+| DefaultChecked | bool | false | Default checked state for uncontrolled mode |
+| CheckedChanged | EventCallback<bool> | - | Callback when checked state changes |
+| Indeterminate | bool | false | Controlled indeterminate state |
+| IndeterminateChanged | EventCallback<bool> | - | Callback when indeterminate state changes |
+| Disabled | bool | false | Prevents interaction with the checkbox |
+| Required | bool | false | Indicates checkbox must be checked for form submission |
+| Name | string? | null | Form field name for hidden input |
+| Value | string? | "on" | Value submitted with form data |
+
+### CheckboxIndicator
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| ForceMount | bool | false | Always render in DOM (useful for CSS animations) |
+| ChildContent | RenderFragment? | - | Content to render when checked or indeterminate |
+
+### CheckboxGroup
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Values | IReadOnlyList<string>? | null | Controlled values of checked items |
+| DefaultValues | IReadOnlyList<string>? | null | Default values for uncontrolled mode |
+| ValuesChanged | EventCallback<IReadOnlyList<string>> | - | Callback when values change |
+| Disabled | bool | false | Disable entire group |
+| Name | string? | null | Form name for hidden inputs |
+
+### CheckboxGroupLabel
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| ChildContent | RenderFragment? | - | Label content for the checkbox group |
+
+## Examples
+
+### Basic Usage
+
+```razor
+<CheckboxRoot DefaultChecked="true">
+    <CheckboxIndicator>
+        <span>✓</span>
+    </CheckboxIndicator>
+</CheckboxRoot>
+```
+
+### With Label
+
+Wrap the checkbox in a label for better accessibility and click handling.
+
+```razor
+<label style="display: flex; gap: 0.5rem; align-items: center;">
+    <CheckboxRoot id="c1">
+        <CheckboxIndicator>
+            <span>✓</span>
+        </CheckboxIndicator>
+    </CheckboxRoot>
+    Accept terms and conditions
+</label>
+```
+
+### Controlled Mode
+
+Control the checked state externally.
+
+```razor
+@code {
+    private bool isChecked = true;
+}
+
+<CheckboxRoot @bind-Checked="isChecked">
+    <CheckboxIndicator>
+        <span>✓</span>
+    </CheckboxIndicator>
+</CheckboxRoot>
+```
+
+### Indeterminate State
+
+Use the indeterminate state for parent checkboxes with partially selected children.
+
+```razor
+@code {
+    private bool isIndeterminate = true;
+}
+
+<CheckboxRoot @bind-Indeterminate="isIndeterminate">
+    <CheckboxIndicator>
+        @if (isIndeterminate)
+        {
+            <span>-</span>
+        }
+        else
+        {
+            <span>✓</span>
+        }
+    </CheckboxIndicator>
+</CheckboxRoot>
+```
+
+### Checkbox Group
+
+Manage multiple checkboxes as a group.
+
+```razor
+@code {
+    private IReadOnlyList<string> values = new[] { "apple" };
+}
+
+<CheckboxGroup @bind-Values="values">
+    <CheckboxGroupLabel>Favorite Fruits</CheckboxGroupLabel>
+    
+    <label>
+        <CheckboxRoot Value="apple">
+            <CheckboxIndicator>✓</CheckboxIndicator>
+        </CheckboxRoot>
+        Apple
+    </label>
+    
+    <label>
+        <CheckboxRoot Value="banana">
+            <CheckboxIndicator>✓</CheckboxIndicator>
+        </CheckboxRoot>
+        Banana
+    </label>
+</CheckboxGroup>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "checked" \| "unchecked" \| "indeterminate" | Current state of the checkbox |
+| data-disabled | Present when disabled | Indicates disabled state |
+
+### CSS Example
+
+```css
+/* Checkbox styles */
+.checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.checkbox:hover {
+    border-color: #666;
+}
+
+.checkbox[data-state="checked"],
+.checkbox[data-state="indeterminate"] {
+    background: #0066cc;
+    border-color: #0066cc;
+}
+
+.checkbox[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Indicator styles */
+.checkbox-indicator {
+    color: white;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Space | Toggles the checkbox state |
+
+### ARIA Attributes
+
+- **role:** `checkbox` is set on the root element
+- **aria-checked:** Reflects the current state (`true`, `false`, or `mixed`)
+- **aria-disabled:** Set when the checkbox is disabled
+- **aria-required:** Set when the checkbox is required

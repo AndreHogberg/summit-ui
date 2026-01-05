@@ -62,10 +62,9 @@
 
             @* Right section - Navigation *@
             <div class="flex flex-1 items-center justify-between px-6">
-                <nav class="hidden md:flex items-center gap-1 text-sm" aria-label="Main Navigation">
-                    <NavLink tabindex="0" href="/docs" class="nav-link">Docs</NavLink>
-                    <NavLink tabindex="0" href="/docs/accordion" class="nav-link">Components</NavLink>
-                </nav>
+                <div class="flex items-center gap-4">
+                    <Breadcrumbs />
+                </div>
 
                 <div class="flex items-center gap-2">
                     <a href="https://github.com/andrehogberg/summit-ui" 

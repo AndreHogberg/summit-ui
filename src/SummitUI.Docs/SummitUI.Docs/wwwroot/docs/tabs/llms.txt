@@ -1,0 +1,143 @@
+# Tabs
+
+> A set of layered sections of content, known as tab panels, that are displayed one at a time.
+
+The Tabs component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Full keyboard navigation
+- Horizontal and vertical orientations
+- Auto and manual activation modes
+- Controlled and uncontrolled modes
+- Disabled tabs support
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<TabsRoot DefaultValue="tab1">
+    <TabsList>
+        <TabsTrigger Value="tab1">Tab 1</TabsTrigger>
+        <TabsTrigger Value="tab2">Tab 2</TabsTrigger>
+    </TabsList>
+    <TabsContent Value="tab1">Content 1</TabsContent>
+    <TabsContent Value="tab2">Content 2</TabsContent>
+</TabsRoot>
+```
+
+## Sub-components
+
+- **TabsRoot:** Root container managing tabs state.
+- **TabsList:** Container for tab triggers (tablist role).
+- **TabsTrigger:** Individual tab button (tab role).
+- **TabsContent:** Tab content panel (tabpanel role).
+
+## API Reference
+
+### TabsRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | string? | null | Controlled active tab value |
+| DefaultValue | string? | null | Default active tab (uncontrolled) |
+| ValueChanged | EventCallback<string?> | - | Value change callback |
+| Orientation | TabsOrientation | Horizontal | Affects keyboard navigation |
+| ActivationMode | TabsActivationMode | Auto | Auto (on focus) or Manual (on Enter/Space) |
+| Loop | bool | true | Whether keyboard nav loops |
+
+### TabsTrigger
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | string | **required** | Unique tab identifier |
+| As | string | "button" | HTML element |
+| Disabled | bool | false | Disable this tab |
+
+### TabsContent
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | string | **required** | Matching TabsTrigger value |
+| As | string | "div" | HTML element |
+
+## Examples
+
+### Basic Usage
+
+```razor
+<TabsRoot DefaultValue="account">
+    <TabsList class="tabs-list">
+        <TabsTrigger Value="account" class="tabs-trigger">Account</TabsTrigger>
+        <TabsTrigger Value="password" class="tabs-trigger">Password</TabsTrigger>
+    </TabsList>
+    <TabsContent Value="account" class="tabs-content">
+        <h3>Account Settings</h3>
+        <p>Manage your account information here.</p>
+    </TabsContent>
+    <TabsContent Value="password" class="tabs-content">
+        <h3>Password Settings</h3>
+        <p>Change your password and security options.</p>
+    </TabsContent>
+</TabsRoot>
+```
+
+### Controlled Mode
+
+```razor
+@code {
+    private string activeTab = "overview";
+}
+
+<TabsRoot Value="@activeTab" ValueChanged="@(v => activeTab = v)">
+    <TabsList>
+        <TabsTrigger Value="overview">Overview</TabsTrigger>
+        <TabsTrigger Value="details">Details</TabsTrigger>
+    </TabsList>
+    <TabsContent Value="overview">Overview content...</TabsContent>
+    <TabsContent Value="details">Details content...</TabsContent>
+</TabsRoot>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "active" \| "inactive" | Tab/panel activation state |
+| data-disabled | Present when disabled | Tab is disabled |
+| data-orientation | "horizontal" \| "vertical" | Current orientation |
+
+### CSS Example
+
+```css
+.tabs-trigger[data-state="active"] {
+    color: #0066cc;
+    border-bottom: 2px solid #0066cc;
+}
+
+.tabs-content[data-state="inactive"] {
+    display: none;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| ArrowRight / ArrowDown | Move focus to next tab |
+| ArrowLeft / ArrowUp | Move focus to previous tab |
+| Home | Move focus to first tab |
+| End | Move focus to last tab |
+| Enter / Space | Activate focused tab (manual mode) |

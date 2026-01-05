@@ -18,11 +18,11 @@
     <SuSection Title="Prerequisites">
         <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 .NET 10 or later
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Blazor WebAssembly, Blazor Server, or Blazor Web App project
             </li>
         </ul>
@@ -85,10 +85,10 @@
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M12 6v6l4 2"/>
                     </svg>
-                    Static SSR
+                    Pre-rendering
                 </SuHeading>
                 <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    Components render their initial state. Interactive features require upgrading to Interactive mode.
+                    Both WebAssembly and Server modes support pre-rendering for fast initial page loads.
                 </SuText>
             </SuCard>
             <SuCard class="p-4">
@@ -99,7 +99,7 @@
                         <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
                         <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
                     </svg>
-                    Interactive Server
+                    Server
                 </SuHeading>
                 <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
                     Full interactivity via SignalR. Components work out of the box with real-time updates.
@@ -206,19 +206,33 @@
                 </svg>
                 <SuText Weight="SuTextWeight.Medium">Popover</SuText>
             </SuCard>
-            <SuCard href="/docs/checkbox" class="p-3 hover:bg-su-muted/50 transition-colors cursor-pointer flex flex-row items-center gap-2">
+            <SuCard href="/docs/dropdownmenu" class="p-3 hover:bg-su-muted/50 transition-colors cursor-pointer flex flex-row items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground">
                     <rect width="18" height="18" x="3" y="3" rx="2"/>
-                    <path d="m9 12 2 2 4-4"/>
+                    <path d="M8 12h8"/>
+                    <path d="M8 8h8"/>
+                    <path d="M8 16h8"/>
                 </svg>
-                <SuText Weight="SuTextWeight.Medium">Checkbox</SuText>
+                <SuText Weight="SuTextWeight.Medium">Dropdown Menu</SuText>
             </SuCard>
-            <SuCard href="/docs/switch" class="p-3 hover:bg-su-muted/50 transition-colors cursor-pointer flex flex-row items-center gap-2">
+            <SuCard href="/docs/focustrap" class="p-3 hover:bg-su-muted/50 transition-colors cursor-pointer flex flex-row items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground">
-                    <rect width="20" height="12" x="2" y="6" rx="6" ry="6"/>
-                    <circle cx="16" cy="12" r="2"/>
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <line x1="21.17" y1="8" x2="12" y2="8"/>
+                    <line x1="3.95" y1="6.06" x2="8.54" y2="14"/>
+                    <line x1="10.88" y1="21.94" x2="15.46" y2="14"/>
                 </svg>
-                <SuText Weight="SuTextWeight.Medium">Switch</SuText>
+                <SuText Weight="SuTextWeight.Medium">Focus Trap</SuText>
+            </SuCard>
+            <SuCard href="/docs/datefield" class="p-3 hover:bg-su-muted/50 transition-colors cursor-pointer flex flex-row items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground">
+                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <SuText Weight="SuTextWeight.Medium">DateField</SuText>
             </SuCard>
         </div>
     </SuSection>

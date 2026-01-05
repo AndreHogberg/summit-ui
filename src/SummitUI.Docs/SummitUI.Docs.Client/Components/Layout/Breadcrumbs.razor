@@ -1,0 +1,69 @@
+@inject NavigationManager Navigation
+@using System.Text.RegularExpressions
+
+<nav aria-label="Breadcrumb" class="flex items-center text-sm font-medium text-su-muted-foreground">
+    <ol class="flex items-center gap-2">
+        <li>
+            <a href="/" class="hover:text-su-foreground transition-colors flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span class="sr-only">Home</span>
+            </a>
+        </li>
+        @if (segments.Any())
+        {
+            @foreach (var (segment, index) in segments.Select((s, i) => (s, i)))
+            {
+                <li class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                    @if (index == segments.Count - 1)
+                    {
+                        <span class="text-su-foreground font-semibold" aria-current="page">@FormatSegment(segment)</span>
+                    }
+                    else
+                    {
+                        <a href="@GetUrl(index)" class="hover:text-su-foreground transition-colors">@FormatSegment(segment)</a>
+                    }
+                </li>
+            }
+        }
+    </ol>
+</nav>
+
+@code {
+    private List<string> segments = new();
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += (s, e) => UpdateSegments();
+        UpdateSegments();
+    }
+
+    private void UpdateSegments()
+    {
+        var uri = new Uri(Navigation.Uri);
+        segments = uri.AbsolutePath
+            .Split('/', StringSplitOptions.RemoveEmptyEntries)
+            .ToList();
+        StateHasChanged();
+    }
+
+    private string FormatSegment(string segment)
+    {
+        if (string.Equals(segment, "llms", StringComparison.OrdinalIgnoreCase)) return "llms.txt";
+        
+        // Capitalize first letter and handle hyphenation if needed (though we prefer flat slugs)
+        var formatted = Regex.Replace(segment, "([a-z])([A-Z])", "$1 $2");
+        formatted = formatted.Replace("-", " ");
+        return char.ToUpper(formatted[0]) + formatted[1..];
+    }
+
+    private string GetUrl(int index)
+    {
+        return "/" + string.Join("/", segments.Take(index + 1));
+    }
+}

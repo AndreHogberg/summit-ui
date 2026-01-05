@@ -1,9 +1,12 @@
 // accordion.js - ES6 module for accordion animations
 // Note: Keyboard navigation has been moved to Blazor for better cross-render-mode compatibility.
-// Only DOM measurement and scroll prevention functionality remains here.
+// Handles DOM measurement, scroll prevention, and animation-aware presence management.
 
 // Store trigger handlers to prevent default scroll behavior
 const triggerHandlers = new Map();
+
+// Store pending animation watchers for cleanup
+const animationWatchers = new Map();
 
 /**
  * Register trigger element to prevent default scroll behavior on arrow keys.
@@ -65,5 +68,89 @@ export function setContentHeight(contentElement) {
         contentElement.hidden = true;
         contentElement.style.visibility = '';
         contentElement.style.position = '';
+    }
+}
+
+/**
+ * Wait for all animations on an element to complete, then invoke a callback.
+ * If no animations are running, calls back immediately.
+ * This enables animation-aware presence management (hide after animations finish).
+ * @param {HTMLElement} element - The element to watch for animations
+ * @param {Function} dotNetCallback - .NET object reference with invokeMethodAsync
+ * @param {string} methodName - Name of the .NET method to call when animations complete
+ */
+export function waitForAnimationsComplete(element, dotNetCallback, methodName) {
+    if (!element) {
+        dotNetCallback.invokeMethodAsync(methodName);
+        return;
+    }
+
+    // Cancel any existing watcher for this element
+    cancelAnimationWatcher(element);
+
+    // Check if getAnimations is supported
+    if (typeof element.getAnimations !== 'function') {
+        dotNetCallback.invokeMethodAsync(methodName);
+        return;
+    }
+
+    // Use requestAnimationFrame to ensure we catch animations that just started
+    const frameId = requestAnimationFrame(() => {
+        const animations = element.getAnimations();
+
+        if (animations.length === 0) {
+            // No animations running, call back immediately
+            animationWatchers.delete(element);
+            dotNetCallback.invokeMethodAsync(methodName);
+            return;
+        }
+
+        // Wait for all animations to complete
+        Promise.allSettled(animations.map(a => a.finished))
+            .then(() => {
+                animationWatchers.delete(element);
+                dotNetCallback.invokeMethodAsync(methodName);
+            });
+    });
+
+    // Store for potential cleanup
+    animationWatchers.set(element, { frameId });
+}
+
+/**
+ * Cancel any pending animation watcher for an element.
+ * Call this when the element is being disposed or state changes again.
+ * @param {HTMLElement} element - The element to cancel watching
+ */
+export function cancelAnimationWatcher(element) {
+    if (!element) return;
+    
+    const watcher = animationWatchers.get(element);
+    if (watcher) {
+        if (watcher.frameId) {
+            cancelAnimationFrame(watcher.frameId);
+        }
+        animationWatchers.delete(element);
+    }
+}
+
+/**
+ * Set the hidden attribute on an element.
+ * Used as a callback after animations complete.
+ * @param {HTMLElement} element - The element to hide
+ */
+export function setHidden(element) {
+    if (element) {
+        element.hidden = true;
+    }
+}
+
+/**
+ * Remove the hidden attribute from an element.
+ * @param {HTMLElement} element - The element to show
+ */
+export function removeHidden(element) {
+    if (element) {
+        element.hidden = false;
     }
 }

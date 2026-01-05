@@ -6,22 +6,21 @@
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-su-border bg-su-muted/50 px-2.5 py-0.5 text-xs font-medium text-su-muted-foreground">
-                Component
-            </span>
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
         </div>
-        <h1 class="text-4xl font-bold tracking-tight">Popover</h1>
-        <SuPromptButton ComponentName="Popover" />
-        <p class="text-xl text-su-muted-foreground leading-relaxed">
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Popover
+            <SuPromptButton ComponentName="Popover" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
             A floating content panel that appears next to a trigger element, commonly used for tooltips, dropdowns, and informational overlays.
-        </p>
+        </SuText>
     </div>
 
     @* Live Demo *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Demo</h2>
-        <div class="rounded-xl border border-su-border bg-su-card p-6">
+    <SuSection Title="Demo">
+        <SuCard>
             <PopoverRoot>
                 <PopoverTrigger class="demo-popover-trigger">
                     Click me
@@ -36,354 +35,234 @@
                     </PopoverContent>
                 </PopoverPortal>
             </PopoverRoot>
-        </div>
-    </section>
+        </SuCard>
+    </SuSection>
 
     @* Features *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Features</h2>
+    <SuSection Title="Features">
         <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Flexible positioning with collision detection
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Optional overlay backdrop
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Focus trapping support
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Close button component
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Controlled and uncontrolled modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 WCAG compliant with proper ARIA attributes
             </li>
         </ul>
-    </section>
+    </SuSection>
 
     @* Installation *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Installation</h2>
-        <div class="code-block">
-            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
 
     @* Anatomy *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Anatomy</h2>
-        <p class="text-sm text-su-muted-foreground">Import the components and structure them as follows:</p>
-        <div class="code-block">
-            <pre><code class="language-xml">@anatomyCode</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
 
     @* Sub-components *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-su-foreground">Sub-components</h2>
+    <SuSection Title="Sub-components">
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">PopoverRoot</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Root container managing popover state.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">PopoverTrigger</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Button that toggles the popover.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">PopoverPortal</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Renders content in fixed-position container.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">PopoverContent</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Floating content panel with positioning.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">PopoverOverlay</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Optional backdrop overlay.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">PopoverClose</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Close button within popover.</p>
-            </div>
+            <SuCard>
+                <SuCardTitle>PopoverRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">Root container managing popover state.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>PopoverTrigger</SuCardTitle>
+                <SuCardDescription class="mt-1">Button that toggles the popover.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>PopoverPortal</SuCardTitle>
+                <SuCardDescription class="mt-1">Renders content in fixed-position container.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>PopoverContent</SuCardTitle>
+                <SuCardDescription class="mt-1">Floating content panel with positioning.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>PopoverOverlay</SuCardTitle>
+                <SuCardDescription class="mt-1">Optional backdrop overlay.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>PopoverClose</SuCardTitle>
+                <SuCardDescription class="mt-1">Close button within popover.</SuCardDescription>
+            </SuCard>
         </div>
-    </section>
+    </SuSection>
 
     @* API Reference *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
-        
-        @* PopoverRoot *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">PopoverRoot</h3>
-            <p class="text-sm text-su-muted-foreground">The root component that manages popover state.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Open</code></td>
-                            <td><code>bool?</code></td>
-                            <td><code>null</code></td>
-                            <td>Controlled open state</td>
-                        </tr>
-                        <tr>
-                            <td><code>DefaultOpen</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Default open state (uncontrolled)</td>
-                        </tr>
-                        <tr>
-                            <td><code>OpenChanged</code></td>
-                            <td><code>EventCallback&lt;bool&gt;</code></td>
-                            <td>-</td>
-                            <td>Open state change callback</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnOpen</code></td>
-                            <td><code>EventCallback</code></td>
-                            <td>-</td>
-                            <td>Callback when popover opens</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnClose</code></td>
-                            <td><code>EventCallback</code></td>
-                            <td>-</td>
-                            <td>Callback when popover closes</td>
-                        </tr>
-                        <tr>
-                            <td><code>Modal</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Whether to trap focus</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "PopoverRoot", Props: popoverRootProperties), 
+                (Title: "PopoverContent", Props: popoverContentProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
         </div>
-
-        @* PopoverContent *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">PopoverContent</h3>
-            <p class="text-sm text-su-muted-foreground">The floating content panel.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Side</code></td>
-                            <td><code>Side</code></td>
-                            <td><code>Bottom</code></td>
-                            <td>Placement side</td>
-                        </tr>
-                        <tr>
-                            <td><code>SideOffset</code></td>
-                            <td><code>int</code></td>
-                            <td><code>0</code></td>
-                            <td>Offset from trigger (px)</td>
-                        </tr>
-                        <tr>
-                            <td><code>Align</code></td>
-                            <td><code>Align</code></td>
-                            <td><code>Center</code></td>
-                            <td>Alignment along side axis</td>
-                        </tr>
-                        <tr>
-                            <td><code>AvoidCollisions</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Avoid viewport boundaries</td>
-                        </tr>
-                        <tr>
-                            <td><code>TrapFocus</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Whether to trap focus</td>
-                        </tr>
-                        <tr>
-                            <td><code>EscapeKeyBehavior</code></td>
-                            <td><code>EscapeKeyBehavior</code></td>
-                            <td><code>Close</code></td>
-                            <td>Escape key behavior</td>
-                        </tr>
-                        <tr>
-                            <td><code>OutsideClickBehavior</code></td>
-                            <td><code>OutsideClickBehavior</code></td>
-                            <td><code>Close</code></td>
-                            <td>Outside click behavior</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+    </SuSection>
 
     @* Examples *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
-        
-        @* Basic *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Basic Popover</h3>
-            <div class="code-block">
-                <pre><code class="language-xml">@basicExampleCode</code></pre>
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Popover</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* With Overlay *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">With Overlay</h3>
-            <p class="text-sm text-su-muted-foreground">Add a backdrop overlay for modal-like behavior.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@overlayExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Overlay</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Add a backdrop overlay for modal-like behavior.</SuText>
+                <SuCodeBlock Code="@overlayExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Positions *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Different Positions</h3>
-            <p class="text-sm text-su-muted-foreground">Position the popover on different sides.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@positionsExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Different Positions</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Position the popover on different sides.</SuText>
+                <SuCodeBlock Code="@positionsExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Controlled *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Controlled Mode</h3>
-            <p class="text-sm text-su-muted-foreground">Control the open state externally.</p>
-            <div class="code-block">
-                <pre><code class="language-razor">@controlledExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Controlled Mode</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Control the open state externally.</SuText>
+                <SuCodeBlock Code="@controlledExampleCode" Language="razor" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Styling *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Data Attributes</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Attribute</th>
-                            <th>Values</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>data-state</code></td>
-                            <td><code>"open"</code> | <code>"closed"</code></td>
-                            <td>Popover open state</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-side</code></td>
-                            <td><code>"top"</code> | <code>"right"</code> | <code>"bottom"</code> | <code>"left"</code></td>
-                            <td>Current placement side</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-align</code></td>
-                            <td><code>"start"</code> | <code>"center"</code> | <code>"end"</code></td>
-                            <td>Current alignment</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
             </div>
-        </div>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">CSS Example</h3>
-            <div class="code-block">
-                <pre><code class="language-css">@cssExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Accessibility *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
-                            <td>Toggle popover (on trigger)</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Escape</kbd></td>
-                            <td>Close popover</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Tab</kbd></td>
-                            <td>Move focus within popover (when focus trapped)</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Trigger:</span>
+                        <span>Has <code>aria-haspopup="dialog"</code> and <code>aria-expanded</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Content:</span>
+                        <span>Linked to trigger via <code>aria-controls</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Close:</span>
+                        <span>Has <code>aria-label</code> for screen readers</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Focus Management</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li>When opened, focus moves to the first focusable element in the content</li>
+                    <li>When closed, focus returns to the trigger</li>
+                    <li>Optional focus trapping keeps focus within the popover</li>
+                </ul>
             </div>
         </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-su-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">Trigger:</span>
-                    <span>Has <code>aria-haspopup="dialog"</code> and <code>aria-expanded</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">Content:</span>
-                    <span>Linked to trigger via <code>aria-controls</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">Close:</span>
-                    <span>Has <code>aria-label</code> for screen readers</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Focus Management</h3>
-            <ul class="grid gap-2 text-sm text-su-muted-foreground">
-                <li>When opened, focus moves to the first focusable element in the content</li>
-                <li>When closed, focus returns to the trigger</li>
-                <li>Optional focus trapping keeps focus within the popover</li>
-            </ul>
-        </div>
-    </section>
+    </SuSection>
 </div>
 
 <style>
@@ -440,6 +319,41 @@
 </style>
 
 @code {
+    private List<SuApiProperty> popoverRootProperties = new()
+    {
+        new() { Name = "Open", Type = "bool?", Default = "null", Description = "Controlled open state" },
+        new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state (uncontrolled)" },
+        new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Open state change callback" },
+        new() { Name = "OnOpen", Type = "EventCallback", Description = "Callback when popover opens" },
+        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback when popover closes" },
+        new() { Name = "Modal", Type = "bool", Default = "false", Description = "Whether to trap focus" }
+    };
+
+    private List<SuApiProperty> popoverContentProperties = new()
+    {
+        new() { Name = "Side", Type = "Side", Default = "Bottom", Description = "Placement side" },
+        new() { Name = "SideOffset", Type = "int", Default = "0", Description = "Offset from trigger (px)" },
+        new() { Name = "Align", Type = "Align", Default = "Center", Description = "Alignment along side axis" },
+        new() { Name = "AvoidCollisions", Type = "bool", Default = "true", Description = "Avoid viewport boundaries" },
+        new() { Name = "TrapFocus", Type = "bool", Default = "false", Description = "Whether to trap focus" },
+        new() { Name = "EscapeKeyBehavior", Type = "EscapeKeyBehavior", Default = "Close", Description = "Escape key behavior" },
+        new() { Name = "OutsideClickBehavior", Type = "OutsideClickBehavior", Default = "Close", Description = "Outside click behavior" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-state", Type = "\"open\" | \"closed\"", Description = "Popover open state" },
+        new() { Name = "data-side", Type = "\"top\" | \"right\" | \"bottom\" | \"left\"", Description = "Current placement side" },
+        new() { Name = "data-align", Type = "\"start\" | \"center\" | \"end\"", Description = "Current alignment" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "Enter / Space", Description = "Toggle popover (on trigger)", Type = "" },
+        new() { Name = "Escape", Description = "Close popover", Type = "" },
+        new() { Name = "Tab", Description = "Move focus within popover (when focus trapped)", Type = "" }
+    };
+
     private const string anatomyCode = @"<PopoverRoot>
     <PopoverTrigger class=""su-popover-trigger"">Open</PopoverTrigger>
     <PopoverPortal>

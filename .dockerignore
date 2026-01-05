@@ -1,0 +1,53 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE and editor
+.vs
+.vscode
+.idea
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+**/bin
+**/obj
+**/out
+**/publish
+
+# Node
+**/node_modules
+
+# Test projects
+tests/
+
+# Documentation files
+*.md
+!README.md
+LICENSE
+
+# Docker
+**/Dockerfile*
+**/.dockerignore
+docker-compose*.yml
+
+# CI/CD
+.github/
+.azure/
+
+# Local development
+**/*.local.*
+**/appsettings.Development.json
+**/.env
+**/.env.*
+
+# Logs
+**/*.log
+**/logs
+
+# OS generated
+.DS_Store
+Thumbs.db

@@ -7,22 +7,21 @@
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-su-border bg-su-muted/50 px-2.5 py-0.5 text-xs font-medium text-su-muted-foreground">
-                Component
-            </span>
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
         </div>
-        <h1 class="text-4xl font-bold tracking-tight">Switch</h1>
-        <SuPromptButton ComponentName="Switch" />
-        <p class="text-xl text-su-muted-foreground leading-relaxed">
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Switch
+            <SuPromptButton ComponentName="Switch" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
             A control that allows the user to toggle between checked and not checked.
-        </p>
+        </SuText>
     </div>
 
     @* Live Demo *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Demo</h2>
-        <div class="rounded-xl border border-su-border bg-su-card p-6">
+    <SuSection Title="Demo">
+        <SuCard>
             <div class="flex flex-col gap-4">
                 <label class="flex items-center gap-3 cursor-pointer">
                     <SwitchRoot @bind-Checked="isChecked1" class="demo-switch">
@@ -45,287 +44,205 @@
                     <span class="text-sm text-su-foreground">Disabled switch</span>
                 </label>
             </div>
-        </div>
-    </section>
+        </SuCard>
+    </SuSection>
 
     @* Features *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Features</h2>
+    <SuSection Title="Features">
         <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Two states: checked and unchecked
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Keyboard navigation (Space/Enter to toggle)
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Controlled and uncontrolled modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Support for HTML forms (hidden input)
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 WCAG compliant with proper ARIA attributes
             </li>
         </ul>
-    </section>
+    </SuSection>
 
     @* Installation *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Installation</h2>
-        <div class="code-block">
-            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
 
     @* Anatomy *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Anatomy</h2>
-        <p class="text-sm text-su-muted-foreground">Import the components and structure them as follows:</p>
-        <div class="code-block">
-            <pre><code class="language-xml">@anatomyCode</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
 
     @* Sub-components *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-su-foreground">Sub-components</h2>
-        <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">SwitchRoot</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">The root switch component containing the button element.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">SwitchThumb</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">The thumb that visually indicates the checked state.</p>
-            </div>
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SuCard>
+                <SuCardTitle>SwitchRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">The root switch component containing the button element.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>SwitchThumb</SuCardTitle>
+                <SuCardDescription class="mt-1">The thumb that visually indicates the checked state.</SuCardDescription>
+            </SuCard>
         </div>
-    </section>
+    </SuSection>
 
     @* API Reference *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
-        
-        @* SwitchRoot *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">SwitchRoot</h3>
-            <p class="text-sm text-su-muted-foreground">The root switch component.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Checked</code></td>
-                            <td><code>bool?</code></td>
-                            <td><code>null</code></td>
-                            <td>Controlled checked state</td>
-                        </tr>
-                        <tr>
-                            <td><code>DefaultChecked</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Default checked state for uncontrolled mode</td>
-                        </tr>
-                        <tr>
-                            <td><code>CheckedChanged</code></td>
-                            <td><code>EventCallback&lt;bool&gt;</code></td>
-                            <td>-</td>
-                            <td>Callback when checked state changes</td>
-                        </tr>
-                        <tr>
-                            <td><code>Disabled</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Prevents interaction with the switch</td>
-                        </tr>
-                        <tr>
-                            <td><code>Required</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Indicates switch must be checked for form submission</td>
-                        </tr>
-                        <tr>
-                            <td><code>Name</code></td>
-                            <td><code>string?</code></td>
-                            <td><code>null</code></td>
-                            <td>Form field name for hidden input</td>
-                        </tr>
-                        <tr>
-                            <td><code>Value</code></td>
-                            <td><code>string?</code></td>
-                            <td><code>"on"</code></td>
-                            <td>Value submitted with form data</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "SwitchRoot", Props: switchRootProperties), 
+                (Title: "SwitchThumb", Props: switchThumbProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
         </div>
-
-        @* SwitchThumb *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">SwitchThumb</h3>
-            <p class="text-sm text-su-muted-foreground">The thumb that visually indicates the checked state.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>ChildContent</code></td>
-                            <td><code>RenderFragment?</code></td>
-                            <td>-</td>
-                            <td>Optional content to render inside the thumb</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+    </SuSection>
 
     @* Examples *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
-        
-        @* Basic *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Basic Usage</h3>
-            <div class="code-block">
-                <pre><code class="language-xml">@basicExampleCode</code></pre>
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* With Label *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">With Label</h3>
-            <p class="text-sm text-su-muted-foreground">Associate the switch with a label for better accessibility.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@withLabelExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Label</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Associate the switch with a label for better accessibility.</SuText>
+                <SuCodeBlock Code="@withLabelExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Controlled *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Controlled Mode</h3>
-            <p class="text-sm text-su-muted-foreground">Control the checked state externally.</p>
-            <div class="code-block">
-                <pre><code class="language-razor">@controlledExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Controlled Mode</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Control the checked state externally.</SuText>
+                <SuCodeBlock Code="@controlledExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Form Integration *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Form Integration</h3>
-            <p class="text-sm text-su-muted-foreground">Use with EditForm for form submissions.</p>
-            <div class="code-block">
-                <pre><code class="language-razor">@formExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Form Integration</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use with EditForm for form submissions.</SuText>
+                <SuCodeBlock Code="@formExampleCode" Language="razor" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Styling *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Data Attributes</h3>
-            <p class="text-sm text-su-muted-foreground">Use these data attributes to style different states:</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Attribute</th>
-                            <th>Values</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>data-state</code></td>
-                            <td><code>"checked"</code> | <code>"unchecked"</code></td>
-                            <td>Current state of the switch</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-disabled</code></td>
-                            <td>Present when disabled</td>
-                            <td>Indicates disabled state</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
             </div>
-        </div>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">CSS Example</h3>
-            <div class="code-block">
-                <pre><code class="language-css">@cssExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Accessibility *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><kbd>Space</kbd></td>
-                            <td>Toggles the switch state</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Enter</kbd></td>
-                            <td>Toggles the switch state</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">role:</span>
+                        <span><code>switch</code> is set on the root element</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-checked:</span>
+                        <span>Reflects the current state (<code>true</code> or <code>false</code>)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-disabled:</span>
+                        <span>Set when the switch is disabled</span>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-su-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">role:</span>
-                    <span><code>switch</code> is set on the root element</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">aria-checked:</span>
-                    <span>Reflects the current state (<code>true</code> or <code>false</code>)</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">aria-disabled:</span>
-                    <span>Set when the switch is disabled</span>
-                </li>
-            </ul>
-        </div>
-    </section>
+    </SuSection>
 </div>
 
 <style>
@@ -372,6 +289,34 @@
 </style>
 
 @code {
+    private List<SuApiProperty> switchRootProperties = new()
+    {
+        new() { Name = "Checked", Type = "bool?", Default = "null", Description = "Controlled checked state" },
+        new() { Name = "DefaultChecked", Type = "bool", Default = "false", Description = "Default checked state for uncontrolled mode" },
+        new() { Name = "CheckedChanged", Type = "EventCallback<bool>", Description = "Callback when checked state changes" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Prevents interaction with the switch" },
+        new() { Name = "Required", Type = "bool", Default = "false", Description = "Indicates switch must be checked for form submission" },
+        new() { Name = "Name", Type = "string?", Default = "null", Description = "Form field name for hidden input" },
+        new() { Name = "Value", Type = "string?", Default = "\"on\"", Description = "Value submitted with form data" }
+    };
+
+    private List<SuApiProperty> switchThumbProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional content to render inside the thumb" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-state", Type = "\"checked\" | \"unchecked\"", Description = "Current state of the switch" },
+        new() { Name = "data-disabled", Type = "Present when disabled", Description = "Indicates disabled state" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "Space", Description = "Toggles the switch state", Type = "" },
+        new() { Name = "Enter", Description = "Toggles the switch state", Type = "" }
+    };
+
     private bool isChecked1 = false;
     private bool isChecked2 = true;
 

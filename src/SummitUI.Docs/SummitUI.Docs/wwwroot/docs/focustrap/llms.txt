@@ -1,0 +1,202 @@
+# FocusTrap
+
+> A utility component that traps keyboard focus within its children, preventing focus from escaping to elements outside the trap.
+
+The FocusTrap component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Traps Tab and Shift+Tab navigation within boundaries
+- Automatic focus on activation
+- Returns focus on deactivation
+- Handles edge cases (no focusable elements)
+- Programmatic focus control methods
+- Activation/deactivation callbacks
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the component and wrap your content:
+
+```razor
+@using SummitUI.Components.Utilities
+
+<FocusTrap IsActive="true">
+    <div class="su-trap-container">
+        <input type="text" class="su-input" />
+        <button class="su-button">Submit</button>
+    </div>
+</FocusTrap>
+```
+
+## API Reference
+
+### FocusTrap
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| ChildContent | RenderFragment? | null | Content to render within the trap |
+| IsActive | bool | true | Whether trap is active |
+| AutoFocus | bool | true | Auto-focus first element when activated |
+| ReturnFocus | bool | true | Return focus to previously focused element on deactivation |
+| OnActivated | EventCallback | - | Callback when trap activates |
+| OnDeactivated | EventCallback | - | Callback when trap deactivates |
+
+### Public Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| FocusFirstAsync() | ValueTask | Manually focus the first focusable element |
+| FocusLastAsync() | ValueTask | Manually focus the last focusable element |
+
+## Examples
+
+### Basic Dialog
+
+```razor
+@code {
+    private bool showDialog = false;
+}
+
+@if (showDialog)
+{
+    <div class="su-dialog-overlay">
+        <FocusTrap IsActive="true" AutoFocus="true">
+            <div class="su-dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+                <h2 id="dialog-title" class="su-dialog-title">Confirm Action</h2>
+                <p class="su-dialog-description">Are you sure you want to proceed?</p>
+                <div class="su-dialog-actions">
+                    <button class="su-button su-button-secondary" @onclick="@(() => showDialog = false)">Cancel</button>
+                    <button class="su-button" @onclick="HandleConfirm">Confirm</button>
+                </div>
+            </div>
+        </FocusTrap>
+    </div>
+}
+
+<button class="su-button" @onclick="@(() => showDialog = true)">Open Dialog</button>
+
+@code {
+    private void HandleConfirm()
+    {
+        // Handle confirmation
+        showDialog = false;
+    }
+}
+```
+
+### Controlled Activation
+
+Toggle the focus trap on and off.
+
+```razor
+@code {
+    private bool isTrapActive = false;
+}
+
+<div class="su-control-panel">
+    <button class="su-button" @onclick="@(() => isTrapActive = !isTrapActive)">
+        @(isTrapActive ? "Deactivate" : "Activate") Focus Trap
+    </button>
+</div>
+
+<FocusTrap IsActive="@isTrapActive" 
+           OnActivated="HandleActivated" 
+           OnDeactivated="HandleDeactivated">
+    <div class="su-trap-container">
+        <h3 class="su-trap-title">Focus Trap Area</h3>
+        <input type="text" class="su-input" placeholder="First input" />
+        <input type="text" class="su-input" placeholder="Second input" />
+        <button class="su-button">Action Button</button>
+    </div>
+</FocusTrap>
+```
+
+### Programmatic Focus Control
+
+Manually focus the first or last element.
+
+```razor
+@code {
+    private FocusTrap? focusTrap;
+}
+
+<FocusTrap @ref="focusTrap" IsActive="true" AutoFocus="false">
+    <div class="su-trap-container">
+        <input type="text" class="su-input" placeholder="First" />
+        <input type="text" class="su-input" placeholder="Middle" />
+        <input type="text" class="su-input" placeholder="Last" />
+    </div>
+</FocusTrap>
+
+<div class="su-controls">
+    <button class="su-button" @onclick="FocusFirst">Focus First</button>
+    <button class="su-button" @onclick="FocusLast">Focus Last</button>
+</div>
+
+@code {
+    private async Task FocusFirst()
+    {
+        if (focusTrap != null)
+        {
+            await focusTrap.FocusFirstAsync();
+        }
+    }
+    
+    private async Task FocusLast()
+    {
+        if (focusTrap != null)
+        {
+            await focusTrap.FocusLastAsync();
+        }
+    }
+}
+```
+
+## Styling
+
+### CSS Example
+
+Common styles for dialogs and overlays used with FocusTrap:
+
+```css
+.su-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(var(--su-foreground) / 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.su-dialog {
+    background: rgb(var(--su-card));
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid rgb(var(--su-border));
+    box-shadow: 0 4px 20px rgb(var(--su-foreground) / 0.2);
+    max-width: 400px;
+    width: 100%;
+}
+```
+
+## Accessibility
+
+### Best Practices
+
+- **Always use with modals/dialogs:** Focus trapping is essential for modal accessibility
+- **Provide an escape route:** Always include a way to close/deactivate the trap (close button, Escape key)
+- **Use with `role="dialog"`:** Combine with proper ARIA roles for screen readers
+- **Return focus:** Keep `ReturnFocus` enabled to maintain user context
+
+### Screen Reader Considerations
+
+- The focus trap should be used in conjunction with `aria-modal="true"` for dialogs
+- Include `aria-labelledby` or `aria-label` on the dialog container
+- Announce the dialog opening/closing to screen readers if needed

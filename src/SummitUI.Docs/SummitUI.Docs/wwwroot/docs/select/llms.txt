@@ -1,0 +1,166 @@
+# Select
+
+> A custom dropdown select component with full keyboard navigation and accessibility support. Supports strings, enums, and complex objects.
+
+The Select component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Generic type support (string, enums, objects)
+- Full keyboard navigation with typeahead
+- Grouped items with labels
+- Flexible positioning with collision detection
+- EditForm integration with validation
+- Controlled and uncontrolled modes
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<SelectRoot TValue="string">
+    <SelectTrigger TValue="string">
+        <SelectValue TValue="string" Placeholder="Select an option..." />
+    </SelectTrigger>
+    <SelectPortal TValue="string">
+        <SelectContent TValue="string">
+            <SelectViewport TValue="string">
+                <SelectItem TValue="string" Value="@("option-1")">
+                    <SelectItemText>Option 1</SelectItemText>
+                </SelectItem>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>
+```
+
+## Sub-components
+
+- **SelectRoot<TValue>:** Generic root container managing select state.
+- **SelectTrigger<TValue>:** Button that opens the dropdown (combobox role).
+- **SelectValue<TValue>:** Displays selected value or placeholder text.
+- **SelectPortal<TValue>:** Renders content in fixed-position container.
+- **SelectContent<TValue>:** Floating listbox panel with positioning.
+- **SelectViewport<TValue>:** Scrollable container for items.
+- **SelectItem<TValue>:** Selectable option with option role.
+- **SelectItemText:** Text content wrapper for items.
+- **SelectGroup<TValue>:** Groups related items together.
+- **SelectGroupLabel:** Label for a group of items.
+
+## API Reference
+
+### SelectRoot<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | TValue? | null | Controlled selected value |
+| DefaultValue | TValue? | null | Default value (uncontrolled) |
+| ValueChanged | EventCallback<TValue?> | - | Value change callback |
+| Open | bool? | null | Controlled open state |
+| DefaultOpen | bool | false | Default open state |
+| OpenChanged | EventCallback<bool> | - | Open state change callback |
+| Disabled | bool | false | Disable entire select |
+| Required | bool | false | For form validation |
+| Invalid | bool | false | For error styling |
+
+### SelectTrigger<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "button" | HTML element to render |
+| AriaLabel | string? | null | Direct aria-label |
+
+### SelectItem<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | TValue | **required** | Value of this item |
+| Label | string? | null | Label for typeahead and display |
+| Disabled | bool | false | Disable item |
+
+## Examples
+
+### Basic Usage
+
+```razor
+@code {
+    private string? selectedFruit;
+}
+
+<SelectRoot TValue="string" @bind-Value="selectedFruit">
+    <SelectTrigger TValue="string" class="select-trigger">
+        <SelectValue TValue="string" Placeholder="Select a fruit..." />
+        <span class="select-icon">▼</span>
+    </SelectTrigger>
+    <SelectPortal TValue="string">
+        <SelectContent TValue="string" class="select-content" SideOffset="4">
+            <SelectViewport TValue="string" class="select-viewport">
+                <SelectItem TValue="string" Value="@("apple")" Label="Apple">
+                    <SelectItemText>Apple</SelectItemText>
+                </SelectItem>
+                <SelectItem TValue="string" Value="@("banana")" Label="Banana">
+                    <SelectItemText>Banana</SelectItemText>
+                </SelectItem>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>
+```
+
+### Grouped Items
+
+```razor
+<SelectRoot TValue="string" @bind-Value="selectedFood">
+    <SelectTrigger TValue="string" class="select-trigger">
+        <SelectValue TValue="string" Placeholder="Select food..." />
+    </SelectTrigger>
+    <SelectPortal TValue="string">
+        <SelectContent TValue="string" class="select-content">
+            <SelectViewport TValue="string">
+                <SelectGroup TValue="string">
+                    <SelectGroupLabel class="select-group-label">Fruits</SelectGroupLabel>
+                    <SelectItem TValue="string" Value="@("apple")" Label="Apple">
+                        <SelectItemText>Apple</SelectItemText>
+                    </SelectItem>
+                </SelectGroup>
+                <SelectGroup TValue="string">
+                    <SelectGroupLabel class="select-group-label">Vegetables</SelectGroupLabel>
+                    <SelectItem TValue="string" Value="@("carrot")" Label="Carrot">
+                        <SelectItemText>Carrot</SelectItemText>
+                    </SelectItem>
+                </SelectGroup>
+            </SelectViewport>
+        </SelectContent>
+    </SelectPortal>
+</SelectRoot>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Dropdown open state |
+| data-state | "checked" \| "unchecked" | Item selection state |
+| data-highlighted | Present when focused | Item is keyboard-focused |
+| data-disabled | Present when disabled | Item or trigger is disabled |
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Enter / Space | Open dropdown or select highlighted item |
+| ArrowDown | Open dropdown or move to next item |
+| ArrowUp | Move to previous item |
+| Escape | Close dropdown |
+| A-Z / a-z | Typeahead - jump to matching item |

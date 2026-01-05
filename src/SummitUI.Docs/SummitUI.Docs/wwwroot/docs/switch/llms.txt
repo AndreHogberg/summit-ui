@@ -1,0 +1,138 @@
+# Switch
+
+> A control that allows the user to toggle between checked and not checked.
+
+The Switch component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Two states: checked and unchecked
+- Keyboard navigation (Space/Enter to toggle)
+- Controlled and uncontrolled modes
+- Support for HTML forms (hidden input)
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<SwitchRoot>
+    <SwitchThumb />
+</SwitchRoot>
+```
+
+## Sub-components
+
+- **SwitchRoot:** The root switch component containing the button element.
+- **SwitchThumb:** The thumb that visually indicates the checked state.
+
+## API Reference
+
+### SwitchRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Checked | bool? | null | Controlled checked state |
+| DefaultChecked | bool | false | Default checked state for uncontrolled mode |
+| CheckedChanged | EventCallback<bool> | - | Callback when checked state changes |
+| Disabled | bool | false | Prevents interaction with the switch |
+| Required | bool | false | Indicates switch must be checked for form submission |
+| Name | string? | null | Form field name for hidden input |
+| Value | string? | "on" | Value submitted with form data |
+
+### SwitchThumb
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| ChildContent | RenderFragment? | null | Optional content to render inside the thumb |
+
+## Examples
+
+### Basic Usage
+
+```razor
+<SwitchRoot DefaultChecked="true">
+    <SwitchThumb />
+</SwitchRoot>
+```
+
+### Controlled Mode
+
+Control the checked state externally.
+
+```razor
+@code {
+    private bool isChecked = true;
+}
+
+<SwitchRoot @bind-Checked="isChecked">
+    <SwitchThumb />
+</SwitchRoot>
+
+<p>Switch is @(isChecked ? "on" : "off")</p>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "checked" \| "unchecked" | Current state of the switch |
+| data-disabled | Present when disabled | Indicates disabled state |
+
+### CSS Example
+
+```css
+/* Switch root styles */
+.switch {
+    width: 2.75rem;
+    height: 1.5rem;
+    background: #e0e0e0;
+    border-radius: 9999px;
+    position: relative;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.switch[data-state="checked"] {
+    background: #0066cc;
+}
+
+/* Thumb styles */
+.switch-thumb {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: white;
+    border-radius: 9999px;
+    transition: transform 0.15s;
+    transform: translateX(2px);
+}
+
+.switch[data-state="checked"] .switch-thumb {
+    transform: translateX(calc(2.75rem - 1.25rem - 2px));
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Space / Enter | Toggles the switch state |
+
+### ARIA Attributes
+
+- **role:** `switch` is set on the root element
+- **aria-checked:** Reflects the current state (`true` or `false`)
+- **aria-disabled:** Set when the switch is disabled

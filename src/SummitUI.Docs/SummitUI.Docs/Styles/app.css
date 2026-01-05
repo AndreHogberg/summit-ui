@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Alias SummitUI accordion variable to Radix format for tw-animate-css compatibility */
+[data-summit-accordion-content] {
+  --radix-accordion-content-height: var(--summit-accordion-content-height);
+}
+
 @source "../../SummitUI.Docs.Client/**/*.{cs,razor}";
 @source "../../../SummitUI.Docs.Design/**/*.{cs,razor}";
 @source "../Components/**/*.razor";

@@ -1,27 +1,28 @@
 @page "/docs/datefield"
-@layout DocsLayout
 @rendermode InteractiveWebAssembly
+@layout DocsLayout
+@using SummitUI
+
 <PageTitle>SummitUI - Datefield</PageTitle>
 
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-su-border bg-su-muted/50 px-2.5 py-0.5 text-xs font-medium text-su-muted-foreground">
-                Component
-            </span>
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
         </div>
-        <h1 class="text-4xl font-bold tracking-tight">DateField</h1>
-        <SuPromptButton ComponentName="DateField" />
-        <p class="text-xl text-su-muted-foreground leading-relaxed">
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            DateField
+            <SuPromptButton ComponentName="DateField" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
             A segmented date/time input component with culture-aware formatting and full keyboard navigation.
-        </p>
+        </SuText>
     </div>
 
     @* Live Demo *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Demo</h2>
-        <div class="rounded-xl border border-su-border bg-su-card p-6">
+    <SuSection Title="Demo">
+        <SuCard>
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
                     <DateFieldRoot @bind-Value="selectedDate">
@@ -39,377 +40,230 @@
                     <p class="text-xs text-su-muted-foreground">Selected: @(selectedDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </SuCard>
+    </SuSection>
 
     @* Features *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Features</h2>
+    <SuSection Title="Features">
         <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Segmented editing (each part is independently editable)
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Culture-aware date formatting
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Support for both DateOnly and DateTime types
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Configurable granularity (day, hour, minute, second)
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 12-hour and 24-hour time formats
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Min/max validation and EditForm integration
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 WCAG compliant with proper ARIA attributes
             </li>
         </ul>
-    </section>
+    </SuSection>
 
     @* Installation *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Installation</h2>
-        <div class="code-block">
-            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
 
     @* Anatomy *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Anatomy</h2>
-        <p class="text-sm text-su-muted-foreground">Import the components and structure them as follows:</p>
-        <div class="code-block">
-            <pre><code class="language-xml">@anatomyCode</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
 
     @* Sub-components *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-su-foreground">Sub-components</h2>
+    <SuSection Title="Sub-components">
         <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">DateFieldRoot</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Root container managing date field state.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">DateFieldLabel</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Accessible label for the date field.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">DateFieldInput</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Container that renders date/time segments.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">DateFieldSegment</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Individual editable segment (auto-generated).</p>
-            </div>
+            <SuCard>
+                <SuCardTitle>DateFieldRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">Root container managing date field state.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DateFieldLabel</SuCardTitle>
+                <SuCardDescription class="mt-1">Accessible label for the date field.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DateFieldInput</SuCardTitle>
+                <SuCardDescription class="mt-1">Container that renders date/time segments.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DateFieldSegment</SuCardTitle>
+                <SuCardDescription class="mt-1">Individual editable segment (auto-generated).</SuCardDescription>
+            </SuCard>
         </div>
-    </section>
+    </SuSection>
 
     @* API Reference *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
-        
-        @* DateFieldRoot *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">DateFieldRoot</h3>
-            <p class="text-sm text-su-muted-foreground">The root component that manages date field state.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Value</code></td>
-                            <td><code>DateOnly?</code></td>
-                            <td><code>null</code></td>
-                            <td>Bound DateOnly value</td>
-                        </tr>
-                        <tr>
-                            <td><code>ValueChanged</code></td>
-                            <td><code>EventCallback&lt;DateOnly?&gt;</code></td>
-                            <td>-</td>
-                            <td>DateOnly value change callback</td>
-                        </tr>
-                        <tr>
-                            <td><code>DateTimeValue</code></td>
-                            <td><code>DateTime?</code></td>
-                            <td><code>null</code></td>
-                            <td>Bound DateTime value</td>
-                        </tr>
-                        <tr>
-                            <td><code>DateTimeValueChanged</code></td>
-                            <td><code>EventCallback&lt;DateTime?&gt;</code></td>
-                            <td>-</td>
-                            <td>DateTime value change callback</td>
-                        </tr>
-                        <tr>
-                            <td><code>Granularity</code></td>
-                            <td><code>DateFieldGranularity</code></td>
-                            <td><code>Day</code></td>
-                            <td>Controls which segments are displayed</td>
-                        </tr>
-                        <tr>
-                            <td><code>HourCycle</code></td>
-                            <td><code>HourCycle</code></td>
-                            <td><code>Auto</code></td>
-                            <td>12-hour or 24-hour time format</td>
-                        </tr>
-                        <tr>
-                            <td><code>Locale</code></td>
-                            <td><code>CultureInfo?</code></td>
-                            <td>Current culture</td>
-                            <td>Culture for date formatting</td>
-                        </tr>
-                        <tr>
-                            <td><code>DatePattern</code></td>
-                            <td><code>string?</code></td>
-                            <td><code>null</code></td>
-                            <td>Custom date format pattern</td>
-                        </tr>
-                        <tr>
-                            <td><code>MinValue</code></td>
-                            <td><code>DateOnly?</code></td>
-                            <td><code>null</code></td>
-                            <td>Minimum allowed DateOnly value</td>
-                        </tr>
-                        <tr>
-                            <td><code>MaxValue</code></td>
-                            <td><code>DateOnly?</code></td>
-                            <td><code>null</code></td>
-                            <td>Maximum allowed DateOnly value</td>
-                        </tr>
-                        <tr>
-                            <td><code>Disabled</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Disables the entire date field</td>
-                        </tr>
-                        <tr>
-                            <td><code>ReadOnly</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Makes the field read-only</td>
-                        </tr>
-                        <tr>
-                            <td><code>Invalid</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Indicates validation error state</td>
-                        </tr>
-                        <tr>
-                            <td><code>Required</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Marks the field as required</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">DateFieldRoot</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var prop in dateFieldRootProperties)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">
+                                    @prop.Name
+                                    @if (prop.Required)
+                                    {
+                                        <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                    }
+                                </SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Enums *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Enums</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">DateFieldGranularity</h3>
-            <div class="code-block">
-                <pre><code class="language-csharp">@granularityEnumCode</code></pre>
+    <SuSection Title="Enums">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">DateFieldGranularity</SuHeading>
+                <SuCodeBlock Code="@granularityEnumCode" Language="csharp" />
             </div>
-        </div>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">HourCycle</h3>
-            <div class="code-block">
-                <pre><code class="language-csharp">@hourCycleEnumCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">HourCycle</SuHeading>
+                <SuCodeBlock Code="@hourCycleEnumCode" Language="csharp" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Examples *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
-        
-        @* Basic *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Basic DateOnly Field</h3>
-            <div class="code-block">
-                <pre><code class="language-razor">@basicExampleCode</code></pre>
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic DateOnly Field</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* DateTime *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">DateTime with Time</h3>
-            <p class="text-sm text-su-muted-foreground">Use Granularity to show time segments.</p>
-            <div class="code-block">
-                <pre><code class="language-razor">@dateTimeExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">DateTime with Time</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use Granularity to show time segments.</SuText>
+                <SuCodeBlock Code="@dateTimeExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Min/Max *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Min/Max Validation</h3>
-            <p class="text-sm text-su-muted-foreground">Constrain the date range.</p>
-            <div class="code-block">
-                <pre><code class="language-razor">@minMaxExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Min/Max Validation</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Constrain the date range.</SuText>
+                <SuCodeBlock Code="@minMaxExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Form Integration *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">EditForm Integration</h3>
-            <p class="text-sm text-su-muted-foreground">Use with Blazor forms and validation.</p>
-            <div class="code-block">
-                <pre><code class="language-razor">@formExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">EditForm Integration</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use with Blazor forms and validation.</SuText>
+                <SuCodeBlock Code="@formExampleCode" Language="razor" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Styling *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Data Attributes</h3>
-            <p class="text-sm text-su-muted-foreground">Use these data attributes to style different states:</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Attribute</th>
-                            <th>Values</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>data-disabled</code></td>
-                            <td>Present when disabled</td>
-                            <td>Date field is disabled</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-readonly</code></td>
-                            <td>Present when read-only</td>
-                            <td>Date field is read-only</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-invalid</code></td>
-                            <td>Present when invalid</td>
-                            <td>Validation error state</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-placeholder</code></td>
-                            <td>Present when no value</td>
-                            <td>Showing placeholder</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-segment</code></td>
-                            <td>Segment type</td>
-                            <td>Identifies segment type for styling</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
             </div>
-        </div>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">CSS Example</h3>
-            <div class="code-block">
-                <pre><code class="language-css">@cssExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Accessibility *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><kbd>ArrowUp</kbd></td>
-                            <td>Increment the focused segment value</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowDown</kbd></td>
-                            <td>Decrement the focused segment value</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowLeft</kbd></td>
-                            <td>Move focus to previous segment</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowRight</kbd></td>
-                            <td>Move focus to next segment</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Tab</kbd></td>
-                            <td>Move focus to next segment (or next element)</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>0-9</kbd></td>
-                            <td>Type numeric value directly into segment</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Backspace</kbd> / <kbd>Delete</kbd></td>
-                            <td>Clear the value (sets to null)</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>A</kbd> / <kbd>P</kbd></td>
-                            <td>Toggle AM/PM on DayPeriod segment</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Root:</span>
+                        <span>Has <code>role="group"</code> with <code>aria-labelledby</code> pointing to label</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Segments:</span>
+                        <span>Each has <code>role="spinbutton"</code> with <code>aria-valuemin</code>, <code>aria-valuemax</code>, <code>aria-valuenow</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Literals:</span>
+                        <span>Separator segments have <code>aria-hidden="true"</code></span>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-su-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">Root:</span>
-                    <span>Has <code>role="group"</code> with <code>aria-labelledby</code> pointing to label</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">Segments:</span>
-                    <span>Each has <code>role="spinbutton"</code> with <code>aria-valuemin</code>, <code>aria-valuemax</code>, <code>aria-valuenow</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">Literals:</span>
-                    <span>Separator segments have <code>aria-hidden="true"</code></span>
-                </li>
-            </ul>
-        </div>
-    </section>
+    </SuSection>
 </div>
 
 <style>
@@ -436,6 +290,45 @@
 @code {
     private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
     private DateTime? selectedDateTime = DateTime.Now;
+
+    private List<SuApiProperty> dateFieldRootProperties = new()
+    {
+        new() { Name = "Value", Type = "DateOnly?", Default = "null", Description = "Bound DateOnly value" },
+        new() { Name = "ValueChanged", Type = "EventCallback<DateOnly?>", Description = "DateOnly value change callback" },
+        new() { Name = "DateTimeValue", Type = "DateTime?", Default = "null", Description = "Bound DateTime value" },
+        new() { Name = "DateTimeValueChanged", Type = "EventCallback<DateTime?>", Description = "DateTime value change callback" },
+        new() { Name = "Granularity", Type = "DateFieldGranularity", Default = "Day", Description = "Controls which segments are displayed" },
+        new() { Name = "HourCycle", Type = "HourCycle", Default = "Auto", Description = "12-hour or 24-hour time format" },
+        new() { Name = "Locale", Type = "CultureInfo?", Default = "Current culture", Description = "Culture for date formatting" },
+        new() { Name = "DatePattern", Type = "string?", Default = "null", Description = "Custom date format pattern" },
+        new() { Name = "MinValue", Type = "DateOnly?", Default = "null", Description = "Minimum allowed DateOnly value" },
+        new() { Name = "MaxValue", Type = "DateOnly?", Default = "null", Description = "Maximum allowed DateOnly value" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disables the entire date field" },
+        new() { Name = "ReadOnly", Type = "bool", Default = "false", Description = "Makes the field read-only" },
+        new() { Name = "Invalid", Type = "bool", Default = "false", Description = "Indicates validation error state" },
+        new() { Name = "Required", Type = "bool", Default = "false", Description = "Marks the field as required" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-disabled", Type = "Present when disabled", Description = "Date field is disabled" },
+        new() { Name = "data-readonly", Type = "Present when read-only", Description = "Date field is read-only" },
+        new() { Name = "data-invalid", Type = "Present when invalid", Description = "Validation error state" },
+        new() { Name = "data-placeholder", Type = "Present when no value", Description = "Showing placeholder" },
+        new() { Name = "data-segment", Type = "Segment type", Description = "Identifies segment type for styling" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "ArrowUp", Description = "Increment the focused segment value", Type = "" },
+        new() { Name = "ArrowDown", Description = "Decrement the focused segment value", Type = "" },
+        new() { Name = "ArrowLeft", Description = "Move focus to previous segment", Type = "" },
+        new() { Name = "ArrowRight", Description = "Move focus to next segment", Type = "" },
+        new() { Name = "Tab", Description = "Move focus to next segment (or next element)", Type = "" },
+        new() { Name = "0-9", Description = "Type numeric value directly into segment", Type = "" },
+        new() { Name = "Backspace / Delete", Description = "Clear the value (sets to null)", Type = "" },
+        new() { Name = "A / P", Description = "Toggle AM/PM on DayPeriod segment", Type = "" }
+    };
 
     private const string anatomyCode = @"<DateFieldRoot @bind-Value=""date"">
     <DateFieldLabel>Select a date</DateFieldLabel>
@@ -555,5 +448,4 @@
 [data-segment][data-placeholder] {
     color: rgb(var(--su-muted-foreground) / 0.5);
 }";
-
 }

@@ -1,0 +1,299 @@
+# DropdownMenu
+
+> A floating menu component with support for items, checkbox items, radio groups, and nested groups.
+
+The DropdownMenu component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Full keyboard navigation
+- Checkbox and radio item support
+- Grouped items with labels
+- Flexible positioning with collision detection
+- Focus trapping in modal mode
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<DropdownMenuRoot>
+    <DropdownMenuTrigger class="su-dropdown-trigger">Open Menu</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent class="su-dropdown-content">
+            <DropdownMenuItem class="su-dropdown-item">Item 1</DropdownMenuItem>
+            <DropdownMenuItem class="su-dropdown-item">Item 2</DropdownMenuItem>
+            <DropdownMenuSeparator class="su-dropdown-separator" />
+            <DropdownMenuItem class="su-dropdown-item">Item 3</DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>
+```
+
+## Sub-components
+
+### DropdownMenuRoot
+Root container managing menu state.
+
+### DropdownMenuTrigger
+Button that toggles the menu.
+
+### DropdownMenuPortal
+Renders content at document body level.
+
+### DropdownMenuContent
+Floating content panel with positioning.
+
+### DropdownMenuItem
+Single selectable menu item.
+
+### DropdownMenuCheckboxItem
+Toggle-able checkbox menu item.
+
+### DropdownMenuRadioGroup
+Container for radio items.
+
+### DropdownMenuRadioItem
+Radio option within a group.
+
+### DropdownMenuSeparator
+Visual separator between items.
+
+## API Reference
+
+### DropdownMenuRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Open | bool? | null | Controlled open state |
+| DefaultOpen | bool | false | Default open state (uncontrolled) |
+| OpenChanged | EventCallback<bool> | - | Callback when open state changes |
+| OnOpen | EventCallback | - | Callback when menu opens |
+| OnClose | EventCallback | - | Callback when menu closes |
+| Modal | bool | true | Whether to trap focus |
+
+### DropdownMenuContent
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Side | Side | Bottom | Placement side |
+| SideOffset | int | 4 | Offset from trigger (px) |
+| Align | Align | Start | Alignment along side axis |
+| AvoidCollisions | bool | true | Avoid viewport boundaries |
+| Loop | bool | true | Loop keyboard navigation |
+
+### DropdownMenuItem
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Disabled | bool | false | Disable item |
+| OnSelect | EventCallback | - | Selection callback |
+
+## Examples
+
+### Basic Usage
+
+```razor
+<DropdownMenuRoot>
+    <DropdownMenuTrigger class="su-dropdown-trigger">Options</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent class="su-dropdown-content" SideOffset="4">
+            <DropdownMenuItem class="su-dropdown-item" OnSelect="@(() => HandleAction("new"))">
+                New File
+            </DropdownMenuItem>
+            <DropdownMenuItem class="su-dropdown-item" OnSelect="@(() => HandleAction("open"))">
+                Open File
+            </DropdownMenuItem>
+            <DropdownMenuSeparator class="su-dropdown-separator" />
+            <DropdownMenuItem class="su-dropdown-item" OnSelect="@(() => HandleAction("save"))">
+                Save
+            </DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>
+```
+
+### With Checkbox Items
+
+Toggle-able menu items.
+
+```razor
+@code {
+    private bool showToolbar = true;
+    private bool showSidebar = false;
+}
+
+<DropdownMenuRoot>
+    <DropdownMenuTrigger class="su-dropdown-trigger">View</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent class="su-dropdown-content">
+            <DropdownMenuCheckboxItem class="su-dropdown-item" @bind-Checked="showToolbar">
+                @(context.Checked ? "✓" : "")
+                <span>Show Toolbar</span>
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem class="su-dropdown-item" @bind-Checked="showSidebar">
+                @(context.Checked ? "✓" : "")
+                <span>Show Sidebar</span>
+            </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>
+```
+
+### With Radio Group
+
+Mutually exclusive options.
+
+```razor
+@code {
+    private string? selectedTheme = "system";
+}
+
+<DropdownMenuRoot>
+    <DropdownMenuTrigger class="su-dropdown-trigger">Theme</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent class="su-dropdown-content">
+            <DropdownMenuRadioGroup @bind-Value="selectedTheme" AriaLabel="Theme">
+                <DropdownMenuRadioItem class="su-dropdown-item" Value="light">
+                    @(context.IsSelected ? "●" : "○") Light
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem class="su-dropdown-item" Value="dark">
+                    @(context.IsSelected ? "●" : "○") Dark
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem class="su-dropdown-item" Value="system">
+                    @(context.IsSelected ? "●" : "○") System
+                </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>
+```
+
+### Grouped Items
+
+Organize items into labeled groups.
+
+```razor
+<DropdownMenuRoot>
+    <DropdownMenuTrigger class="su-dropdown-trigger">Edit</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent class="su-dropdown-content">
+            <DropdownMenuGroup>
+                <DropdownMenuGroupLabel class="su-dropdown-label">Clipboard</DropdownMenuGroupLabel>
+                <DropdownMenuItem class="su-dropdown-item">Cut</DropdownMenuItem>
+                <DropdownMenuItem class="su-dropdown-item">Copy</DropdownMenuItem>
+                <DropdownMenuItem class="su-dropdown-item">Paste</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator class="su-dropdown-separator" />
+            <DropdownMenuGroup>
+                <DropdownMenuGroupLabel class="su-dropdown-label">Selection</DropdownMenuGroupLabel>
+                <DropdownMenuItem class="su-dropdown-item">Select All</DropdownMenuItem>
+                <DropdownMenuItem class="su-dropdown-item">Deselect</DropdownMenuItem>
+            </DropdownMenuGroup>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Menu open state |
+| data-highlighted | Present when focused | Item is keyboard-focused |
+| data-disabled | Present when disabled | Item is disabled |
+
+### CSS Example
+
+```css
+/* Trigger */
+.su-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgb(var(--su-background));
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 4px;
+    cursor: pointer;
+    color: rgb(var(--su-foreground));
+}
+
+.su-dropdown-trigger[data-state="open"] {
+    background: rgb(var(--su-muted));
+}
+
+/* Content */
+.su-dropdown-content {
+    min-width: 200px;
+    background: rgb(var(--su-card));
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgb(var(--su-foreground) / 0.15);
+    padding: 4px;
+}
+
+/* Item */
+.su-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: rgb(var(--su-foreground));
+    outline: none;
+}
+
+.su-dropdown-item[data-highlighted] {
+    background: rgb(var(--su-accent));
+    color: rgb(var(--su-accent-foreground));
+}
+
+.su-dropdown-item[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Label */
+.su-dropdown-label {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgb(var(--su-muted-foreground));
+}
+
+/* Separator */
+.su-dropdown-separator {
+    height: 1px;
+    background: rgb(var(--su-border));
+    margin: 4px 0;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Enter / Space | Open menu or select item |
+| ArrowDown | Move focus to next item |
+| ArrowUp | Move focus to previous item |
+| Home | Move focus to first item |
+| End | Move focus to last item |
+| Escape | Close menu |
+
+### ARIA Attributes
+
+- **Trigger:** Has `aria-haspopup="menu"` and `aria-expanded`
+- **Content:** Has `role="menu"`
+- **Items:** Have `role="menuitem"`, checkbox items have `role="menuitemcheckbox"`

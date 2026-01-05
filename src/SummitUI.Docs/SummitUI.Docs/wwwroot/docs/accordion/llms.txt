@@ -1,0 +1,282 @@
+# Accordion
+
+> A vertically stacked set of interactive headings that each reveal an associated section of content.
+
+The Accordion component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Full keyboard navigation
+- Single or multiple expanded items
+- Controlled and uncontrolled modes
+- Collapsible option for single mode
+- Horizontal and vertical orientations
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<AccordionRoot>
+    <AccordionItem Value="item-1">
+        <AccordionHeader>
+            <AccordionTrigger>Title</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            Content goes here...
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+```
+
+## Sub-components
+
+### AccordionRoot
+Root container that manages state and provides context to all children.
+
+### AccordionItem
+Individual collapsible section container with a unique value identifier.
+
+### AccordionHeader
+Semantic heading wrapper that provides proper heading semantics.
+
+### AccordionTrigger
+Interactive button that toggles the associated content panel.
+
+### AccordionContent
+Collapsible content panel that shows/hides based on state.
+
+## API Reference
+
+### AccordionRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Type | AccordionType | Single | Whether one or multiple items can be expanded |
+| Value | string? | null | Controlled expanded value (single mode) |
+| Values | IReadOnlyList<string>? | null | Controlled expanded values (multiple mode) |
+| DefaultValue | string? | null | Default expanded value (uncontrolled, single) |
+| DefaultValues | IReadOnlyList<string>? | null | Default expanded values (uncontrolled, multiple) |
+| ValueChanged | EventCallback<string?> | - | Callback when value changes (single mode) |
+| ValuesChanged | EventCallback<IReadOnlyList<string>> | - | Callback when values change (multiple mode) |
+| Orientation | AccordionOrientation | Vertical | Affects keyboard navigation direction |
+| Loop | bool | true | Whether keyboard nav loops from last to first |
+| Disabled | bool | false | Disable the entire accordion |
+| Collapsible | bool | true | Allow closing the last open item (single mode) |
+
+### AccordionItem
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | string | **required** | Unique identifier for this accordion item |
+| As | string | "div" | HTML element to render |
+| Disabled | bool | false | Disable this specific item |
+
+### AccordionHeader
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "h3" | HTML element to render |
+| Level | int | 3 | ARIA heading level (1-6) |
+
+### AccordionTrigger
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "button" | HTML element to render |
+
+### AccordionContent
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "div" | HTML element to render |
+| ForceMount | bool | false | Always render in DOM (useful for CSS animations) |
+
+## Examples
+
+### Basic Usage
+
+```razor
+<AccordionRoot DefaultValue="item-1">
+    <AccordionItem Value="item-1">
+        <AccordionHeader>
+            <AccordionTrigger>What is SummitUI?</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>SummitUI is a Blazor component library focused on accessibility.</p>
+        </AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value="item-2">
+        <AccordionHeader>
+            <AccordionTrigger>Is it accessible?</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Yes! All components are built with WCAG compliance in mind.</p>
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+```
+
+### Multiple Expanded Items
+
+Allow multiple items to be expanded simultaneously.
+
+```razor
+<AccordionRoot Type="AccordionType.Multiple" 
+               DefaultValues="@(new[] { "item-1", "item-2" })">
+    <AccordionItem Value="item-1">
+        <AccordionHeader>
+            <AccordionTrigger>First Section</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>First content...</AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value="item-2">
+        <AccordionHeader>
+            <AccordionTrigger>Second Section</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>Second content...</AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+```
+
+### Controlled Mode
+
+Control the expanded state externally.
+
+```razor
+@code {
+    private string? expandedItem = "item-1";
+}
+
+<AccordionRoot Value="@expandedItem" 
+               ValueChanged="@(v => expandedItem = v)">
+    <AccordionItem Value="item-1">
+        <AccordionHeader>
+            <AccordionTrigger>Section 1</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>Content 1</AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value="item-2">
+        <AccordionHeader>
+            <AccordionTrigger>Section 2</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>Content 2</AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+
+<p>Currently expanded: @(expandedItem ?? "None")</p>
+<button @onclick="@(() => expandedItem = "item-2")">Open Section 2</button>
+```
+
+### Disabled Items
+
+Disable specific accordion items.
+
+```razor
+<AccordionRoot DefaultValue="item-1">
+    <AccordionItem Value="item-1">
+        <AccordionHeader>
+            <AccordionTrigger>Enabled Section</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>This section works normally.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value="item-2" Disabled="true">
+        <AccordionHeader>
+            <AccordionTrigger>Disabled Section</AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>This content cannot be accessed.</AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Current expansion state |
+| data-disabled | Present when disabled | Indicates disabled state |
+| data-orientation | "vertical" \| "horizontal" | Current orientation |
+
+### CSS Variables
+
+| Variable | Description |
+|----------|-------------|
+| --summit-accordion-content-height | Measured height of content in pixels |
+| --summit-accordion-content-width | Measured width of content in pixels |
+
+### CSS Example
+
+```css
+/* Trigger styles */
+.accordion-trigger {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgb(var(--su-foreground));
+}
+
+.accordion-trigger[data-state="open"] {
+    color: rgb(var(--su-primary));
+}
+
+.accordion-trigger:hover {
+    color: rgb(var(--su-primary));
+}
+
+.accordion-trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Content animation */
+.accordion-content {
+    overflow: hidden;
+    transition: height 300ms ease-out;
+}
+
+.accordion-content[data-state="open"] {
+    height: var(--summit-accordion-content-height);
+}
+
+.accordion-content[data-state="closed"] {
+    height: 0;
+}
+
+/* Chevron rotation */
+.accordion-trigger[data-state="open"] .chevron {
+    transform: rotate(180deg);
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Enter / Space | Toggle the focused accordion item |
+| ArrowDown | Move focus to next trigger (vertical) |
+| ArrowUp | Move focus to previous trigger (vertical) |
+| ArrowRight | Move focus to next trigger (horizontal) |
+| ArrowLeft | Move focus to previous trigger (horizontal) |
+| Home | Move focus to first trigger |
+| End | Move focus to last trigger |
+
+### ARIA Attributes
+
+- **AccordionHeader:** Renders with `role="heading"` and appropriate `aria-level`
+- **AccordionTrigger:** Renders as button with `aria-expanded` and `aria-controls`
+- **AccordionContent:** Renders with `role="region"` and `aria-labelledby`

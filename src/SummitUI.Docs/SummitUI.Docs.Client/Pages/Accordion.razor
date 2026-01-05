@@ -24,14 +24,14 @@
             <AccordionRoot DefaultValue="item-1" class="w-full divide-y divide-su-border">
                 <AccordionItem Value="item-1">
                     <AccordionHeader>
-                        <AccordionTrigger class="accordion-trigger">
+                        <AccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
                             <span>Is it accessible?</span>
-                            <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180 text-su-muted-foreground group-hover:text-su-primary group-data-[state=open]:text-su-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent class="accordion-content">
+                    <AccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
                         <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             Yes. It adheres to the WAI-ARIA design pattern for accordions, including proper keyboard navigation and ARIA attributes.
                         </div>
@@ -39,14 +39,14 @@
                 </AccordionItem>
                 <AccordionItem Value="item-2">
                     <AccordionHeader>
-                        <AccordionTrigger class="accordion-trigger">
+                        <AccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
                             <span>Is it styled?</span>
-                            <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent class="accordion-content">
+                    <AccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
                         <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             No. It's completely unstyled by default, giving you full control over the appearance using CSS and data attributes.
                         </div>
@@ -54,14 +54,14 @@
                 </AccordionItem>
                 <AccordionItem Value="item-3">
                     <AccordionHeader>
-                        <AccordionTrigger class="accordion-trigger">
+                        <AccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
                             <span>Can I use it with animations?</span>
-                            <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent class="accordion-content">
+                    <AccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
                         <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             Yes! CSS variables for height and width are automatically set, allowing smooth CSS transitions for expand/collapse animations.
                         </div>
@@ -308,56 +308,6 @@
         </div>
     </SuSection>
 </div>
-
-<style>
-    /* Demo Accordion Styles */
-    .accordion-trigger {
-        display: flex;
-        flex: 1;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 0;
-        font-size: 0.9375rem;
-        font-weight: 500;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        color: rgb(var(--su-foreground));
-        transition: color 0.15s;
-        width: 100%;
-        text-align: left;
-    }
-    
-    .accordion-trigger:hover {
-        color: rgb(var(--su-primary));
-    }
-    
-    .accordion-trigger[data-disabled] {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-    
-    .accordion-chevron {
-        transition: transform 0.2s ease;
-        flex-shrink: 0;
-    }
-    
-    .accordion-trigger[data-state="open"] {
-        color: rgb(var(--su-primary));
-    }
-
-    .accordion-trigger[data-state="open"] .accordion-chevron {
-        transform: rotate(180deg);
-    }
-    
-    .accordion-content {
-        overflow: hidden;
-    }
-    
-    .accordion-content[data-state="closed"] {
-        display: none;
-    }
-</style>
 
 @code {
     private List<SuApiProperty> accordionRootProperties = new()

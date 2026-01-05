@@ -1,0 +1,252 @@
+# DateField
+
+> A segmented date/time input component with culture-aware formatting and full keyboard navigation.
+
+The DateField component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Segmented editing (each part is independently editable)
+- Culture-aware date formatting
+- Support for both DateOnly and DateTime types
+- Configurable granularity (day, hour, minute, second)
+- 12-hour and 24-hour time formats
+- Min/max validation and EditForm integration
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<DateFieldRoot @bind-Value="date">
+    <DateFieldLabel>Select a date</DateFieldLabel>
+    <DateFieldInput class="su-datefield-input" />
+</DateFieldRoot>
+```
+
+## Sub-components
+
+### DateFieldRoot
+Root container managing date field state.
+
+### DateFieldLabel
+Accessible label for the date field.
+
+### DateFieldInput
+Container that renders date/time segments.
+
+### DateFieldSegment
+Individual editable segment (auto-generated).
+
+## API Reference
+
+### DateFieldRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | DateOnly? | null | Bound DateOnly value |
+| ValueChanged | EventCallback<DateOnly?> | - | DateOnly value change callback |
+| DateTimeValue | DateTime? | null | Bound DateTime value |
+| DateTimeValueChanged | EventCallback<DateTime?> | - | DateTime value change callback |
+| Granularity | DateFieldGranularity | Day | Controls which segments are displayed |
+| HourCycle | HourCycle | Auto | 12-hour or 24-hour time format |
+| Locale | CultureInfo? | Current culture | Culture for date formatting |
+| DatePattern | string? | null | Custom date format pattern |
+| MinValue | DateOnly? | null | Minimum allowed DateOnly value |
+| MaxValue | DateOnly? | null | Maximum allowed DateOnly value |
+| Disabled | bool | false | Disables the entire date field |
+| ReadOnly | bool | false | Makes the field read-only |
+| Invalid | bool | false | Indicates validation error state |
+| Required | bool | false | Marks the field as required |
+
+## Enums
+
+### DateFieldGranularity
+
+```csharp
+public enum DateFieldGranularity
+{
+    Day,    // Show only date segments (Year, Month, Day)
+    Hour,   // Show date and hour segments
+    Minute, // Show date, hour, and minute segments
+    Second  // Show date, hour, minute, and second segments
+}
+```
+
+### HourCycle
+
+```csharp
+public enum HourCycle
+{
+    Auto, // Use the locale's default hour cycle
+    H12,  // 12-hour cycle with AM/PM (1-12)
+    H23,  // 24-hour cycle (0-23)
+    H24,  // 24-hour cycle (1-24)
+    H11   // 12-hour cycle (0-11)
+}
+```
+
+## Examples
+
+### Basic DateOnly Field
+
+```razor
+@code {
+    private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
+}
+
+<DateFieldRoot @bind-Value="selectedDate">
+    <DateFieldLabel>Select a date</DateFieldLabel>
+    <DateFieldInput class="su-datefield-input" />
+</DateFieldRoot>
+
+<p>Selected: @(selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
+```
+
+### DateTime with Time
+
+Use Granularity to show time segments.
+
+```razor
+@code {
+    private DateTime? selectedDateTime = DateTime.Now;
+}
+
+<DateFieldRoot @bind-DateTimeValue="selectedDateTime" 
+               Granularity="DateFieldGranularity.Minute">
+    <DateFieldLabel>Select date and time</DateFieldLabel>
+    <DateFieldInput class="su-datefield-input" />
+</DateFieldRoot>
+
+<p>Selected: @(selectedDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</p>
+```
+
+### Min/Max Validation
+
+Constrain the date range.
+
+```razor
+@code {
+    private DateOnly? date = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly minDate = new DateOnly(2025, 1, 1);
+    private DateOnly maxDate = new DateOnly(2025, 12, 31);
+}
+
+<DateFieldRoot @bind-Value="date" 
+               MinValue="@minDate" 
+               MaxValue="@maxDate">
+    <DateFieldLabel>Select a date (Jan - Dec 2025)</DateFieldLabel>
+    <DateFieldInput class="su-datefield-input" />
+</DateFieldRoot>
+```
+
+### EditForm Integration
+
+Use with Blazor forms and validation.
+
+```razor
+<EditForm EditContext="editContext" OnSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    
+    <DateFieldRoot @bind-Value="model.BirthDate"
+                   Name="birthDate"
+                   Required="true"
+                   Invalid="@(submitted && model.BirthDate == null)">
+        <DateFieldLabel>Birth Date (Required)</DateFieldLabel>
+        <DateFieldInput class="su-datefield-input" />
+    </DateFieldRoot>
+    <ValidationMessage For="@(() => model.BirthDate)" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-disabled | Present when disabled | Date field is disabled |
+| data-readonly | Present when read-only | Date field is read-only |
+| data-invalid | Present when invalid | Validation error state |
+| data-placeholder | Present when no value | Showing placeholder |
+| data-segment | Segment type | Identifies segment type for styling |
+
+### CSS Example
+
+```css
+/* Input container */
+.su-datefield-input {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: rgb(var(--su-background));
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 6px;
+}
+
+.su-datefield-input:focus-within {
+    border-color: rgb(var(--su-primary));
+    box-shadow: 0 0 0 3px rgb(var(--su-primary) / 0.25);
+}
+
+[data-disabled] .su-datefield-input {
+    background: rgb(var(--su-muted));
+    cursor: not-allowed;
+}
+
+[data-invalid] .su-datefield-input {
+    border-color: rgb(var(--su-destructive));
+}
+
+/* Segment styling */
+[data-segment]:not([data-segment="literal"]) {
+    padding: 0.125rem 0.25rem;
+    border-radius: 4px;
+    min-width: 1.5em;
+    text-align: center;
+}
+
+[data-segment]:not([data-segment="literal"]):focus {
+    background: rgb(var(--su-accent));
+    color: rgb(var(--su-accent-foreground));
+    outline: none;
+}
+
+[data-segment="literal"] {
+    color: rgb(var(--su-muted-foreground));
+}
+
+[data-segment][data-placeholder] {
+    color: rgb(var(--su-muted-foreground) / 0.5);
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| ArrowUp | Increment the focused segment value |
+| ArrowDown | Decrement the focused segment value |
+| ArrowLeft | Move focus to previous segment |
+| ArrowRight | Move focus to next segment |
+| Tab | Move focus to next segment (or next element) |
+| 0-9 | Type numeric value directly into segment |
+| Backspace / Delete | Clear the value (sets to null) |
+| A / P | Toggle AM/PM on DayPeriod segment |
+
+### ARIA Attributes
+
+- **Root:** Has `role="group"` with `aria-labelledby` pointing to label
+- **Segments:** Each has `role="spinbutton"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`
+- **Literals:** Separator segments have `aria-hidden="true"`

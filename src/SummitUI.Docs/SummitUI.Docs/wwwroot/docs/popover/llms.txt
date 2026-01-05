@@ -1,0 +1,241 @@
+# Popover
+
+> A floating content panel that appears next to a trigger element, commonly used for tooltips, dropdowns, and informational overlays.
+
+The Popover component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Flexible positioning with collision detection
+- Optional overlay backdrop
+- Focus trapping support
+- Close button component
+- Controlled and uncontrolled modes
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<PopoverRoot>
+    <PopoverTrigger class="su-popover-trigger">Open</PopoverTrigger>
+    <PopoverPortal>
+        <PopoverContent class="su-popover-content">
+            <p>Popover content</p>
+            <PopoverClose class="su-popover-close">Close</PopoverClose>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>
+```
+
+## Sub-components
+
+### PopoverRoot
+Root container managing popover state.
+
+### PopoverTrigger
+Button that toggles the popover.
+
+### PopoverPortal
+Renders content in fixed-position container.
+
+### PopoverContent
+Floating content panel with positioning.
+
+### PopoverOverlay
+Optional backdrop overlay.
+
+### PopoverClose
+Close button within popover.
+
+## API Reference
+
+### PopoverRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Open | bool? | null | Controlled open state |
+| DefaultOpen | bool | false | Default open state (uncontrolled) |
+| OpenChanged | EventCallback<bool> | - | Open state change callback |
+| OnOpen | EventCallback | - | Callback when popover opens |
+| OnClose | EventCallback | - | Callback when popover closes |
+| Modal | bool | false | Whether to trap focus |
+
+### PopoverContent
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Side | Side | Bottom | Placement side |
+| SideOffset | int | 0 | Offset from trigger (px) |
+| Align | Align | Center | Alignment along side axis |
+| AvoidCollisions | bool | true | Avoid viewport boundaries |
+| TrapFocus | bool | false | Whether to trap focus |
+| EscapeKeyBehavior | EscapeKeyBehavior | Close | Escape key behavior |
+| OutsideClickBehavior | OutsideClickBehavior | Close | Outside click behavior |
+
+## Examples
+
+### Basic Popover
+
+```razor
+<PopoverRoot>
+    <PopoverTrigger class="su-popover-trigger">Click me</PopoverTrigger>
+    <PopoverPortal>
+        <PopoverContent class="su-popover-content" SideOffset="8">
+            <h3 class="su-popover-title">Basic Popover</h3>
+            <p class="su-popover-description">This is a simple popover with some content.</p>
+            <PopoverClose class="su-popover-close">Close</PopoverClose>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>
+```
+
+### With Overlay
+
+Add a backdrop overlay for modal-like behavior.
+
+```razor
+<PopoverRoot>
+    <PopoverTrigger class="su-popover-trigger">Open with Overlay</PopoverTrigger>
+    <PopoverPortal>
+        <PopoverOverlay class="su-popover-overlay" />
+        <PopoverContent class="su-popover-content" SideOffset="8">
+            <h3 class="su-popover-title">Modal-like Popover</h3>
+            <p class="su-popover-description">Click the overlay or press Escape to close.</p>
+            <PopoverClose class="su-popover-close">Done</PopoverClose>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>
+```
+
+### Different Positions
+
+Position the popover on different sides.
+
+```razor
+@* Bottom (default) *@
+<PopoverContent class="su-popover-content" Side="Side.Bottom" SideOffset="8">
+    Content appears below
+</PopoverContent>
+
+@* Top *@
+<PopoverContent class="su-popover-content" Side="Side.Top" SideOffset="8">
+    Content appears above
+</PopoverContent>
+
+@* Left *@
+<PopoverContent class="su-popover-content" Side="Side.Left" SideOffset="8">
+    Content appears to the left
+</PopoverContent>
+
+@* Right *@
+<PopoverContent class="su-popover-content" Side="Side.Right" SideOffset="8">
+    Content appears to the right
+</PopoverContent>
+```
+
+### Controlled Mode
+
+Control the open state externally.
+
+```razor
+@code {
+    private bool isOpen = false;
+}
+
+<PopoverRoot Open="@isOpen" OpenChanged="@(v => isOpen = v)">
+    <PopoverTrigger class="su-popover-trigger">
+        @(isOpen ? "Close" : "Open")
+    </PopoverTrigger>
+    <PopoverPortal>
+        <PopoverContent class="su-popover-content" SideOffset="8">
+            <p>Controlled popover content</p>
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>
+
+<button class="su-button" @onclick="@(() => isOpen = !isOpen)">
+    Toggle Externally
+</button>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Popover open state |
+| data-side | "top" \| "right" \| "bottom" \| "left" | Current placement side |
+| data-align | "start" \| "center" \| "end" | Current alignment |
+
+### CSS Example
+
+```css
+/* Trigger */
+.su-popover-trigger {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: rgb(var(--su-primary));
+    color: rgb(var(--su-primary-foreground));
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.su-popover-trigger[data-state="open"] {
+    opacity: 0.9;
+}
+
+/* Overlay */
+.su-popover-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(var(--su-foreground) / 0.4);
+}
+
+/* Content */
+.su-popover-content {
+    background: rgb(var(--su-card));
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgb(var(--su-foreground) / 0.15);
+    min-width: 280px;
+    max-width: 400px;
+    padding: 16px;
+}
+
+.su-popover-content[data-state="closed"] {
+    display: none;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Enter / Space | Toggle popover (on trigger) |
+| Escape | Close popover |
+| Tab | Move focus within popover (when focus trapped) |
+
+### ARIA Attributes
+
+- **Trigger:** Has `aria-haspopup="dialog"` and `aria-expanded`
+- **Content:** Linked to trigger via `aria-controls`
+- **Close:** Has `aria-label` for screen readers
+
+### Focus Management
+
+- When opened, focus moves to the first focusable element in the content
+- When closed, focus returns to the trigger
+- Optional focus trapping keeps focus within the popover

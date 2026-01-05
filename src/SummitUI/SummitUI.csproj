@@ -34,20 +34,26 @@
     </ItemGroup>
 
     <!-- npm build integration for JavaScript bundling -->
-    <Target Name="NpmInstall" BeforeTargets="NpmBuild" Condition="!Exists('node_modules')">
+    <PropertyGroup>
+        <RunNpmBuild Condition="'$(RunNpmBuild)' == ''">true</RunNpmBuild>
+    </PropertyGroup>
+
+    <Target Name="NpmInstall" BeforeTargets="NpmBuild" Condition="'$(RunNpmBuild)' == 'true' And !Exists('node_modules')">
         <Exec Command="npm install" WorkingDirectory="$(MSBuildProjectDirectory)" />
     </Target>
 
-    <Target Name="NpmBuild" BeforeTargets="BeforeBuild">
+    <Target Name="NpmBuild" BeforeTargets="BeforeBuild" Condition="'$(RunNpmBuild)' == 'true'">
         <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
     </Target>
 
-    <!-- Exclude node/npm related files from the NuGet package -->
+    <!-- Exclude node/npm related files from the NuGet package and publish -->
     <ItemGroup>
-        <Content Update="package.json" Pack="false" />
-        <Content Update="package-lock.json" Pack="false" />
-        <Content Update="Scripts\**" Pack="false" />
-        <Content Update="node_modules\**" Pack="false" />
+        <Content Update="package.json" Pack="false" CopyToPublishDirectory="Never" />
+        <Content Update="package-lock.json" Pack="false" CopyToPublishDirectory="Never" />
+        <Content Update="Scripts\**" Pack="false" CopyToPublishDirectory="Never" />
+        <Content Update="node_modules\**" Pack="false" CopyToPublishDirectory="Never" />
+        <None Update="package.json" CopyToPublishDirectory="Never" />
+        <None Update="package-lock.json" CopyToPublishDirectory="Never" />
     </ItemGroup>
 
 </Project>

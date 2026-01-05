@@ -3,399 +3,374 @@
 @rendermode InteractiveWebAssembly
 <PageTitle>SummitUI - Select</PageTitle>
 
-<SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
-<SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
-    Select
-    <SuPromptButton ComponentName="Select" />
-</SuHeading>
-<SuText Lead="true" Muted="true">
-    A custom dropdown select component with full keyboard navigation and accessibility support. Supports strings, enums, and complex objects.
-</SuText>
-
-<SuSection Title="Demo">
-    <SuCard>
-        <div class="flex flex-col gap-4">
-            <SelectRoot TValue="string" @bind-Value="selectedFruit">
-                <SelectTrigger TValue="string" class="demo-trigger">
-                    <SelectValue TValue="string" Placeholder="Select a fruit..." />
-                    <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m6 9 6 6 6-6"/>
-                    </svg>
-                </SelectTrigger>
-                <SelectPortal TValue="string">
-                    <SelectContent TValue="string" class="demo-content" SideOffset="4">
-                        <SelectViewport TValue="string" class="demo-viewport">
-                            <SelectItem TValue="string" Value="@("apple")" Label="Apple" class="demo-item">
-                                <span class="demo-item-check">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                                </span>
-                                <SelectItemText>Apple</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("banana")" Label="Banana" class="demo-item">
-                                <span class="demo-item-check">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                                </span>
-                                <SelectItemText>Banana</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-item">
-                                <span class="demo-item-check">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                                </span>
-                                <SelectItemText>Cherry</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("orange")" Label="Orange" class="demo-item">
-                                <span class="demo-item-check">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                                </span>
-                                <SelectItemText>Orange</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("grape")" Label="Grape" class="demo-item">
-                                <span class="demo-item-check">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                                </span>
-                                <SelectItemText>Grape</SelectItemText>
-                            </SelectItem>
-                        </SelectViewport>
-                    </SelectContent>
-                </SelectPortal>
-            </SelectRoot>
-            <SuText Size="SuTextSize.Small" Muted="true">Selected: @(selectedFruit ?? "None")</SuText>
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
         </div>
-    </SuCard>
-</SuSection>
-
-<SuSection Title="Features">
-    <ul class="grid gap-2 text-sm text-su-muted-foreground">
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Generic type support (string, enums, objects)
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Full keyboard navigation with typeahead
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Grouped items with labels
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Flexible positioning with collision detection
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            EditForm integration with validation
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Controlled and uncontrolled modes
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            WCAG compliant with proper ARIA attributes
-        </li>
-    </ul>
-</SuSection>
-
-<SuSection Title="Installation">
-    <SuCodeBlock Language="bash" Code="dotnet add package SummitUI" />
-</SuSection>
-
-<SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
-    <SuCodeBlock Language="xml" Code="@anatomyCode" />
-</SuSection>
-
-<SuSection Title="Sub-components">
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        @foreach (var sub in subComponents)
-        {
-            <SuCard>
-                <SuHeading Level="SuHeadingLevel.H3">@sub.Name</SuHeading>
-                <SuText Size="SuTextSize.Small" Muted="true">@sub.Description</SuText>
-            </SuCard>
-        }
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Select
+            <SuPromptButton ComponentName="Select" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A custom dropdown select component with full keyboard navigation and accessibility support. Supports strings, enums, and complex objects.
+        </SuText>
     </div>
-</SuSection>
 
-<SuSection Title="API Reference">
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2">SelectRoot&lt;TValue&gt;</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">The root component that manages select state and provides cascading context.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in rootProps)
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <SelectRoot TValue="string" @bind-Value="selectedFruit">
+                    <SelectTrigger TValue="string" class="demo-trigger">
+                        <SelectValue TValue="string" Placeholder="Select a fruit..." />
+                        <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </SelectTrigger>
+                    <SelectPortal TValue="string">
+                        <SelectContent TValue="string" class="demo-content" SideOffset="4">
+                            <SelectViewport TValue="string" class="demo-viewport">
+                                <SelectItem TValue="string" Value="@("apple")" Label="Apple" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Apple</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("banana")" Label="Banana" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Banana</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Cherry</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("orange")" Label="Orange" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Orange</SelectItemText>
+                                </SelectItem>
+                                <SelectItem TValue="string" Value="@("grape")" Label="Grape" class="demo-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <SelectItemText>Grape</SelectItemText>
+                                </SelectItem>
+                            </SelectViewport>
+                        </SelectContent>
+                    </SelectPortal>
+                </SelectRoot>
+                <SuText Size="SuTextSize.Small" Muted="true">Selected: @(selectedFruit ?? "None")</SuText>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Generic type support (string, enums, objects)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation with typeahead
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Grouped items with labels
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Flexible positioning with collision detection
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                EditForm integration with validation
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach (var sub in subComponents)
             {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
+                <SuCard>
+                    <SuCardTitle>@sub.Name</SuCardTitle>
+                    <SuCardDescription class="mt-1">@sub.Description</SuCardDescription>
+                </SuCard>
             }
-        </SuTableBody>
-    </SuTable>
+        </div>
+    </SuSection>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">SelectTrigger&lt;TValue&gt;</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">Button that opens the dropdown list.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in triggerProps)
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "SelectRoot<TValue>", Props: rootProps, Desc: "The root component that manages select state and provides cascading context."), 
+                (Title: "SelectTrigger<TValue>", Props: triggerProps, Desc: "Button that opens the dropdown list."),
+                (Title: "SelectValue<TValue>", Props: valueProps, Desc: "Displays the selected value or placeholder."),
+                (Title: "SelectContent<TValue>", Props: contentProps, Desc: "Floating listbox panel with positioning options."),
+                (Title: "SelectItem<TValue>", Props: itemProps, Desc: "Selectable option within the dropdown.")
+            })
             {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuText Size="SuTextSize.Small" Muted="true">@table.Desc</SuText>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
             }
-        </SuTableBody>
-    </SuTable>
+        </div>
+    </SuSection>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">SelectValue&lt;TValue&gt;</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">Displays the selected value or placeholder.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in valueProps)
-            {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
-            }
-        </SuTableBody>
-    </SuTable>
+    @* Enums *@
+    <SuSection Title="Enums">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Side</SuHeading>
+                <SuCodeBlock Code="@sideEnumCode" Language="csharp" />
+            </div>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Align</SuHeading>
+                <SuCodeBlock Code="@alignEnumCode" Language="csharp" />
+            </div>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">EscapeKeyBehavior</SuHeading>
+                <SuCodeBlock Code="@escapeEnumCode" Language="csharp" />
+            </div>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">OutsideClickBehavior</SuHeading>
+                <SuCodeBlock Code="@outsideClickEnumCode" Language="csharp" />
+            </div>
+        </div>
+    </SuSection>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">SelectContent&lt;TValue&gt;</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">Floating listbox panel with positioning options.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in contentProps)
-            {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
-            }
-        </SuTableBody>
-    </SuTable>
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic String Select</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">SelectItem&lt;TValue&gt;</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">Selectable option within the dropdown.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in itemProps)
-            {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
-            }
-        </SuTableBody>
-    </SuTable>
-</SuSection>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Enum Values</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use strongly-typed enum values.</SuText>
+                <SuCodeBlock Code="@enumExampleCode" Language="razor" />
+            </div>
 
-<SuSection Title="Enums">
-    <SuHeading Level="SuHeadingLevel.H3">Side</SuHeading>
-    <SuCodeBlock Language="csharp" Code="@sideEnumCode" />
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Complex Objects</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use custom objects as values.</SuText>
+                <SuCodeBlock Code="@objectExampleCode" Language="razor" />
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Align</SuHeading>
-    <SuCodeBlock Language="csharp" Code="@alignEnumCode" />
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Grouped Items</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Organize items into logical groups.</SuText>
+                <SuCodeBlock Code="@groupedExampleCode" Language="razor" />
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">EscapeKeyBehavior</SuHeading>
-    <SuCodeBlock Language="csharp" Code="@escapeEnumCode" />
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">EditForm Integration</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use with Blazor EditForm for validation.</SuText>
+                <SuCodeBlock Code="@editFormExampleCode" Language="razor" />
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">OutsideClickBehavior</SuHeading>
-    <SuCodeBlock Language="csharp" Code="@outsideClickEnumCode" />
-</SuSection>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Disabled State</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Disable entire select or individual items.</SuText>
+                <SuCodeBlock Code="@disabledExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
 
-<SuSection Title="Examples">
-    <SuHeading Level="SuHeadingLevel.H3">Basic String Select</SuHeading>
-    <SuCodeBlock Language="xml" Code="@basicExampleCode" />
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-state</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">"open" | "closed"</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Dropdown open state (on trigger/content)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-state</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">"checked" | "unchecked"</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Item selection state</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-highlighted</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when focused</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Item is keyboard-focused</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-disabled</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when disabled</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Item or trigger is disabled</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-placeholder</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when no value</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Showing placeholder text</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-invalid</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when invalid</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">For form validation errors</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">With Enum Values</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Use strongly-typed enum values.</SuText>
-    <SuCodeBlock Language="razor" Code="@enumExampleCode" />
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">With Complex Objects</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Use custom objects as values.</SuText>
-    <SuCodeBlock Language="razor" Code="@objectExampleCode" />
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Enter / Space</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Open dropdown or select highlighted item</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">ArrowDown</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Open dropdown or move to next item</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">ArrowUp</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Move to previous item</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Home</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Move to first item</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">End</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Move to last item</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Escape</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Close dropdown</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">A-Z / a-z</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Typeahead - jump to matching item</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Grouped Items</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Organize items into logical groups.</SuText>
-    <SuCodeBlock Language="xml" Code="@groupedExampleCode" />
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Typeahead</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Typing characters while the dropdown is open will jump to items that match the typed text. The search buffer resets after a short delay.
+                </SuText>
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">EditForm Integration</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Use with Blazor EditForm for validation.</SuText>
-    <SuCodeBlock Language="razor" Code="@editFormExampleCode" />
-
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Disabled State</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Disable entire select or individual items.</SuText>
-    <SuCodeBlock Language="xml" Code="@disabledExampleCode" />
-</SuSection>
-
-<SuSection Title="Styling">
-    <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Attribute</SuTableHead>
-                <SuTableHead>Values</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-state</SuCode></SuTableCell>
-                <SuTableCell><SuCode>"open"</SuCode> | <SuCode>"closed"</SuCode></SuTableCell>
-                <SuTableCell>Dropdown open state (on trigger/content)</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-state</SuCode></SuTableCell>
-                <SuTableCell><SuCode>"checked"</SuCode> | <SuCode>"unchecked"</SuCode></SuTableCell>
-                <SuTableCell>Item selection state</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-highlighted</SuCode></SuTableCell>
-                <SuTableCell>Present when focused</SuTableCell>
-                <SuTableCell>Item is keyboard-focused</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-disabled</SuCode></SuTableCell>
-                <SuTableCell>Present when disabled</SuTableCell>
-                <SuTableCell>Item or trigger is disabled</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-placeholder</SuCode></SuTableCell>
-                <SuTableCell>Present when no value</SuTableCell>
-                <SuTableCell>Showing placeholder text</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-invalid</SuCode></SuTableCell>
-                <SuTableCell>Present when invalid</SuTableCell>
-                <SuTableCell>For form validation errors</SuTableCell>
-            </SuTableRow>
-        </SuTableBody>
-    </SuTable>
-
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">CSS Example</SuHeading>
-    <SuCodeBlock Language="css" Code="@cssExampleCode" />
-</SuSection>
-
-<SuSection Title="Accessibility">
-    <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Key</SuTableHead>
-                <SuTableHead>Action</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            <SuTableRow>
-                <SuTableCell><kbd>Enter</kbd> / <kbd>Space</kbd></SuTableCell>
-                <SuTableCell>Open dropdown or select highlighted item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>ArrowDown</kbd></SuTableCell>
-                <SuTableCell>Open dropdown or move to next item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>ArrowUp</kbd></SuTableCell>
-                <SuTableCell>Move to previous item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>Home</kbd></SuTableCell>
-                <SuTableCell>Move to first item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>End</kbd></SuTableCell>
-                <SuTableCell>Move to last item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>Escape</kbd></SuTableCell>
-                <SuTableCell>Close dropdown</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>A-Z</kbd> / <kbd>a-z</kbd></SuTableCell>
-                <SuTableCell>Typeahead - jump to matching item</SuTableCell>
-            </SuTableRow>
-        </SuTableBody>
-    </SuTable>
-
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Typeahead</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mt-4">
-        Typing characters while the dropdown is open will jump to items that match the typed text. The search buffer resets after a short delay.
-    </SuText>
-
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">ARIA Attributes</SuHeading>
-    <ul class="grid gap-2 text-sm text-su-muted-foreground mt-4">
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">SelectTrigger:</SuText>
-            <SuText>Has <SuCode>role="combobox"</SuCode>, <SuCode>aria-haspopup="listbox"</SuCode>, and <SuCode>aria-expanded</SuCode></SuText>
-        </li>
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">SelectContent:</SuText>
-            <SuText>Has <SuCode>role="listbox"</SuCode></SuText>
-        </li>
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">SelectItem:</SuText>
-            <SuText>Has <SuCode>role="option"</SuCode> with <SuCode>aria-selected</SuCode></SuText>
-        </li>
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">SelectGroup:</SuText>
-            <SuText>Has <SuCode>role="group"</SuCode> with <SuCode>aria-labelledby</SuCode></SuText>
-        </li>
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">Disabled items:</SuText>
-            <SuText>Have <SuCode>aria-disabled</SuCode></SuText>
-        </li>
-    </ul>
-</SuSection>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">SelectTrigger:</span>
+                        <span>Has <code>role="combobox"</code>, <code>aria-haspopup="listbox"</code>, and <code>aria-expanded</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">SelectContent:</span>
+                        <span>Has <code>role="listbox"</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">SelectItem:</span>
+                        <span>Has <code>role="option"</code> with <code>aria-selected</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">SelectGroup:</span>
+                        <span>Has <code>role="group"</code> with <code>aria-labelledby</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Disabled items:</span>
+                        <span>Have <code>aria-disabled</code></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+</div>
 
 <style>
     .demo-trigger {

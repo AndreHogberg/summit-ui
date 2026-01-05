@@ -7,22 +7,21 @@
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-su-border bg-su-muted/50 px-2.5 py-0.5 text-xs font-medium text-su-muted-foreground">
-                Component
-            </span>
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
         </div>
-        <h1 class="text-4xl font-bold tracking-tight">Tabs</h1>
-        <SuPromptButton ComponentName="Tabs" />
-        <p class="text-xl text-su-muted-foreground leading-relaxed">
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Tabs
+            <SuPromptButton ComponentName="Tabs" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
             A set of layered sections of content, known as tab panels, that are displayed one at a time.
-        </p>
+        </SuText>
     </div>
 
     @* Live Demo *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Demo</h2>
-        <div class="rounded-xl border border-su-border bg-su-card p-6">
+    <SuSection Title="Demo">
+        <SuCard>
             <TabsRoot DefaultValue="account">
                 <TabsList class="demo-tabs-list">
                     <TabsTrigger Value="account" class="demo-tabs-trigger">Account</TabsTrigger>
@@ -42,418 +41,219 @@
                     <p class="text-sm text-su-muted-foreground">Configure how you receive notifications.</p>
                 </TabsContent>
             </TabsRoot>
-        </div>
-    </section>
+        </SuCard>
+    </SuSection>
 
     @* Features *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Features</h2>
+    <SuSection Title="Features">
         <ul class="grid gap-2 text-sm text-su-muted-foreground">
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Full keyboard navigation
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Horizontal and vertical orientations
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Auto and manual activation modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Controlled and uncontrolled modes
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Disabled tabs support
             </li>
             <li class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 WCAG compliant with proper ARIA attributes
             </li>
         </ul>
-    </section>
+    </SuSection>
 
     @* Installation *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Installation</h2>
-        <div class="code-block">
-            <pre><code class="language-bash">dotnet add package SummitUI</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
 
     @* Anatomy *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-su-foreground">Anatomy</h2>
-        <p class="text-sm text-su-muted-foreground">Import the components and structure them as follows:</p>
-        <div class="code-block">
-            <pre><code class="language-xml">@anatomyCode</code></pre>
-        </div>
-    </section>
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
 
     @* Sub-components *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-su-foreground">Sub-components</h2>
-        <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">TabsRoot</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Root container managing tabs state.</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">TabsList</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Container for tab triggers (tablist role).</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">TabsTrigger</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Individual tab button (tab role).</p>
-            </div>
-            <div class="rounded-lg border border-su-border p-4">
-                <h3 class="font-medium text-su-foreground">TabsContent</h3>
-                <p class="mt-1 text-sm text-su-muted-foreground">Tab content panel (tabpanel role).</p>
-            </div>
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SuCard>
+                <SuCardTitle>TabsRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">Root container managing tabs state.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>TabsList</SuCardTitle>
+                <SuCardDescription class="mt-1">Container for tab triggers (tablist role).</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>TabsTrigger</SuCardTitle>
+                <SuCardDescription class="mt-1">Individual tab button (tab role).</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>TabsContent</SuCardTitle>
+                <SuCardDescription class="mt-1">Tab content panel (tabpanel role).</SuCardDescription>
+            </SuCard>
         </div>
-    </section>
+    </SuSection>
 
     @* API Reference *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">API Reference</h2>
-        
-        @* TabsRoot *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsRoot</h3>
-            <p class="text-sm text-su-muted-foreground">The root component that manages tabs state.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Value</code></td>
-                            <td><code>string?</code></td>
-                            <td><code>null</code></td>
-                            <td>Controlled active tab value</td>
-                        </tr>
-                        <tr>
-                            <td><code>DefaultValue</code></td>
-                            <td><code>string?</code></td>
-                            <td><code>null</code></td>
-                            <td>Default active tab (uncontrolled)</td>
-                        </tr>
-                        <tr>
-                            <td><code>ValueChanged</code></td>
-                            <td><code>EventCallback&lt;string?&gt;</code></td>
-                            <td>-</td>
-                            <td>Value change callback</td>
-                        </tr>
-                        <tr>
-                            <td><code>OnValueChange</code></td>
-                            <td><code>EventCallback&lt;string?&gt;</code></td>
-                            <td>-</td>
-                            <td>Tab activation callback</td>
-                        </tr>
-                        <tr>
-                            <td><code>Orientation</code></td>
-                            <td><code>TabsOrientation</code></td>
-                            <td><code>Horizontal</code></td>
-                            <td>Affects keyboard navigation</td>
-                        </tr>
-                        <tr>
-                            <td><code>ActivationMode</code></td>
-                            <td><code>TabsActivationMode</code></td>
-                            <td><code>Auto</code></td>
-                            <td>Auto (on focus) or Manual (on Enter/Space)</td>
-                        </tr>
-                        <tr>
-                            <td><code>Loop</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>true</code></td>
-                            <td>Whether keyboard nav loops</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "TabsRoot", Props: tabsRootProperties), 
+                (Title: "TabsList", Props: tabsListProperties),
+                (Title: "TabsTrigger", Props: tabsTriggerProperties),
+                (Title: "TabsContent", Props: tabsContentProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
         </div>
-
-        @* TabsList *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsList</h3>
-            <p class="text-sm text-su-muted-foreground">Container for tab triggers.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>As</code></td>
-                            <td><code>string</code></td>
-                            <td><code>"div"</code></td>
-                            <td>HTML element</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @* TabsTrigger *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsTrigger</h3>
-            <p class="text-sm text-su-muted-foreground">Individual tab button.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Value</code></td>
-                            <td><code>string</code></td>
-                            <td><span class="text-su-destructive">Required</span></td>
-                            <td>Unique tab identifier</td>
-                        </tr>
-                        <tr>
-                            <td><code>As</code></td>
-                            <td><code>string</code></td>
-                            <td><code>"button"</code></td>
-                            <td>HTML element</td>
-                        </tr>
-                        <tr>
-                            <td><code>Disabled</code></td>
-                            <td><code>bool</code></td>
-                            <td><code>false</code></td>
-                            <td>Disable this tab</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @* TabsContent *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground border-b border-su-border pb-2">TabsContent</h3>
-            <p class="text-sm text-su-muted-foreground">Tab content panel.</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>Value</code></td>
-                            <td><code>string</code></td>
-                            <td><span class="text-su-destructive">Required</span></td>
-                            <td>Matching TabsTrigger value</td>
-                        </tr>
-                        <tr>
-                            <td><code>As</code></td>
-                            <td><code>string</code></td>
-                            <td><code>"div"</code></td>
-                            <td>HTML element</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+    </SuSection>
 
     @* Examples *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Examples</h2>
-        
-        @* Basic *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Basic Usage</h3>
-            <div class="code-block">
-                <pre><code class="language-xml">@basicExampleCode</code></pre>
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Vertical *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Vertical Orientation</h3>
-            <p class="text-sm text-su-muted-foreground">Use vertical orientation for sidebar-style navigation.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@verticalExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Vertical Orientation</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use vertical orientation for sidebar-style navigation.</SuText>
+                <SuCodeBlock Code="@verticalExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Controlled *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Controlled Mode</h3>
-            <p class="text-sm text-su-muted-foreground">Control the active tab externally.</p>
-            <div class="code-block">
-                <pre><code class="language-razor">@controlledExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Controlled Mode</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Control the active tab externally.</SuText>
+                <SuCodeBlock Code="@controlledExampleCode" Language="razor" />
             </div>
-        </div>
 
-        @* Disabled *@
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Disabled Tabs</h3>
-            <p class="text-sm text-su-muted-foreground">Disable specific tabs.</p>
-            <div class="code-block">
-                <pre><code class="language-xml">@disabledExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Disabled Tabs</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Disable specific tabs.</SuText>
+                <SuCodeBlock Code="@disabledExampleCode" Language="razor" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Styling *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Styling</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Data Attributes</h3>
-            <p class="text-sm text-su-muted-foreground">Use these data attributes to style different states:</p>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Attribute</th>
-                            <th>Values</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>data-state</code></td>
-                            <td><code>"active"</code> | <code>"inactive"</code></td>
-                            <td>Tab/panel activation state</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-disabled</code></td>
-                            <td>Present when disabled</td>
-                            <td>Tab is disabled</td>
-                        </tr>
-                        <tr>
-                            <td><code>data-orientation</code></td>
-                            <td><code>"horizontal"</code> | <code>"vertical"</code></td>
-                            <td>Current orientation</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
             </div>
-        </div>
 
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">CSS Example</h3>
-            <div class="code-block">
-                <pre><code class="language-css">@cssExampleCode</code></pre>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
             </div>
         </div>
-    </section>
+    </SuSection>
 
     @* Accessibility *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold tracking-tight">Accessibility</h2>
-        
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation (Horizontal)</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><kbd>ArrowRight</kbd></td>
-                            <td>Move focus to next tab</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowLeft</kbd></td>
-                            <td>Move focus to previous tab</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Home</kbd></td>
-                            <td>Move focus to first tab</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>End</kbd></td>
-                            <td>Move focus to last tab</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
-                            <td>Activate focused tab (manual mode)</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">TabsList:</span>
+                        <span>Has <code>role="tablist"</code> with <code>aria-orientation</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">TabsTrigger:</span>
+                        <span>Has <code>role="tab"</code> with <code>aria-selected</code> and <code>aria-controls</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">TabsContent:</span>
+                        <span>Has <code>role="tabpanel"</code> with <code>aria-labelledby</code></span>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">Keyboard Navigation (Vertical)</h3>
-            <div class="overflow-x-auto">
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><kbd>ArrowDown</kbd></td>
-                            <td>Move focus to next tab</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>ArrowUp</kbd></td>
-                            <td>Move focus to previous tab</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Home</kbd></td>
-                            <td>Move focus to first tab</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>End</kbd></td>
-                            <td>Move focus to last tab</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="flex flex-col gap-4">
-            <h3 class="text-lg font-semibold text-su-foreground">ARIA Attributes</h3>
-            <ul class="grid gap-2 text-sm text-su-muted-foreground">
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">TabsList:</span>
-                    <span>Has <code>role="tablist"</code> with <code>aria-orientation</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">TabsTrigger:</span>
-                    <span>Has <code>role="tab"</code> with <code>aria-selected</code> and <code>aria-controls</code></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-su-foreground font-medium shrink-0">TabsContent:</span>
-                    <span>Has <code>role="tabpanel"</code> with <code>aria-labelledby</code></span>
-                </li>
-            </ul>
-        </div>
-    </section>
+    </SuSection>
 </div>
 
 <style>
@@ -505,6 +305,51 @@
 </style>
 
 @code {
+    private List<SuApiProperty> tabsRootProperties = new()
+    {
+        new() { Name = "Value", Type = "string?", Default = "null", Description = "Controlled active tab value" },
+        new() { Name = "DefaultValue", Type = "string?", Default = "null", Description = "Default active tab (uncontrolled)" },
+        new() { Name = "ValueChanged", Type = "EventCallback<string?>", Description = "Value change callback" },
+        new() { Name = "OnValueChange", Type = "EventCallback<string?>", Description = "Tab activation callback" },
+        new() { Name = "Orientation", Type = "TabsOrientation", Default = "Horizontal", Description = "Affects keyboard navigation" },
+        new() { Name = "ActivationMode", Type = "TabsActivationMode", Default = "Auto", Description = "Auto (on focus) or Manual (on Enter/Space)" },
+        new() { Name = "Loop", Type = "bool", Default = "true", Description = "Whether keyboard nav loops" }
+    };
+
+    private List<SuApiProperty> tabsListProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element" }
+    };
+
+    private List<SuApiProperty> tabsTriggerProperties = new()
+    {
+        new() { Name = "Value", Type = "string", Required = true, Description = "Unique tab identifier" },
+        new() { Name = "As", Type = "string", Default = "\"button\"", Description = "HTML element" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable this tab" }
+    };
+
+    private List<SuApiProperty> tabsContentProperties = new()
+    {
+        new() { Name = "Value", Type = "string", Required = true, Description = "Matching TabsTrigger value" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-state", Type = "\"active\" | \"inactive\"", Description = "Tab/panel activation state" },
+        new() { Name = "data-disabled", Type = "Present when disabled", Description = "Tab is disabled" },
+        new() { Name = "data-orientation", Type = "\"horizontal\" | \"vertical\"", Description = "Current orientation" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "ArrowRight / ArrowDown", Description = "Move focus to next tab", Type = "" },
+        new() { Name = "ArrowLeft / ArrowUp", Description = "Move focus to previous tab", Type = "" },
+        new() { Name = "Home", Description = "Move focus to first tab", Type = "" },
+        new() { Name = "End", Description = "Move focus to last tab", Type = "" },
+        new() { Name = "Enter / Space", Description = "Activate focused tab (manual mode)", Type = "" }
+    };
+
     private const string anatomyCode = @"<TabsRoot DefaultValue=""tab1"">
     <TabsList>
         <TabsTrigger Value=""tab1"">Tab 1</TabsTrigger>

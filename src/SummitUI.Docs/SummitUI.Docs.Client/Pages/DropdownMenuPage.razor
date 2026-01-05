@@ -1,277 +1,261 @@
 @page "/docs/dropdown-menu"
-@layout DocsLayout
 @rendermode InteractiveWebAssembly
+@layout DocsLayout
+@using SummitUI
+
 <PageTitle>SummitUI - Dropdown Menu</PageTitle>
 
-<SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
-<SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
-    DropdownMenu
-    <SuPromptButton ComponentName="DropdownMenu" />
-</SuHeading>
-<SuText Lead="true" Muted="true">
-    A floating menu component with support for items, checkbox items, radio groups, and nested groups.
-</SuText>
-
-<SuSection Title="Demo">
-    <SuCard>
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="demo-dropdown-trigger">
-                <span>Options</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m6 9 6 6 6-6"/>
-                </svg>
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="demo-dropdown-content" SideOffset="4">
-                    <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "New File")">
-                        New File
-                    </DropdownMenuItem>
-                    <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Open File")">
-                        Open File
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator class="demo-dropdown-separator" />
-                    <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Save")">
-                        Save
-                    </DropdownMenuItem>
-                    <DropdownMenuItem class="demo-dropdown-item" Disabled="true">
-                        Export (Disabled)
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
-        @if (!string.IsNullOrEmpty(selectedAction))
-        {
-            <SuText Size="SuTextSize.Small" Muted="true" class="mt-4">Last action: @selectedAction</SuText>
-        }
-    </SuCard>
-</SuSection>
-
-<SuSection Title="Features">
-    <ul class="grid gap-2 text-sm text-su-muted-foreground">
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Full keyboard navigation
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Checkbox and radio item support
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Grouped items with labels
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Flexible positioning with collision detection
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            Focus trapping in modal mode
-        </li>
-        <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-foreground"><path d="M20 6 9 17l-5-5"/></svg>
-            WCAG compliant with proper ARIA attributes
-        </li>
-    </ul>
-</SuSection>
-
-<SuSection Title="Installation">
-    <SuCodeBlock Language="bash" Code="dotnet add package SummitUI" />
-</SuSection>
-
-<SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
-    <SuCodeBlock Language="xml" Code="@anatomyCode" />
-</SuSection>
-
-<SuSection Title="Sub-components">
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        @foreach (var sub in subComponents)
-        {
-            <SuCard>
-                <SuHeading Level="SuHeadingLevel.H3">@sub.Name</SuHeading>
-                <SuText Size="SuTextSize.Small" Muted="true">@sub.Description</SuText>
-            </SuCard>
-        }
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            DropdownMenu
+            <SuPromptButton ComponentName="DropdownMenu" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A floating menu component with support for items, checkbox items, radio groups, and nested groups.
+        </SuText>
     </div>
-</SuSection>
 
-<SuSection Title="API Reference">
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2">DropdownMenuRoot</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">The root component that manages menu state.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in rootProps)
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <DropdownMenuRoot>
+                <DropdownMenuTrigger class="demo-dropdown-trigger">
+                    <span>Options</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m6 9 6 6 6-6"/>
+                    </svg>
+                </DropdownMenuTrigger>
+                <DropdownMenuPortal>
+                    <DropdownMenuContent class="demo-dropdown-content" SideOffset="4">
+                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "New File")">
+                            New File
+                        </DropdownMenuItem>
+                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Open File")">
+                            Open File
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator class="demo-dropdown-separator" />
+                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Save")">
+                            Save
+                        </DropdownMenuItem>
+                        <DropdownMenuItem class="demo-dropdown-item" Disabled="true">
+                            Export (Disabled)
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenuPortal>
+            </DropdownMenuRoot>
+            @if (!string.IsNullOrEmpty(selectedAction))
             {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
+                <SuText Size="SuTextSize.Small" Muted="true" class="mt-4">Last action: @selectedAction</SuText>
             }
-        </SuTableBody>
-    </SuTable>
+        </SuCard>
+    </SuSection>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">DropdownMenuContent</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">The floating menu content panel.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in contentProps)
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Checkbox and radio item support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Grouped items with labels
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Flexible positioning with collision detection
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Focus trapping in modal mode
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach (var sub in subComponents)
             {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
+                <SuCard>
+                    <SuCardTitle>@sub.Name</SuCardTitle>
+                    <SuCardDescription class="mt-1">@sub.Description</SuCardDescription>
+                </SuCard>
             }
-        </SuTableBody>
-    </SuTable>
+        </div>
+    </SuSection>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="border-b border-su-border pb-2 mt-8">DropdownMenuItem</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true">A single selectable menu item.</SuText>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Prop</SuTableHead>
-                <SuTableHead>Type</SuTableHead>
-                <SuTableHead>Default</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            @foreach (var prop in itemProps)
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "DropdownMenuRoot", Props: rootProps), 
+                (Title: "DropdownMenuContent", Props: contentProps),
+                (Title: "DropdownMenuItem", Props: itemProps)
+            })
             {
-                <SuTableRow>
-                    <SuTableCell><SuCode>@prop.Name</SuCode></SuTableCell>
-                    <SuTableCell><SuCode>@prop.Type</SuCode></SuTableCell>
-                    <SuTableCell>@(prop.Default ?? "-")</SuTableCell>
-                    <SuTableCell>@prop.Description</SuTableCell>
-                </SuTableRow>
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
             }
-        </SuTableBody>
-    </SuTable>
-</SuSection>
+        </div>
+    </SuSection>
 
-<SuSection Title="Examples">
-    <SuHeading Level="SuHeadingLevel.H3">Basic Menu</SuHeading>
-    <SuCodeBlock Language="xml" Code="@basicExampleCode" />
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Menu</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">With Checkbox Items</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Toggle-able menu items.</SuText>
-    <SuCodeBlock Language="razor" Code="@checkboxExampleCode" />
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Checkbox Items</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Toggle-able menu items.</SuText>
+                <SuCodeBlock Code="@checkboxExampleCode" Language="razor" />
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">With Radio Group</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Mutually exclusive options.</SuText>
-    <SuCodeBlock Language="razor" Code="@radioExampleCode" />
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Radio Group</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Mutually exclusive options.</SuText>
+                <SuCodeBlock Code="@radioExampleCode" Language="razor" />
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">Grouped Items</SuHeading>
-    <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">Organize items into labeled groups.</SuText>
-    <SuCodeBlock Language="xml" Code="@groupedExampleCode" />
-</SuSection>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Grouped Items</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Organize items into labeled groups.</SuText>
+                <SuCodeBlock Code="@groupedExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
 
-<SuSection Title="Styling">
-    <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Attribute</SuTableHead>
-                <SuTableHead>Values</SuTableHead>
-                <SuTableHead>Description</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-state</SuCode></SuTableCell>
-                <SuTableCell><SuCode>"open"</SuCode> | <SuCode>"closed"</SuCode></SuTableCell>
-                <SuTableCell>Menu open state</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-highlighted</SuCode></SuTableCell>
-                <SuTableCell>Present when focused</SuTableCell>
-                <SuTableCell>Item is keyboard-focused</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><SuCode>data-disabled</SuCode></SuTableCell>
-                <SuTableCell>Present when disabled</SuTableCell>
-                <SuTableCell>Item is disabled</SuTableCell>
-            </SuTableRow>
-        </SuTableBody>
-    </SuTable>
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">CSS Example</SuHeading>
-    <SuCodeBlock Language="css" Code="@cssExampleCode" />
-</SuSection>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
 
-<SuSection Title="Accessibility">
-    <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
-    <SuTable>
-        <SuTableHeader>
-            <SuTableRow>
-                <SuTableHead>Key</SuTableHead>
-                <SuTableHead>Action</SuTableHead>
-            </SuTableRow>
-        </SuTableHeader>
-        <SuTableBody>
-            <SuTableRow>
-                <SuTableCell><kbd>Enter</kbd> / <kbd>Space</kbd></SuTableCell>
-                <SuTableCell>Open menu or select item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>ArrowDown</kbd></SuTableCell>
-                <SuTableCell>Move focus to next item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>ArrowUp</kbd></SuTableCell>
-                <SuTableCell>Move focus to previous item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>Home</kbd></SuTableCell>
-                <SuTableCell>Move focus to first item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>End</kbd></SuTableCell>
-                <SuTableCell>Move focus to last item</SuTableCell>
-            </SuTableRow>
-            <SuTableRow>
-                <SuTableCell><kbd>Escape</kbd></SuTableCell>
-                <SuTableCell>Close menu</SuTableCell>
-            </SuTableRow>
-        </SuTableBody>
-    </SuTable>
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
 
-    <SuHeading Level="SuHeadingLevel.H3" class="mt-8">ARIA Attributes</SuHeading>
-    <ul class="grid gap-2 text-sm text-su-muted-foreground mt-4">
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">Trigger:</SuText>
-            <SuText>Has <SuCode>aria-haspopup="menu"</SuCode> and <SuCode>aria-expanded</SuCode></SuText>
-        </li>
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">Content:</SuText>
-            <SuText>Has <SuCode>role="menu"</SuCode></SuText>
-        </li>
-        <li class="flex items-start gap-2">
-            <SuText class="font-medium shrink-0">Items:</SuText>
-            <SuText>Have <SuCode>role="menuitem"</SuCode>, checkbox items have <SuCode>role="menuitemcheckbox"</SuCode></SuText>
-        </li>
-    </ul>
-</SuSection>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Trigger:</span>
+                        <span>Has <code>aria-haspopup="menu"</code> and <code>aria-expanded</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Content:</span>
+                        <span>Has <code>role="menu"</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Items:</span>
+                        <span>Have <code>role="menuitem"</code>, checkbox items have <code>role="menuitemcheckbox"</code></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+</div>
 
 <style>
     .demo-dropdown-trigger {
@@ -332,6 +316,12 @@
         opacity: 0.5;
         cursor: not-allowed;
     }
+    
+    .demo-dropdown-separator {
+        height: 1px;
+        background: rgb(var(--su-border));
+        margin: 0.25rem 0;
+    }
 </style>
 
 @code {
@@ -375,6 +365,23 @@
     {
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable item" },
         new() { Name = "OnSelect", Type = "EventCallback", Description = "Selection callback" }
+    };
+
+    private readonly List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-state", Type = "\"open\" | \"closed\"", Description = "Menu open state" },
+        new() { Name = "data-highlighted", Type = "Present when focused", Description = "Item is keyboard-focused" },
+        new() { Name = "data-disabled", Type = "Present when disabled", Description = "Item is disabled" }
+    };
+
+    private readonly List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "Enter / Space", Description = "Open menu or select item", Type = "" },
+        new() { Name = "ArrowDown", Description = "Move focus to next item", Type = "" },
+        new() { Name = "ArrowUp", Description = "Move focus to previous item", Type = "" },
+        new() { Name = "Home", Description = "Move focus to first item", Type = "" },
+        new() { Name = "End", Description = "Move focus to last item", Type = "" },
+        new() { Name = "Escape", Description = "Close menu", Type = "" }
     };
 
     private const string anatomyCode = @"<DropdownMenuRoot>

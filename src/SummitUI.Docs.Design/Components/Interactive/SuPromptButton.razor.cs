@@ -19,8 +19,7 @@ public partial class SuPromptButton : ComponentBase
     /// <summary>
     /// The base URL for the documentation site. Used to construct llms.txt URL.
     /// </summary>
-    [Parameter] public string BaseUrl { get; set; } = "https://summitui.dev";
-
+    [Parameter] public string BaseUrl { get; set; } = "https://summitui.com";
     /// <summary>
     /// Additional HTML attributes to apply to the button element.
     /// </summary>
@@ -58,9 +57,22 @@ public partial class SuPromptButton : ComponentBase
 
     private async Task CopyLlmsTxtUrl()
     {
-        var url = $"{BaseUrl.TrimEnd('/')}/llms.txt";
+        var url = BuildLlmsTxtUrl();
         await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
         _isOpen = false;
+    }
+
+    private string BuildLlmsTxtUrl()
+    {
+        var baseUrl = BaseUrl.TrimEnd('/');
+        if (string.IsNullOrEmpty(ComponentName))
+        {
+            return $"{baseUrl}/llms.txt";
+        }
+        
+        // Convert component name to lowercase URL segment (e.g., "Accordion" -> "accordion")
+        var urlSegment = ComponentName.ToLowerInvariant();
+        return $"{baseUrl}/docs/{urlSegment}/llms.txt";
     }
 
     private async Task OpenChatGpt()
@@ -86,10 +98,12 @@ public partial class SuPromptButton : ComponentBase
             ? "SummitUI components"
             : $"the {ComponentName} component in SummitUI";
 
+        var llmsTxtUrl = BuildLlmsTxtUrl();
+
         return $"""
             I'm using SummitUI, a Blazor component library. Please help me understand {componentContext}.
 
-            You can find the full documentation at: {BaseUrl.TrimEnd('/')}/llms.txt
+            You can find the full documentation at: {llmsTxtUrl}
 
             Please read the documentation and help me with any questions I have.
             """;

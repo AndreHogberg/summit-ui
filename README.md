@@ -10,7 +10,7 @@ Inspired by [bits-ui](https://github.com/huntabyte/bits-ui).
 
 - **Headless:** Logic and behavior without opinionated styling.
 - **Accessible:** Built with WCAG compliance in mind, including ARIA attributes and keyboard navigation.
-- **Render Modes:** Supports WebAssembly (WASM), Server-Side Rendering (SSR), and Interactive Server.
+- **Render Modes:** Supports WebAssembly and Server render modes with pre-rendering.
 - **Customizable:** Fully customizable via standard Blazor attributes.
 
 ## Installation

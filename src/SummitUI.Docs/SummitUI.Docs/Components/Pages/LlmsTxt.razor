@@ -1,40 +1,40 @@
 @page "/docs/llms"
 @layout DocsLayout
 
-<div class="flex flex-col gap-10">
+<PageTitle>SummitUI - LLMS</PageTitle>
+
+<div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2">
-            <span class="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                AI Integration
-            </span>
+            <SuBadge Variant="SuBadgeVariant.Outline">AI Integration</SuBadge>
         </div>
         <h1 class="text-4xl font-bold tracking-tight">llms.txt</h1>
-        <p class="text-xl text-muted-foreground leading-relaxed">
+        <p class="text-xl text-su-muted-foreground leading-relaxed">
             A standardized file that helps LLMs understand and work with SummitUI.
         </p>
     </div>
 
     @* Overview *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">What is llms.txt?</h2>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            The <code>llms.txt</code> file follows the <a href="https://llmstxt.org/" target="_blank" rel="noopener noreferrer" class="text-foreground underline hover:no-underline">llmstxt.org specification</a> - 
-            a proposal to standardize how websites provide information to help LLMs understand their content at inference time.
-        </p>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            SummitUI includes an <code>llms.txt</code> file at the repository root that provides structured information about the library, 
-            its components, and links to detailed documentation for each component.
-        </p>
-    </section>
+    <SuSection Title="What is llms.txt?">
+        <div class="flex flex-col gap-4">
+            <p class="text-su-muted-foreground leading-relaxed">
+                The <code class="text-su-primary font-medium">llms.txt</code> file follows the <a href="https://llmstxt.org/" target="_blank" rel="noopener noreferrer" class="text-su-foreground underline underline-offset-4 hover:text-su-primary transition-colors">llmstxt.org specification</a> - 
+                a proposal to standardize how websites provide information to help LLMs understand their content at inference time.
+            </p>
+            <p class="text-su-muted-foreground leading-relaxed">
+                SummitUI includes an <code class="text-su-primary font-medium">llms.txt</code> file at the repository root that provides structured information about the library, 
+                its components, and links to detailed documentation for each component.
+            </p>
+        </div>
+    </SuSection>
 
     @* Benefits *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">Benefits</h2>
+    <SuSection Title="Benefits">
         <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
+            <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 8V4H8"/>
                         <rect width="16" height="12" x="4" y="8" rx="2"/>
                         <path d="M2 14h2"/>
@@ -43,189 +43,168 @@
                         <path d="M9 13v2"/>
                     </svg>
                 </div>
-                <h3 class="font-medium text-foreground">Better AI Assistance</h3>
-                <p class="mt-1 text-sm text-muted-foreground">LLMs can quickly understand SummitUI's structure, components, and usage patterns.</p>
+                <h3 class="font-semibold text-su-foreground">Better AI Assistance</h3>
+                <p class="mt-2 text-sm text-su-muted-foreground">LLMs can quickly understand SummitUI's structure, components, and usage patterns.</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
+            <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
                         <polyline points="14 2 14 8 20 8"/>
                     </svg>
                 </div>
-                <h3 class="font-medium text-foreground">Linked Documentation</h3>
-                <p class="mt-1 text-sm text-muted-foreground">References detailed markdown files for each component with full API documentation.</p>
+                <h3 class="font-semibold text-su-foreground">Linked Documentation</h3>
+                <p class="mt-2 text-sm text-su-muted-foreground">References detailed markdown files for each component with full API documentation.</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
+            <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="m16 10-4 4-2-2"/>
                     </svg>
                 </div>
-                <h3 class="font-medium text-foreground">Accurate Code Generation</h3>
-                <p class="mt-1 text-sm text-muted-foreground">AI assistants can generate correct component usage with proper props and patterns.</p>
+                <h3 class="font-semibold text-su-foreground">Accurate Code Generation</h3>
+                <p class="mt-2 text-sm text-su-muted-foreground">AI assistants can generate correct component usage with proper props and patterns.</p>
             </div>
-            <div class="rounded-lg border border-border p-4">
-                <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-md bg-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-foreground">
+            <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
                     </svg>
                 </div>
-                <h3 class="font-medium text-foreground">Agent Compatible</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Works with AI agents and coding assistants that support the llms.txt standard.</p>
+                <h3 class="font-semibold text-su-foreground">Agent Compatible</h3>
+                <p class="mt-2 text-sm text-su-muted-foreground">Works with AI agents and coding assistants that support the llms.txt standard.</p>
             </div>
         </div>
-    </section>
-
-    @* Usage *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">How to Use</h2>
-        <p class="text-sm text-muted-foreground leading-relaxed">
-            When using an AI assistant with SummitUI, you can reference the llms.txt file to provide context:
-        </p>
-        <div class="code-block">
-            <pre><code class="language-bash"># Fetch the llms.txt file
-curl https://raw.githubusercontent.com/andrehogberg/summit-ui/main/llms.txt
-</code></pre>
-        </div>
-    </section>
+    </SuSection>
 
     @* File Location *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">File Location</h2>
-        <div class="overflow-x-auto">
-            <table class="api-table">
-                <thead>
-                    <tr>
-                        <th>File</th>
-                        <th>Location</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>llms.txt</code></td>
-                        <td>Repository root</td>
-                        <td>Main LLM context file with overview and links</td>
-                    </tr>
-                    <tr>
-                        <td><code>docs/*.md</code></td>
-                        <td><code>/docs/</code> folder</td>
-                        <td>Detailed component documentation files</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+    <SuSection Title="File Location">
+        <SuTable>
+            <SuTableHead>
+                <SuTableRow>
+                    <SuTableHeader>File</SuTableHeader>
+                    <SuTableHeader>Location</SuTableHeader>
+                    <SuTableHeader>Description</SuTableHeader>
+                </SuTableRow>
+            </SuTableHead>
+            <SuTableBody>
+                <SuTableRow>
+                    <SuTableCell><code class="text-su-primary">llms.txt</code></SuTableCell>
+                    <SuTableCell>Repository root</SuTableCell>
+                    <SuTableCell>Main LLM context file with overview and links</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell><code class="text-su-primary">docs/*.txt</code></SuTableCell>
+                    <SuTableCell><code class="text-su-muted-foreground">/docs/</code> folder</SuTableCell>
+                    <SuTableCell>Detailed component documentation for LLMs</SuTableCell>
+                </SuTableRow>
+            </SuTableBody>
+        </SuTable>
+    </SuSection>
 
     @* Linked Documentation *@
-    <section class="flex flex-col gap-6">
-        <h2 class="text-lg font-semibold text-foreground">Linked Documentation</h2>
-        <p class="text-sm text-muted-foreground">
-            The llms.txt file links to these detailed markdown documentation files:
-        </p>
-        
-        <div class="flex flex-col gap-2">
-            <h3 class="text-sm font-medium text-muted-foreground uppercase tracking-wider">Components</h3>
-            <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/accordion.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">accordion.md</span>
-                </a>
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/checkbox.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">checkbox.md</span>
-                </a>
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/datefield.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">datefield.md</span>
-                </a>
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/dropdownmenu.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">dropdownmenu.md</span>
-                </a>
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/popover.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">popover.md</span>
-                </a>
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/select.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">select.md</span>
-                </a>
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/switch.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">switch.md</span>
-                </a>
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/tabs.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">tabs.md</span>
-                </a>
+    <SuSection Title="Linked Documentation">
+        <div class="flex flex-col gap-6">
+            <p class="text-su-muted-foreground">
+                The <code class="text-su-primary">llms.txt</code> file links to these detailed documentation files designed for machine consumption:
+            </p>
+            
+            <div class="flex flex-col gap-4">
+                <h3 class="text-sm font-semibold text-su-muted-foreground uppercase tracking-wider">Components</h3>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <a href="/docs/accordion/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">accordion/llms.txt</span>
+                    </a>
+                    <a href="/docs/checkbox/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">checkbox/llms.txt</span>
+                    </a>
+                    <a href="/docs/datefield/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">datefield/llms.txt</span>
+                    </a>
+                    <a href="/docs/dropdownmenu/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">dropdownmenu/llms.txt</span>
+                    </a>
+                    <a href="/docs/popover/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">popover/llms.txt</span>
+                    </a>
+                    <a href="/docs/select/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">select/llms.txt</span>
+                    </a>
+                    <a href="/docs/switch/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">switch/llms.txt</span>
+                    </a>
+                    <a href="/docs/tabs/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">tabs/llms.txt</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <h3 class="text-sm font-semibold text-su-muted-foreground uppercase tracking-wider">Utilities</h3>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <a href="/docs/focustrap/llms.txt" class="flex items-center gap-3 rounded-lg border border-su-border p-3 text-sm hover:bg-su-accent hover:border-su-primary/50 transition-all group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground group-hover:text-su-primary">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <span class="text-su-foreground font-medium">focustrap/llms.txt</span>
+                    </a>
+                </div>
             </div>
         </div>
+    </SuSection>
 
-        <div class="flex flex-col gap-2">
-            <h3 class="text-sm font-medium text-muted-foreground uppercase tracking-wider">Utilities</h3>
-            <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                <a href="https://github.com/andrehogberg/summit-ui/blob/main/docs/focustrap.md" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border border-border p-3 text-sm hover:bg-accent transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span class="text-foreground">focustrap.md</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    @* View Raw File *@
-    <section class="flex flex-col gap-4">
-        <h2 class="text-lg font-semibold text-foreground">View Raw File</h2>
-        <div class="flex gap-3">
-            <a href="https://github.com/andrehogberg/summit-ui/blob/main/llms.txt" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background">
+    @* Actions *@
+    <SuSection Title="Resources">
+        <div class="flex flex-wrap gap-4">
+            <SuButton Variant="SuButtonVariant.Outline" class="gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
                 View on GitHub
-            </a>
-            <a href="https://raw.githubusercontent.com/andrehogberg/summit-ui/main/llms.txt" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background">
+            </SuButton>
+            <SuButton Variant="SuButtonVariant.Primary" class="gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-                Download Raw
-            </a>
+                Download llms.txt
+            </SuButton>
         </div>
-    </section>
+    </SuSection>
 </div>
+

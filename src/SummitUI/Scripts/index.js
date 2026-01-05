@@ -33,11 +33,15 @@ export {
 } from './floating.js';
 
 // Accordion exports
-// Note: Keyboard navigation moved to Blazor. Only DOM measurement and scroll prevention remains.
+// Note: Keyboard navigation moved to Blazor. Handles DOM measurement, scroll prevention, and animation-aware presence.
 export {
     setContentHeight as accordion_setContentHeight,
     registerTrigger as accordion_registerTrigger,
-    unregisterTrigger as accordion_unregisterTrigger
+    unregisterTrigger as accordion_unregisterTrigger,
+    waitForAnimationsComplete as accordion_waitForAnimationsComplete,
+    cancelAnimationWatcher as accordion_cancelAnimationWatcher,
+    setHidden as accordion_setHidden,
+    removeHidden as accordion_removeHidden
 } from './accordion.js';
 
 // Focus Trap exports

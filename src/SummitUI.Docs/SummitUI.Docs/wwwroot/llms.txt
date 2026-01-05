@@ -1,0 +1,29 @@
+# SummitUI
+
+> WCAG-compliant, fully customizable headless Blazor components.
+
+SummitUI is a headless component library for Blazor that provides high-quality, accessible building blocks for your applications. It focuses on logic, accessibility, and performance across all Blazor render modes.
+
+## Components
+
+- [Accordion](/docs/accordion/llms.txt)
+- [Checkbox](/docs/checkbox/llms.txt)
+- [DateField](/docs/datefield/llms.txt)
+- [DropdownMenu](/docs/dropdownmenu/llms.txt)
+- [FocusTrap](/docs/focustrap/llms.txt)
+- [Popover](/docs/popover/llms.txt)
+- [Select](/docs/select/llms.txt)
+- [Switch](/docs/switch/llms.txt)
+- [Tabs](/docs/tabs/llms.txt)
+
+## Getting Started
+
+- [Installation](/installation)
+- [Agent Skills](/agent-skills)
+
+## Principles
+
+- **Headless**: Logic and state management without opinionated styling.
+- **Accessible**: Built-in WCAG compliance and ARIA attributes.
+- **Performant**: Optimized for WASM, SSR, and Interactive Server modes.
+- **Customizable**: Full control over markup and styling via data attributes.
