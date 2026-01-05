@@ -104,6 +104,7 @@ private ElementReference _elementRef;
     private string? _outsideClickListenerId;
     private string? _escapeKeyListenerId;
     private bool _isPositioned;
+    private bool _isPositioning; // Guard against concurrent OnAfterRenderAsync calls
     private bool _isDisposed;
     private bool _isSubscribed;
     private bool _wasOpen;
@@ -139,73 +140,82 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!RendererInfo.IsInteractive) return;
         
-        if (Context.IsOpen && !_isPositioned)
+        if (Context.IsOpen && !_isPositioned && !_isPositioning)
         {
-            // Cancel any pending animation watcher if reopening
-            if (Context.IsAnimatingClosed)
+            // Set guard flag immediately to prevent concurrent initialization
+            _isPositioning = true;
+            
+            try
             {
-                await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
-                Context.IsAnimatingClosed = false;
-                _isPositioned = false; // Reset so we reinitialize positioning and focus
-            }
-            _animationWatcherRegistered = false; // Reset for next close cycle
+                // Cancel any pending animation watcher if reopening
+                if (Context.IsAnimatingClosed)
+                {
+                    await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+                    Context.IsAnimatingClosed = false;
+                }
+                _animationWatcherRegistered = false; // Reset for next close cycle
 
-            Context.RegisterContent(_elementRef);
-            _dotNetRef ??= DotNetObjectReference.Create(this);
+                Context.RegisterContent(_elementRef);
+                _dotNetRef ??= DotNetObjectReference.Create(this);
 
-            var options = new FloatingPositionOptions
-            {
-                Side = Side.ToString().ToLowerInvariant(),
-                SideOffset = SideOffset,
-                Align = Align.ToString().ToLowerInvariant(),
-                AlignOffset = AlignOffset,
-                AvoidCollisions = AvoidCollisions,
-                CollisionPadding = CollisionPadding,
-                ConstrainSize = true // Select needs size constraints
-            };
+                var options = new FloatingPositionOptions
+                {
+                    Side = Side.ToString().ToLowerInvariant(),
+                    SideOffset = SideOffset,
+                    Align = Align.ToString().ToLowerInvariant(),
+                    AlignOffset = AlignOffset,
+                    AvoidCollisions = AvoidCollisions,
+                    CollisionPadding = CollisionPadding,
+                    ConstrainSize = true // Select needs size constraints
+                };
 
-            // Initialize positioning
-            _floatingInstanceId = await FloatingInterop.InitializeAsync(
-                Context.TriggerElement,
-                _elementRef,
-                null,
-                options);
-
-            // Register outside click handler if needed
-            if (OutsideClickBehavior != OutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
-            {
-                _outsideClickListenerId = await FloatingInterop.RegisterOutsideClickAsync(
+                // Initialize positioning
+                _floatingInstanceId = await FloatingInterop.InitializeAsync(
                     Context.TriggerElement,
                     _elementRef,
-                    _dotNetRef,
-                    nameof(HandleOutsideClick));
+                    null,
+                    options);
+
+                // Register outside click handler if needed
+                if (OutsideClickBehavior != OutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
+                {
+                    _outsideClickListenerId = await FloatingInterop.RegisterOutsideClickAsync(
+                        Context.TriggerElement,
+                        _elementRef,
+                        _dotNetRef,
+                        nameof(HandleOutsideClick));
+                }
+
+                // Register Escape key handler if needed
+                if (EscapeKeyBehavior != EscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
+                {
+                    _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
+                        _dotNetRef,
+                        nameof(HandleEscapeKey));
+                }
+
+                _isPositioned = true;
+
+                // Focus the content so it receives keyboard events
+                await FloatingInterop.FocusElementAsync(_elementRef);
+
+                // Highlight selected item or first item
+                var selectedKey = Context.GetKeyForValue(Context.Value);
+                if (!string.IsNullOrEmpty(selectedKey))
+                {
+                    await Context.SetHighlightedKeyAsync(selectedKey);
+                    // Scroll to the selected item
+                    await ScrollToHighlightedItemAsync();
+                }
+                else
+                {
+                    // Highlight first item
+                    await HighlightFirstItemAsync();
+                }
             }
-
-            // Register Escape key handler if needed
-            if (EscapeKeyBehavior != EscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
+            finally
             {
-                _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
-                    _dotNetRef,
-                    nameof(HandleEscapeKey));
-            }
-
-            _isPositioned = true;
-
-            // Focus the content so it receives keyboard events
-            await FloatingInterop.FocusElementAsync(_elementRef);
-
-            // Highlight selected item or first item
-            var selectedKey = Context.GetKeyForValue(Context.Value);
-            if (!string.IsNullOrEmpty(selectedKey))
-            {
-                await Context.SetHighlightedKeyAsync(selectedKey);
-                // Scroll to the selected item
-                await ScrollToHighlightedItemAsync();
-            }
-            else
-            {
-                // Highlight first item
-                await HighlightFirstItemAsync();
+                _isPositioning = false;
             }
         }
         else if (!Context.IsOpen && _wasOpen && !_animationWatcherRegistered)

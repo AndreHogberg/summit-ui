@@ -126,6 +126,7 @@ private ElementReference _elementRef;
     private string? _outsideClickListenerId;
     private string? _escapeKeyListenerId;
     private bool _isPositioned;
+    private bool _isPositioning; // Guard against concurrent OnAfterRenderAsync calls
     private bool _isDisposed;
     private bool _wasOpen;
     private bool _animationWatcherRegistered;
@@ -153,70 +154,79 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         if (_isDisposed) return;
         if (!RendererInfo.IsInteractive) return;
 
-        if (Context.IsOpen && !_isPositioned && !_isDisposed)
+        if (Context.IsOpen && !_isPositioned && !_isDisposed && !_isPositioning)
         {
-            // Cancel any pending animation watcher if reopening
-            if (Context.IsAnimatingClosed)
+            // Set guard flag immediately to prevent concurrent initialization
+            _isPositioning = true;
+            
+            try
             {
-                await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
-                Context.IsAnimatingClosed = false;
-                _isPositioned = false; // Reset so we reinitialize positioning and focus
-            }
-            _animationWatcherRegistered = false; // Reset for next close cycle
+                // Cancel any pending animation watcher if reopening
+                if (Context.IsAnimatingClosed)
+                {
+                    await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+                    Context.IsAnimatingClosed = false;
+                }
+                _animationWatcherRegistered = false; // Reset for next close cycle
 
-            Context.RegisterContent(_elementRef);
-            Context.HandleKeyDownAsync = HandleKeyFromItemAsync;
-            _dotNetRef ??= DotNetObjectReference.Create(this);
+                Context.RegisterContent(_elementRef);
+                Context.HandleKeyDownAsync = HandleKeyFromItemAsync;
+                _dotNetRef ??= DotNetObjectReference.Create(this);
 
-            // Check again after creating the reference in case of race condition
-            if (_isDisposed)
-            {
-                _dotNetRef?.Dispose();
-                _dotNetRef = null;
-                return;
-            }
+                // Check again after creating the reference in case of race condition
+                if (_isDisposed)
+                {
+                    _dotNetRef?.Dispose();
+                    _dotNetRef = null;
+                    return;
+                }
 
-            var options = new FloatingPositionOptions
-            {
-                Side = Side.ToString().ToLowerInvariant(),
-                SideOffset = SideOffset,
-                Align = Align.ToString().ToLowerInvariant(),
-                AlignOffset = AlignOffset,
-                AvoidCollisions = AvoidCollisions,
-                CollisionPadding = CollisionPadding
-            };
+                var options = new FloatingPositionOptions
+                {
+                    Side = Side.ToString().ToLowerInvariant(),
+                    SideOffset = SideOffset,
+                    Align = Align.ToString().ToLowerInvariant(),
+                    AlignOffset = AlignOffset,
+                    AvoidCollisions = AvoidCollisions,
+                    CollisionPadding = CollisionPadding
+                };
 
-            // Initialize positioning
-            _floatingInstanceId = await FloatingInterop.InitializeAsync(
-                Context.TriggerElement,
-                _elementRef,
-                null,
-                options);
-
-            // Register outside click handler if needed
-            if (OutsideClickBehavior != OutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
-            {
-                _outsideClickListenerId = await FloatingInterop.RegisterOutsideClickAsync(
+                // Initialize positioning
+                _floatingInstanceId = await FloatingInterop.InitializeAsync(
                     Context.TriggerElement,
                     _elementRef,
-                    _dotNetRef,
-                    nameof(HandleOutsideClick));
-            }
+                    null,
+                    options);
 
-            // Register Escape key handler if needed
-            if (EscapeKeyBehavior != EscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
+                // Register outside click handler if needed
+                if (OutsideClickBehavior != OutsideClickBehavior.Ignore || OnInteractOutside.HasDelegate)
+                {
+                    _outsideClickListenerId = await FloatingInterop.RegisterOutsideClickAsync(
+                        Context.TriggerElement,
+                        _elementRef,
+                        _dotNetRef,
+                        nameof(HandleOutsideClick));
+                }
+
+                // Register Escape key handler if needed
+                if (EscapeKeyBehavior != EscapeKeyBehavior.Ignore || OnEscapeKeyDown.HasDelegate)
+                {
+                    _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
+                        _dotNetRef,
+                        nameof(HandleEscapeKey));
+                }
+
+                _isPositioned = true;
+
+                // Highlight and focus first item
+                await HighlightFirstItemAsync();
+                
+                await OnOpenAutoFocus.InvokeAsync();
+            }
+            finally
             {
-                _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
-                    _dotNetRef,
-                    nameof(HandleEscapeKey));
+                _isPositioning = false;
             }
-
-            _isPositioned = true;
-
-            // Highlight and focus first item
-            await HighlightFirstItemAsync();
-            
-            await OnOpenAutoFocus.InvokeAsync();
         }
         else if (!Context.IsOpen && _wasOpen && !_animationWatcherRegistered)
         {

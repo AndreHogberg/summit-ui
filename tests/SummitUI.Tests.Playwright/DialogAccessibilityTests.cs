@@ -388,7 +388,6 @@ public class DialogAccessibilityTests : PageTest
     }
 
     [Test]
-    [Skip("Nested dialog test is flaky in CI - needs investigation")]
     public async Task NestedDialog_ShouldClose_IndependentlyFromParent()
     {
         // Navigate to the nested dialogs section and scroll it into view
@@ -425,6 +424,65 @@ public class DialogAccessibilityTests : PageTest
         
         // Parent should still be visible
         await Expect(parentDialogContent).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task NestedDialog_ShouldClose_AllDialogsSequentially_WithMultipleEscapePresses()
+    {
+        // Capture console messages for debugging
+        var consoleMessages = new List<string>();
+        Page.Console += (_, msg) => consoleMessages.Add($"[{msg.Type}] {msg.Text}");
+
+        // Navigate to the nested dialogs section and scroll it into view
+        var nestedSection = Page.Locator("section").Filter(new() { HasText = "Nested Dialogs" });
+        await nestedSection.ScrollIntoViewIfNeededAsync();
+        
+        // Open parent dialog
+        var parentTrigger = nestedSection.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Open Parent Dialog" });
+        await parentTrigger.ClickAsync();
+        await Page.WaitForTimeoutAsync(200);
+
+        // Parent should be visible
+        var parentDialogContent = Page.Locator("[data-summit-dialog-content][data-state='open']").First;
+        await Expect(parentDialogContent).ToBeVisibleAsync();
+
+        // Open nested dialog
+        var nestedTrigger = parentDialogContent.GetByRole(Microsoft.Playwright.AriaRole.Button, new() { Name = "Open Nested Dialog" });
+        await nestedTrigger.ClickAsync();
+        await Page.WaitForTimeoutAsync(200);
+
+        // Nested dialog should be visible
+        var nestedContent = Page.Locator("[data-summit-dialog-content][data-nested][data-state='open']").First;
+        await Expect(nestedContent).ToBeVisibleAsync();
+
+        Console.WriteLine("=== Before first Escape ===");
+        foreach (var msg in consoleMessages.Where(m => m.Contains("SummitUI")))
+            Console.WriteLine(msg);
+        consoleMessages.Clear();
+
+        // First Escape: close nested dialog
+        await Page.Keyboard.PressAsync("Escape");
+        await Page.WaitForTimeoutAsync(200);
+
+        Console.WriteLine("=== After first Escape ===");
+        foreach (var msg in consoleMessages.Where(m => m.Contains("SummitUI")))
+            Console.WriteLine(msg);
+        consoleMessages.Clear();
+
+        // Nested should be closed, parent still open
+        await Expect(nestedContent).Not.ToBeVisibleAsync();
+        await Expect(parentDialogContent).ToBeVisibleAsync();
+
+        // Second Escape: close parent dialog
+        await Page.Keyboard.PressAsync("Escape");
+        await Page.WaitForTimeoutAsync(200);
+
+        Console.WriteLine("=== After second Escape ===");
+        foreach (var msg in consoleMessages.Where(m => m.Contains("SummitUI")))
+            Console.WriteLine(msg);
+
+        // Parent should now be closed too
+        await Expect(parentDialogContent).Not.ToBeVisibleAsync();
     }
 
     [Test]

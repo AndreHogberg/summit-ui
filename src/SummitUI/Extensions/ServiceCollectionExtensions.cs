@@ -34,6 +34,9 @@ public static class ServiceCollectionExtensions
         // Alert dialog service (singleton so it's shared across components)
         services.AddScoped<IAlertDialogService, AlertDialogService>();
 
+        // Portal service for rendering content at the root of the DOM
+        services.AddScoped<IPortalService, PortalService>();
+
         return services;
     }
 }

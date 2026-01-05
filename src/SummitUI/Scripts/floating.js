@@ -25,8 +25,23 @@ const instances = new Map();
 // Store outside click listeners
 const outsideClickListeners = new Map();
 
-// Store escape key listeners
-const escapeKeyListeners = new Map();
+// Stack-based escape key handling for nested dialogs.
+// The stack ensures only the topmost dialog receives escape key events.
+// Format: [{ id, dotNetRef, methodName }, ...]
+const escapeKeyStack = [];
+
+// Global escape key handler - only triggers the topmost listener
+function handleGlobalEscapeKey(event) {
+    if (event.key !== 'Escape' || escapeKeyStack.length === 0) return;
+
+    event.preventDefault();
+
+    // Only invoke the topmost (last) handler
+    const top = escapeKeyStack[escapeKeyStack.length - 1];
+    top.dotNetRef.invokeMethodAsync(top.methodName).catch(() => {
+        // DotNetObjectReference may have been disposed, ignore errors
+    });
+}
 
 // Store pending animation watchers for cleanup
 const animationWatchers = new Map();
@@ -417,6 +432,7 @@ export function unregisterOutsideClick(listenerId) {
 
 /**
  * Register an Escape key listener.
+ * Uses a stack-based approach so only the topmost dialog receives the escape key.
  * @param {object} dotNetRef - .NET object reference for callback
  * @param {string} methodName - Name of the method to call on Escape key press
  * @returns {string} Listener ID for cleanup
@@ -425,27 +441,14 @@ export function registerEscapeKey(dotNetRef, methodName) {
     if (!dotNetRef) return null;
 
     const listenerId = `escape-key-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    let isDisposed = false;
 
-    function handleKeyDown(event) {
-        if (isDisposed) return;
-        
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            dotNetRef.invokeMethodAsync(methodName).catch(() => {
-                // DotNetObjectReference may have been disposed, ignore errors
-            });
-        }
+    // Add to the stack (newest/topmost at the end)
+    escapeKeyStack.push({ id: listenerId, dotNetRef, methodName });
+
+    // Register the global listener only when the first dialog opens
+    if (escapeKeyStack.length === 1) {
+        document.addEventListener('keydown', handleGlobalEscapeKey);
     }
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    escapeKeyListeners.set(listenerId, {
-        cleanup: () => {
-            isDisposed = true;
-            document.removeEventListener('keydown', handleKeyDown);
-        }
-    });
 
     return listenerId;
 }
@@ -455,10 +458,14 @@ export function registerEscapeKey(dotNetRef, methodName) {
  * @param {string} listenerId - The listener ID returned from registerEscapeKey
  */
 export function unregisterEscapeKey(listenerId) {
-    const listener = escapeKeyListeners.get(listenerId);
-    if (listener) {
-        listener.cleanup();
-        escapeKeyListeners.delete(listenerId);
+    const index = escapeKeyStack.findIndex(entry => entry.id === listenerId);
+    if (index !== -1) {
+        escapeKeyStack.splice(index, 1);
+    }
+
+    // Remove the global listener when no dialogs are open
+    if (escapeKeyStack.length === 0) {
+        document.removeEventListener('keydown', handleGlobalEscapeKey);
     }
 }
 

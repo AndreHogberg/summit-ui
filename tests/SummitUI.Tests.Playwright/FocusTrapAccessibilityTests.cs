@@ -447,6 +447,9 @@ public class FocusTrapAccessibilityTests : PageTest
         await Expect(dialog).ToBeVisibleAsync();
 
         var closeButton = Page.GetByTestId("one-item-close");
+        
+        // Wait for focus trap to move focus to the close button
+        await Expect(closeButton).ToBeFocusedAsync();
         await closeButton.PressAsync("Enter");
 
         await Expect(dialog).Not.ToBeVisibleAsync();

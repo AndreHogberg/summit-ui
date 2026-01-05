@@ -75,6 +75,7 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
     private DotNetObjectReference<AlertDialogContent>? _dotNetRef;
     private string? _escapeKeyListenerId;
     private bool _isInitialized;
+    private bool _isInitializing; // Guard against concurrent OnAfterRenderAsync calls
     private bool _isDisposed;
     private bool _wasOpen;
     private bool _animationWatcherRegistered;
@@ -132,47 +133,64 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
     {
         if (!RendererInfo.IsInteractive) return;
 
-        if (Context.IsOpen && !_isInitialized)
+        if (Context.IsOpen && !_isInitialized && !_isInitializing)
         {
-            // Cancel any pending animation watcher if reopening
-            if (Context.IsAnimatingClosed)
+            // Set guard flag immediately to prevent concurrent initialization
+            _isInitializing = true;
+            
+            try
             {
-                await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
-                Context.IsAnimatingClosed = false;
-                _isInitialized = false;
+                // Cancel any pending animation watcher if reopening
+                if (Context.IsAnimatingClosed)
+                {
+                    await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+                    Context.IsAnimatingClosed = false;
+                }
+                _animationWatcherRegistered = false;
+
+                Context.RegisterContent(_elementRef);
+                _dotNetRef ??= DotNetObjectReference.Create(this);
+
+                // Lock scroll if enabled
+                if (PreventScroll && !_scrollLocked)
+                {
+                    await DialogInterop.LockScrollAsync();
+                    _scrollLocked = true;
+                }
+
+                // Register Escape key handler if allowed
+                if (Context.Options.AllowEscapeClose || OnEscapeKeyDown.HasDelegate)
+                {
+                    _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
+                        _dotNetRef,
+                        nameof(HandleEscapeKey));
+                }
+
+                _isInitialized = true;
+
+                // Focus is handled by FocusTrap if enabled
+                if (!TrapFocus)
+                {
+                    await FloatingInterop.FocusFirstElementAsync(_elementRef);
+                }
+
+                await OnOpenAutoFocus.InvokeAsync();
             }
-            _animationWatcherRegistered = false;
-
-            Context.RegisterContent(_elementRef);
-            _dotNetRef ??= DotNetObjectReference.Create(this);
-
-            // Lock scroll if enabled
-            if (PreventScroll && !_scrollLocked)
+            finally
             {
-                await DialogInterop.LockScrollAsync();
-                _scrollLocked = true;
+                _isInitializing = false;
             }
-
-            // Register Escape key handler if allowed
-            if (Context.Options.AllowEscapeClose || OnEscapeKeyDown.HasDelegate)
-            {
-                _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
-                    _dotNetRef,
-                    nameof(HandleEscapeKey));
-            }
-
-            _isInitialized = true;
-
-            // Focus is handled by FocusTrap if enabled
-            if (!TrapFocus)
-            {
-                await FloatingInterop.FocusFirstElementAsync(_elementRef);
-            }
-
-            await OnOpenAutoFocus.InvokeAsync();
         }
         else if (!Context.IsOpen && _wasOpen && !_animationWatcherRegistered)
         {
+            // Immediately unregister escape key so parent dialogs can receive escape events
+            // This must happen before animations complete to avoid blocking the escape key stack
+            if (!string.IsNullOrEmpty(_escapeKeyListenerId))
+            {
+                await FloatingInterop.UnregisterEscapeKeyAsync(_escapeKeyListenerId);
+                _escapeKeyListenerId = null;
+            }
+
             // Start waiting for close animations to complete
             _animationWatcherRegistered = true;
             _dotNetRef ??= DotNetObjectReference.Create(this);
@@ -224,6 +242,14 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
     public async Task HandleEscapeKey()
     {
         if (_isDisposed || !Context.IsOpen) return;
+
+        // Immediately unregister escape key BEFORE closing so parent dialogs 
+        // can receive the next escape event without waiting for re-render
+        if (!string.IsNullOrEmpty(_escapeKeyListenerId))
+        {
+            await FloatingInterop.UnregisterEscapeKeyAsync(_escapeKeyListenerId);
+            _escapeKeyListenerId = null;
+        }
 
         await OnEscapeKeyDown.InvokeAsync();
 
