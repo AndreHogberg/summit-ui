@@ -937,4 +937,88 @@ public class SelectAccessibilityTests : PageTest
     }
 
     #endregion
+
+    #region Animated Content
+
+    [Test]
+    public async Task AnimatedSelect_ShouldOpen_OnEnterKey()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[role='combobox']");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+        await Expect(content).ToHaveAttributeAsync("data-state", "open");
+    }
+
+    [Test]
+    public async Task AnimatedSelect_ShouldNavigate_WithArrowKeys()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[role='combobox']");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // First item should be highlighted on open
+        var firstItem = content.Locator("[data-summit-select-item][data-value='first']");
+        await Expect(firstItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Arrow down to second item
+        await Page.Keyboard.PressAsync("ArrowDown");
+        var secondItem = content.Locator("[data-summit-select-item][data-value='second']");
+        await Expect(secondItem).ToHaveAttributeAsync("data-highlighted", "");
+
+        // Arrow down to third item
+        await Page.Keyboard.PressAsync("ArrowDown");
+        var thirdItem = content.Locator("[data-summit-select-item][data-value='third']");
+        await Expect(thirdItem).ToHaveAttributeAsync("data-highlighted", "");
+    }
+
+    [Test]
+    public async Task AnimatedSelect_ShouldSelect_OnEnterKey()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[role='combobox']");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // Navigate to second item and select it
+        await Page.Keyboard.PressAsync("ArrowDown");
+        await Page.Keyboard.PressAsync("Enter");
+
+        // Content should close
+        await Expect(content).Not.ToBeVisibleAsync();
+
+        // Trigger should show selected value
+        await Expect(trigger).ToContainTextAsync("Second");
+    }
+
+    [Test]
+    public async Task AnimatedSelect_ShouldClose_OnEscape()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[role='combobox']");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-select-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // Press Escape to close
+        await Page.Keyboard.PressAsync("Escape");
+
+        // Content should close (after animation completes)
+        await Expect(content).Not.ToBeVisibleAsync();
+        await Expect(trigger).ToHaveAttributeAsync("data-state", "closed");
+    }
+
+    #endregion
 }

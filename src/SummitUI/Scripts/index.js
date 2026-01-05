@@ -29,7 +29,9 @@ export {
     registerOutsideClick as floating_registerOutsideClick,
     unregisterOutsideClick as floating_unregisterOutsideClick,
     registerEscapeKey as floating_registerEscapeKey,
-    unregisterEscapeKey as floating_unregisterEscapeKey
+    unregisterEscapeKey as floating_unregisterEscapeKey,
+    waitForAnimationsComplete as floating_waitForAnimationsComplete,
+    cancelAnimationWatcher as floating_cancelAnimationWatcher
 } from './floating.js';
 
 // Accordion exports

@@ -28,6 +28,9 @@ const outsideClickListeners = new Map();
 // Store escape key listeners
 const escapeKeyListeners = new Map();
 
+// Store pending animation watchers for cleanup
+const animationWatchers = new Map();
+
 /**
  * Convert side + align to Floating UI placement string
  * @param {string} side - 'top' | 'right' | 'bottom' | 'left'
@@ -196,12 +199,25 @@ export function updatePosition(instanceId) {
 }
 
 /**
- * Focus an element.
+ * Focus an element with retry mechanism for animated elements.
+ * Elements with CSS animations starting at opacity:0 may reject focus initially.
+ * This retries focus up to 5 times with 20ms delays to allow the animation
+ * to progress past the invisible state.
  * @param {HTMLElement} element - Element to focus
  */
 export function focusElement(element) {
     if (!element) return;
-    element.focus();
+    
+    function tryFocus(attempts) {
+        element.focus();
+        // If focus didn't succeed and we have attempts left, retry
+        if (document.activeElement !== element && attempts > 0) {
+            setTimeout(() => tryFocus(attempts - 1), 20);
+        }
+    }
+    
+    // First attempt after one frame to let CSS apply
+    requestAnimationFrame(() => tryFocus(5));
 }
 
 /**
@@ -321,16 +337,28 @@ export function scrollElementIntoViewById(elementId) {
 }
 
 /**
- * Focus an element by its ID.
+ * Focus an element by its ID with retry mechanism for animated elements.
+ * Elements with CSS animations starting at opacity:0 may reject focus initially.
+ * This retries focus up to 5 times with 20ms delays to allow the animation
+ * to progress past the invisible state.
  * @param {string} elementId - The ID of the element to focus
  */
 export function focusElementById(elementId) {
     if (!elementId) return;
     
     const element = document.getElementById(elementId);
-    if (element) {
+    if (!element) return;
+    
+    function tryFocus(attempts) {
         element.focus();
+        // If focus didn't succeed and we have attempts left, retry
+        if (document.activeElement !== element && attempts > 0) {
+            setTimeout(() => tryFocus(attempts - 1), 20);
+        }
     }
+    
+    // First attempt after one frame to let CSS apply
+    requestAnimationFrame(() => tryFocus(5));
 }
 
 /**
@@ -431,5 +459,68 @@ export function unregisterEscapeKey(listenerId) {
     if (listener) {
         listener.cleanup();
         escapeKeyListeners.delete(listenerId);
+    }
+}
+
+/**
+ * Wait for all animations on an element to complete, then invoke a callback.
+ * If no animations are running, calls back immediately.
+ * This enables animation-aware presence management (hide after animations finish).
+ * @param {HTMLElement} element - The element to watch for animations
+ * @param {object} dotNetCallback - .NET object reference with invokeMethodAsync
+ * @param {string} methodName - Name of the .NET method to call when animations complete
+ */
+export function waitForAnimationsComplete(element, dotNetCallback, methodName) {
+    if (!element) {
+        dotNetCallback.invokeMethodAsync(methodName);
+        return;
+    }
+
+    // Cancel any existing watcher for this element
+    cancelAnimationWatcher(element);
+
+    // Check if getAnimations is supported
+    if (typeof element.getAnimations !== 'function') {
+        dotNetCallback.invokeMethodAsync(methodName);
+        return;
+    }
+
+    // Use requestAnimationFrame to ensure we catch animations that just started
+    const frameId = requestAnimationFrame(() => {
+        const animations = element.getAnimations();
+
+        if (animations.length === 0) {
+            // No animations running, call back immediately
+            animationWatchers.delete(element);
+            dotNetCallback.invokeMethodAsync(methodName);
+            return;
+        }
+
+        // Wait for all animations to complete
+        Promise.allSettled(animations.map(a => a.finished))
+            .then(() => {
+                animationWatchers.delete(element);
+                dotNetCallback.invokeMethodAsync(methodName);
+            });
+    });
+
+    // Store for potential cleanup
+    animationWatchers.set(element, { frameId });
+}
+
+/**
+ * Cancel any pending animation watcher for an element.
+ * Call this when the element is being disposed or state changes again.
+ * @param {HTMLElement} element - The element to cancel watching
+ */
+export function cancelAnimationWatcher(element) {
+    if (!element) return;
+    
+    const watcher = animationWatchers.get(element);
+    if (watcher) {
+        if (watcher.frameId) {
+            cancelAnimationFrame(watcher.frameId);
+        }
+        animationWatchers.delete(element);
     }
 }

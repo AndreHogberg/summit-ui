@@ -1,5 +1,5 @@
 @page "/select"
-@rendermode InteractiveAuto
+@rendermode InteractiveWebAssembly
 
 <h1>Select Component Demo</h1>
 <section>
@@ -388,6 +388,29 @@
     <p style="margin-top: 1rem;">Selected: <strong>@(typeaheadValue ?? "None")</strong></p>
 </section>
 
+<section style="margin-top: 2rem;">
+    <h2>With Animations</h2>
+    <p>Select with CSS open/close animations. Tests that keyboard navigation works with animated content.</p>
+    
+    <SelectRoot TValue="string" @bind-Value="animatedValue">
+        <SelectTrigger TValue="string" class="select-trigger">
+            <SelectValue TValue="string" Placeholder="Select with animation..." />
+            <span class="select-icon">&#9662;</span>
+        </SelectTrigger>
+        <SelectPortal TValue="string">
+            <SelectContent TValue="string" class="select-content animated-content" SideOffset="4">
+                <SelectViewport TValue="string" class="select-viewport">
+                    <SelectItem TValue="string" Value="@("first")" Label="First"><SelectItemText>First Option</SelectItemText></SelectItem>
+                    <SelectItem TValue="string" Value="@("second")" Label="Second"><SelectItemText>Second Option</SelectItemText></SelectItem>
+                    <SelectItem TValue="string" Value="@("third")" Label="Third"><SelectItemText>Third Option</SelectItemText></SelectItem>
+                </SelectViewport>
+            </SelectContent>
+        </SelectPortal>
+    </SelectRoot>
+    
+    <p style="margin-top: 1rem;">Selected: <strong>@(animatedValue ?? "None")</strong></p>
+</section>
+
 @code {
     private string? selectedFruit;
     private string? selectedFood;
@@ -396,6 +419,7 @@
     private string? placement1;
     private string? placement2;
     private string? typeaheadValue;
+    private string? animatedValue;
     private bool showValidation;
 
     // Enum demo

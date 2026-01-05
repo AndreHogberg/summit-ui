@@ -259,6 +259,24 @@
     </DropdownMenuRoot>
 </section>
 
+<section style="margin-top: 2rem;">
+    <h2>With Animations</h2>
+    <p>Dropdown menu with CSS open/close animations. Tests that keyboard navigation works with animated content.</p>
+
+    <DropdownMenuRoot>
+        <DropdownMenuTrigger class="btn btn-primary">
+            Animated Menu
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+            <DropdownMenuContent class="dropdown-menu-content animated-content" SideOffset="4">
+                <DropdownMenuItem class="dropdown-menu-item" TextValue="First">First Option</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item" TextValue="Second">Second Option</DropdownMenuItem>
+                <DropdownMenuItem class="dropdown-menu-item" TextValue="Third">Third Option</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenuPortal>
+    </DropdownMenuRoot>
+</section>
+
 @code {
     private string lastAction = "";
     private bool isControlledOpen = false;

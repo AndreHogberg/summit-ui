@@ -50,6 +50,38 @@ h1:focus {
     border-color: #929292;
 }
 
+/* Animation keyframes for testing animated floating components */
+@keyframes fadeInZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeOutZoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+/* Animated content classes - apply to SelectContent, DropdownMenuContent, PopoverContent */
+.animated-content[data-state="open"] {
+    animation: fadeInZoomIn 150ms ease-out forwards;
+}
+
+.animated-content[data-state="closed"] {
+    animation: fadeOutZoomOut 150ms ease-in forwards;
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
     color: var(--bs-secondary-color);
     text-align: end;

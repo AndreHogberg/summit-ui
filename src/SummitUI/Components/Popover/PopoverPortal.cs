@@ -7,7 +7,7 @@ namespace SummitUI;
 /// Renders children in a fixed-position container to avoid z-index and overflow issues.
 /// Content is visually "portaled" to the top of the stacking context.
 /// </summary>
-public class PopoverPortal : ComponentBase
+public class PopoverPortal : ComponentBase, IDisposable
 {
     [CascadingParameter]
     private PopoverContext Context { get; set; } = default!;
@@ -25,12 +25,26 @@ public class PopoverPortal : ComponentBase
     public string? ContainerId { get; set; }
 
     private ElementReference _containerRef;
+    private bool _isSubscribed;
+    private bool _isDisposed;
 
     private string ActualContainerId => ContainerId ?? $"{Context.PopoverId}-portal";
 
+    protected override void OnInitialized()
+    {
+        // Subscribe to context state changes for animation awareness
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        if (!Context.IsOpen) return;
+        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
 
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", ActualContainerId);
@@ -44,5 +58,16 @@ public class PopoverPortal : ComponentBase
         builder.CloseElement();
 
         builder.CloseElement();
+    }
+
+    public void Dispose()
+    {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
     }
 }

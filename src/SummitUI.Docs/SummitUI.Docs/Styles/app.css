@@ -134,7 +134,7 @@
    ============================================ */
 :root {
   /* New design system tokens (RGB values for opacity support) */
-  --su-primary: 37 99 235;             /* blue-600 */
+  --su-primary: 25 60 184;             /* #193CB8 - blue-800 */
   --su-primary-foreground: 255 255 255; /* white */
   --su-background: 255 255 255;         /* white */
   --su-foreground: 3 7 18;              /* gray-950 */
@@ -147,7 +147,7 @@
   --su-accent-foreground: 30 58 138;    /* blue-900 */
   --su-destructive: 254 202 202;          /* red-200 */
   --su-destructive-foreground: 127 29 29;  /* red-900 */
-  --su-ring: 59 130 246;                /* blue-500 */
+  --su-ring: 25 60 184;                /* #193CB8 - blue-800 */
 
   /* Legacy HSL tokens */
   --background: 0 0% 100%;
@@ -156,7 +156,7 @@
   --card-foreground: 222.2 84% 4.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 84% 4.9%;
-  --primary: 217.2 91.2% 59.8%;         /* blue-500 */
+  --primary: 226.8 76.1% 41%;           /* #193CB8 - blue-800 */
   --primary-foreground: 0 0% 100%;
   --secondary: 210 40% 96.1%;
   --secondary-foreground: 222.2 47.4% 11.2%;
@@ -168,7 +168,7 @@
   --destructive-foreground: 0 63% 31%;     /* red-900 */
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
-  --ring: 217.2 91.2% 59.8%;            /* blue-500 */
+  --ring: 226.8 76.1% 41%;              /* #193CB8 - blue-800 */
   --radius: 0.5rem;
 }
 
@@ -178,8 +178,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* New design system tokens */
-    --su-primary: 96 165 250;           /* blue-400 */
-    --su-primary-foreground: 3 7 18;    /* gray-950 */
+    --su-primary: 25 60 184;           /* #193CB8 - blue-800 */
+    --su-primary-foreground: 255 255 255; /* white */
     --su-background: 3 7 18;            /* gray-950 */
     --su-foreground: 249 250 251;       /* gray-50 */
     --su-muted: 31 41 55;               /* gray-800 */
@@ -191,7 +191,7 @@
     --su-accent-foreground: 219 234 254;/* blue-100 */
     --su-destructive: 127 29 29;           /* red-900 */
     --su-destructive-foreground: 254 226 226; /* red-100 */
-    --su-ring: 96 165 250;              /* blue-400 */
+    --su-ring: 25 60 184;              /* #193CB8 - blue-800 */
 
     /* Legacy HSL tokens */
     --background: 222.2 84% 4.9%;
@@ -200,8 +200,8 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 67.8%;       /* blue-400 */
-    --primary-foreground: 222.2 84% 4.9%;
+    --primary: 226.8 76.1% 41%;         /* #193CB8 - blue-800 */
+    --primary-foreground: 0 0% 100%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -212,7 +212,7 @@
     --destructive-foreground: 0 93% 94%;   /* red-100 */
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 217.2 91.2% 67.8%;          /* blue-400 */
+    --ring: 226.8 76.1% 41%;            /* #193CB8 - blue-800 */
   }
 }
 

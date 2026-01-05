@@ -38,6 +38,19 @@ public class DropdownMenuPortal : ComponentBase, IAsyncDisposable
     private readonly string _portalId = $"summit-dropdown-menu-portal-{Guid.NewGuid():N}";
     private bool _isDisposed;
     private bool _portalCreated;
+    private bool _isSubscribed;
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to context state changes for animation awareness
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -59,7 +72,7 @@ public class DropdownMenuPortal : ComponentBase, IAsyncDisposable
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        if (!Context.IsOpen) return;
+        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
 
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", _portalId);
@@ -73,6 +86,11 @@ public class DropdownMenuPortal : ComponentBase, IAsyncDisposable
     {
         if (_isDisposed) return;
         _isDisposed = true;
+
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
 
         if (!_portalCreated) return;
 

@@ -166,7 +166,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
             methodName);
     }
 
-    /// <summary>
+/// <summary>
     /// Unregister an Escape key listener.
     /// </summary>
     /// <param name="listenerId">The listener ID returned from RegisterEscapeKeyAsync.</param>
@@ -176,6 +176,49 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_unregisterEscapeKey", listenerId);
+    }
+
+    /// <summary>
+    /// Wait for all CSS animations on an element to complete, then invoke a callback.
+    /// If no animations are running, the callback is invoked immediately.
+    /// This enables animation-aware presence management.
+    /// </summary>
+    /// <typeparam name="T">The type containing the callback method.</typeparam>
+    /// <param name="element">The element to watch for animations.</param>
+    /// <param name="callbackTarget">The object reference that contains the callback method.</param>
+    /// <param name="methodName">The name of the method to invoke when animations complete.</param>
+    public async ValueTask WaitForAnimationsCompleteAsync<T>(
+        ElementReference element,
+        DotNetObjectReference<T> callbackTarget,
+        string methodName) where T : class
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("floating_waitForAnimationsComplete", element, callbackTarget, methodName);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+    }
+
+    /// <summary>
+    /// Cancel any pending animation watcher for an element.
+    /// Call this when disposing or when state changes before animations complete.
+    /// </summary>
+    /// <param name="element">The element to cancel watching.</param>
+    public async ValueTask CancelAnimationWatcherAsync(ElementReference element)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("floating_cancelAnimationWatcher", element);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
     }
 
     /// <summary>

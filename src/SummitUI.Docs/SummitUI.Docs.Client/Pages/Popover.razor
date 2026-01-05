@@ -26,7 +26,7 @@
                     Click me
                 </PopoverTrigger>
                 <PopoverPortal>
-                    <PopoverContent class="demo-popover-content" SideOffset="8">
+                    <PopoverContent class="demo-popover-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="8">
                         <div class="flex flex-col gap-3">
                             <h3 class="font-medium text-su-foreground">Popover Title</h3>
                             <p class="text-sm text-su-muted-foreground">This is a simple popover with some content. Click outside or press Escape to close.</p>
@@ -293,10 +293,6 @@
         box-shadow: 0 4px 12px rgb(var(--su-foreground) / 0.15);
         padding: 1rem;
         z-index: 50;
-    }
-    
-    .demo-popover-content[data-state="closed"] {
-        display: none;
     }
     
     .demo-popover-close {

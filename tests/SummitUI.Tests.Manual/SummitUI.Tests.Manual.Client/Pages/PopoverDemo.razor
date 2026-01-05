@@ -122,6 +122,27 @@
     </PopoverRoot>
 </section>
 
+<section style="margin-top: 2rem;">
+    <h2>With Animations</h2>
+    <p>Popover with CSS open/close animations. Tests that focus management works with animated content.</p>
+
+    <PopoverRoot>
+        <PopoverTrigger class="btn btn-primary">
+            Animated Popover
+        </PopoverTrigger>
+        <PopoverPortal>
+            <PopoverContent class="popover-content animated-content" SideOffset="8">
+                <div class="popover-panel">
+                    <h3>Animated Popover</h3>
+                    <p>This popover has CSS animations on open and close.</p>
+                    <input type="text" class="form-control" placeholder="Focus should land here..." style="margin-bottom: 0.5rem;" />
+                    <PopoverClose class="btn btn-secondary btn-sm">Close</PopoverClose>
+                </div>
+            </PopoverContent>
+        </PopoverPortal>
+    </PopoverRoot>
+</section>
+
 @code {
     private bool isControlledOpen = false;
 }

@@ -699,4 +699,84 @@ public class DropdownMenuAccessibilityTests : PageTest
     }
 
     #endregion
+
+    #region Animated Content
+
+    [Test]
+    public async Task AnimatedMenu_ShouldOpen_OnEnterKey()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-dropdown-menu-trigger]");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+        await Expect(content).ToHaveAttributeAsync("data-state", "open");
+    }
+
+    [Test]
+    public async Task AnimatedMenu_ShouldNavigate_WithArrowKeys()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-dropdown-menu-trigger]");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // First item should be focused on open
+        var firstItem = content.Locator("[data-summit-dropdown-menu-item]").First;
+        await Expect(firstItem).ToBeFocusedAsync();
+
+        // Arrow down to second item
+        await Page.Keyboard.PressAsync("ArrowDown");
+        var secondItem = content.Locator("[data-summit-dropdown-menu-item]").Nth(1);
+        await Expect(secondItem).ToBeFocusedAsync();
+
+        // Arrow down to third item
+        await Page.Keyboard.PressAsync("ArrowDown");
+        var thirdItem = content.Locator("[data-summit-dropdown-menu-item]").Nth(2);
+        await Expect(thirdItem).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task AnimatedMenu_ShouldActivateItem_OnEnterKey()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-dropdown-menu-trigger]");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // Select first item with Enter
+        await Page.Keyboard.PressAsync("Enter");
+
+        // Menu should close after selection
+        await Expect(content).Not.ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task AnimatedMenu_ShouldClose_OnEscape()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-dropdown-menu-trigger]");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("[data-summit-dropdown-menu-content]").First;
+        await Expect(content).ToBeVisibleAsync();
+
+        // Press Escape to close
+        await Page.Keyboard.PressAsync("Escape");
+
+        // Content should close (after animation completes)
+        await Expect(content).Not.ToBeVisibleAsync();
+        await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
+    }
+
+    #endregion
 }

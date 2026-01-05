@@ -369,4 +369,75 @@ public class PopoverAccessibilityTests : PageTest
     }
 
     #endregion
+
+    #region Animated Content
+
+    [Test]
+    public async Task AnimatedPopover_ShouldOpen_OnEnterKey()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-trigger]");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-content]");
+        await Expect(content).ToBeVisibleAsync();
+        await Expect(content).ToHaveAttributeAsync("data-state", "open");
+    }
+
+    [Test]
+    public async Task AnimatedPopover_ShouldFocusContent_AfterOpen()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-trigger]");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-content]");
+        await Expect(content).ToBeVisibleAsync();
+
+        // The input inside the popover should be focusable
+        var input = content.Locator("input");
+        await input.FocusAsync();
+        await Expect(input).ToBeFocusedAsync();
+    }
+
+    [Test]
+    public async Task AnimatedPopover_ShouldClose_OnEscape()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-trigger]");
+        await trigger.FocusAsync();
+        await Page.Keyboard.PressAsync("Enter");
+
+        var content = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-content]");
+        await Expect(content).ToBeVisibleAsync();
+
+        // Press Escape to close
+        await Page.Keyboard.PressAsync("Escape");
+
+        // Content should close (after animation completes)
+        await Expect(content).Not.ToBeVisibleAsync();
+        await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
+    }
+
+    [Test]
+    public async Task AnimatedPopover_ShouldClose_OnCloseButtonClick()
+    {
+        // Navigate to "With Animations" section
+        var trigger = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-trigger]");
+        await trigger.ClickAsync();
+
+        var content = Page.Locator("section").Filter(new() { HasText = "With Animations" }).Locator("[data-summit-popover-content]");
+        await Expect(content).ToBeVisibleAsync();
+
+        // Click the close button
+        var closeButton = content.Locator("[data-summit-popover-close]");
+        await closeButton.ClickAsync();
+
+        // Content should close (after animation completes)
+        await Expect(content).Not.ToBeVisibleAsync();
+    }
+
+    #endregion
 }

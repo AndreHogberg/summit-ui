@@ -98,7 +98,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private ElementReference _elementRef;
+private ElementReference _elementRef;
     private DotNetObjectReference<SelectContent<TValue>>? _dotNetRef;
     private string? _floatingInstanceId;
     private string? _outsideClickListenerId;
@@ -106,6 +106,8 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
     private bool _isPositioned;
     private bool _isDisposed;
     private bool _isSubscribed;
+    private bool _wasOpen;
+    private bool _animationWatcherRegistered;
 
     // Typeahead state
     private string _typeaheadBuffer = "";
@@ -133,10 +135,21 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
         await InvokeAsync(StateHasChanged);
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!RendererInfo.IsInteractive) return;
+        
         if (Context.IsOpen && !_isPositioned)
         {
+            // Cancel any pending animation watcher if reopening
+            if (Context.IsAnimatingClosed)
+            {
+                await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+                Context.IsAnimatingClosed = false;
+                _isPositioned = false; // Reset so we reinitialize positioning and focus
+            }
+            _animationWatcherRegistered = false; // Reset for next close cycle
+
             Context.RegisterContent(_elementRef);
             _dotNetRef ??= DotNetObjectReference.Create(this);
 
@@ -195,19 +208,25 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
                 await HighlightFirstItemAsync();
             }
         }
-        else if (!Context.IsOpen && _isPositioned)
+        else if (!Context.IsOpen && _wasOpen && !_animationWatcherRegistered)
         {
-            await CleanupAsync();
-            // Note: Focus return to trigger is handled in the close handlers
-            // (HandleEscapeKey, SelectHighlightedItemAsync, HandleKeyDownAsync Tab)
-            // before Context.CloseAsync() is called, because the component
-            // may be unmounted before OnAfterRenderAsync runs.
+            // Start waiting for close animations to complete
+            // Note: Context.IsAnimatingClosed is already set by Root.CloseAsync
+            _animationWatcherRegistered = true;
+            _dotNetRef ??= DotNetObjectReference.Create(this);
+            await FloatingInterop.WaitForAnimationsCompleteAsync(
+                _elementRef, 
+                _dotNetRef, 
+                nameof(OnCloseAnimationsComplete));
         }
+
+        _wasOpen = Context.IsOpen;
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        if (!Context.IsOpen) return;
+        // Keep element in DOM during close animation so CSS animate-out classes can run
+        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
 
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "role", "listbox");
@@ -308,7 +327,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
         }
     }
 
-    /// <summary>
+/// <summary>
     /// Called from JavaScript when Escape key is pressed.
     /// </summary>
     [JSInvokable]
@@ -323,6 +342,31 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
             // Root.CloseAsync will focus the trigger before closing
             await Context.CloseAsync();
         }
+    }
+
+    /// <summary>
+    /// Called from JavaScript when all close animations have completed.
+    /// </summary>
+    [JSInvokable]
+    public async Task OnCloseAnimationsComplete()
+    {
+        if (_isDisposed) return;
+
+        Context.IsAnimatingClosed = false;
+
+        // Only cleanup if still in closed state (user might have reopened during animation)
+        if (!Context.IsOpen)
+        {
+            await CleanupAsync();
+            // Note: Focus return to trigger is handled in the close handlers
+            // (HandleEscapeKey, SelectHighlightedItemAsync, HandleKeyDownAsync Tab)
+            // before Context.CloseAsync() is called, because the component
+            // may be unmounted before OnAfterRenderAsync runs.
+        }
+
+        // Notify Portal and trigger re-render to remove element from DOM
+        Context.RaiseStateChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
     /// <summary>
@@ -598,10 +642,17 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
         _typeaheadTimer = null;
     }
 
-    public async ValueTask DisposeAsync()
+public async ValueTask DisposeAsync()
     {
         if (_isDisposed) return;
         _isDisposed = true;
+
+        // Cancel any pending animation watcher
+        if (Context.IsAnimatingClosed)
+        {
+            await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+            Context.IsAnimatingClosed = false;
+        }
 
         // Unsubscribe from context events
         if (_isSubscribed)

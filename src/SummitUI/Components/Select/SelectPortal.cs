@@ -45,7 +45,7 @@ public class SelectPortal<TValue> : ComponentBase, IDisposable where TValue : no
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        if (!Context.IsOpen) return;
+        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
 
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", ActualContainerId);

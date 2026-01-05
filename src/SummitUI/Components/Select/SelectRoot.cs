@@ -246,6 +246,7 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
         }
 
         _context.IsOpen = false;
+        _context.IsAnimatingClosed = true; // Set BEFORE StateHasChanged so Portal stays rendered
         _context.HighlightedKey = null;
         await OpenChanged.InvokeAsync(false);
         StateHasChanged();

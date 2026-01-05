@@ -137,10 +137,12 @@ public class DropdownMenuRoot : ComponentBase, IAsyncDisposable
         }
 
         _context.IsOpen = false;
+        _context.IsAnimatingClosed = true; // Set BEFORE StateHasChanged so Portal stays rendered
         _context.HighlightedItemId = null;
         await OpenChanged.InvokeAsync(false);
         await OnClose.InvokeAsync();
         StateHasChanged();
+        _context.RaiseStateChanged();
     }
 
     private async Task SelectItemAsync()

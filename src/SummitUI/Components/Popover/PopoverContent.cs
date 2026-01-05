@@ -113,18 +113,23 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private ElementReference _elementRef;
+private ElementReference _elementRef;
     private DotNetObjectReference<PopoverContent>? _dotNetRef;
     private string? _floatingInstanceId;
     private string? _outsideClickListenerId;
     private string? _escapeKeyListenerId;
     private bool _isPositioned;
     private bool _isDisposed;
+    private bool _wasOpen;
+    private bool _animationWatcherRegistered;
 
     private string DataState => Context.IsOpen ? "open" : "closed";
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
+        // Only render when open or during close animation so CSS animate-out classes can run
+        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
+
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "id", Context.PopoverId);
         builder.AddAttribute(2, "role", "dialog");
@@ -136,7 +141,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         builder.AddAttribute(8, "tabindex", "-1");
         // Use visibility: hidden initially to prevent flash in top-left corner before JS positioning
         // JS will set visibility: visible after first position calculation
-        builder.AddAttribute(9, "style", "position: absolute; top: 0; left: 0; visibility: hidden;");
+        builder.AddAttribute(9, "style", "position: absolute; visibility: hidden;");
         builder.AddMultipleAttributes(10, AdditionalAttributes);
         builder.AddElementReferenceCapture(11, (elementRef) => { _elementRef = elementRef; });
         
@@ -158,10 +163,21 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         builder.CloseElement();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (Context.IsOpen && !_isPositioned)
+        if (!RendererInfo.IsInteractive) return;
+        
+    if (Context.IsOpen && !_isPositioned)
         {
+            // Cancel any pending animation watcher if reopening
+            if (Context.IsAnimatingClosed)
+            {
+                await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+                Context.IsAnimatingClosed = false;
+                _isPositioned = false; // Reset so we reinitialize positioning and focus
+            }
+            _animationWatcherRegistered = false; // Reset for next close cycle
+
             Context.RegisterContent(_elementRef);
             _dotNetRef ??= DotNetObjectReference.Create(this);
 
@@ -210,15 +226,19 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
             
             await OnOpenAutoFocus.InvokeAsync();
         }
-        else if (!Context.IsOpen && _isPositioned)
+        else if (!Context.IsOpen && _wasOpen && !_animationWatcherRegistered)
         {
-            await CleanupAsync();
-            
-            // Return focus to trigger
-            await FloatingInterop.FocusElementAsync(Context.TriggerElement);
-            
-            await OnCloseAutoFocus.InvokeAsync();
+            // Start waiting for close animations to complete
+            // Note: Context.IsAnimatingClosed is already set by Root.CloseAsync
+            _animationWatcherRegistered = true;
+            _dotNetRef ??= DotNetObjectReference.Create(this);
+            await FloatingInterop.WaitForAnimationsCompleteAsync(
+                _elementRef, 
+                _dotNetRef, 
+                nameof(OnCloseAnimationsComplete));
         }
+
+        _wasOpen = Context.IsOpen;
     }
 
     private async Task CleanupAsync()
@@ -260,7 +280,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         }
     }
 
-    /// <summary>
+/// <summary>
     /// Called from JavaScript when an outside click is detected.
     /// </summary>
     [JSInvokable]
@@ -292,10 +312,43 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         }
     }
 
-    public async ValueTask DisposeAsync()
+    /// <summary>
+    /// Called from JavaScript when all close animations have completed.
+    /// </summary>
+    [JSInvokable]
+    public async Task OnCloseAnimationsComplete()
+    {
+        if (_isDisposed) return;
+
+        Context.IsAnimatingClosed = false;
+
+        // Only cleanup if still in closed state (user might have reopened during animation)
+        if (!Context.IsOpen)
+        {
+            await CleanupAsync();
+            
+            // Return focus to trigger
+            await FloatingInterop.FocusElementAsync(Context.TriggerElement);
+            
+            await OnCloseAutoFocus.InvokeAsync();
+        }
+
+        Context.RaiseStateChanged();
+        // Trigger re-render to remove element from DOM now that animation is complete
+        await InvokeAsync(StateHasChanged);
+    }
+
+public async ValueTask DisposeAsync()
     {
         if (_isDisposed) return;
         _isDisposed = true;
+
+        // Cancel any pending animation watcher
+        if (Context.IsAnimatingClosed)
+        {
+            await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+            Context.IsAnimatingClosed = false;
+        }
 
         await CleanupAsync();
         _dotNetRef?.Dispose();

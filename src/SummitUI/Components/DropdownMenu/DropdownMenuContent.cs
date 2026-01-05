@@ -120,13 +120,15 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private ElementReference _elementRef;
+private ElementReference _elementRef;
     private DotNetObjectReference<DropdownMenuContent>? _dotNetRef;
     private string? _floatingInstanceId;
     private string? _outsideClickListenerId;
     private string? _escapeKeyListenerId;
     private bool _isPositioned;
     private bool _isDisposed;
+    private bool _wasOpen;
+    private bool _animationWatcherRegistered;
 
     // Typeahead state
     private string _typeaheadBuffer = "";
@@ -146,13 +148,22 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
         Context.FocusTriggerAsync = FocusTriggerAsync;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_isDisposed) return;
         if (!RendererInfo.IsInteractive) return;
 
         if (Context.IsOpen && !_isPositioned && !_isDisposed)
         {
+            // Cancel any pending animation watcher if reopening
+            if (Context.IsAnimatingClosed)
+            {
+                await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+                Context.IsAnimatingClosed = false;
+                _isPositioned = false; // Reset so we reinitialize positioning and focus
+            }
+            _animationWatcherRegistered = false; // Reset for next close cycle
+
             Context.RegisterContent(_elementRef);
             Context.HandleKeyDownAsync = HandleKeyFromItemAsync;
             _dotNetRef ??= DotNetObjectReference.Create(this);
@@ -207,20 +218,25 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
             
             await OnOpenAutoFocus.InvokeAsync();
         }
-        else if (!Context.IsOpen && _isPositioned)
+        else if (!Context.IsOpen && _wasOpen && !_animationWatcherRegistered)
         {
-            await CleanupAsync();
-            // Note: Focus return to trigger is handled in the close handlers
-            // (HandleEscapeKey, HandleKeyFromItemAsync Tab) before Context.CloseAsync()
-            // is called, because the component may be unmounted before OnAfterRenderAsync runs.
-            
-            await OnCloseAutoFocus.InvokeAsync();
+            // Start waiting for close animations to complete
+            // Note: Context.IsAnimatingClosed is already set by Root.CloseAsync
+            _animationWatcherRegistered = true;
+            _dotNetRef ??= DotNetObjectReference.Create(this);
+            await FloatingInterop.WaitForAnimationsCompleteAsync(
+                _elementRef, 
+                _dotNetRef, 
+                nameof(OnCloseAnimationsComplete));
         }
+
+        _wasOpen = Context.IsOpen;
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        if (!Context.IsOpen && !ForceMount) return;
+        // Keep element in DOM during close animation so CSS animate-out classes can run
+        if (!Context.IsOpen && !ForceMount && !Context.IsAnimatingClosed) return;
 
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "id", Context.MenuId);
@@ -235,7 +251,7 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
         builder.AddAttribute(10, "tabindex", "-1");
         // Use visibility: hidden initially to prevent flash in top-left corner before JS positioning
         // JS will set visibility: visible after first position calculation
-        builder.AddAttribute(11, "style", "position: absolute; top: 0; left: 0; outline: none; visibility: hidden;");
+        builder.AddAttribute(11, "style", "position: absolute; outline: none; visibility: hidden;");
         builder.AddMultipleAttributes(12, AdditionalAttributes);
         builder.AddAttribute(13, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
         builder.AddEventPreventDefaultAttribute(14, "onkeydown", true);
@@ -319,7 +335,7 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
         }
     }
 
-    /// <summary>
+/// <summary>
     /// Called from JavaScript when Escape key is pressed.
     /// </summary>
     [JSInvokable]
@@ -334,6 +350,32 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
             // Root.CloseAsync will focus the trigger before closing
             await Context.CloseAsync();
         }
+    }
+
+    /// <summary>
+    /// Called from JavaScript when all close animations have completed.
+    /// </summary>
+    [JSInvokable]
+    public async Task OnCloseAnimationsComplete()
+    {
+        if (_isDisposed) return;
+
+        Context.IsAnimatingClosed = false;
+
+        // Only cleanup if still in closed state (user might have reopened during animation)
+        if (!Context.IsOpen)
+        {
+            await CleanupAsync();
+            // Note: Focus return to trigger is handled in the close handlers
+            // (HandleEscapeKey, HandleKeyFromItemAsync Tab) before Context.CloseAsync()
+            // is called, because the component may be unmounted before OnAfterRenderAsync runs.
+            
+            await OnCloseAutoFocus.InvokeAsync();
+        }
+
+        Context.RaiseStateChanged();
+        // Trigger re-render to remove element from DOM now that animation is complete
+        await InvokeAsync(StateHasChanged);
     }
 
     /// <summary>
@@ -555,10 +597,17 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
         _typeaheadTimer = null;
     }
 
-    public async ValueTask DisposeAsync()
+public async ValueTask DisposeAsync()
     {
         if (_isDisposed) return;
         _isDisposed = true;
+
+        // Cancel any pending animation watcher
+        if (Context.IsAnimatingClosed)
+        {
+            await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
+            Context.IsAnimatingClosed = false;
+        }
 
         ClearTypeahead();
         await CleanupAsync();

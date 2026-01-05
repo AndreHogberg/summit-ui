@@ -19,6 +19,11 @@ public sealed class DropdownMenuContext
     public bool IsOpen { get; internal set; }
 
     /// <summary>
+    /// True while close animation is in progress. Portal should stay rendered.
+    /// </summary>
+    public bool IsAnimatingClosed { get; set; }
+
+    /// <summary>
     /// The ID of the currently highlighted item (for keyboard navigation).
     /// </summary>
     public string? HighlightedItemId { get; internal set; }

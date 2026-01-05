@@ -60,6 +60,11 @@ public sealed class SelectContext<TValue> where TValue : notnull
     }
 
     /// <summary>
+    /// True while close animation is in progress. Portal should stay rendered.
+    /// </summary>
+    public bool IsAnimatingClosed { get; set; }
+
+    /// <summary>
     /// Whether the select is disabled.
     /// </summary>
     public bool Disabled { get; internal set; }

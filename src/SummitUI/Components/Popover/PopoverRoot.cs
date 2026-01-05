@@ -129,9 +129,11 @@ public class PopoverRoot : ComponentBase, IAsyncDisposable
         }
 
         _context.IsOpen = false;
+        _context.IsAnimatingClosed = true; // Set BEFORE StateHasChanged so Portal stays rendered
         await OpenChanged.InvokeAsync(false);
         await OnClose.InvokeAsync();
         StateHasChanged();
+        _context.RaiseStateChanged();
     }
 
     private void RegisterTrigger(ElementReference element)

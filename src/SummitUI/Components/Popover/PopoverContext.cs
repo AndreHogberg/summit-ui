@@ -19,6 +19,11 @@ public sealed class PopoverContext
     public bool IsOpen { get; internal set; }
 
     /// <summary>
+    /// True while close animation is in progress. Portal should stay rendered.
+    /// </summary>
+    public bool IsAnimatingClosed { get; set; }
+
+    /// <summary>
     /// Reference to the trigger element (set by PopoverTrigger).
     /// </summary>
     public ElementReference TriggerElement { get; internal set; }
@@ -57,6 +62,20 @@ public sealed class PopoverContext
     /// Callback to notify state changes for re-rendering.
     /// </summary>
     public Action NotifyStateChanged { get; internal set; } = () => { };
+
+    /// <summary>
+    /// Event raised when the context state changes.
+    /// Child components can subscribe to this to trigger re-renders.
+    /// </summary>
+    public event Action? OnStateChanged;
+
+    /// <summary>
+    /// Raises the OnStateChanged event to notify all subscribers.
+    /// </summary>
+    internal void RaiseStateChanged()
+    {
+        OnStateChanged?.Invoke();
+    }
 
     public PopoverContext()
     {
