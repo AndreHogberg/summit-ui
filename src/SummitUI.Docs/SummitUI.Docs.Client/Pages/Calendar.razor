@@ -25,7 +25,7 @@
         <SuCard class="animate-fade-in-up animate-duration-500 animate-delay-100">
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
-                    <CalendarRoot @bind-Value="_selectedDate" class="calendar-demo" Context="calendarContext">
+                    <CalendarRoot FixedWeeks="true" @bind-Value="_selectedDate" class="calendar-demo" Context="calendarContext">
                         <CalendarHeader class="flex items-center justify-between mb-4">
                             <CalendarPrevButton class="calendar-nav-btn" />
                             <CalendarHeading class="text-sm font-semibold" />

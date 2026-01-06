@@ -371,13 +371,15 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
 
     #endregion
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
         _context.OnStateChanged -= StateHasChanged;
 
-        if (_localeInitialized)
-        {
-            await JsInterop.DisposeAsync();
-        }
+        // Note: Do NOT dispose JsInterop here.
+        // CalendarJsInterop is a scoped service managed by DI.
+        // In WebAssembly, scoped services are effectively singletons,
+        // so disposing it here would break the calendar when navigating back.
+
+        return ValueTask.CompletedTask;
     }
 }

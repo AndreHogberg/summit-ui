@@ -103,7 +103,11 @@ public sealed class CalendarJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
             }
             catch (JSDisconnectedException)
             {
-                // Ignored
+                // Ignored - Blazor Server circuit disconnected
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignored - JS object reference already disposed (WebAssembly)
             }
         }
     }
@@ -122,7 +126,11 @@ public sealed class CalendarJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
             }
             catch (JSDisconnectedException)
             {
-                // Ignored
+                // Ignored - Blazor Server circuit disconnected
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignored - JS object reference already disposed (WebAssembly)
             }
         }
     }
@@ -138,7 +146,11 @@ public sealed class CalendarJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
             }
             catch (JSDisconnectedException)
             {
-                // Ignored
+                // Ignored - Blazor Server circuit disconnected
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignored - JS object reference already disposed (WebAssembly)
             }
         }
     }
