@@ -24,6 +24,11 @@ public sealed class PopoverContext
     public bool IsAnimatingClosed { get; set; }
 
     /// <summary>
+    /// Whether the popover is modal (traps focus when open).
+    /// </summary>
+    public bool Modal { get; internal set; }
+
+    /// <summary>
     /// Reference to the trigger element (set by PopoverTrigger).
     /// </summary>
     public ElementReference TriggerElement { get; internal set; }

@@ -1,0 +1,114 @@
+@page "/tests/switch/form"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Switch Form Tests</h1>
+    
+    <!-- Form Integration -->
+    <div class="test-section" data-testid="form-section">
+        <h2>Form Submission</h2>
+        <form @onsubmit="HandleSubmit" class="d-flex flex-column gap-3" style="max-width: 300px;">
+            <div class="d-flex align-items-center justify-content-between">
+                <label for="notifications">Notifications</label>
+                <SwitchRoot Name="notifications" @bind-Checked="_notifications" id="notifications" class="switch-root" data-testid="notifications-switch">
+                    <SwitchThumb class="switch-thumb" />
+                </SwitchRoot>
+            </div>
+            
+            <div class="d-flex align-items-center justify-content-between">
+                <label for="marketing">Marketing Emails</label>
+                <SwitchRoot Name="marketing" Value="yes" @bind-Checked="_marketing" id="marketing" class="switch-root" data-testid="marketing-switch">
+                    <SwitchThumb class="switch-thumb" />
+                </SwitchRoot>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        
+        @if (_lastSubmitData != null)
+        {
+            <div class="mt-3 alert alert-info">
+                <pre>@_lastSubmitData</pre>
+            </div>
+        }
+    </div>
+    
+    <!-- Required Switch -->
+    <div class="test-section" data-testid="required-section">
+        <h2>Required Switch</h2>
+        <form class="d-flex flex-column gap-3" style="max-width: 300px;">
+            <div class="d-flex align-items-center justify-content-between">
+                <label for="required-switch">Accept Terms</label>
+                <SwitchRoot Name="terms" Required="true" @bind-Checked="_required" id="required-switch" class="switch-root" data-testid="required-switch">
+                    <SwitchThumb class="switch-thumb" />
+                </SwitchRoot>
+            </div>
+        </form>
+    </div>
+</div>
+}
+
+<style>
+    .switch-root {
+        all: unset;
+        display: inline-flex;
+        width: 42px;
+        height: 25px;
+        background-color: #e4e4e7;
+        border-radius: 9999px;
+        position: relative;
+        box-shadow: 0 2px 10px var(--black-a7);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        cursor: pointer;
+    }
+
+    .switch-root:focus-visible {
+        box-shadow: 0 0 0 2px black;
+    }
+
+    .switch-root[data-state='checked'] {
+        background-color: #000;
+    }
+
+    .switch-thumb {
+        display: block;
+        width: 21px;
+        height: 21px;
+        background-color: white;
+        border-radius: 9999px;
+        box-shadow: 0 2px 2px var(--black-a7);
+        transition: transform 100ms;
+        transform: translateX(2px);
+        will-change: transform;
+        margin-top: 2px;
+    }
+
+    .switch-root[data-state='checked'] .switch-thumb {
+        transform: translateX(19px);
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+</style>
+
+@code {
+    private bool _notifications;
+    private bool _marketing;
+    private bool _required;
+    private string? _lastSubmitData;
+
+    private void HandleSubmit()
+    {
+        _lastSubmitData = $"Notifications: {_notifications}, Marketing: {_marketing}";
+    }
+}

@@ -1,0 +1,103 @@
+@page "/tests/tabs/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Tabs Basic Tests</h1>
+    
+    <!-- Basic Tabs for ARIA, selection, focus, content visibility tests -->
+    <div class="test-section" data-testid="basic-section">
+        <h2>Basic Tabs</h2>
+        <TabsRoot DefaultValue="account">
+            <TabsList class="tabs-list" data-testid="basic-tabs-list">
+                <TabsTrigger Value="account" class="tabs-trigger" data-testid="trigger-account">Account</TabsTrigger>
+                <TabsTrigger Value="password" class="tabs-trigger" data-testid="trigger-password">Password</TabsTrigger>
+                <TabsTrigger Value="settings" Disabled="true" class="tabs-trigger" data-testid="trigger-settings">Settings</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="account" data-testid="content-account">
+                Account settings content
+            </TabsContent>
+            <TabsContent Value="password" data-testid="content-password">
+                Password settings content
+            </TabsContent>
+            <TabsContent Value="settings" data-testid="content-settings">
+                Settings content
+            </TabsContent>
+        </TabsRoot>
+    </div>
+    
+    <!-- Controlled Mode -->
+    <div class="test-section" data-testid="controlled-section">
+        <h2>Controlled Mode</h2>
+        <div class="d-flex flex-column gap-3">
+            <TabsRoot @bind-Value="_controlledValue">
+                <TabsList>
+                    <TabsTrigger Value="tab1" data-testid="controlled-trigger-1">Tab 1</TabsTrigger>
+                    <TabsTrigger Value="tab2" data-testid="controlled-trigger-2">Tab 2</TabsTrigger>
+                    <TabsTrigger Value="tab3" data-testid="controlled-trigger-3">Tab 3</TabsTrigger>
+                </TabsList>
+                <TabsContent Value="tab1" data-testid="controlled-content-1">
+                    Tab 1 content
+                </TabsContent>
+                <TabsContent Value="tab2" data-testid="controlled-content-2">
+                    Tab 2 content
+                </TabsContent>
+                <TabsContent Value="tab3" data-testid="controlled-content-3">
+                    Tab 3 content
+                </TabsContent>
+            </TabsRoot>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-secondary" @onclick='() => _controlledValue = "tab1"' data-testid="set-tab1">
+                    Set Tab 1
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick='() => _controlledValue = "tab2"' data-testid="set-tab2">
+                    Set Tab 2
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick='() => _controlledValue = "tab3"' data-testid="set-tab3">
+                    Set Tab 3
+                </button>
+                <span data-testid="controlled-value">Current: @_controlledValue</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Multiple Tabs for ID Uniqueness Test -->
+    <div class="test-section" data-testid="multiple-section">
+        <h2>Multiple Tabs (ID Uniqueness)</h2>
+        <TabsRoot DefaultValue="first">
+            <TabsList>
+                <TabsTrigger Value="first">First</TabsTrigger>
+                <TabsTrigger Value="second">Second</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="first">First content</TabsContent>
+            <TabsContent Value="second">Second content</TabsContent>
+        </TabsRoot>
+        <TabsRoot DefaultValue="alpha">
+            <TabsList>
+                <TabsTrigger Value="alpha">Alpha</TabsTrigger>
+                <TabsTrigger Value="beta">Beta</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="alpha">Alpha content</TabsContent>
+            <TabsContent Value="beta">Beta content</TabsContent>
+        </TabsRoot>
+    </div>
+</div>
+}
+
+<style>
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+</style>
+
+@code {
+    private string? _controlledValue = "tab1";
+}

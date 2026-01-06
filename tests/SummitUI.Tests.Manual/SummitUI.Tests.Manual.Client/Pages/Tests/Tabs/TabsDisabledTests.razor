@@ -1,0 +1,133 @@
+@page "/tests/tabs/disabled"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Tabs Disabled Tests</h1>
+    
+    <!-- Tabs with disabled items -->
+    <div class="test-section" data-testid="disabled-section">
+        <h2>Tabs with Disabled Tab</h2>
+        <TabsRoot DefaultValue="account">
+            <TabsList class="tabs-list" data-testid="disabled-tabs-list">
+                <TabsTrigger Value="account" class="tabs-trigger" data-testid="trigger-account">Account</TabsTrigger>
+                <TabsTrigger Value="password" class="tabs-trigger" data-testid="trigger-password">Password</TabsTrigger>
+                <TabsTrigger Value="settings" Disabled="true" class="tabs-trigger" data-testid="trigger-settings">Settings (Disabled)</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="account" class="tabs-content" data-testid="content-account">
+                Account settings content
+            </TabsContent>
+            <TabsContent Value="password" class="tabs-content" data-testid="content-password">
+                Password settings content
+            </TabsContent>
+            <TabsContent Value="settings" class="tabs-content" data-testid="content-settings">
+                Settings content (should not be visible)
+            </TabsContent>
+        </TabsRoot>
+    </div>
+    
+    <!-- Multiple disabled tabs -->
+    <div class="test-section" data-testid="multiple-disabled-section">
+        <h2>Multiple Disabled Tabs</h2>
+        <TabsRoot DefaultValue="tab2">
+            <TabsList class="tabs-list" data-testid="multiple-disabled-tabs-list">
+                <TabsTrigger Value="tab1" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-1">Tab 1 (Disabled)</TabsTrigger>
+                <TabsTrigger Value="tab2" class="tabs-trigger" data-testid="multi-trigger-2">Tab 2</TabsTrigger>
+                <TabsTrigger Value="tab3" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-3">Tab 3 (Disabled)</TabsTrigger>
+                <TabsTrigger Value="tab4" class="tabs-trigger" data-testid="multi-trigger-4">Tab 4</TabsTrigger>
+                <TabsTrigger Value="tab5" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-5">Tab 5 (Disabled)</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="tab1" class="tabs-content">Tab 1 content</TabsContent>
+            <TabsContent Value="tab2" class="tabs-content" data-testid="multi-content-2">Tab 2 content</TabsContent>
+            <TabsContent Value="tab3" class="tabs-content">Tab 3 content</TabsContent>
+            <TabsContent Value="tab4" class="tabs-content" data-testid="multi-content-4">Tab 4 content</TabsContent>
+            <TabsContent Value="tab5" class="tabs-content">Tab 5 content</TabsContent>
+        </TabsRoot>
+    </div>
+    
+    <!-- Dynamic disabled state -->
+    <div class="test-section" data-testid="dynamic-disabled-section">
+        <h2>Dynamic Disabled State</h2>
+        <TabsRoot DefaultValue="first">
+            <TabsList class="tabs-list">
+                <TabsTrigger Value="first" class="tabs-trigger" data-testid="dynamic-trigger-first">First</TabsTrigger>
+                <TabsTrigger Value="second" Disabled="_secondDisabled" class="tabs-trigger" data-testid="dynamic-trigger-second">Second</TabsTrigger>
+                <TabsTrigger Value="third" class="tabs-trigger" data-testid="dynamic-trigger-third">Third</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="first" class="tabs-content">First content</TabsContent>
+            <TabsContent Value="second" class="tabs-content">Second content</TabsContent>
+            <TabsContent Value="third" class="tabs-content">Third content</TabsContent>
+        </TabsRoot>
+        <div class="mt-3">
+            <button type="button" class="btn btn-secondary" @onclick="ToggleSecondDisabled" data-testid="toggle-disabled-btn">
+                @(_secondDisabled ? "Enable" : "Disable") Second Tab
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+<style>
+    .tabs-list {
+        display: flex;
+        gap: 4px;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 1rem;
+    }
+    
+    .tabs-trigger {
+        padding: 8px 16px;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.2s;
+    }
+    
+    .tabs-trigger:hover:not([data-disabled]) {
+        background-color: #f5f5f5;
+    }
+    
+    .tabs-trigger:focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+    }
+    
+    .tabs-trigger[data-state='active'] {
+        border-bottom-color: #000;
+        font-weight: 600;
+    }
+    
+    .tabs-trigger[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .tabs-content {
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+</style>
+
+@code {
+    private bool _secondDisabled = true;
+
+    private void ToggleSecondDisabled()
+    {
+        _secondDisabled = !_secondDisabled;
+    }
+}

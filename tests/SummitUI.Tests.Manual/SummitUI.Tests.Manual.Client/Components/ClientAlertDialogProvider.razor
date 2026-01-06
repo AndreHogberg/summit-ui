@@ -6,13 +6,13 @@
 
 <AlertDialogProvider Context="alert">
     <AlertDialogPortal>
-        <AlertDialogOverlay class="alert-dialog-overlay" />
+        <AlertDialogOverlay class="alert-dialog-overlay"/>
         <AlertDialogContent class="alert-dialog-content">
-            <AlertDialogTitle class="alert-dialog-title" />
-            <AlertDialogDescription class="alert-dialog-description" />
+            <AlertDialogTitle class="alert-dialog-title"/>
+            <AlertDialogDescription class="alert-dialog-description"/>
             <div class="alert-dialog-actions">
-                <AlertDialogCancel class="btn btn-secondary" />
-                <AlertDialogConfirm class="@(alert.Options.IsDestructive ? "btn btn-danger" : "btn btn-primary")" />
+                <AlertDialogCancel class="btn btn-secondary"/>
+                <AlertDialogConfirm class="@(alert.Options.IsDestructive ? "btn btn-danger" : "btn btn-primary")"/>
             </div>
         </AlertDialogContent>
     </AlertDialogPortal>

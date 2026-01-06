@@ -1,0 +1,182 @@
+@page "/tests/tabs/keyboard"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Tabs Keyboard Tests</h1>
+    
+    <!-- Auto activation mode (default) - activates on arrow navigation -->
+    <div class="test-section" data-testid="auto-section">
+        <h2>Auto Activation Mode</h2>
+        <TabsRoot DefaultValue="account" ActivationMode="TabsActivationMode.Auto" data-testid="auto-tabs">
+            <TabsList class="tabs-list" data-testid="auto-tabs-list">
+                <TabsTrigger Value="account" class="tabs-trigger" data-testid="auto-trigger-account">Account</TabsTrigger>
+                <TabsTrigger Value="password" class="tabs-trigger" data-testid="auto-trigger-password">Password</TabsTrigger>
+                <TabsTrigger Value="settings" Disabled="true" class="tabs-trigger" data-testid="auto-trigger-settings">Settings (Disabled)</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="account" class="tabs-content" data-testid="auto-content-account">
+                Account settings content
+            </TabsContent>
+            <TabsContent Value="password" class="tabs-content" data-testid="auto-content-password">
+                Password settings content
+            </TabsContent>
+            <TabsContent Value="settings" class="tabs-content" data-testid="auto-content-settings">
+                Settings content
+            </TabsContent>
+        </TabsRoot>
+    </div>
+    
+    <!-- Manual activation mode - requires Enter/Space to activate -->
+    <div class="test-section" data-testid="manual-section">
+        <h2>Manual Activation Mode</h2>
+        <TabsRoot DefaultValue="tab1" ActivationMode="TabsActivationMode.Manual" data-testid="manual-tabs">
+            <TabsList class="tabs-list" data-testid="manual-tabs-list">
+                <TabsTrigger Value="tab1" class="tabs-trigger" data-testid="manual-trigger-1">Tab 1</TabsTrigger>
+                <TabsTrigger Value="tab2" class="tabs-trigger" data-testid="manual-trigger-2">Tab 2</TabsTrigger>
+                <TabsTrigger Value="tab3" class="tabs-trigger" data-testid="manual-trigger-3">Tab 3</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="tab1" class="tabs-content" data-testid="manual-content-1">
+                Tab 1 content
+            </TabsContent>
+            <TabsContent Value="tab2" class="tabs-content" data-testid="manual-content-2">
+                Tab 2 content
+            </TabsContent>
+            <TabsContent Value="tab3" class="tabs-content" data-testid="manual-content-3">
+                Tab 3 content
+            </TabsContent>
+        </TabsRoot>
+    </div>
+    
+    <!-- Horizontal orientation (default) -->
+    <div class="test-section" data-testid="horizontal-section">
+        <h2>Horizontal Orientation</h2>
+        <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Horizontal" data-testid="horizontal-tabs">
+            <TabsList class="tabs-list" data-testid="horizontal-tabs-list">
+                <TabsTrigger Value="first" class="tabs-trigger" data-testid="horizontal-trigger-first">First</TabsTrigger>
+                <TabsTrigger Value="second" class="tabs-trigger" data-testid="horizontal-trigger-second">Second</TabsTrigger>
+                <TabsTrigger Value="third" class="tabs-trigger" data-testid="horizontal-trigger-third">Third</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="first" class="tabs-content">First content</TabsContent>
+            <TabsContent Value="second" class="tabs-content">Second content</TabsContent>
+            <TabsContent Value="third" class="tabs-content">Third content</TabsContent>
+        </TabsRoot>
+    </div>
+    
+    <!-- Vertical orientation - uses ArrowUp/ArrowDown -->
+    <div class="test-section" data-testid="vertical-section">
+        <h2>Vertical Orientation</h2>
+        <div class="d-flex">
+            <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Vertical" data-testid="vertical-tabs">
+                <TabsList class="tabs-list-vertical" data-testid="vertical-tabs-list">
+                    <TabsTrigger Value="first" class="tabs-trigger-vertical" data-testid="vertical-trigger-first">First</TabsTrigger>
+                    <TabsTrigger Value="second" class="tabs-trigger-vertical" data-testid="vertical-trigger-second">Second</TabsTrigger>
+                    <TabsTrigger Value="third" class="tabs-trigger-vertical" data-testid="vertical-trigger-third">Third</TabsTrigger>
+                </TabsList>
+                <div class="tabs-content-vertical-container">
+                    <TabsContent Value="first" class="tabs-content" data-testid="vertical-content-first">First content</TabsContent>
+                    <TabsContent Value="second" class="tabs-content" data-testid="vertical-content-second">Second content</TabsContent>
+                    <TabsContent Value="third" class="tabs-content" data-testid="vertical-content-third">Third content</TabsContent>
+                </div>
+            </TabsRoot>
+        </div>
+    </div>
+    
+    <!-- Wrap around navigation -->
+    <div class="test-section" data-testid="wrap-section">
+        <h2>Wrap Around Navigation (Loop enabled)</h2>
+        <TabsRoot DefaultValue="first" Loop="true" data-testid="wrap-tabs">
+            <TabsList class="tabs-list" data-testid="wrap-tabs-list">
+                <TabsTrigger Value="first" class="tabs-trigger" data-testid="wrap-trigger-first">First</TabsTrigger>
+                <TabsTrigger Value="second" class="tabs-trigger" data-testid="wrap-trigger-second">Second</TabsTrigger>
+                <TabsTrigger Value="third" class="tabs-trigger" data-testid="wrap-trigger-third">Third</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="first" class="tabs-content">First content</TabsContent>
+            <TabsContent Value="second" class="tabs-content">Second content</TabsContent>
+            <TabsContent Value="third" class="tabs-content">Third content</TabsContent>
+        </TabsRoot>
+    </div>
+</div>
+}
+
+<style>
+    .tabs-list {
+        display: flex;
+        gap: 4px;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 1rem;
+    }
+    
+    .tabs-list-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        border-right: 1px solid #e0e0e0;
+        padding-right: 1rem;
+        margin-right: 1rem;
+    }
+    
+    .tabs-trigger {
+        all: unset;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.2s;
+    }
+    
+    .tabs-trigger-vertical {
+        all: unset;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-right: 2px solid transparent;
+        transition: border-color 0.2s;
+    }
+    
+    .tabs-trigger:hover:not([data-disabled]),
+    .tabs-trigger-vertical:hover:not([data-disabled]) {
+        background-color: #f5f5f5;
+    }
+    
+    .tabs-trigger:focus-visible,
+    .tabs-trigger-vertical:focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+    }
+    
+    .tabs-trigger[data-state='active'] {
+        border-bottom-color: #000;
+        font-weight: 600;
+    }
+    
+    .tabs-trigger-vertical[data-state='active'] {
+        border-right-color: #000;
+        font-weight: 600;
+    }
+    
+    .tabs-trigger[data-disabled],
+    .tabs-trigger-vertical[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .tabs-content {
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+    
+    .tabs-content-vertical-container {
+        flex: 1;
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+</style>

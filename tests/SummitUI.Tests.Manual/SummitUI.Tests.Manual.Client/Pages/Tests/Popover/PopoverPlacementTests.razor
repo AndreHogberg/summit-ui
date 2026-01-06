@@ -1,0 +1,76 @@
+@page "/tests/popover/placement"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Popover Placement Tests</h1>
+    
+    <div class="grid-container">
+        <PopoverRoot>
+            <PopoverTrigger class="popover-trigger" data-testid="trigger-top">Top</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="Side.Top" data-testid="content-top">
+                    Top Content
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+
+        <PopoverRoot>
+            <PopoverTrigger class="popover-trigger" data-testid="trigger-right">Right</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="Side.Right" data-testid="content-right">
+                    Right Content
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+
+        <PopoverRoot>
+            <PopoverTrigger class="popover-trigger" data-testid="trigger-bottom">Bottom</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="Side.Bottom" data-testid="content-bottom">
+                    Bottom Content
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+
+        <PopoverRoot>
+            <PopoverTrigger class="popover-trigger" data-testid="trigger-left">Left</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" Side="Side.Left" data-testid="content-left">
+                    Left Content
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+    </div>
+</div>
+}
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 200px;
+        padding: 200px;
+        justify-items: center;
+    }
+
+    .popover-trigger {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+    }
+    
+    .popover-content {
+        padding: 16px;
+        border: 1px solid #ccc;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 4px;
+    }
+</style>

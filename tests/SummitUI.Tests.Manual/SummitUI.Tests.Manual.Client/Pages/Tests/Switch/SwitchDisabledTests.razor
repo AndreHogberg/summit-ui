@@ -1,0 +1,90 @@
+@page "/tests/switch/disabled"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Switch Disabled Tests</h1>
+    
+    <!-- Disabled Checked Switch -->
+    <div class="test-section" data-testid="disabled-checked-section">
+        <h2>Disabled Checked</h2>
+        <div class="d-flex align-items-center">
+            <SwitchRoot Checked="true" Disabled="true" class="switch-root" data-testid="disabled-checked-switch">
+                <SwitchThumb class="switch-thumb" />
+            </SwitchRoot>
+            <span class="ms-2">Disabled Checked</span>
+        </div>
+    </div>
+    
+    <!-- Disabled Unchecked Switch -->
+    <div class="test-section" data-testid="disabled-unchecked-section">
+        <h2>Disabled Unchecked</h2>
+        <div class="d-flex align-items-center">
+            <SwitchRoot Checked="false" Disabled="true" class="switch-root" data-testid="disabled-unchecked-switch">
+                <SwitchThumb class="switch-thumb" />
+            </SwitchRoot>
+            <span class="ms-2">Disabled Unchecked</span>
+        </div>
+    </div>
+</div>
+}
+
+<style>
+    .switch-root {
+        all: unset;
+        display: inline-flex;
+        width: 42px;
+        height: 25px;
+        background-color: #e4e4e7;
+        border-radius: 9999px;
+        position: relative;
+        box-shadow: 0 2px 10px var(--black-a7);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        cursor: pointer;
+    }
+
+    .switch-root:focus-visible {
+        box-shadow: 0 0 0 2px black;
+    }
+
+    .switch-root[data-state='checked'] {
+        background-color: #000;
+    }
+    
+    .switch-root[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .switch-thumb {
+        display: block;
+        width: 21px;
+        height: 21px;
+        background-color: white;
+        border-radius: 9999px;
+        box-shadow: 0 2px 2px var(--black-a7);
+        transition: transform 100ms;
+        transform: translateX(2px);
+        will-change: transform;
+        margin-top: 2px;
+    }
+
+    .switch-root[data-state='checked'] .switch-thumb {
+        transform: translateX(19px);
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+</style>
+
+@code {
+}

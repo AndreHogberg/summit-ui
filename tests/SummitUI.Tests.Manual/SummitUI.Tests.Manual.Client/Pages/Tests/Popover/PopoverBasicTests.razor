@@ -1,0 +1,74 @@
+@page "/tests/popover/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Popover Basic Tests</h1>
+    
+    <div class="test-section">
+        <h2>Uncontrolled Popover</h2>
+        <PopoverRoot>
+            <PopoverTrigger class="popover-trigger" data-testid="basic-trigger">Open Popover</PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" data-testid="basic-content">
+                    <p>Popover content here</p>
+                    <PopoverClose class="popover-close" data-testid="basic-close">Close</PopoverClose>
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Controlled Popover</h2>
+        <PopoverRoot @bind-Open="_isOpen">
+            <PopoverTrigger class="popover-trigger" data-testid="controlled-trigger">
+                @(_isOpen ? "Open" : "Closed")
+            </PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" data-testid="controlled-content">
+                    <p>Controlled content</p>
+                    <button type="button" @onclick="() => _isOpen = false" data-testid="internal-close">
+                        Internal Close
+                    </button>
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+        <button type="button" @onclick="() => _isOpen = !_isOpen" data-testid="external-toggle">
+            External Toggle
+        </button>
+    </div>
+</div>
+}
+
+<style>
+    .popover-trigger {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+    }
+    
+    .popover-content {
+        padding: 16px;
+        border: 1px solid #ccc;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        min-width: 200px;
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #eee;
+    }
+</style>
+
+@code {
+    private bool _isOpen;
+}

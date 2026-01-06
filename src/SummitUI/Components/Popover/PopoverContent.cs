@@ -67,9 +67,10 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
 
     /// <summary>
     /// Whether to trap focus within the popover content.
+    /// Defaults to the value of PopoverRoot.Modal.
     /// </summary>
     [Parameter]
-    public bool TrapFocus { get; set; }
+    public bool? TrapFocus { get; set; }
 
     /// <summary>
     /// Behavior when Escape key is pressed.
@@ -113,7 +114,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-private ElementReference _elementRef;
+    private ElementReference _elementRef;
     private DotNetObjectReference<PopoverContent>? _dotNetRef;
     private string? _floatingInstanceId;
     private string? _outsideClickListenerId;
@@ -126,6 +127,8 @@ private ElementReference _elementRef;
 
     private string DataState => Context.IsOpen ? "open" : "closed";
 
+    private bool EffectiveTrapFocus => TrapFocus ?? Context.Modal;
+
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         // Only render when open or during close animation so CSS animate-out classes can run
@@ -134,7 +137,7 @@ private ElementReference _elementRef;
         builder.OpenElement(0, As);
         builder.AddAttribute(1, "id", Context.PopoverId);
         builder.AddAttribute(2, "role", "dialog");
-        builder.AddAttribute(3, "aria-modal", TrapFocus.ToString().ToLowerInvariant());
+        builder.AddAttribute(3, "aria-modal", EffectiveTrapFocus.ToString().ToLowerInvariant());
         builder.AddAttribute(4, "data-state", DataState);
         builder.AddAttribute(5, "data-side", Side.ToString().ToLowerInvariant());
         builder.AddAttribute(6, "data-align", Align.ToString().ToLowerInvariant());
@@ -147,7 +150,7 @@ private ElementReference _elementRef;
         builder.AddElementReferenceCapture(11, (elementRef) => { _elementRef = elementRef; });
         
         // Wrap content in FocusTrap if enabled
-        if (TrapFocus)
+        if (EffectiveTrapFocus)
         {
             builder.OpenComponent<FocusTrap>(12);
             builder.AddComponentParameter(13, "IsActive", Context.IsOpen);
@@ -164,11 +167,11 @@ private ElementReference _elementRef;
         builder.CloseElement();
     }
 
-protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!RendererInfo.IsInteractive) return;
         
-    if (Context.IsOpen && !_isPositioned && !_isPositioning)
+        if (Context.IsOpen && !_isPositioned && !_isPositioning)
         {
             // Set guard flag immediately to prevent concurrent initialization
             _isPositioning = true;
@@ -224,7 +227,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
                 _isPositioned = true;
                 
                 // Focus the content if not using FocusTrap (FocusTrap handles focus automatically)
-                if (!TrapFocus)
+                if (!EffectiveTrapFocus)
                 {
                     await FloatingInterop.FocusFirstElementAsync(_elementRef);
                 }

@@ -1,0 +1,152 @@
+@page "/tests/checkbox/indeterminate"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Checkbox Indeterminate Tests</h1>
+
+    <!-- Select All pattern -->
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label class="checkbox-label">
+            <CheckboxRoot Checked="@allSelected"
+                          CheckedChanged="HandleSelectAllChanged"
+                          Indeterminate="@isIndeterminate"
+                          IndeterminateChanged="@(v => isIndeterminate = v)"
+                          class="checkbox-root"
+                          data-testid="select-all-checkbox">
+                <CheckboxIndicator ForceMount="true">
+                    @if (isIndeterminate)
+                    {
+                        <span>−</span>
+                    }
+                    else if (allSelected)
+                    {
+                        <span>✓</span>
+                    }
+                </CheckboxIndicator>
+            </CheckboxRoot>
+            Select All
+        </label>
+
+        <div style="margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <label class="checkbox-label">
+                <CheckboxRoot Checked="@item1Checked" CheckedChanged="HandleItem1Change" class="checkbox-root" data-testid="item1-checkbox">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Item 1
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Checked="@item2Checked" CheckedChanged="HandleItem2Change" class="checkbox-root" data-testid="item2-checkbox">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Item 2
+            </label>
+
+            <label class="checkbox-label">
+                <CheckboxRoot Checked="@item3Checked" CheckedChanged="HandleItem3Change" class="checkbox-root" data-testid="item3-checkbox">
+                    <CheckboxIndicator>
+                        <span>✓</span>
+                    </CheckboxIndicator>
+                </CheckboxRoot>
+                Item 3
+            </label>
+        </div>
+    </div>
+</div>
+}
+
+@code {
+    private bool item1Checked = true;
+    private bool item2Checked = false;
+    private bool item3Checked = false;
+    private bool allSelected = false;
+    private bool isIndeterminate = true;
+
+    private void HandleItem1Change(bool value)
+    {
+        item1Checked = value;
+        UpdateSelectAllState();
+    }
+
+    private void HandleItem2Change(bool value)
+    {
+        item2Checked = value;
+        UpdateSelectAllState();
+    }
+
+    private void HandleItem3Change(bool value)
+    {
+        item3Checked = value;
+        UpdateSelectAllState();
+    }
+
+    private void UpdateSelectAllState()
+    {
+        var checkedCount = (item1Checked ? 1 : 0) + (item2Checked ? 1 : 0) + (item3Checked ? 1 : 0);
+
+        if (checkedCount == 0)
+        {
+            allSelected = false;
+            isIndeterminate = false;
+        }
+        else if (checkedCount == 3)
+        {
+            allSelected = true;
+            isIndeterminate = false;
+        }
+        else
+        {
+            allSelected = false;
+            isIndeterminate = true;
+        }
+    }
+
+    private void HandleSelectAllChanged(bool newValue)
+    {
+        allSelected = newValue;
+        item1Checked = newValue;
+        item2Checked = newValue;
+        item3Checked = newValue;
+        isIndeterminate = false;
+    }
+}
+
+<style>
+    .checkbox-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .checkbox-root {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #666;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 0;
+    }
+
+    .checkbox-root[data-state="checked"],
+    .checkbox-root[data-state="indeterminate"] {
+        background: #4f46e5;
+        border-color: #4f46e5;
+        color: white;
+    }
+</style>

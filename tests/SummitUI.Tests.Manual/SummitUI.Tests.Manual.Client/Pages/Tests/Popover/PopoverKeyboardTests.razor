@@ -1,0 +1,42 @@
+@page "/tests/popover/keyboard"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Popover Keyboard Tests</h1>
+    
+    <div class="test-section">
+        <PopoverRoot>
+            <PopoverTrigger class="popover-trigger" data-testid="keyboard-trigger">
+                Open Popover
+            </PopoverTrigger>
+            <PopoverPortal>
+                <PopoverContent class="popover-content" data-testid="keyboard-content">
+                    <p>Popover content</p>
+                    <PopoverClose class="popover-close" data-testid="keyboard-close">Close</PopoverClose>
+                </PopoverContent>
+            </PopoverPortal>
+        </PopoverRoot>
+    </div>
+</div>
+}
+
+<style>
+    .popover-trigger {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+    }
+    
+    .popover-content {
+        padding: 16px;
+        border: 1px solid #ccc;
+        background: white;
+    }
+</style>

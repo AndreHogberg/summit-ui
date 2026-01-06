@@ -53,7 +53,7 @@ public class PopoverRoot : ComponentBase, IAsyncDisposable
     /// Whether the popover is modal (traps focus when open).
     /// </summary>
     [Parameter]
-    public bool Modal { get; set; }
+    public bool Modal { get; set; } = true;
 
     private readonly PopoverContext _context = new();
     private bool _internalOpen;
@@ -80,6 +80,7 @@ public class PopoverRoot : ComponentBase, IAsyncDisposable
     {
         // Sync context with current open state
         _context.IsOpen = IsOpen;
+        _context.Modal = Modal;
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)

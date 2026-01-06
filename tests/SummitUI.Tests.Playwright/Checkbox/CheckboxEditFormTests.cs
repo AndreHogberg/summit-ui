@@ -1,28 +1,19 @@
-using TUnit.Playwright;
-
-namespace SummitUI.Tests.Playwright;
+namespace SummitUI.Tests.Playwright.Checkbox;
 
 /// <summary>
-/// Tests for the Checkbox component's integration with Blazor EditForm.
-/// Verifies model binding, validation, and form submission behavior.
+/// Tests for Checkbox integration with Blazor EditForm.
+/// Verifies model binding, validation, and form submission.
 /// </summary>
-public class CheckboxEditFormTests : PageTest
+public class CheckboxEditFormTests : SummitTestBase
 {
-    private const string CheckboxDemoUrl = "checkbox";
-
-    [Before(Test)]
-    public async Task NavigateToCheckboxDemo()
-    {
-        await Page.GotoAsync(Hooks.ServerUrl + CheckboxDemoUrl);
-        await Page.WaitForLoadStateAsync(Microsoft.Playwright.LoadState.NetworkIdle);
-    }
+    protected override string TestPagePath => "tests/checkbox/editform";
 
     #region Model Binding
 
     [Test]
     public async Task EditForm_ShouldBindCheckedValue_ToModel()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var checkbox = section.Locator("[data-testid='editform-terms-checkbox']");
 
         // Initially unchecked
@@ -39,7 +30,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldBindMultipleCheckboxValues_ToModel()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var termsCheckbox = section.Locator("[data-testid='editform-terms-checkbox']");
         var newsletterCheckbox = section.Locator("[data-testid='editform-newsletter-checkbox']");
         var notificationsCheckbox = section.Locator("[data-testid='editform-notifications-checkbox']");
@@ -62,7 +53,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldUpdateModel_WhenCheckboxToggled()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var checkbox = section.Locator("[data-testid='editform-terms-checkbox']");
         var termsValue = section.Locator("[data-testid='editform-terms-value']");
 
@@ -82,7 +73,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldSubmitSuccessfully_WhenRequiredFieldChecked()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
 
         // Check required terms checkbox
         var termsCheckbox = section.Locator("[data-testid='editform-terms-checkbox']");
@@ -101,7 +92,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldShowValidationError_WhenRequiredFieldNotChecked()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
 
         // Submit form without checking required field
         var submitButton = section.Locator("[data-testid='editform-submit']");
@@ -116,7 +107,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldClearValidationError_WhenFieldChecked()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
 
         // Submit form without checking required field to trigger validation
         var submitButton = section.Locator("[data-testid='editform-submit']");
@@ -145,7 +136,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldRenderHiddenInput_WithCheckedValue()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var termsCheckbox = section.Locator("[data-testid='editform-terms-checkbox']");
 
         // Check the checkbox
@@ -159,7 +150,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldUpdateHiddenInput_WhenValueChanges()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var termsCheckbox = section.Locator("[data-testid='editform-terms-checkbox']");
 
         // Check the checkbox
@@ -182,7 +173,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldBindValue_WhenToggledViaKeyboard()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var checkbox = section.Locator("[data-testid='editform-terms-checkbox']");
         var termsValue = section.Locator("[data-testid='editform-terms-value']");
 
@@ -197,7 +188,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldNotToggle_WhenEnterPressed()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var checkbox = section.Locator("[data-testid='editform-terms-checkbox']");
         var termsValue = section.Locator("[data-testid='editform-terms-value']");
 
@@ -212,7 +203,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task EditForm_ShouldSubmit_ViaKeyboard()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var checkbox = section.Locator("[data-testid='editform-terms-checkbox']");
 
         // Check via keyboard
@@ -236,7 +227,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task Checkbox_ShouldHaveDataStateChecked_WhenChecked()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var checkbox = section.Locator("[data-testid='editform-terms-checkbox']");
 
         await checkbox.ClickAsync();
@@ -247,7 +238,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task Checkbox_ShouldHaveDataStateUnchecked_WhenUnchecked()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var checkbox = section.Locator("[data-testid='editform-terms-checkbox']");
 
         await Expect(checkbox).ToHaveAttributeAsync("data-state", "unchecked");
@@ -260,7 +251,7 @@ public class CheckboxEditFormTests : PageTest
     [Test]
     public async Task Tab_ShouldNavigateBetweenCheckboxes_InEditForm()
     {
-        var section = Page.Locator("[data-testid='editform-section']");
+        var section = Page.GetByTestId("editform-section");
         var termsCheckbox = section.Locator("[data-testid='editform-terms-checkbox']");
         var newsletterCheckbox = section.Locator("[data-testid='editform-newsletter-checkbox']");
 
