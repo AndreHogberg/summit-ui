@@ -101,3 +101,16 @@ export {
     destroyPortal as dialog_destroyPortal,
     getScrollLockCount as dialog_getScrollLockCount
 } from './dialog.js';
+
+// Calendar exports (locale detection, Intl API, keyboard navigation)
+export {
+    getBrowserLocale as calendar_getBrowserLocale,
+    getFirstDayOfWeek as calendar_getFirstDayOfWeek,
+    getMonthName as calendar_getMonthName,
+    getMonthYearHeading as calendar_getMonthYearHeading,
+    getWeekdayNames as calendar_getWeekdayNames,
+    getFullDateString as calendar_getFullDateString,
+    initializeCalendar as calendar_initializeCalendar,
+    focusDate as calendar_focusDate,
+    destroyCalendar as calendar_destroyCalendar
+} from './calendar.js';

@@ -1,0 +1,693 @@
+@page "/docs/alert-dialog"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+@using SummitUI.Docs.Design
+<PageTitle>SummitUI - AlertDialog</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Alert Dialog
+            <SuPromptButton ComponentName="AlertDialog" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            An alert dialog interrupting the user with important content and expects an immediate response.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <button class="inline-flex items-center justify-center rounded-md bg-su-destructive px-4 py-2 text-sm font-medium text-destructive-foreground hover:bg-su-destructive/90 transition-colors" @onclick="ShowDemoDialog">
+                Delete Account
+            </button>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Programmatic API similar to <code>window.confirm()</code>
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Async/await with <code>ValueTask&lt;bool&gt;</code> return
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Destructive action support with visual indicators
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Customizable title, message, and button text
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Configurable escape and overlay close behavior
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Provider pattern for app-wide availability
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Focus management for destructive dialogs
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Animation support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with <code>role="alertdialog"</code>
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Setup *@
+    <SuSection Title="Setup">
+        <SuAlert Variant="SuAlertVariant.Info">
+            <SuAlertTitle>Required Setup</SuAlertTitle>
+            <SuAlertDescription>
+                AlertDialog requires a provider at the app root and an interactive render mode.
+            </SuAlertDescription>
+        </SuAlert>
+
+        <div class="mt-6 flex flex-col gap-6">
+            <SuText Size="SuTextSize.Small" Muted="true">
+                Create a wrapper component to enable interactive render mode for the provider:
+            </SuText>
+            <SuCodeBlock Code="@setupWrapperCode" Language="razor" />
+
+            <SuText Size="SuTextSize.Small" Muted="true">
+                Then place the wrapper in your MainLayout or App.razor:
+            </SuText>
+            <SuCodeBlock Code="@setupPlacementCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SuCard>
+                <SuCardTitle>AlertDialogProvider</SuCardTitle>
+                <SuCardDescription class="mt-1">Root provider that manages dialog lifecycle and responds to service events.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AlertDialogContent</SuCardTitle>
+                <SuCardDescription class="mt-1">Main alert dialog panel with focus trapping and scroll locking.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AlertDialogTitle</SuCardTitle>
+                <SuCardDescription class="mt-1">Accessible title component with auto-generated ID.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AlertDialogDescription</SuCardTitle>
+                <SuCardDescription class="mt-1">Accessible message/description component with auto-generated ID.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AlertDialogConfirm</SuCardTitle>
+                <SuCardDescription class="mt-1">Confirm button that completes the dialog with <code>true</code>.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AlertDialogCancel</SuCardTitle>
+                <SuCardDescription class="mt-1">Cancel button that completes the dialog with <code>false</code>.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AlertDialogOverlay</SuCardTitle>
+                <SuCardDescription class="mt-1">Backdrop overlay that can close the dialog when clicked (if configured).</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>AlertDialogPortal</SuCardTitle>
+                <SuCardDescription class="mt-1">Fixed-position container for rendering outside of DOM hierarchy.</SuCardDescription>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] {
+                (Title: "IAlertDialogService", Props: serviceInterfaceProperties),
+                (Title: "AlertDialogOptions", Props: alertDialogOptionsProperties),
+                (Title: "AlertDialogProvider", Props: alertDialogProviderProperties),
+                (Title: "AlertDialogContent", Props: alertDialogContentProperties),
+                (Title: "AlertDialogTitle", Props: alertDialogTitleProperties),
+                (Title: "AlertDialogDescription", Props: alertDialogDescriptionProperties),
+                (Title: "AlertDialogConfirm", Props: alertDialogConfirmProperties),
+                (Title: "AlertDialogCancel", Props: alertDialogCancelProperties),
+                (Title: "AlertDialogOverlay", Props: alertDialogOverlayProperties),
+                (Title: "AlertDialogPortal", Props: alertDialogPortalProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Simple Confirmation</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Basic confirm dialog with custom text.</SuText>
+                <SuCodeBlock Code="@simpleExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Destructive Action</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Confirmation dialog for destructive actions with visual warning.</SuText>
+                <SuCodeBlock Code="@destructiveExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Custom Options</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Full customization of dialog appearance and behavior.</SuText>
+                <SuCodeBlock Code="@customOptionsExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Programmatic Control</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Using the service in component code with full async/await pattern.</SuText>
+                <SuCodeBlock Code="@programmaticExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">AlertDialogContent:</span>
+                        <span>Has <code>role="alertdialog"</code>, <code>aria-modal</code>, <code>aria-labelledby</code>, and <code>aria-describedby</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">AlertDialogTitle:</span>
+                        <span>Auto-generates ID and is referenced by content's <code>aria-labelledby</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">AlertDialogDescription:</span>
+                        <span>Auto-generates ID and is referenced by content's <code>aria-describedby</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Destructive dialogs:</span>
+                        <span>Focus is automatically set to cancel button first for destructive actions</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+</div>
+
+@code {
+    [Inject] private IAlertDialogService AlertDialogService { get; set; }
+
+    private async Task ShowDemoDialog()
+    {
+        var confirmed = await AlertDialogService.ConfirmAsync(
+            "Are you sure you want to delete your account? This action cannot be undone.",
+            new AlertDialogOptions
+            {
+                Title = "Delete Account",
+                ConfirmText = "Delete",
+                CancelText = "Cancel",
+                IsDestructive = true
+            });
+    }
+
+    private List<SuApiProperty> serviceInterfaceProperties = new()
+    {
+        new() { Name = "ConfirmAsync", Type = "ValueTask<bool>", Description = "Shows a confirmation dialog and returns user choice" },
+        new() { Name = "OnShow", Type = "event Action<AlertDialogRequest>", Description = "Event raised when a dialog should be shown (handled by provider)" }
+    };
+
+    private List<SuApiProperty> alertDialogOptionsProperties = new()
+    {
+        new() { Name = "Title", Type = "string?", Default = "null", Description = "Dialog title" },
+        new() { Name = "ConfirmText", Type = "string", Default = "\"Confirm\"", Description = "Confirm button text" },
+        new() { Name = "CancelText", Type = "string", Default = "\"Cancel\"", Description = "Cancel button text" },
+        new() { Name = "IsDestructive", Type = "bool", Default = "false", Description = "Marks the action as destructive (affects focus and styling)" },
+        new() { Name = "AllowEscapeClose", Type = "bool", Default = "true", Description = "Whether escape key closes the dialog" },
+        new() { Name = "AllowOverlayClose", Type = "bool", Default = "false", Description = "Whether clicking the overlay closes the dialog" }
+    };
+
+    private List<SuApiProperty> alertDialogProviderProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment<AlertDialogContext>", Required = true, Description = "Dialog structure template with context access" }
+    };
+
+    private List<SuApiProperty> alertDialogContentProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional content (replaces title, description, and buttons)" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element type" },
+        new() { Name = "TrapFocus", Type = "bool", Default = "true", Description = "Enable focus trapping" },
+        new() { Name = "PreventScroll", Type = "bool", Default = "true", Description = "Lock body scroll" },
+        new() { Name = "OnEscapeKeyDown", Type = "EventCallback<KeyboardEventArgs>", Description = "Callback on escape key" },
+        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback when dialog receives auto-focus" },
+        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback when dialog loses auto-focus" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> alertDialogTitleProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional title content (replaces Options.Title)" },
+        new() { Name = "As", Type = "string", Default = "\"h2\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> alertDialogDescriptionProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional description content (replaces Message)" },
+        new() { Name = "As", Type = "string", Default = "\"p\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> alertDialogConfirmProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional button content (replaces Options.ConfirmText)" },
+        new() { Name = "As", Type = "string", Default = "\"button\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> alertDialogCancelProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional button content (replaces Options.CancelText)" },
+        new() { Name = "As", Type = "string", Default = "\"button\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> alertDialogOverlayProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> alertDialogPortalProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional portal content (renders DialogOverlay and AlertDialogContent)" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-state", Type = "\"open\" | \"closed\"", Description = "Dialog open state" },
+        new() { Name = "data-destructive", Type = "Present when destructive", Description = "Indicates the dialog is for destructive action" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "Escape", Description = "Closes the dialog (if AllowEscapeClose is true)", Type = "" },
+        new() { Name = "Tab", Description = "Moves focus to next focusable element", Type = "" },
+        new() { Name = "Shift + Tab", Description = "Moves focus to previous focusable element", Type = "" }
+    };
+
+    private const string setupWrapperCode = @"@* AlertDialogWrapper.razor *@
+@rendermode InteractiveWebAssembly
+
+<AlertDialogProvider>
+    @ChildContent
+</AlertDialogProvider>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}";
+
+    private const string setupPlacementCode = @"@* In your MainLayout.razor or App.razor *@
+@inherits LayoutComponentBase
+
+<AlertDialogWrapper>
+    <main class=""main-content"">
+        @Body
+    </main>
+</AlertDialogWrapper>";
+
+    private const string anatomyCode = @"@* In your AlertDialogWrapper.razor *@
+@rendermode InteractiveWebAssembly
+
+<AlertDialogProvider>
+    @ChildContent
+</AlertDialogProvider>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}
+
+@* The provider renders this structure internally *@
+<DialogPortal>
+    <AlertDialogOverlay />
+    <AlertDialogContent>
+        <AlertDialogTitle />
+        <AlertDialogDescription />
+        <div class=""actions"">
+            <AlertDialogCancel />
+            <AlertDialogConfirm />
+        </div>
+    </AlertDialogContent>
+</DialogPortal>";
+
+    private const string simpleExampleCode = @"@inject IAlertDialogService AlertDialogService
+
+<button @onclick=""ShowConfirm"">
+    Show Confirmation
+</button>
+
+@code {
+    private async Task ShowConfirm()
+    {
+        var confirmed = await AlertDialog.ConfirmAsync(
+            ""Are you sure you want to proceed?"",
+            new AlertDialogOptions
+            {
+                Title = ""Confirm Action"",
+                ConfirmText = ""Yes, proceed"",
+                CancelText = ""No, cancel""
+            });
+
+        if (confirmed)
+        {
+            // User confirmed
+        }
+        else
+        {
+            // User cancelled
+        }
+    }
+}";
+
+    private const string destructiveExampleCode = @"@inject IAlertDialogService AlertDialogService
+
+<button class=""btn btn-destructive"" @onclick=""DeleteItem"">
+    Delete Item
+</button>
+
+@code {
+    private async Task DeleteItem()
+    {
+        var confirmed = await AlertDialog.ConfirmAsync(
+            ""This action cannot be undone. This will permanently delete the item and all associated data."",
+            new AlertDialogOptions
+            {
+                Title = ""Delete Item"",
+                ConfirmText = ""Delete"",
+                CancelText = ""Cancel"",
+                IsDestructive = true,
+                AllowEscapeClose = false,
+                AllowOverlayClose = false
+            });
+
+        if (confirmed)
+        {
+            // Perform delete operation
+        }
+    }
+}";
+
+    private const string customOptionsExampleCode = @"@inject IAlertDialogService AlertDialogService
+
+<button @onclick=""ShowCustomDialog"">
+    Show Custom Dialog
+</button>
+
+@code {
+    private async Task ShowCustomDialog()
+    {
+        var result = await AlertDialog.ConfirmAsync(
+            ""Please review the terms and conditions before continuing. By clicking accept, you agree to be bound by these terms."",
+            new AlertDialogOptions
+            {
+                Title = ""Terms & Conditions"",
+                ConfirmText = ""I Accept"",
+                CancelText = ""Decline"",
+                IsDestructive = false,
+                AllowEscapeClose = true,
+                AllowOverlayClose = false
+            });
+
+        if (result)
+        {
+            // User accepted terms
+        }
+        else
+        {
+            // User declined
+        }
+    }
+}";
+
+    private const string programmaticExampleCode = @"@inject IAlertDialogService AlertDialogService
+
+<div class=""flex gap-2"">
+    <button @onclick=""ShowSimpleConfirm"">Simple</button>
+    <button @onclick=""ShowDestructiveConfirm"">Destructive</button>
+    <button @onclick=""ShowNoEscapeConfirm"">No Escape</button>
+</div>
+
+@code {
+    private async Task ShowSimpleConfirm()
+    {
+        // Simple confirmation with defaults
+        var confirmed = await AlertDialog.ConfirmAsync(""Are you sure?"");
+
+        if (confirmed)
+        {
+            // Proceed with action
+        }
+    }
+
+    private async Task ShowDestructiveConfirm()
+    {
+        // Destructive action with warning
+        var confirmed = await AlertDialog.ConfirmAsync(
+            ""Permanently delete this item?"",
+            new AlertDialogOptions
+            {
+                Title = ""Delete Item"",
+                IsDestructive = true
+            });
+
+        if (confirmed)
+        {
+            // Delete the item
+        }
+    }
+
+    private async Task ShowNoEscapeConfirm()
+    {
+        // Dialog that cannot be dismissed with Escape
+        var confirmed = await AlertDialog.ConfirmAsync(
+            ""This requires your attention. Please confirm to continue."",
+            new AlertDialogOptions
+            {
+                Title = ""Attention Required"",
+                AllowEscapeClose = false,
+                AllowOverlayClose = false
+            });
+
+        if (confirmed)
+        {
+            // User explicitly confirmed
+        }
+    }
+}";
+
+    private const string cssExampleCode = @"/* Overlay styles */
+.alert-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.alert-dialog-overlay[data-state=""open""] {
+    animation: fadeIn 200ms ease-out;
+}
+
+/* Content styles */
+.alert-dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    min-width: 400px;
+    max-width: 90vw;
+    z-index: 1001;
+}
+
+.alert-dialog-content[data-state=""open""] {
+    animation: scaleIn 200ms ease-out;
+}
+
+/* Destructive dialog styling */
+.alert-dialog-content[data-destructive] {
+    border-left: 4px solid #ef4444;
+}
+
+/* Actions container */
+.alert-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Button styling */
+.alert-dialog-cancel {
+    background: transparent;
+    border: 1px solid #e0e0e0;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.alert-dialog-cancel:hover {
+    background: #f5f5f5;
+}
+
+.alert-dialog-confirm {
+    background: #0066cc;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.alert-dialog-confirm:hover {
+    background: #0052a3;
+}
+
+/* Destructive confirm button */
+.alert-dialog-content[data-destructive] .alert-dialog-confirm {
+    background: #ef4444;
+}
+
+.alert-dialog-content[data-destructive] .alert-dialog-confirm:hover {
+    background: #dc2626;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}";
+}

@@ -1,0 +1,611 @@
+@page "/docs/dialog"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+@using SummitUI.Docs.Design
+<PageTitle>SummitUI - Dialog</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Dialog
+            <SuPromptButton ComponentName="Dialog" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <DialogRoot>
+                <DialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-white hover:bg-su-primary/90 transition-colors">
+                    Open Dialog
+                </DialogTrigger>
+                <DialogPortal>
+                    <DialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                    <DialogContent class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
+                        <DialogTitle class="text-lg font-semibold">Edit Profile</DialogTitle>
+                        <DialogDescription class="text-sm text-su-muted-foreground">
+                            Make changes to your profile here. Click save when you're done.
+                        </DialogDescription>
+                        <div class="grid gap-4 py-4">
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <label class="text-sm font-medium">Name</label>
+                                <input class="col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" placeholder="Enter your name" />
+                            </div>
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <label class="text-sm font-medium">Email</label>
+                                <input class="col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" placeholder="Enter your email" type="email" />
+                            </div>
+                        </div>
+                        <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                            <DialogClose class="mt-2 sm:mt-0 inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent sm:mr-2">Cancel</DialogClose>
+                            <DialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-white hover:bg-su-primary/90">Save Changes</DialogClose>
+                        </div>
+                    </DialogContent>
+                </DialogPortal>
+            </DialogRoot>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Nested dialog support with depth tracking
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Automatic focus trapping and management
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Body scroll locking with iOS Safari support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Keyboard navigation (Escape key support)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Portal rendering for z-index control
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Close animation support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SuCard>
+                <SuCardTitle>DialogRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">Root component managing dialog state and providing context to children.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DialogContent</SuCardTitle>
+                <SuCardDescription class="mt-1">Main dialog panel with focus trapping and scroll locking.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DialogTitle</SuCardTitle>
+                <SuCardDescription class="mt-1">Accessible title component with auto-generated ID.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DialogDescription</SuCardTitle>
+                <SuCardDescription class="mt-1">Accessible description component with auto-generated ID.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DialogTrigger</SuCardTitle>
+                <SuCardDescription class="mt-1">Button element that opens the dialog when clicked.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DialogClose</SuCardTitle>
+                <SuCardDescription class="mt-1">Button element that closes the dialog when clicked.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DialogOverlay</SuCardTitle>
+                <SuCardDescription class="mt-1">Backdrop overlay that can close the dialog when clicked.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>DialogPortal</SuCardTitle>
+                <SuCardDescription class="mt-1">Fixed-position container for rendering outside the DOM hierarchy.</SuCardDescription>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] {
+                (Title: "DialogRoot", Props: dialogRootProperties),
+                (Title: "DialogContent", Props: dialogContentProperties),
+                (Title: "DialogTitle", Props: dialogTitleProperties),
+                (Title: "DialogDescription", Props: dialogDescriptionProperties),
+                (Title: "DialogTrigger", Props: dialogTriggerProperties),
+                (Title: "DialogClose", Props: dialogCloseProperties),
+                (Title: "DialogOverlay", Props: dialogOverlayProperties),
+                (Title: "DialogPortal", Props: dialogPortalProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Controlled Mode</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Control the dialog open state externally.</SuText>
+                <SuCodeBlock Code="@controlledExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Nested Dialogs</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Dialogs can be nested within each other. Depth is tracked via CSS variables.</SuText>
+                <SuCodeBlock Code="@nestedExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Dialog with Form</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">A dialog containing a form with multiple focusable elements.</SuText>
+                <SuCodeBlock Code="@formExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Variables</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Variable</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var variable in cssVariables)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@variable.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@variable.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">DialogContent:</span>
+                        <span>Has <code>role="dialog"</code>, <code>aria-modal</code>, <code>aria-labelledby</code>, and <code>aria-describedby</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">DialogTitle:</span>
+                        <span>Auto-generates ID and is referenced by content's <code>aria-labelledby</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">DialogDescription:</span>
+                        <span>Auto-generates ID and is referenced by content's <code>aria-describedby</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">DialogTrigger:</span>
+                        <span>Has <code>aria-haspopup</code>, <code>aria-expanded</code>, and <code>aria-controls</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">DialogOverlay:</span>
+                        <span>Has <code>aria-hidden="true"</code></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+</div>
+
+@code {
+    private List<SuApiProperty> dialogRootProperties = new()
+    {
+        new() { Name = "Open", Type = "bool?", Default = "null", Description = "Controlled open state (null for uncontrolled mode)" },
+        new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state for uncontrolled mode" },
+        new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Callback on open state change" },
+        new() { Name = "OnOpen", Type = "EventCallback", Description = "Callback when dialog opens" },
+        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback when dialog closes" },
+        new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Child components" }
+    };
+
+    private List<SuApiProperty> dialogContentProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Dialog content" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element type" },
+        new() { Name = "TrapFocus", Type = "bool", Default = "true", Description = "Enable focus trapping" },
+        new() { Name = "PreventScroll", Type = "bool", Default = "true", Description = "Lock body scroll" },
+        new() { Name = "EscapeKeyBehavior", Type = "EscapeKeyBehavior", Default = "Close", Description = "Escape key behavior (Close or Ignore)" },
+        new() { Name = "OutsideClickBehavior", Type = "OutsideClickBehavior", Default = "Close", Description = "Click outside behavior (Close or Ignore)" },
+        new() { Name = "OnInteractOutside", Type = "EventCallback<MouseEventArgs>", Description = "Callback on click outside" },
+        new() { Name = "OnEscapeKeyDown", Type = "EventCallback<KeyboardEventArgs>", Description = "Callback on escape key" },
+        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback when dialog receives auto-focus" },
+        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback when dialog loses auto-focus" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> dialogTitleProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Title text" },
+        new() { Name = "As", Type = "string", Default = "\"h2\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> dialogDescriptionProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Description text" },
+        new() { Name = "As", Type = "string", Default = "\"p\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> dialogTriggerProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Trigger button content" },
+        new() { Name = "As", Type = "string", Default = "\"button\"", Description = "HTML element type" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> dialogCloseProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Close button content" },
+        new() { Name = "As", Type = "string", Default = "\"button\"", Description = "HTML element type" },
+        new() { Name = "AriaLabel", Type = "string?", Default = "\"Close dialog\"", Description = "Accessible label" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> dialogOverlayProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Optional overlay content" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element type" },
+        new() { Name = "OnClick", Type = "EventCallback<MouseEventArgs>", Description = "Callback on click" },
+        new() { Name = "CloseOnClick", Type = "bool", Default = "true", Description = "Whether clicking closes dialog" },
+        new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
+    };
+
+    private List<SuApiProperty> dialogPortalProperties = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Portal content" },
+        new() { Name = "ContainerId", Type = "string?", Default = "null", Description = "Optional custom container ID" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-state", Type = "\"open\" | \"closed\"", Description = "Dialog open state" },
+        new() { Name = "data-nested", Type = "Present on nested dialogs", Description = "Indicates dialog is nested" },
+        new() { Name = "data-nested-open", Type = "Number of open nested dialogs", Description = "Count of nested dialogs that are open" }
+    };
+
+    private List<SuApiProperty> cssVariables = new()
+    {
+        new() { Name = "--summit-dialog-depth", Description = "Nesting depth (0-based)", Type = "" },
+        new() { Name = "--summit-dialog-nested-count", Description = "Number of nested open dialogs", Type = "" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "Escape", Description = "Closes the dialog", Type = "" },
+        new() { Name = "Tab", Description = "Moves focus to next focusable element", Type = "" },
+        new() { Name = "Shift + Tab", Description = "Moves focus to previous focusable element", Type = "" }
+    };
+
+    private const string anatomyCode = @"<DialogRoot>
+    <DialogTrigger>Open Dialog</DialogTrigger>
+    <DialogPortal>
+        <DialogOverlay />
+        <DialogContent>
+            <DialogTitle>Title</DialogTitle>
+            <DialogDescription>Description</DialogDescription>
+            <DialogClose>Close</DialogClose>
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>";
+
+    private const string basicExampleCode = @"<DialogRoot>
+    <DialogTrigger class=""btn btn-primary"">Open Dialog</DialogTrigger>
+    <DialogPortal>
+        <DialogOverlay class=""dialog-overlay"">
+            <DialogContent class=""dialog-content"">
+                <DialogTitle>Edit Profile</DialogTitle>
+                <DialogDescription>
+                    Make changes to your profile here. Click save when you're done.
+                </DialogDescription>
+                <div class=""dialog-actions"">
+                    <DialogClose class=""btn btn-secondary"">Cancel</DialogClose>
+                    <DialogClose class=""btn btn-primary"">Save Changes</DialogClose>
+                </div>
+            </DialogContent>
+        </DialogOverlay>
+    </DialogPortal>
+</DialogRoot>";
+
+    private const string controlledExampleCode = @"@code {
+    private bool isOpen = false;
+}
+
+<button @onclick=""@(() => isOpen = true)"">Open Dialog</button>
+
+<DialogRoot Open=""@isOpen"" OpenChanged=""@(v => isOpen = v)"">
+    <DialogPortal>
+        <DialogOverlay class=""dialog-overlay"">
+            <DialogContent class=""dialog-content"">
+                <DialogTitle>Controlled Dialog</DialogTitle>
+                <DialogDescription>
+                    This dialog's state is managed externally.
+                </DialogDescription>
+                <DialogClose class=""btn btn-primary"">Close</DialogClose>
+            </DialogContent>
+        </DialogOverlay>
+    </DialogPortal>
+</DialogRoot>";
+
+    private const string nestedExampleCode = @"<DialogRoot>
+    <DialogTrigger class=""btn btn-primary"">Open Parent</DialogTrigger>
+    <DialogPortal>
+        <DialogOverlay class=""dialog-overlay"">
+            <DialogContent class=""dialog-content"">
+                <DialogTitle>Parent Dialog</DialogTitle>
+                <DialogDescription>This is the parent dialog.</DialogDescription>
+                
+                <DialogRoot>
+                    <DialogTrigger class=""btn btn-secondary"">Open Nested</DialogTrigger>
+                    <DialogPortal>
+                        <DialogOverlay class=""dialog-overlay nested"">
+                            <DialogContent class=""dialog-content nested"">
+                                <DialogTitle>Nested Dialog</DialogTitle>
+                                <DialogDescription>This is nested inside another dialog.</DialogDescription>
+                                <DialogClose class=""btn btn-secondary"">Close</DialogClose>
+                            </DialogContent>
+                        </DialogOverlay>
+                    </DialogPortal>
+                </DialogRoot>
+                
+                <DialogClose class=""btn btn-secondary"">Close Parent</DialogClose>
+            </DialogContent>
+        </DialogOverlay>
+    </DialogPortal>
+</DialogRoot>";
+
+    private const string formExampleCode = @"<DialogRoot>
+    <DialogTrigger class=""btn btn-primary"">Edit Profile</DialogTrigger>
+    <DialogPortal>
+        <DialogOverlay class=""dialog-overlay"">
+            <DialogContent class=""dialog-content"">
+                <DialogTitle>Edit Profile</DialogTitle>
+                <DialogDescription>
+                    Make changes to your profile here. Click save when you're done.
+                </DialogDescription>
+                
+                <EditForm Model=""@model"" OnValidSubmit=""HandleSubmit"">
+                    <div class=""dialog-form"">
+                        <div class=""form-group"">
+                            <label for=""name"">Name</label>
+                            <InputText id=""name"" class=""form-control"" @bind-Value=""model.Name"" />
+                        </div>
+                        <div class=""form-group"">
+                            <label for=""email"">Email</label>
+                            <InputText id=""email"" class=""form-control"" @bind-Value=""model.Email"" />
+                        </div>
+                    </div>
+                    
+                    <div class=""dialog-actions"">
+                        <DialogClose type=""submit"" class=""btn btn-primary"">Save Changes</DialogClose>
+                        <DialogClose class=""btn btn-secondary"">Cancel</DialogClose>
+                    </div>
+                </EditForm>
+            </DialogContent>
+        </DialogOverlay>
+    </DialogPortal>
+</DialogRoot>";
+
+    private const string cssExampleCode = @"/* Overlay styles */
+.dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.dialog-overlay[data-state=""open""] {
+    animation: fadeIn 200ms ease-out;
+}
+
+.dialog-overlay[data-state=""closed""] {
+    animation: fadeOut 200ms ease-in;
+}
+
+/* Content styles */
+.dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    min-width: 400px;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    z-index: 1001;
+}
+
+.dialog-content[data-state=""open""] {
+    animation: scaleIn 200ms ease-out;
+}
+
+.dialog-content[data-state=""closed""] {
+    animation: scaleOut 200ms ease-in;
+}
+
+/* Nested dialog styling */
+.dialog-overlay[data-nested] {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.dialog-content[data-nested] {
+    z-index: 1003;
+}
+
+/* Adjust z-index based on depth */
+.dialog-content {
+    z-index: calc(1001 + var(--summit-dialog-depth) * 2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes scaleOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+}";
+}

@@ -1,0 +1,615 @@
+@page "/docs/calendar"
+@rendermode InteractiveWebAssembly
+@layout DocsLayout
+@using SummitUI
+
+<PageTitle>SummitUI - Calendar</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4 animate-fade-in animate-duration-500">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Calendar
+            <SuPromptButton ComponentName="Calendar" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A fully accessible, locale-aware calendar component with keyboard navigation following WAI-ARIA APG guidelines.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard class="animate-fade-in-up animate-duration-500 animate-delay-100">
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-2">
+                    <CalendarRoot @bind-Value="_selectedDate" class="calendar-demo" Context="calendarContext">
+                        <CalendarHeader class="flex items-center justify-between mb-4">
+                            <CalendarPrevButton class="calendar-nav-btn" />
+                            <CalendarHeading class="text-sm font-semibold" />
+                            <CalendarNextButton class="calendar-nav-btn" />
+                        </CalendarHeader>
+                        <CalendarGrid class="w-full border-collapse">
+                            <CalendarGridHead>
+                                <CalendarGridRow>
+                                    @for (int i = 0; i < calendarContext.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <CalendarHeadCell Abbreviation="@calendarContext.WeekdaysLong[idx]" class="calendar-head-cell">
+                                            @calendarContext.Weekdays[idx]
+                                        </CalendarHeadCell>
+                                    }
+                                </CalendarGridRow>
+                            </CalendarGridHead>
+                            <CalendarGridBody>
+                                @foreach (var week in calendarContext.CurrentMonth.Weeks)
+                                {
+                                    <CalendarGridRow>
+                                        @foreach (var date in week)
+                                        {
+                                            <CalendarCell Date="@date">
+                                                <CalendarDay class="calendar-day" />
+                                            </CalendarCell>
+                                        }
+                                    </CalendarGridRow>
+                                }
+                            </CalendarGridBody>
+                        </CalendarGrid>
+                    </CalendarRoot>
+                    <p class="text-xs text-su-muted-foreground mt-2">Selected: @(_selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
+                </div>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground animate-fade-in-up animate-duration-500 animate-delay-200">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation (Arrow keys, Home, End, Page Up/Down)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Locale-aware month/weekday names via browser's Intl API
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Configurable week start day (Sunday, Monday, etc.)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Min/max date constraints
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Fixed weeks option for consistent grid height
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG 2.1 AA compliant with proper ARIA attributes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Headless design - fully customizable styling
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <div class="animate-fade-in-up animate-duration-500 animate-delay-300">
+            <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+        </div>
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <div class="animate-fade-in-up animate-duration-500 animate-delay-300">
+            <SuCodeBlock Code="@anatomyCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up animate-duration-500 animate-delay-400">
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">Root container managing calendar state and context.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarHeader</SuCardTitle>
+                <SuCardDescription class="mt-1">Container for navigation controls and heading.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarHeading</SuCardTitle>
+                <SuCardDescription class="mt-1">Displays the current month and year with live region.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarPrevButton</SuCardTitle>
+                <SuCardDescription class="mt-1">Button to navigate to the previous month.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarNextButton</SuCardTitle>
+                <SuCardDescription class="mt-1">Button to navigate to the next month.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarGrid</SuCardTitle>
+                <SuCardDescription class="mt-1">The table element with role="grid" for the calendar.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarGridHead</SuCardTitle>
+                <SuCardDescription class="mt-1">Table header containing weekday names.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarGridBody</SuCardTitle>
+                <SuCardDescription class="mt-1">Table body containing date cells.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarGridRow</SuCardTitle>
+                <SuCardDescription class="mt-1">A row in the calendar grid.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarHeadCell</SuCardTitle>
+                <SuCardDescription class="mt-1">Weekday header cell with abbreviation support.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarCell</SuCardTitle>
+                <SuCardDescription class="mt-1">A cell representing a single date.</SuCardDescription>
+            </SuCard>
+            <SuCard class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <SuCardTitle>CalendarDay</SuCardTitle>
+                <SuCardDescription class="mt-1">The interactive day button inside a cell.</SuCardDescription>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12 animate-fade-in-up animate-duration-500 animate-delay-500">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">CalendarRoot</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var prop in calendarRootProperties)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">
+                                    @prop.Name
+                                    @if (prop.Required)
+                                    {
+                                        <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                    }
+                                </SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">CalendarHeadCell</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">Abbreviation</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">string?</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">null</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Full weekday name for screen readers (placed in abbr element)</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">CalendarCell</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">
+                                Date
+                                <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                            </SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">DateOnly</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">-</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">The date this cell represents</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8 animate-fade-in-up animate-duration-500 animate-delay-500">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Calendar</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Week Starts on Monday</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Configure the first day of the week.</SuText>
+                <SuCodeBlock Code="@mondayStartCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Min/Max Date Constraints</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Restrict selectable dates to a range.</SuText>
+                <SuCodeBlock Code="@minMaxExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Fixed Weeks</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Always show 6 weeks for consistent height.</SuText>
+                <SuCodeBlock Code="@fixedWeeksCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Custom Date Disabled</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Disable specific dates with a custom function.</SuText>
+                <SuCodeBlock Code="@customDisabledCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12 animate-fade-in-up animate-duration-500 animate-delay-600">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Element</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Tailwind Example</SuHeading>
+                <SuCodeBlock Code="@tailwindExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12 animate-fade-in-up animate-duration-500 animate-delay-700">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Grid:</span>
+                        <span>Has <code>role="grid"</code> with <code>aria-labelledby</code> pointing to heading</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Heading:</span>
+                        <span>Uses <code>aria-live="polite"</code> and <code>aria-atomic="true"</code> to announce month changes</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Days:</span>
+                        <span>Each has <code>aria-selected</code>, <code>aria-disabled</code>, and <code>aria-current="date"</code> for today</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Navigation:</span>
+                        <span>Buttons have descriptive <code>aria-label</code> ("Previous month", "Next month")</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">Focus:</span>
+                        <span>Uses roving tabindex pattern - only focused date has <code>tabindex="0"</code></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+</div>
+
+<style>
+    .calendar-demo {
+        max-width: 320px;
+    }
+
+    .calendar-nav-btn {
+        padding: 0.375rem;
+        border-radius: 0.375rem;
+        border: 1px solid rgb(var(--su-border));
+        background: transparent;
+        cursor: pointer;
+        transition: all 150ms;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .calendar-nav-btn:hover:not(:disabled) {
+        background: rgb(var(--su-accent));
+    }
+
+    .calendar-nav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .calendar-head-cell {
+        padding: 0.5rem;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: rgb(var(--su-muted-foreground));
+    }
+
+    .calendar-day {
+        width: 2.25rem;
+        height: 2.25rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        transition: all 150ms;
+    }
+
+    .calendar-day:hover:not(:disabled) {
+        background: rgb(var(--su-accent));
+    }
+
+    .calendar-day[data-today] {
+        font-weight: 600;
+        color: rgb(var(--su-primary));
+    }
+
+    .calendar-day[data-state="selected"] {
+        background: rgb(var(--su-primary));
+        color: rgb(var(--su-primary-foreground));
+    }
+
+    .calendar-day[data-outside-month] {
+        color: rgb(var(--su-muted-foreground));
+        opacity: 0.5;
+    }
+
+    .calendar-day[data-unavailable],
+    .calendar-day:disabled {
+        color: rgb(var(--su-muted-foreground));
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .calendar-day[data-focused] {
+        outline: 2px solid rgb(var(--su-primary));
+        outline-offset: 2px;
+    }
+</style>
+
+@code {
+    private DateOnly? _selectedDate = DateOnly.FromDateTime(DateTime.Today);
+
+    private List<SuApiProperty> calendarRootProperties = new()
+    {
+        new() { Name = "Value", Type = "DateOnly?", Default = "null", Description = "The currently selected date (two-way bindable)" },
+        new() { Name = "ValueChanged", Type = "EventCallback<DateOnly?>", Description = "Callback when the selected date changes" },
+        new() { Name = "DefaultValue", Type = "DateOnly?", Default = "null", Description = "Default value when uncontrolled" },
+        new() { Name = "OnValueChange", Type = "EventCallback<DateOnly?>", Description = "Alternative callback for value changes" },
+        new() { Name = "Placeholder", Type = "DateOnly?", Default = "null", Description = "Placeholder date for initial display when no value is set" },
+        new() { Name = "Locale", Type = "string?", Default = "Browser locale", Description = "Locale for formatting (e.g., \"en-US\", \"de-DE\")" },
+        new() { Name = "WeekStartsOn", Type = "WeekStartsOn?", Default = "Locale default", Description = "First day of the week (Sunday, Monday, etc.)" },
+        new() { Name = "FixedWeeks", Type = "bool", Default = "false", Description = "Always display 6 weeks for consistent height" },
+        new() { Name = "MinValue", Type = "DateOnly?", Default = "null", Description = "Minimum selectable date" },
+        new() { Name = "MaxValue", Type = "DateOnly?", Default = "null", Description = "Maximum selectable date" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disables the entire calendar" },
+        new() { Name = "ReadOnly", Type = "bool", Default = "false", Description = "Allows navigation but prevents selection" },
+        new() { Name = "IsDateDisabled", Type = "Func<DateOnly, bool>?", Default = "null", Description = "Custom function to disable specific dates" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-summit-calendar-root", Type = "CalendarRoot", Description = "Marks the root element" },
+        new() { Name = "data-summit-calendar-grid", Type = "CalendarGrid", Description = "Marks the grid table" },
+        new() { Name = "data-summit-calendar-day", Type = "CalendarDay", Description = "Marks day buttons" },
+        new() { Name = "data-date", Type = "CalendarDay", Description = "ISO date string (YYYY-MM-DD)" },
+        new() { Name = "data-state", Type = "CalendarDay", Description = "\"selected\" when date is selected" },
+        new() { Name = "data-today", Type = "CalendarDay", Description = "Present when date is today" },
+        new() { Name = "data-focused", Type = "CalendarDay", Description = "Present on keyboard-focused date" },
+        new() { Name = "data-outside-month", Type = "CalendarDay", Description = "Present for dates outside current month" },
+        new() { Name = "data-unavailable", Type = "CalendarDay", Description = "Present for dates outside min/max or custom disabled" },
+        new() { Name = "data-disabled", Type = "Multiple", Description = "Present when calendar or element is disabled" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "ArrowRight", Type = "", Description = "Move focus to next day" },
+        new() { Name = "ArrowLeft", Type = "", Description = "Move focus to previous day" },
+        new() { Name = "ArrowDown", Type = "", Description = "Move focus to same day next week" },
+        new() { Name = "ArrowUp", Type = "", Description = "Move focus to same day previous week" },
+        new() { Name = "Home", Type = "", Description = "Move focus to start of week" },
+        new() { Name = "End", Type = "", Description = "Move focus to end of week" },
+        new() { Name = "PageDown", Type = "", Description = "Move focus to next month" },
+        new() { Name = "PageUp", Type = "", Description = "Move focus to previous month" },
+        new() { Name = "Shift + PageDown", Type = "", Description = "Move focus to next year" },
+        new() { Name = "Shift + PageUp", Type = "", Description = "Move focus to previous year" },
+        new() { Name = "Enter / Space", Type = "", Description = "Select the focused date" }
+    };
+
+    private const string anatomyCode = @"<CalendarRoot @bind-Value=""selectedDate"" Context=""ctx"">
+    <CalendarHeader>
+        <CalendarPrevButton />
+        <CalendarHeading />
+        <CalendarNextButton />
+    </CalendarHeader>
+    <CalendarGrid>
+        <CalendarGridHead>
+            <CalendarGridRow>
+                @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                {
+                    var idx = i;
+                    <CalendarHeadCell Abbreviation=""@ctx.WeekdaysLong[idx]"">
+                        @ctx.Weekdays[idx]
+                    </CalendarHeadCell>
+                }
+            </CalendarGridRow>
+        </CalendarGridHead>
+        <CalendarGridBody>
+            @foreach (var week in ctx.CurrentMonth.Weeks)
+            {
+                <CalendarGridRow>
+                    @foreach (var date in week)
+                    {
+                        <CalendarCell Date=""@date"">
+                            <CalendarDay />
+                        </CalendarCell>
+                    }
+                </CalendarGridRow>
+            }
+        </CalendarGridBody>
+    </CalendarGrid>
+</CalendarRoot>";
+
+    private const string basicExampleCode = @"@code {
+    private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
+}
+
+<CalendarRoot @bind-Value=""selectedDate"" Context=""ctx"">
+    <CalendarHeader class=""flex items-center justify-between mb-4"">
+        <CalendarPrevButton class=""..."" />
+        <CalendarHeading class=""text-sm font-semibold"" />
+        <CalendarNextButton class=""..."" />
+    </CalendarHeader>
+    <CalendarGrid class=""w-full"">
+        <!-- Grid content -->
+    </CalendarGrid>
+</CalendarRoot>
+
+<p>Selected: @(selectedDate?.ToString(""yyyy-MM-dd"") ?? ""None"")</p>";
+
+    private const string mondayStartCode = @"<CalendarRoot @bind-Value=""selectedDate"" 
+               WeekStartsOn=""WeekStartsOn.Monday"" 
+               Context=""ctx"">
+    <!-- Calendar content -->
+</CalendarRoot>";
+
+    private const string minMaxExampleCode = @"@code {
+    private DateOnly? selectedDate;
+    private DateOnly minDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly maxDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30));
+}
+
+<CalendarRoot @bind-Value=""selectedDate"" 
+               MinValue=""@minDate"" 
+               MaxValue=""@maxDate""
+               Context=""ctx"">
+    <!-- Calendar content -->
+</CalendarRoot>";
+
+    private const string fixedWeeksCode = @"<CalendarRoot @bind-Value=""selectedDate"" 
+               FixedWeeks=""true""
+               Context=""ctx"">
+    <!-- Always shows 6 weeks -->
+</CalendarRoot>";
+
+    private const string customDisabledCode = @"@code {
+    private DateOnly? selectedDate;
+    
+    // Disable weekends
+    private bool IsWeekend(DateOnly date) => 
+        date.DayOfWeek == DayOfWeek.Saturday || 
+        date.DayOfWeek == DayOfWeek.Sunday;
+}
+
+<CalendarRoot @bind-Value=""selectedDate"" 
+               IsDateDisabled=""IsWeekend""
+               Context=""ctx"">
+    <!-- Weekend dates are disabled -->
+</CalendarRoot>";
+
+    private const string tailwindExampleCode = @"/* Calendar day styling with Tailwind */
+.calendar-day {
+    @apply w-9 h-9 rounded-md text-sm
+           hover:bg-accent
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+.calendar-day[data-today] {
+    @apply font-semibold text-primary;
+}
+
+.calendar-day[data-state=""selected""] {
+    @apply bg-primary text-primary-foreground;
+}
+
+.calendar-day[data-outside-month] {
+    @apply text-muted-foreground opacity-50;
+}
+
+.calendar-day[data-unavailable] {
+    @apply text-muted-foreground opacity-50 cursor-not-allowed;
+}
+
+.calendar-day[data-focused] {
+    @apply ring-2 ring-primary ring-offset-2;
+}";
+}

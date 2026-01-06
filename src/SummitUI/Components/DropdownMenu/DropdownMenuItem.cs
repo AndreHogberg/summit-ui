@@ -23,6 +23,7 @@ public class DropdownMenuItem : ComponentBase, IDisposable
     /// Text value for typeahead search. If not provided, typeahead won't work for this item.
     /// </summary>
     [Parameter]
+    [EditorRequired]
     public string? TextValue { get; set; }
 
     /// <summary>
