@@ -247,23 +247,6 @@
   @apply cursor-pointer absolute right-3 top-2;
 }
 
-/* Sidebar and Mobile Layout */
-.mobile-sidebar {
-  @apply fixed top-0 left-0 h-screen w-[280px] bg-su-background border-r border-su-border z-100 transition-transform duration-300 ease-in-out -translate-x-full;
-}
-
-.mobile-sidebar[data-state="open"] {
-  @apply translate-x-0;
-}
-
-.mobile-overlay {
-  @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-90 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out;
-}
-
-.mobile-overlay[data-state="open"] {
-  @apply opacity-100 pointer-events-auto;
-}
-
 /* Sidebar Scroll Area */
 .sidebar-scroll-area {
   @apply h-[calc(100vh-3.5rem)] overflow-y-auto py-6 px-4;
