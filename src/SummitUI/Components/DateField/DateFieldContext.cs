@@ -714,6 +714,11 @@ public class DateFieldContext
 
     public void NotifyStateChanged() => OnStateChanged?.Invoke();
 
+    public void SetInvalid(bool invalid)
+    {
+        Invalid = invalid;
+    }
+
     /// <summary>
     /// Sets the cached segment labels from JavaScript Intl.DisplayNames.
     /// </summary>

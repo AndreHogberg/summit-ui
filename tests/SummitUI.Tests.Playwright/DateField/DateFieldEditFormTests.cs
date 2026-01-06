@@ -1,21 +1,11 @@
 using TUnit.Playwright;
+using SummitUI.Tests.Playwright.DateField;
 
-namespace SummitUI.Tests.Playwright;
+namespace SummitUI.Tests.Playwright.DateField;
 
-/// <summary>
-/// Tests for the DateField component's integration with Blazor EditForm.
-/// Verifies model binding, validation, hidden input, and form submission behavior.
-/// </summary>
-public class DateFieldEditFormTests : PageTest
+public class DateFieldEditFormTests : SummitTestBase
 {
-    private const string DateFieldDemoUrl = "datefield";
-
-    [Before(Test)]
-    public async Task NavigateToDateFieldDemo()
-    {
-        await Page.GotoAsync(Hooks.ServerUrl + DateFieldDemoUrl);
-        await Page.WaitForLoadStateAsync(Microsoft.Playwright.LoadState.NetworkIdle);
-    }
+    protected override string TestPagePath => "tests/date-field/edit-form";
 
     #region Model Binding
 
@@ -287,51 +277,6 @@ public class DateFieldEditFormTests : PageTest
         // Birth date field is required
         var hiddenInput = section.Locator("input[type='hidden'][name='birthDate']");
         await Expect(hiddenInput).ToHaveAttributeAsync("required", "");
-    }
-
-    #endregion
-
-    #region Basic Form Section
-
-    [Test]
-    public async Task BasicForm_ShouldSubmit_WhenDateProvided()
-    {
-        var section = Page.Locator("[data-testid='form-section']");
-        var input = section.Locator("[data-testid='form-date-input']");
-        var daySegment = input.Locator("[data-segment='day']");
-        
-        // Set a value
-        await daySegment.FocusAsync();
-        await Page.Keyboard.TypeAsync("20");
-        
-        await Page.WaitForTimeoutAsync(100);
-        
-        // Submit form
-        var submitButton = section.Locator("[data-testid='form-submit']");
-        await submitButton.ClickAsync();
-        
-        // Verify success message appears
-        var successMessage = section.Locator("[data-testid='form-success-message']");
-        await Expect(successMessage).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task BasicForm_ShouldShowValue_AfterInput()
-    {
-        var section = Page.Locator("[data-testid='form-section']");
-        var input = section.Locator("[data-testid='form-date-input']");
-        var daySegment = input.Locator("[data-segment='day']");
-        
-        // Set day to 28
-        await daySegment.FocusAsync();
-        await Page.Keyboard.TypeAsync("28");
-        
-        await Page.WaitForTimeoutAsync(100);
-        
-        var formValue = section.Locator("[data-testid='form-value']");
-        var text = await formValue.TextContentAsync();
-        
-        await Assert.That(text!).Contains("28");
     }
 
     #endregion

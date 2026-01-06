@@ -1,0 +1,91 @@
+@page "/tests/dialog/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Dialog Basic Tests</h1>
+    
+    <div class="test-section">
+        <h2>Basic Dialog</h2>
+        <DialogRoot>
+            <DialogTrigger class="dialog-trigger" data-testid="basic-trigger">Open Dialog</DialogTrigger>
+            <DialogPortal>
+                <DialogOverlay class="dialog-overlay" data-testid="basic-overlay" />
+                <DialogContent class="dialog-content" data-testid="basic-content">
+                    <DialogTitle class="dialog-title" data-testid="basic-title">Dialog Title</DialogTitle>
+                    <DialogDescription class="dialog-description" data-testid="basic-description">
+                        This is a basic dialog description.
+                    </DialogDescription>
+                    <DialogClose class="dialog-close" data-testid="basic-close">Close</DialogClose>
+                </DialogContent>
+            </DialogPortal>
+        </DialogRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Controlled Dialog</h2>
+        <DialogRoot @bind-Open="_isOpen">
+            <DialogTrigger class="dialog-trigger" data-testid="controlled-trigger">
+                @(_isOpen ? "Open" : "Closed")
+            </DialogTrigger>
+            <DialogPortal>
+                <DialogOverlay class="dialog-overlay" />
+                <DialogContent class="dialog-content" data-testid="controlled-content">
+                    <DialogTitle>Controlled Dialog</DialogTitle>
+                    <button type="button" @onclick="() => _isOpen = false" data-testid="internal-close">
+                        Internal Close
+                    </button>
+                </DialogContent>
+            </DialogPortal>
+        </DialogRoot>
+        <button type="button" @onclick="() => _isOpen = !_isOpen" data-testid="external-toggle">
+            External Toggle
+        </button>
+    </div>
+</div>
+}
+
+<style>
+    .dialog-trigger {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+    }
+    
+    .dialog-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 24px;
+        border: 1px solid #ccc;
+        background: white;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        min-width: 300px;
+        z-index: 100;
+    }
+
+    .dialog-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 90;
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #eee;
+    }
+</style>
+
+@code {
+    private bool _isOpen;
+}

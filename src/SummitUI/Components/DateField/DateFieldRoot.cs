@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
 namespace SummitUI;
@@ -49,16 +50,79 @@ public class DateFieldRoot : ComponentBase
     [Parameter] public string? Name { get; set; }
     [Parameter] public bool Required { get; set; }
     
+    /// <summary>
+    /// Cascading EditContext for form integration.
+    /// </summary>
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
+    
+    /// <summary>
+    /// Expression identifying the bound value (for EditForm validation).
+    /// </summary>
+    [Parameter]
+    public System.Linq.Expressions.Expression<Func<DateOnly?>>? ValueExpression { get; set; }
+
+    /// <summary>
+    /// Expression identifying the bound DateTime value (for EditForm validation).
+    /// </summary>
+    [Parameter]
+    public System.Linq.Expressions.Expression<Func<DateTime?>>? DateTimeValueExpression { get; set; }
+
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private readonly DateFieldContext _context = new();
+    private FieldIdentifier? _fieldIdentifier;
     
     /// <summary>
     /// Determines if we're in DateTime mode based on which binding is provided.
     /// If DateTimeValue or DateTimeValueChanged is set, use DateTime mode.
     /// </summary>
     private bool IsDateTimeMode => DateTimeValueChanged.HasDelegate || DateTimeValue.HasValue;
+
+    protected override void OnInitialized()
+    {
+        // Set up EditContext field identifier for validation
+        if (EditContext is not null)
+        {
+            if (IsDateTimeMode && DateTimeValueExpression is not null)
+            {
+                _fieldIdentifier = FieldIdentifier.Create(DateTimeValueExpression);
+            }
+            else if (!IsDateTimeMode && ValueExpression is not null)
+            {
+                _fieldIdentifier = FieldIdentifier.Create(ValueExpression);
+            }
+
+            if (_fieldIdentifier.HasValue)
+            {
+                EditContext.OnValidationStateChanged += (sender, args) => HandleValidationStateChanged();
+            }
+        }
+        
+        _context.OnStateChanged += HandleStateChanged;
+    }
+
+    private void HandleValidationStateChanged()
+    {
+        if (EditContext is not null && _fieldIdentifier.HasValue)
+        {
+            var isInvalid = EditContext.GetValidationMessages(_fieldIdentifier.Value).Any();
+            if (isInvalid != _context.Invalid)
+            {
+                _context.SetInvalid(isInvalid);
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void HandleStateChanged()
+    {
+        if (EditContext is not null && _fieldIdentifier.HasValue)
+        {
+            EditContext.NotifyFieldChanged(_fieldIdentifier.Value);
+        }
+    }
 
     protected override void OnParametersSet()
     {
@@ -114,6 +178,11 @@ public class DateFieldRoot : ComponentBase
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         var isInvalid = Invalid || IsOutOfRange();
+        
+        if (EditContext is not null && _fieldIdentifier.HasValue)
+        {
+            isInvalid |= EditContext.GetValidationMessages(_fieldIdentifier.Value).Any();
+        }
         
         builder.OpenComponent<CascadingValue<DateFieldContext>>(0);
         builder.AddAttribute(1, "Value", _context);

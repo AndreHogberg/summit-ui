@@ -32,17 +32,17 @@
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuContent class="demo-dropdown-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
-                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "New File")">
+                        <DropdownMenuItem TextValue="New File" class="demo-dropdown-item" OnSelect="@(() => selectedAction = "New File")">
                             New File
                         </DropdownMenuItem>
-                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Open File")">
+                        <DropdownMenuItem TextValue="Open File" class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Open File")">
                             Open File
                         </DropdownMenuItem>
                         <DropdownMenuSeparator class="demo-dropdown-separator" />
-                        <DropdownMenuItem class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Save")">
+                        <DropdownMenuItem TextValue="Save" class="demo-dropdown-item" OnSelect="@(() => selectedAction = "Save")">
                             Save
                         </DropdownMenuItem>
-                        <DropdownMenuItem class="demo-dropdown-item" Disabled="true">
+                        <DropdownMenuItem TextValue="New File" class="demo-dropdown-item" Disabled="true">
                             Export (Disabled)
                         </DropdownMenuItem>
                     </DropdownMenuContent>

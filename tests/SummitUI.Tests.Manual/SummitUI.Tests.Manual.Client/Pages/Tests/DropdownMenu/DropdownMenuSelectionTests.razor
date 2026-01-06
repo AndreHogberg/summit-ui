@@ -1,0 +1,83 @@
+@page "/tests/dropdown-menu/selection"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Dropdown Menu Selection Tests</h1>
+    
+    <div class="test-section">
+        <h2>Checkbox Items</h2>
+        <p data-testid="checkbox-status">Toolbar: @(_showToolbar ? "On" : "Off")</p>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="checkbox-trigger">
+                Settings
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="checkbox-content">
+                    <DropdownMenuCheckboxItem @bind-Checked="_showToolbar" class="menu-item" data-testid="checkbox-item-toolbar">
+                        Show Toolbar
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem @bind-Checked="_showFullNames" class="menu-item" data-testid="checkbox-item-names">
+                        Show Full Names
+                    </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Radio Items</h2>
+        <p data-testid="radio-status">Theme: @_theme</p>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="radio-trigger">
+                Theme
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="radio-content">
+                    <DropdownMenuRadioGroup @bind-Value="_theme" data-testid="radio-group" aria-label="Theme selection">
+                        <DropdownMenuRadioItem Value="@("light")" class="menu-item" data-testid="radio-item-light">Light</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem Value="@("dark")" class="menu-item" data-testid="radio-item-dark">Dark</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem Value="@("system")" class="menu-item" data-testid="radio-item-system">System</DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Grouped with Labels</h2>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="group-trigger">
+                Groups
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="group-content">
+                    <DropdownMenuGroup data-testid="group-1">
+                        <DropdownMenuGroupLabel class="menu-label" data-testid="group-label-1">Group 1</DropdownMenuGroupLabel>
+                        <DropdownMenuItem class="menu-item" data-testid="group-item-1">Item 1</DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+</div>
+}
+
+<style>
+    .menu-trigger { padding: 8px 16px; border: 1px solid #ccc; background: #f0f0f0; }
+    .menu-content { padding: 8px; border: 1px solid #ccc; background: white; display: flex; flex-direction: column; }
+    .menu-item { padding: 6px 12px; outline: none; display: flex; align-items: center; }
+    .menu-item:focus { background: #0078d4; color: white; }
+    .menu-label { padding: 6px 12px; font-weight: bold; color: #666; font-size: 0.8rem; }
+</style>
+
+@code {
+    private bool _showToolbar = true;
+    private bool _showFullNames = false;
+    private string _theme = "system";
+}

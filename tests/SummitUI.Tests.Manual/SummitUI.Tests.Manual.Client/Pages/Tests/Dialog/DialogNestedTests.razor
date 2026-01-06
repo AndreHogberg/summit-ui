@@ -1,0 +1,53 @@
+@page "/tests/dialog/nested"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Nested Dialog Tests</h1>
+    
+    <DialogRoot>
+        <DialogTrigger class="dialog-trigger" data-testid="parent-trigger">Open Parent Dialog</DialogTrigger>
+        <DialogPortal>
+            <DialogOverlay class="dialog-overlay" />
+            <DialogContent class="dialog-content" data-testid="parent-content" style="--summit-dialog-depth: 0">
+                <DialogTitle>Parent Dialog</DialogTitle>
+                <DialogRoot>
+                    <DialogTrigger class="dialog-trigger" data-testid="nested-trigger">Open Nested Dialog</DialogTrigger>
+                    <DialogPortal>
+                        <DialogOverlay class="dialog-overlay" style="background: rgba(0,0,0,0.3)" />
+                        <DialogContent class="dialog-content" data-testid="nested-content" style="--summit-dialog-depth: 1">
+                            <DialogTitle>Nested Dialog</DialogTitle>
+                            <DialogClose class="dialog-close" data-testid="nested-close">Close Nested</DialogClose>
+                        </DialogContent>
+                    </DialogPortal>
+                </DialogRoot>
+                <DialogClose class="dialog-close" data-testid="parent-close">Close Parent</DialogClose>
+            </DialogContent>
+        </DialogPortal>
+    </DialogRoot>
+</div>
+}
+
+<style>
+    .dialog-trigger { padding: 8px 16px; }
+    .dialog-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 24px;
+        background: white;
+        z-index: calc(100 + var(--summit-dialog-depth, 0));
+    }
+    .dialog-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: calc(90 + var(--summit-dialog-depth, 0));
+    }
+</style>

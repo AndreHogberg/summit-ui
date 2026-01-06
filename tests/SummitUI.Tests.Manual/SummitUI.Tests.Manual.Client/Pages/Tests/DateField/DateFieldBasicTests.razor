@@ -1,0 +1,103 @@
+@page "/tests/date-field/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>DateField Basic Tests</h1>
+    
+    <div class="test-section" data-testid="basic-section">
+        <label class="datefield-label" id="label-basic">Select a date</label>
+        <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" aria-labelledby="label-basic">
+            <DateFieldInput class="datefield-input" />
+        </DateFieldRoot>
+        <p data-testid="basic-value">Value: @(_date?.ToString("yyyy-MM-dd") ?? "None")</p>
+    </div>
+
+    <div class="test-section" data-testid="datetime-section">
+        <label>Select date and time</label>
+        <DateFieldRoot @bind-DateTimeValue="_dateTime" Format="yyyy-MM-dd" TimeFormat="HH:mm">
+            <DateFieldInput class="datefield-input" />
+        </DateFieldRoot>
+    </div>
+
+    <div class="test-section" data-testid="disabled-section">
+        <label>Disabled DateField</label>
+        <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" Disabled="true">
+            <DateFieldInput class="datefield-input" />
+        </DateFieldRoot>
+    </div>
+
+    <div class="test-section" data-testid="readonly-section">
+        <label>ReadOnly DateField</label>
+        <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" ReadOnly="true">
+            <DateFieldInput class="datefield-input" />
+        </DateFieldRoot>
+    </div>
+
+    <div class="test-section" data-testid="placeholder-section">
+        <label>Placeholder DateField</label>
+        <DateFieldRoot @bind-Value="_nullDate" Format="yyyy-MM-dd">
+            <DateFieldInput class="datefield-input" />
+        </DateFieldRoot>
+        <p data-testid="placeholder-value">Value: @(_nullDate?.ToString("yyyy-MM-dd") ?? "None")</p>
+    </div>
+
+    <div class="test-section" data-testid="locales-section">
+        <div data-testid="swedish-section">
+            <label>Swedish (yyyy-MM-dd)</label>
+            <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd">
+                <DateFieldInput class="datefield-input" />
+            </DateFieldRoot>
+        </div>
+        <div data-testid="us-section">
+            <label>US (MM/dd/yyyy)</label>
+            <DateFieldRoot @bind-Value="_date" Format="MM/dd/yyyy">
+                <DateFieldInput class="datefield-input" />
+            </DateFieldRoot>
+        </div>
+        <div data-testid="uk-section">
+            <label>UK (dd/MM/yyyy)</label>
+            <DateFieldRoot @bind-Value="_date" Format="dd/MM/yyyy">
+                <DateFieldInput class="datefield-input" />
+            </DateFieldRoot>
+        </div>
+        <div data-testid="german-section">
+            <label>German (dd.MM.yyyy)</label>
+            <DateFieldRoot @bind-Value="_date" Format="dd.MM.yyyy">
+                <DateFieldInput class="datefield-input" />
+            </DateFieldRoot>
+        </div>
+    </div>
+</div>
+}
+
+<style>
+    .datefield-input {
+        display: inline-flex;
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+        background: white;
+    }
+    
+    .datefield-input:focus-within {
+        border-color: #0078d4;
+        outline: 2px solid #0078d4;
+    }
+
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #eee;
+    }
+</style>
+
+@code {
+    private DateOnly? _date = new DateOnly(2025, 6, 15);
+    private DateTime? _dateTime = new DateTime(2025, 6, 15, 14, 30, 0);
+    private DateOnly? _nullDate = null;
+}

@@ -1,0 +1,81 @@
+@page "/tests/date-field/edit-form"
+@rendermode InteractiveWebAssembly
+@using System.ComponentModel.DataAnnotations
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>DateField EditForm Tests</h1>
+    
+    <div class="test-section" data-testid="editform-section">
+        <EditForm EditContext="_editContext" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            
+            <div class="field-container">
+                <label>Birth Date (Required)</label>
+                <DateFieldRoot @bind-Value="_model.BirthDate" @bind-Value:after="HandleStateChanged" Format="yyyy-MM-dd" Name="birthDate" Required="true" data-testid="editform-birthdate-input">
+                    <DateFieldInput class="datefield-input" />
+                </DateFieldRoot>
+                <ValidationMessage For="() => _model.BirthDate" class="validation-error" />
+                <p data-testid="editform-birthdate-value">Value: @(_model.BirthDate?.ToString("yyyy-MM-dd") ?? "None")</p>
+            </div>
+
+            <div class="field-container">
+                <label>Appointment (DateTime)</label>
+                <DateFieldRoot @bind-DateTimeValue="_model.AppointmentTime" @bind-DateTimeValue:after="HandleStateChanged" Format="yyyy-MM-dd" TimeFormat="HH:mm" Name="appointmentTime" data-testid="editform-appointment-input">
+                    <DateFieldInput class="datefield-input" />
+                </DateFieldRoot>
+                <p data-testid="editform-appointment-value">Value: @(_model.AppointmentTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</p>
+            </div>
+
+            <button type="submit" data-testid="editform-submit">Submit</button>
+            
+            @if (_submitted)
+            {
+                <p data-testid="editform-success-message" style="color: green;">Form submitted successfully!</p>
+            }
+        </EditForm>
+    </div>
+</div>
+}
+
+<style>
+    .datefield-input { display: inline-flex; padding: 4px 8px; border: 1px solid #ccc; background: white; }
+    .datefield-input:focus-within { border-color: #0078d4; }
+    .field-container { margin-bottom: 1.5rem; }
+    .validation-error { color: red; font-size: 0.8rem; }
+</style>
+
+@code {
+    private FormModel _model = new();
+    private bool _submitted;
+    private EditContext? _editContext;
+
+    protected override void OnInitialized()
+    {
+        _editContext = new(_model);
+    }
+
+    private void HandleStateChanged()
+    {
+        _editContext?.NotifyFieldChanged(FieldIdentifier.Create(() => _model.BirthDate));
+        _editContext?.NotifyFieldChanged(FieldIdentifier.Create(() => _model.AppointmentTime));
+    }
+
+    private void HandleValidSubmit()
+    {
+        _submitted = true;
+    }
+
+    public class FormModel
+    {
+        [Required(ErrorMessage = "Birth date is required")]
+        public DateOnly? BirthDate { get; set; }
+        
+        public DateTime? AppointmentTime { get; set; }
+    }
+}

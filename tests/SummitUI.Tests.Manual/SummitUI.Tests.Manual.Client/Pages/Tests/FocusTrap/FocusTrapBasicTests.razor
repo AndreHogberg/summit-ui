@@ -1,0 +1,102 @@
+@page "/tests/focus-trap/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>FocusTrap Basic Tests</h1>
+    
+    <div class="test-section">
+        <button type="button" @onclick="() => _showZero = true" data-testid="open-zero-items">Open Zero Items</button>
+        <button type="button" @onclick="() => _showOne = true" data-testid="open-one-item">Open One Item</button>
+        <button type="button" @onclick="() => _showTwo = true" data-testid="open-two-items">Open Two Items</button>
+        <button type="button" @onclick="() => _showMultiple = true" data-testid="open-multiple-items">Open Multiple Items</button>
+        <button type="button" data-testid="external-button">External Button</button>
+    </div>
+
+    @if (_showZero)
+    {
+        <div data-testid="zero-items-dialog" class="dialog" tabindex="-1">
+            <FocusTrap>
+                <div class="dialog-content">
+                    <p>No tabbable items here.</p>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+
+    @if (_showOne)
+    {
+        <div data-testid="one-item-dialog" class="dialog">
+            <FocusTrap>
+                <div class="dialog-content">
+                    <button type="button" @onclick="() => _showOne = false" data-testid="one-item-close">Close</button>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+
+    @if (_showTwo)
+    {
+        <div data-testid="two-items-dialog" class="dialog">
+            <FocusTrap>
+                <div class="dialog-content">
+                    <button type="button" @onclick="() => _showTwo = false" data-testid="two-items-cancel">Cancel</button>
+                    <button type="button" @onclick="() => _showTwo = false" data-testid="two-items-confirm">Confirm</button>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+
+    @if (_showMultiple)
+    {
+        <div data-testid="multiple-items-dialog" class="dialog">
+            <FocusTrap>
+                <div class="dialog-content">
+                    <input type="text" placeholder="Name" data-testid="multiple-items-input" />
+                    <input type="email" placeholder="Email" data-testid="multiple-items-email" />
+                    <button type="button" @onclick="() => _showMultiple = false" data-testid="multiple-items-cancel">Cancel</button>
+                    <button type="button" @onclick="() => _showMultiple = false" data-testid="multiple-items-submit">Submit</button>
+                </div>
+            </FocusTrap>
+        </div>
+    }
+</div>
+}
+
+<style>
+    .dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 100;
+    }
+    
+    .dialog-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .test-section {
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+    }
+</style>
+
+@code {
+    private bool _showZero;
+    private bool _showOne;
+    private bool _showTwo;
+    private bool _showMultiple;
+}

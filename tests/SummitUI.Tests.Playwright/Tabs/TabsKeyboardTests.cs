@@ -12,8 +12,8 @@ public class TabsKeyboardTests : SummitTestBase
     [Test]
     public async Task ArrowRight_ShouldFocusNextTab()
     {
-        var trigger1 = Page.GetByTestId("trigger-account");
-        var trigger2 = Page.GetByTestId("trigger-password");
+        var trigger1 = Page.GetByTestId("auto-trigger-account");
+        var trigger2 = Page.GetByTestId("auto-trigger-password");
 
         await trigger1.FocusAsync();
         await Page.Keyboard.PressAsync("ArrowRight");

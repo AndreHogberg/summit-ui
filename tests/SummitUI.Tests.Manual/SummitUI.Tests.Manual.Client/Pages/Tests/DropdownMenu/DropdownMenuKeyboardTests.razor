@@ -1,0 +1,61 @@
+@page "/tests/dropdown-menu/keyboard"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Dropdown Menu Keyboard Tests</h1>
+    
+    <div class="test-section">
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="keyboard-trigger">
+                Open Menu
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="keyboard-content">
+                    <DropdownMenuItem class="menu-item" data-testid="item-apple" TextValue="Apple">Apple</DropdownMenuItem>
+                    <DropdownMenuItem class="menu-item" data-testid="item-banana" TextValue="Banana">Banana</DropdownMenuItem>
+                    <DropdownMenuItem class="menu-item" data-testid="item-blueberry" TextValue="Blueberry">Blueberry</DropdownMenuItem>
+                    <DropdownMenuItem class="menu-item" data-testid="item-cherry" TextValue="Cherry">Cherry</DropdownMenuItem>
+                    <DropdownMenuItem class="menu-item" Disabled="true" data-testid="item-disabled-date" TextValue="Date">Date (Disabled)</DropdownMenuItem>
+                    <DropdownMenuItem class="menu-item" data-testid="item-elderberry" TextValue="Elderberry">Elderberry</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+</div>
+}
+
+<style>
+    .menu-trigger {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+    }
+    
+    .menu-content {
+        padding: 8px;
+        border: 1px solid #ccc;
+        background: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menu-item {
+        padding: 6px 12px;
+        outline: none;
+    }
+
+    .menu-item:focus {
+        background: #0078d4;
+        color: white;
+    }
+
+    .menu-item[data-disabled] {
+        color: #ccc;
+    }
+</style>

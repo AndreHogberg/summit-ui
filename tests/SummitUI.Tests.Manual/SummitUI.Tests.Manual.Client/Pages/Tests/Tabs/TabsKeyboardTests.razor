@@ -13,7 +13,7 @@ else
     <!-- Auto activation mode (default) - activates on arrow navigation -->
     <div class="test-section" data-testid="auto-section">
         <h2>Auto Activation Mode</h2>
-        <TabsRoot DefaultValue="account" ActivationMode="TabsActivationMode.Auto" data-testid="auto-tabs">
+        <TabsRoot DefaultValue="account" ActivationMode="TabsActivationMode.Auto">
             <TabsList class="tabs-list" data-testid="auto-tabs-list">
                 <TabsTrigger Value="account" class="tabs-trigger" data-testid="auto-trigger-account">Account</TabsTrigger>
                 <TabsTrigger Value="password" class="tabs-trigger" data-testid="auto-trigger-password">Password</TabsTrigger>
@@ -34,7 +34,7 @@ else
     <!-- Manual activation mode - requires Enter/Space to activate -->
     <div class="test-section" data-testid="manual-section">
         <h2>Manual Activation Mode</h2>
-        <TabsRoot DefaultValue="tab1" ActivationMode="TabsActivationMode.Manual" data-testid="manual-tabs">
+        <TabsRoot DefaultValue="tab1" ActivationMode="TabsActivationMode.Manual">
             <TabsList class="tabs-list" data-testid="manual-tabs-list">
                 <TabsTrigger Value="tab1" class="tabs-trigger" data-testid="manual-trigger-1">Tab 1</TabsTrigger>
                 <TabsTrigger Value="tab2" class="tabs-trigger" data-testid="manual-trigger-2">Tab 2</TabsTrigger>
@@ -55,7 +55,7 @@ else
     <!-- Horizontal orientation (default) -->
     <div class="test-section" data-testid="horizontal-section">
         <h2>Horizontal Orientation</h2>
-        <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Horizontal" data-testid="horizontal-tabs">
+        <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Horizontal">
             <TabsList class="tabs-list" data-testid="horizontal-tabs-list">
                 <TabsTrigger Value="first" class="tabs-trigger" data-testid="horizontal-trigger-first">First</TabsTrigger>
                 <TabsTrigger Value="second" class="tabs-trigger" data-testid="horizontal-trigger-second">Second</TabsTrigger>
@@ -71,7 +71,7 @@ else
     <div class="test-section" data-testid="vertical-section">
         <h2>Vertical Orientation</h2>
         <div class="d-flex">
-            <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Vertical" data-testid="vertical-tabs">
+            <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Vertical">
                 <TabsList class="tabs-list-vertical" data-testid="vertical-tabs-list">
                     <TabsTrigger Value="first" class="tabs-trigger-vertical" data-testid="vertical-trigger-first">First</TabsTrigger>
                     <TabsTrigger Value="second" class="tabs-trigger-vertical" data-testid="vertical-trigger-second">Second</TabsTrigger>
@@ -89,7 +89,7 @@ else
     <!-- Wrap around navigation -->
     <div class="test-section" data-testid="wrap-section">
         <h2>Wrap Around Navigation (Loop enabled)</h2>
-        <TabsRoot DefaultValue="first" Loop="true" data-testid="wrap-tabs">
+        <TabsRoot DefaultValue="first" Loop="true">
             <TabsList class="tabs-list" data-testid="wrap-tabs-list">
                 <TabsTrigger Value="first" class="tabs-trigger" data-testid="wrap-trigger-first">First</TabsTrigger>
                 <TabsTrigger Value="second" class="tabs-trigger" data-testid="wrap-trigger-second">Second</TabsTrigger>

@@ -116,8 +116,9 @@ public class DropdownMenuRadioItem : ComponentBase, IDisposable
 
         await RadioContext.OnValueChangeAsync(Value);
         await OnSelect.InvokeAsync();
-
-        // Don't close menu for radio items
+        
+        // Close menu after radio selection (single choice made)
+        await Context.SelectItemAsync();
     }
 
     private async Task HandleMouseEnterAsync()
