@@ -84,7 +84,10 @@ export async function initializeFloating(referenceEl, floatingEl, arrowEl, optio
     if (!referenceEl || !floatingEl) return null;
 
     const instanceId = `floating-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const placement = getPlacement(options.side || 'bottom', options.align || 'center');
+    const placement = getPlacement(options.side || options.Side || 'bottom', options.align || options.Align || 'center');
+    
+    // Normalize options to handle both camelCase and PascalCase from .NET serialization
+    const constrainSize = options.constrainSize || options.ConstrainSize || false;
 
     // Build middleware array
     const middleware = [
@@ -105,15 +108,22 @@ export async function initializeFloating(referenceEl, floatingEl, arrowEl, optio
     }
 
     // Add size middleware if constrainSize is enabled (for selects/dropdowns)
-    if (options.constrainSize) {
+    // Track if initial size has been applied to prevent bouncing on scroll
+    let initialSizeApplied = false;
+    if (constrainSize) {
         middleware.push(
             size({
                 padding: options.collisionPadding || 8,
                 apply({ availableWidth, availableHeight, elements }) {
-                    Object.assign(elements.floating.style, {
-                        maxWidth: `${availableWidth}px`,
-                        maxHeight: `${availableHeight}px`
-                    });
+                    // Only apply size constraints on initial positioning
+                    // Applying on every scroll causes bouncing due to layout thrashing
+                    if (!initialSizeApplied) {
+                        Object.assign(elements.floating.style, {
+                            maxWidth: `${availableWidth}px`,
+                            maxHeight: `${availableHeight}px`
+                        });
+                        initialSizeApplied = true;
+                    }
                 }
             })
         );

@@ -50,7 +50,7 @@ public class SelectPortal<TValue> : ComponentBase, IDisposable where TValue : no
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", ActualContainerId);
         builder.AddAttribute(2, "data-summit-select-portal", "");
-        builder.AddAttribute(3, "style", "position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;");
+        builder.AddAttribute(3, "style", "position: absolute; top: 0; left: 0; z-index: 9999; pointer-events: none;");
         builder.AddElementReferenceCapture(4, elementRef => _containerRef = elementRef);
 
         builder.OpenElement(5, "div");
