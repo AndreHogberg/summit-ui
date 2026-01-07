@@ -1,0 +1,366 @@
+@page "/docs/mediaquery"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+@using SummitUI.Docs.Design
+<PageTitle>SummitUI - MediaQuery</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Utility</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            MediaQuery
+            <SuPromptButton ComponentName="MediaQuery" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A reactive component that evaluates CSS media queries and provides the match state to its children.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <MediaQuery Query="(min-width: 800px)" Context="IsLarge">
+                    <div class="flex items-center gap-3">
+                        <div class="@(IsLarge ? "w-4 h-4 rounded-full bg-green-500" : "w-4 h-4 rounded-full bg-amber-500")"></div>
+                        <span class="text-sm text-su-foreground">
+                            Viewport is <strong>@(IsLarge ? "800px or wider" : "less than 800px")</strong>
+                        </span>
+                    </div>
+                </MediaQuery>
+
+                <MediaQuery Query="(min-width: 1024px)" Context="IsDesktop">
+                    <div class="flex items-center gap-3">
+                        <div class="@(IsDesktop ? "w-4 h-4 rounded-full bg-green-500" : "w-4 h-4 rounded-full bg-amber-500")"></div>
+                        <span class="text-sm text-su-foreground">
+                            Viewport is <strong>@(IsDesktop ? "1024px or wider (desktop)" : "less than 1024px (mobile/tablet)")</strong>
+                        </span>
+                    </div>
+                </MediaQuery>
+
+                <MediaQuery Query="(orientation: landscape)" Context="IsLandscape">
+                    <div class="flex items-center gap-3">
+                        <div class="@(IsLandscape ? "w-4 h-4 rounded-full bg-blue-500" : "w-4 h-4 rounded-full bg-pink-500")"></div>
+                        <span class="text-sm text-su-foreground">
+                            Orientation: <strong>@(IsLandscape ? "Landscape" : "Portrait")</strong>
+                        </span>
+                    </div>
+                </MediaQuery>
+
+                <MediaQuery Query="(hover: hover)" Context="HasHover">
+                    <div class="flex items-center gap-3">
+                        <div class="@(HasHover ? "w-4 h-4 rounded-full bg-cyan-500" : "w-4 h-4 rounded-full bg-orange-500")"></div>
+                        <span class="text-sm text-su-foreground">
+                            Input device: <strong>@(HasHover ? "Supports hover (mouse)" : "No hover (touch)")</strong>
+                        </span>
+                    </div>
+                </MediaQuery>
+
+                <p class="text-xs text-su-muted-foreground mt-2">
+                    Try resizing your browser window to see the values update in real-time.
+                </p>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Reactive updates when viewport or media features change
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Supports any valid CSS media query
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                SSR-friendly with configurable initial value
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                No wrapper element - renders child content directly
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                OnChange callback for side effects
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Automatic cleanup of event listeners
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the component and provide a media query string:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-3">
+            <SuHeading Level="SuHeadingLevel.H3">MediaQuery</SuHeading>
+            <SuTable>
+                <SuTableHeader>
+                    <SuTableRow>
+                        <SuTableHead>Property</SuTableHead>
+                        <SuTableHead>Type</SuTableHead>
+                        <SuTableHead>Default</SuTableHead>
+                        <SuTableHead>Description</SuTableHead>
+                    </SuTableRow>
+                </SuTableHeader>
+                <SuTableBody>
+                    @foreach (var prop in mediaQueryProperties)
+                    {
+                        <SuTableRow>
+                            <SuTableCell class="font-mono flex flex-row gap-2 text-su-primary font-medium">
+                                @prop.Name
+                                @if (prop.Required)
+                                {
+                                    <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                }
+                            </SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                        </SuTableRow>
+                    }
+                </SuTableBody>
+            </SuTable>
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Responsive Layout</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Show different content based on viewport width.</SuText>
+                <SuCodeBlock Code="@responsiveLayoutCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">OS Dark Mode Detection</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Detect the user's operating system color scheme preference. Note: This detects the OS setting, not website theme toggles.</SuText>
+                <SuCodeBlock Code="@darkModeCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With OnChange Callback</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Execute side effects when the media query match changes.</SuText>
+                <SuCodeBlock Code="@onChangeCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Multiple Breakpoints</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Combine multiple MediaQuery components for complex responsive layouts.</SuText>
+                <SuCodeBlock Code="@multipleBreakpointsCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">SSR Initial Value</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Provide an initial value for server-side rendering before JavaScript evaluates.</SuText>
+                <SuCodeBlock Code="@ssrCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Other Media Features</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use any valid CSS media query, not just viewport width.</SuText>
+                <SuCodeBlock Code="@otherFeaturesCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Common Media Queries *@
+    <SuSection Title="Common Media Queries">
+        <div class="flex flex-col gap-3">
+            <SuText Size="SuTextSize.Small" Muted="true">Here are some commonly used media queries you can use with this component:</SuText>
+            <SuTable>
+                <SuTableHeader>
+                    <SuTableRow>
+                        <SuTableHead>Query</SuTableHead>
+                        <SuTableHead>Description</SuTableHead>
+                    </SuTableRow>
+                </SuTableHeader>
+                <SuTableBody>
+                    @foreach (var query in commonQueries)
+                    {
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium text-sm">@query.Name</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">@query.Description</SuTableCell>
+                        </SuTableRow>
+                    }
+                </SuTableBody>
+            </SuTable>
+        </div>
+    </SuSection>
+
+    @* SSR Considerations *@
+    <SuSection Title="SSR Considerations">
+        <div class="flex flex-col gap-4">
+            <SuText Size="SuTextSize.Small" Muted="true">
+                During server-side rendering, JavaScript is not available to evaluate media queries. The component will use the <code>InitialValue</code> parameter (default: <code>false</code>) until the page becomes interactive and JavaScript can evaluate the actual match state.
+            </SuText>
+            <SuText Size="SuTextSize.Small" Muted="true">
+                This means there may be a brief flash of content when the actual value differs from the initial value. Consider:
+            </SuText>
+            <ul class="grid gap-2 text-sm text-su-muted-foreground ml-4">
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">1.</span>
+                    Setting <code>InitialValue</code> to match your most common user scenario
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">2.</span>
+                    Using CSS media queries for critical layout styles
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">3.</span>
+                    Adding loading states or transitions to smooth the experience
+                </li>
+            </ul>
+        </div>
+    </SuSection>
+</div>
+
+@code {
+    private List<SuApiProperty> mediaQueryProperties = new()
+    {
+        new() { Name = "Query", Type = "string", Required = true, Description = "CSS media query string to evaluate (e.g., \"(min-width: 800px)\")" },
+        new() { Name = "ChildContent", Type = "RenderFragment<bool>?", Description = "Child content receiving the match state as a boolean via Context" },
+        new() { Name = "OnChange", Type = "EventCallback<bool>", Description = "Callback invoked when the media query match state changes" },
+        new() { Name = "InitialValue", Type = "bool", Default = "false", Description = "Initial value before JavaScript evaluates (for SSR)" }
+    };
+
+    private List<SuApiProperty> commonQueries = new()
+    {
+        new() { Name = "(min-width: 640px)", Type = "", Description = "Small screens and up (sm breakpoint)" },
+        new() { Name = "(min-width: 768px)", Type = "", Description = "Medium screens and up (md breakpoint)" },
+        new() { Name = "(min-width: 1024px)", Type = "", Description = "Large screens and up (lg breakpoint)" },
+        new() { Name = "(min-width: 1280px)", Type = "", Description = "Extra large screens and up (xl breakpoint)" },
+        new() { Name = "(prefers-color-scheme: dark)", Type = "", Description = "User prefers dark color scheme" },
+        new() { Name = "(prefers-color-scheme: light)", Type = "", Description = "User prefers light color scheme" },
+        new() { Name = "(prefers-reduced-motion: reduce)", Type = "", Description = "User prefers reduced motion" },
+        new() { Name = "(orientation: portrait)", Type = "", Description = "Device is in portrait orientation" },
+        new() { Name = "(orientation: landscape)", Type = "", Description = "Device is in landscape orientation" },
+        new() { Name = "(hover: hover)", Type = "", Description = "Primary input supports hover" },
+        new() { Name = "(pointer: coarse)", Type = "", Description = "Primary input is touch/coarse pointer" },
+        new() { Name = "(pointer: fine)", Type = "", Description = "Primary input is mouse/fine pointer" }
+    };
+
+    private const string anatomyCode = @"<MediaQuery Query=""(min-width: 800px)"" Context=""IsLarge"">
+    @if (IsLarge)
+    {
+        <DesktopLayout />
+    }
+    else
+    {
+        <MobileLayout />
+    }
+</MediaQuery>";
+
+    private const string responsiveLayoutCode = @"<MediaQuery Query=""(min-width: 800px)"" Context=""IsDesktop"">
+    @if (IsDesktop)
+    {
+        <div class=""grid grid-cols-3 gap-4"">
+            <Sidebar />
+            <MainContent class=""col-span-2"" />
+        </div>
+    }
+    else
+    {
+        <div class=""flex flex-col gap-4"">
+            <MobileNav />
+            <MainContent />
+        </div>
+    }
+</MediaQuery>";
+
+    private const string darkModeCode = @"@* Detects OS color scheme, not website theme toggles *@
+<MediaQuery Query=""(prefers-color-scheme: dark)"" Context=""IsDarkMode"">
+    <div class=""@(IsDarkMode ? ""dark-theme"" : ""light-theme"")"">
+        <p>OS prefers: @(IsDarkMode ? ""Dark"" : ""Light"")</p>
+    </div>
+</MediaQuery>";
+
+    private const string onChangeCode = @"<MediaQuery Query=""(min-width: 1024px)"" Context=""IsLarge"" OnChange=""HandleBreakpointChange"">
+    <p>Large screen: @IsLarge</p>
+</MediaQuery>
+
+@code {
+    private void HandleBreakpointChange(bool isLarge)
+    {
+        if (isLarge)
+        {
+            // Close mobile menu when switching to desktop
+            isMobileMenuOpen = false;
+        }
+
+        Console.WriteLine($""Breakpoint changed: {(isLarge ? ""large"" : ""small"")}"");
+    }
+}";
+
+    private const string multipleBreakpointsCode = @"<MediaQuery Query=""(min-width: 1024px)"" Context=""IsLarge"">
+    <MediaQuery Query=""(min-width: 768px)"" Context=""IsMedium"">
+        @if (IsLarge)
+        {
+            <p>Desktop layout (3 columns)</p>
+        }
+        else if (IsMedium)
+        {
+            <p>Tablet layout (2 columns)</p>
+        }
+        else
+        {
+            <p>Mobile layout (1 column)</p>
+        }
+    </MediaQuery>
+</MediaQuery>";
+
+    private const string ssrCode = @"@* Set InitialValue to true if most users are on desktop *@
+<MediaQuery Query=""(min-width: 800px)"" Context=""IsDesktop"" InitialValue=""true"">
+    @if (IsDesktop)
+    {
+        <DesktopNav />
+    }
+    else
+    {
+        <MobileNav />
+    }
+</MediaQuery>";
+
+    private const string otherFeaturesCode = @"@* Detect reduced motion preference *@
+<MediaQuery Query=""(prefers-reduced-motion: reduce)"" Context=""PrefersReducedMotion"">
+    <div class=""@(PrefersReducedMotion ? """" : ""animate-bounce"")"">
+        Animated element
+    </div>
+</MediaQuery>
+
+@* Detect touch device *@
+<MediaQuery Query=""(pointer: coarse)"" Context=""IsTouchDevice"">
+    @if (IsTouchDevice)
+    {
+        <p>Tap to interact</p>
+    }
+    else
+    {
+        <p>Click to interact</p>
+    }
+</MediaQuery>
+
+@* Detect high contrast preference *@
+<MediaQuery Query=""(prefers-contrast: more)"" Context=""PrefersHighContrast"">
+    <div class=""@(PrefersHighContrast ? ""border-4 border-black"" : ""border"")"">
+        High contrast aware element
+    </div>
+</MediaQuery>";
+}

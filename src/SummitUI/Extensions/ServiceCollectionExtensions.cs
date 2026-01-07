@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<SummitUtilities>();
         services.AddScoped<FocusTrapJsInterop>();
         services.AddScoped<FloatingJsInterop>();
+        services.AddScoped<MediaQueryJsInterop>();
 
         // Component-specific services
         services.AddScoped<AccordionJsInterop>();
