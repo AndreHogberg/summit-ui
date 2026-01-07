@@ -48,6 +48,10 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Install npm dependencies
+        working-directory: src/SummitUI
+        run: npm ci
+
       - name: Update version in csproj
         run: |
           VERSION="${{ inputs.version }}"
@@ -60,10 +64,10 @@ jobs:
           grep "<Version>" "$CSPROJ_PATH"
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore src/SummitUI/SummitUI.csproj
 
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build src/SummitUI/SummitUI.csproj --configuration Release --no-restore
 
       - name: Create NuGet package
         run: dotnet pack src/SummitUI/SummitUI.csproj --configuration Release --no-build --output ./nupkg
