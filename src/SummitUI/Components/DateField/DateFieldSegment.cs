@@ -153,6 +153,13 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
             return null;
         }
 
+        // For date segments, use calendar-aware values for ARIA
+        // For time segments, use standard Gregorian values (time is universal)
+        if (Segment.Type is DateFieldSegmentType.Year or DateFieldSegmentType.Month or DateFieldSegmentType.Day)
+        {
+            return Context.GetCalendarSegmentValue(Segment.Type);
+        }
+
         return Context.GetSegmentValue(Segment.Type);
     }
 

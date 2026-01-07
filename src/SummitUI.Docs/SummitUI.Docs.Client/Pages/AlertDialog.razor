@@ -1,7 +1,7 @@
 @page "/docs/alert-dialog"
 @layout DocsLayout
 @rendermode InteractiveWebAssembly
-@using SummitUI.Docs.Design
+
 <PageTitle>SummitUI - AlertDialog</PageTitle>
 
 <div class="flex flex-col gap-12">
@@ -80,25 +80,37 @@
         <SuAlert Variant="SuAlertVariant.Info">
             <SuAlertTitle>Required Setup</SuAlertTitle>
             <SuAlertDescription>
-                AlertDialog requires a provider at the app root and an interactive render mode.
+                AlertDialog requires a provider component with an interactive render mode placed in your layout.
             </SuAlertDescription>
         </SuAlert>
 
         <div class="mt-6 flex flex-col gap-6">
-            <SuText Size="SuTextSize.Small" Muted="true">
-                Create a wrapper component to enable interactive render mode for the provider:
-            </SuText>
-            <SuCodeBlock Code="@setupWrapperCode" Language="razor" />
+            <div class="flex flex-col gap-2">
+                <SuHeading Level="SuHeadingLevel.H4">1. Create the AlertDialog component</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Create a component that wraps <code>AlertDialogProvider</code> with your desired styling:
+                </SuText>
+            </div>
+            <SuCodeBlock Code="@setupComponentCode" Language="razor" />
 
-            <SuText Size="SuTextSize.Small" Muted="true">
-                Then place the wrapper in your MainLayout or App.razor:
-            </SuText>
+            <div class="flex flex-col gap-2">
+                <SuHeading Level="SuHeadingLevel.H4">2. Add to your layout</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Place the component in your layout with an interactive render mode. This makes it available app-wide:
+                </SuText>
+            </div>
             <SuCodeBlock Code="@setupPlacementCode" Language="razor" />
+
+            <SuAlert Variant="SuAlertVariant.Default">
+                <SuAlertDescription>
+                    The <code>@@rendermode</code> directive enables interactivity for the dialog. Without it, the dialog cannot respond to user input.
+                </SuAlertDescription>
+            </SuAlert>
         </div>
     </SuSection>
 
     @* Anatomy *@
-    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+    <SuSection Title="Anatomy" Description="The AlertDialog is composed of nested components that you structure within the provider:">
         <SuCodeBlock Code="@anatomyCode" Language="razor" />
     </SuSection>
 
@@ -404,51 +416,43 @@
         new() { Name = "Shift + Tab", Description = "Moves focus to previous focusable element", Type = "" }
     };
 
-    private const string setupWrapperCode = @"@* AlertDialogWrapper.razor *@
-@rendermode InteractiveWebAssembly
+    private const string setupComponentCode = @"@* Components/AlertDialog.razor *@
+<AlertDialogProvider Context=""alert"">
+    <AlertDialogPortal>
+        <AlertDialogOverlay class=""overlay-styles"" />
+        <AlertDialogContent class=""content-styles"">
+            <AlertDialogTitle class=""title-styles"" />
+            <AlertDialogDescription class=""description-styles"" />
+            <div class=""actions"">
+                <AlertDialogCancel class=""cancel-button-styles"" />
+                <AlertDialogConfirm class=""confirm-button-styles"" />
+            </div>
+        </AlertDialogContent>
+    </AlertDialogPortal>
+</AlertDialogProvider>";
 
-<AlertDialogProvider>
-    @ChildContent
-</AlertDialogProvider>
-
-@code {
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
-}";
-
-    private const string setupPlacementCode = @"@* In your MainLayout.razor or App.razor *@
+    private const string setupPlacementCode = @"@* In your layout (e.g., MainLayout.razor) *@
 @inherits LayoutComponentBase
 
-<AlertDialogWrapper>
-    <main class=""main-content"">
-        @Body
-    </main>
-</AlertDialogWrapper>";
+<AlertDialog @rendermode=""InteractiveWebAssembly"" />
 
-    private const string anatomyCode = @"@* In your AlertDialogWrapper.razor *@
-@rendermode InteractiveWebAssembly
+<main>
+    @Body
+</main>";
 
-<AlertDialogProvider>
-    @ChildContent
-</AlertDialogProvider>
-
-@code {
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
-}
-
-@* The provider renders this structure internally *@
-<DialogPortal>
-    <AlertDialogOverlay />
-    <AlertDialogContent>
-        <AlertDialogTitle />
-        <AlertDialogDescription />
-        <div class=""actions"">
-            <AlertDialogCancel />
-            <AlertDialogConfirm />
-        </div>
-    </AlertDialogContent>
-</DialogPortal>";
+    private const string anatomyCode = @"<AlertDialogProvider Context=""alert"">
+    <AlertDialogPortal>
+        <AlertDialogOverlay />
+        <AlertDialogContent>
+            <AlertDialogTitle />
+            <AlertDialogDescription />
+            <div class=""actions"">
+                <AlertDialogCancel />
+                <AlertDialogConfirm />
+            </div>
+        </AlertDialogContent>
+    </AlertDialogPortal>
+</AlertDialogProvider>";
 
     private const string simpleExampleCode = @"@inject IAlertDialogService AlertDialogService
 
@@ -459,7 +463,7 @@
 @code {
     private async Task ShowConfirm()
     {
-        var confirmed = await AlertDialog.ConfirmAsync(
+        var confirmed = await AlertDialogService.ConfirmAsync(
             ""Are you sure you want to proceed?"",
             new AlertDialogOptions
             {
@@ -488,7 +492,7 @@
 @code {
     private async Task DeleteItem()
     {
-        var confirmed = await AlertDialog.ConfirmAsync(
+        var confirmed = await AlertDialogService.ConfirmAsync(
             ""This action cannot be undone. This will permanently delete the item and all associated data."",
             new AlertDialogOptions
             {
@@ -516,7 +520,7 @@
 @code {
     private async Task ShowCustomDialog()
     {
-        var result = await AlertDialog.ConfirmAsync(
+        var result = await AlertDialogService.ConfirmAsync(
             ""Please review the terms and conditions before continuing. By clicking accept, you agree to be bound by these terms."",
             new AlertDialogOptions
             {
@@ -551,7 +555,7 @@
     private async Task ShowSimpleConfirm()
     {
         // Simple confirmation with defaults
-        var confirmed = await AlertDialog.ConfirmAsync(""Are you sure?"");
+        var confirmed = await AlertDialogService.ConfirmAsync(""Are you sure?"");
 
         if (confirmed)
         {
@@ -562,7 +566,7 @@
     private async Task ShowDestructiveConfirm()
     {
         // Destructive action with warning
-        var confirmed = await AlertDialog.ConfirmAsync(
+        var confirmed = await AlertDialogService.ConfirmAsync(
             ""Permanently delete this item?"",
             new AlertDialogOptions
             {
@@ -579,7 +583,7 @@
     private async Task ShowNoEscapeConfirm()
     {
         // Dialog that cannot be dismissed with Escape
-        var confirmed = await AlertDialog.ConfirmAsync(
+        var confirmed = await AlertDialogService.ConfirmAsync(
             ""This requires your attention. Please confirm to continue."",
             new AlertDialogOptions
             {

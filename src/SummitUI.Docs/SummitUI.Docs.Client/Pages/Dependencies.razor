@@ -1,0 +1,269 @@
+@page "/docs/dependencies"
+@layout DocsLayout
+<PageTitle>SummitUI - Dependencies</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Architecture</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1">JavaScript Dependencies</SuHeading>
+        <SuText Lead="true" Muted="true">
+            SummitUI uses a small set of JavaScript dependencies for functionality that cannot be achieved 
+            with pure C# or that would require significantly more code to implement correctly.
+        </SuText>
+    </div>
+
+    @* Philosophy *@
+    <SuSection Title="Our Approach">
+        <SuText Muted="true">
+            SummitUI follows a "C# first" philosophy. We prefer implementing logic in C# whenever possible, 
+            reserving JavaScript for tasks that are impossible in C# or require access to browser APIs not 
+            available through Blazor's standard interop. All JavaScript dependencies are bundled locally - 
+            we never use external CDNs.
+        </SuText>
+        <SuAlert>
+            <div class="text-sm">
+                <strong class="text-su-foreground">No CDN Dependencies:</strong> All JavaScript is bundled into a single 
+                <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> file and served from your application. 
+                This eliminates external network dependencies and ensures offline functionality.
+            </div>
+        </SuAlert>
+    </SuSection>
+
+    @* Dependencies Overview *@
+    <SuSection Title="Dependencies" Description="Current JavaScript dependencies used by SummitUI:">
+        <div class="flex flex-col gap-6">
+            @* Floating UI *@
+            <SuCard class="p-5">
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <SuHeading Level="SuHeadingLevel.H3">@@floating-ui/dom</SuHeading>
+                            <SuText Muted="true" Size="SuTextSize.Small" class="mt-1">v1.7.4</SuText>
+                        </div>
+                        <SuBadge Variant="SuBadgeVariant.Secondary" Size="SuSize.Small">~15 KB</SuBadge>
+                    </div>
+                    <SuText Muted="true">
+                        Floating UI provides intelligent positioning for floating elements like popovers, 
+                        dropdowns, and tooltips. It handles complex positioning logic including:
+                    </SuText>
+                    <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                        <li class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                            <span>Automatic flip when content would overflow viewport boundaries</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                            <span>Shift positioning to keep content visible within scroll containers</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                            <span>Arrow positioning that tracks the reference element</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                            <span>Size constraints based on available space</span>
+                        </li>
+                    </ul>
+                    <SuText Muted="true" Size="SuTextSize.Small">
+                        <strong>Used by:</strong> Popover, Select, DropdownMenu, and any component with floating content.
+                    </SuText>
+                </div>
+            </SuCard>
+
+            @* Internationalized Date *@
+            <SuCard class="p-5">
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <SuHeading Level="SuHeadingLevel.H3">@@internationalized/date</SuHeading>
+                            <SuText Muted="true" Size="SuTextSize.Small" class="mt-1">v3.10.1</SuText>
+                        </div>
+                        <SuBadge Variant="SuBadgeVariant.Secondary" Size="SuSize.Small">~45 KB</SuBadge>
+                    </div>
+                    <SuText Muted="true">
+                        This library from Adobe provides calendar system support for displaying dates in non-Gregorian calendars. 
+                        It's essential for truly international date handling that .NET's built-in culture info cannot provide.
+                    </SuText>
+                    
+                    <SuHeading Level="SuHeadingLevel.H4">Supported Calendar Systems</SuHeading>
+                    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Gregorian
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Japanese (Eras)
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Buddhist
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Taiwan (Minguo)
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Persian (Solar Hijri)
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Indian (Saka)
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Islamic (Umm al-Qura)
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Islamic (Civil)
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Islamic (Tabular)
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Hebrew
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Coptic
+                        </div>
+                        <div class="flex items-center gap-2 text-su-muted-foreground">
+                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
+                            Ethiopic
+                        </div>
+                    </div>
+                    
+                    <SuText Muted="true" Size="SuTextSize.Small">
+                        <strong>Used by:</strong> Calendar, DateField, and DatePicker components.
+                    </SuText>
+                </div>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* Why Not .NET CultureInfo *@
+    <SuSection Title="Why Not .NET CultureInfo?">
+        <SuText Muted="true">
+            .NET provides <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization.CultureInfo</code> 
+            and calendar classes like <code class="text-xs bg-su-muted px-1 py-0.5 rounded">JapaneseCalendar</code>, 
+            <code class="text-xs bg-su-muted px-1 py-0.5 rounded">HebrewCalendar</code>, etc. However, there are 
+            significant limitations when targeting Blazor WebAssembly:
+        </SuText>
+
+        <div class="flex flex-col gap-4 mt-4">
+            <SuCard class="p-4 border-l-4 border-l-amber-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">ICU Data Size</SuHeading>
+                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
+                    .NET has optimized ICU for WebAssembly, reducing it from ~24 MB (full) to <strong>~1.4 MB</strong> 
+                    (~300 KB with Brotli). While this is a significant improvement, it's still much larger than 
+                    @@internationalized/date at ~45 KB (~15 KB gzipped). The sharded ICU data also has limitations - 
+                    it doesn't include all locales and some APIs like <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo.NativeName</code> 
+                    are not supported.
+                </SuText>
+            </SuCard>
+
+            <SuCard class="p-4 border-l-4 border-l-amber-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">Invariant Globalization Mode</SuHeading>
+                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
+                    Many Blazor WebAssembly projects use <code class="text-xs bg-su-muted px-1 py-0.5 rounded">InvariantGlobalization</code> 
+                    to reduce bundle size. In this mode, non-Gregorian calendars are not available at all - 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">new JapaneseCalendar()</code> throws 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">PlatformNotSupportedException</code>.
+                </SuText>
+            </SuCard>
+
+            <SuCard class="p-4 border-l-4 border-l-amber-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">Browser Locale Detection</SuHeading>
+                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
+                    The browser knows the user's preferred locale, date format, and first day of week. Accessing this 
+                    information requires JavaScript (<code class="text-xs bg-su-muted px-1 py-0.5 rounded">navigator.language</code>, 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">Intl.DateTimeFormat</code>). Using JavaScript for 
+                    calendar calculations ensures consistency with what the browser's Intl APIs would produce.
+                </SuText>
+            </SuCard>
+
+            <SuCard class="p-4 border-l-4 border-l-amber-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">Calendar Complexity</SuHeading>
+                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
+                    Calendars like Hebrew (12-13 months depending on leap year) and Islamic (lunar-based with astronomical 
+                    calculations) have complex rules. @@internationalized/date is battle-tested across Adobe's product suite 
+                    and handles edge cases correctly.
+                </SuText>
+            </SuCard>
+        </div>
+
+        <SuAlert Variant="SuAlertVariant.Warning" class="mt-4">
+            <div class="text-sm">
+                <strong class="text-su-foreground">Value Binding Remains Gregorian:</strong> While SummitUI displays dates 
+                in the selected calendar system, the bound <code class="text-xs bg-su-muted px-1 py-0.5 rounded">DateOnly</code> 
+                or <code class="text-xs bg-su-muted px-1 py-0.5 rounded">DateTime</code> value is always Gregorian. This ensures 
+                compatibility with databases, APIs, and .NET date operations.
+            </div>
+        </SuAlert>
+    </SuSection>
+
+    @* Build Tools *@
+    <SuSection Title="Build Tools">
+        <SuText Muted="true">
+            In addition to runtime dependencies, SummitUI uses build-time tools for bundling:
+        </SuText>
+        
+        <SuCard class="p-5 mt-4">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <SuHeading Level="SuHeadingLevel.H3">esbuild</SuHeading>
+                        <SuText Muted="true" Size="SuTextSize.Small" class="mt-1">v0.25.0 (dev dependency)</SuText>
+                    </div>
+                </div>
+                <SuText Muted="true">
+                    esbuild bundles and minifies all JavaScript modules into a single 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> file. It's extremely fast 
+                    (~10ms build times) and produces highly optimized output with tree-shaking to eliminate unused code.
+                </SuText>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Bundle Size *@
+    <SuSection Title="Total Bundle Size">
+        <SuText Muted="true">
+            The complete bundled and minified <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> 
+            file is approximately <strong>62 KB</strong> uncompressed. With standard web server compression 
+            (gzip/brotli), this reduces to approximately <strong>18-20 KB</strong> over the wire.
+        </SuText>
+        
+        <div class="mt-4 p-4 bg-su-muted/50 rounded-lg">
+            <div class="flex flex-col gap-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-su-muted-foreground">@@floating-ui/dom</span>
+                    <span class="font-mono">~15 KB</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-su-muted-foreground">@@internationalized/date</span>
+                    <span class="font-mono">~45 KB</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-su-muted-foreground">SummitUI internal JS</span>
+                    <span class="font-mono">~2 KB</span>
+                </div>
+                <SuDivider class="my-2" />
+                <div class="flex justify-between font-medium">
+                    <span>Total (minified)</span>
+                    <span class="font-mono">62 KB</span>
+                </div>
+                <div class="flex justify-between text-su-muted-foreground">
+                    <span>Total (compressed)</span>
+                    <span class="font-mono">~18-20 KB</span>
+                </div>
+            </div>
+        </div>
+    </SuSection>
+</div>

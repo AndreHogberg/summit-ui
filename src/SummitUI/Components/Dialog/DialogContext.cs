@@ -21,8 +21,19 @@ public sealed class DialogContext
     /// <summary>
     /// Whether the dialog is currently animating closed.
     /// Used to keep content in DOM during close animations.
+    /// True if either content or overlay is still animating.
     /// </summary>
-    public bool IsAnimatingClosed { get; set; }
+    public bool IsAnimatingClosed => IsContentAnimatingClosed || IsOverlayAnimatingClosed;
+
+    /// <summary>
+    /// Whether the dialog content is currently animating closed.
+    /// </summary>
+    public bool IsContentAnimatingClosed { get; set; }
+
+    /// <summary>
+    /// Whether the dialog overlay is currently animating closed.
+    /// </summary>
+    public bool IsOverlayAnimatingClosed { get; set; }
 
     /// <summary>
     /// Reference to the parent dialog context if this dialog is nested.

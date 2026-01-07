@@ -161,31 +161,75 @@ internal static class DateFieldUtils
     /// </summary>
     public static int GetSegmentMin(DateFieldSegmentType type, DateFieldContext context)
     {
+        // For time segments, use standard values (time is universal)
+        if (type is DateFieldSegmentType.Hour or DateFieldSegmentType.Minute or DateFieldSegmentType.DayPeriod)
+        {
+            return type switch
+            {
+                DateFieldSegmentType.Hour => context.Uses12HourClock() ? 1 : 0,
+                DateFieldSegmentType.Minute => 0,
+                _ => 0
+            };
+        }
+
+        // For Gregorian calendar, use standard values
+        if (context.CalendarSystem == CalendarSystem.Gregorian)
+        {
+            return type switch
+            {
+                DateFieldSegmentType.Year => 1,
+                DateFieldSegmentType.Month => 1,
+                DateFieldSegmentType.Day => 1,
+                _ => 0
+            };
+        }
+
+        // For other calendars, min is always 1 for date segments
         return type switch
         {
             DateFieldSegmentType.Year => 1,
             DateFieldSegmentType.Month => 1,
             DateFieldSegmentType.Day => 1,
-            DateFieldSegmentType.Hour => context.Uses12HourClock() ? 1 : 0,
-            DateFieldSegmentType.Minute => 0,
             _ => 0
         };
     }
 
     /// <summary>
     /// Gets the maximum value for a segment type.
+    /// Uses calendar-aware values when a non-Gregorian calendar is selected.
     /// </summary>
     public static int GetSegmentMax(DateFieldSegmentType type, DateFieldContext context)
     {
-        var effectiveDate = context.EffectiveDateTime;
+        // For time segments, use standard values (time is universal)
+        if (type is DateFieldSegmentType.Hour or DateFieldSegmentType.Minute)
+        {
+            return type switch
+            {
+                DateFieldSegmentType.Hour => context.Uses12HourClock() ? 12 : 23,
+                DateFieldSegmentType.Minute => 59,
+                _ => 0
+            };
+        }
 
+        // For Gregorian calendar, use standard C# DateTime values
+        if (context.CalendarSystem == CalendarSystem.Gregorian)
+        {
+            var effectiveDate = context.EffectiveDateTime;
+            return type switch
+            {
+                DateFieldSegmentType.Year => 9999,
+                DateFieldSegmentType.Month => 12,
+                DateFieldSegmentType.Day => DateTime.DaysInMonth(effectiveDate.Year, effectiveDate.Month),
+                _ => 0
+            };
+        }
+
+        // For other calendars, use cached calendar info
         return type switch
         {
             DateFieldSegmentType.Year => 9999,
-            DateFieldSegmentType.Month => 12,
-            DateFieldSegmentType.Day => DateTime.DaysInMonth(effectiveDate.Year, effectiveDate.Month),
-            DateFieldSegmentType.Hour => context.Uses12HourClock() ? 12 : 23,
-            DateFieldSegmentType.Minute => 59,
+            DateFieldSegmentType.Month => context.GetMonthsInCalendarYear(),
+            DateFieldSegmentType.Day => context.GetDaysInCalendarMonth(),
             _ => 0
         };
     }
@@ -226,6 +270,7 @@ internal static class DateFieldUtils
 
     /// <summary>
     /// Formats a segment value for display, showing placeholder if segment has no value.
+    /// Uses calendar-aware values when a non-Gregorian calendar is selected.
     /// </summary>
     public static string FormatSegmentValue(DateFieldSegmentType type, DateFieldContext context)
     {
@@ -248,8 +293,18 @@ internal static class DateFieldUtils
                 : context.GetAmDesignator();
         }
 
-        // Get the value from context
-        var value = context.GetSegmentValue(type);
+        // For date segments, use calendar-aware values
+        // For time segments, use standard Gregorian values (time is universal)
+        int? value;
+        if (type is DateFieldSegmentType.Year or DateFieldSegmentType.Month or DateFieldSegmentType.Day)
+        {
+            value = context.GetCalendarSegmentValue(type);
+        }
+        else
+        {
+            value = context.GetSegmentValue(type);
+        }
+
         if (!value.HasValue)
         {
             return GetSegmentPlaceholder(type, context);

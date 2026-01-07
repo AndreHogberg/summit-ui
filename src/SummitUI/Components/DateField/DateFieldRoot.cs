@@ -24,8 +24,23 @@ public class DateFieldRoot : ComponentBase
     /// <summary>
     /// Date format pattern using standard .NET date format specifiers.
     /// Examples: "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy".
+    /// If not specified, auto-detects based on locale.
     /// </summary>
-    [Parameter, EditorRequired] public string Format { get; set; } = default!;
+    [Parameter] public string? Format { get; set; }
+
+    /// <summary>
+    /// The calendar system to use for display and navigation.
+    /// The bound Value remains as DateOnly/DateTime (Gregorian), but segments
+    /// display and navigate using the selected calendar system.
+    /// Defaults to Gregorian.
+    /// </summary>
+    [Parameter] public CalendarSystem CalendarSystem { get; set; } = CalendarSystem.Gregorian;
+
+    /// <summary>
+    /// The locale to use for formatting and localization.
+    /// If not specified, auto-detects from browser.
+    /// </summary>
+    [Parameter] public string? Locale { get; set; }
 
     /// <summary>
     /// Time format pattern for DateTime mode. Only used when binding to DateTimeValue.
@@ -136,6 +151,8 @@ public class DateFieldRoot : ComponentBase
                 DateTimePlaceholder,
                 Format,
                 TimeFormat,
+                CalendarSystem,
+                Locale,
                 Disabled,
                 ReadOnly,
                 isInvalid,
@@ -149,6 +166,8 @@ public class DateFieldRoot : ComponentBase
                 Value,
                 Placeholder,
                 Format,
+                CalendarSystem,
+                Locale,
                 Disabled,
                 ReadOnly,
                 isInvalid,

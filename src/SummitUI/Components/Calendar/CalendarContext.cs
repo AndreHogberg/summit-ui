@@ -69,6 +69,7 @@ public class CalendarContext
 
     // Configuration
     public string Locale { get; private set; } = "en-US";
+    public CalendarSystem CalendarSystem { get; private set; } = CalendarSystem.Gregorian;
     public WeekStartsOn WeekStartsOn { get; private set; } = WeekStartsOn.Sunday;
     public bool FixedWeeks { get; private set; }
     public DateOnly? MinValue { get; private set; }
@@ -81,6 +82,10 @@ public class CalendarContext
     private string[] _weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     private string[] _weekdaysLong = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     private string _monthName = "";
+    
+    // Converted day numbers for non-Gregorian calendar systems
+    // Key: Gregorian DateOnly, Value: (day number in target calendar, localized date string for aria-label)
+    private Dictionary<DateOnly, (int Day, string LocalizedDateString)> _convertedDates = [];
 
     // Screen reader announcement for focus changes (used with aria-live region)
     private string _focusAnnouncement = "";
@@ -176,6 +181,7 @@ public class CalendarContext
         bool isControlled,
         DateOnly? placeholder,
         string locale,
+        CalendarSystem calendarSystem,
         WeekStartsOn weekStartsOn,
         bool fixedWeeks,
         DateOnly? minValue,
@@ -190,6 +196,7 @@ public class CalendarContext
         _defaultValue = defaultValue;
         _isControlled = isControlled;
         Locale = locale;
+        CalendarSystem = calendarSystem;
         WeekStartsOn = weekStartsOn;
         FixedWeeks = fixedWeeks;
         MinValue = minValue;
@@ -230,6 +237,43 @@ public class CalendarContext
     {
         _monthName = monthName;
         NotifyStateChanged();
+    }
+
+    /// <summary>
+    /// Sets the converted dates for non-Gregorian calendar systems.
+    /// </summary>
+    /// <param name="convertedDates">Dictionary mapping Gregorian dates to (converted day number, localized date string).</param>
+    public void SetConvertedDates(Dictionary<DateOnly, (int Day, string LocalizedDateString)> convertedDates)
+    {
+        _convertedDates = convertedDates;
+    }
+
+    /// <summary>
+    /// Gets the display day number for a date, converted to the current calendar system.
+    /// </summary>
+    /// <param name="date">The Gregorian date.</param>
+    /// <returns>The day number in the current calendar system, or the Gregorian day if no conversion exists.</returns>
+    public int GetDisplayDay(DateOnly date)
+    {
+        if (CalendarSystem == CalendarSystem.Gregorian)
+            return date.Day;
+        
+        return _convertedDates.TryGetValue(date, out var info) ? info.Day : date.Day;
+    }
+
+    /// <summary>
+    /// Gets the localized date string for accessibility (aria-label).
+    /// </summary>
+    /// <param name="date">The Gregorian date.</param>
+    /// <returns>A localized date string, or a default Gregorian format if no conversion exists.</returns>
+    public string GetLocalizedDateString(DateOnly date)
+    {
+        if (CalendarSystem == CalendarSystem.Gregorian)
+            return $"{date:dddd, MMMM d, yyyy}";
+        
+        return _convertedDates.TryGetValue(date, out var info) 
+            ? info.LocalizedDateString 
+            : $"{date:dddd, MMMM d, yyyy}";
     }
 
     /// <summary>

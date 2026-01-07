@@ -24,6 +24,24 @@ public class DateFieldContext
     // Format configuration
     public string Format { get; private set; } = "yyyy-MM-dd";
     public string TimeFormat { get; private set; } = "HH:mm";
+    
+    /// <summary>
+    /// Indicates whether the Format was explicitly set by the user.
+    /// If false, the format will be auto-detected based on locale.
+    /// </summary>
+    public bool HasExplicitFormat { get; private set; }
+
+    // Calendar system and locale
+    public CalendarSystem CalendarSystem { get; private set; } = CalendarSystem.Gregorian;
+    public string Locale { get; private set; } = "en-US";
+
+    // Cached calendar date info (converted from Gregorian to CalendarSystem)
+    private int? _calendarYear;
+    private int? _calendarMonth;
+    private int? _calendarDay;
+    private string? _calendarEra;
+    private int? _daysInCalendarMonth;
+    private int? _monthsInCalendarYear;
 
     // Validation constraints
     public DateOnly? MinDate { get; private set; }
@@ -112,6 +130,116 @@ public class DateFieldContext
         return _partialIsPm;
     }
 
+    #region Calendar System Support
+
+    /// <summary>
+    /// Sets the cached calendar date info from JavaScript.
+    /// This converts the current Gregorian date to the selected calendar system.
+    /// </summary>
+    public void SetCalendarInfo(int year, int month, int day, string era, int daysInMonth, int monthsInYear)
+    {
+        _calendarYear = year;
+        _calendarMonth = month;
+        _calendarDay = day;
+        _calendarEra = era;
+        _daysInCalendarMonth = daysInMonth;
+        _monthsInCalendarYear = monthsInYear;
+    }
+
+    /// <summary>
+    /// Clears the cached calendar info, forcing a refresh on next access.
+    /// </summary>
+    public void ClearCalendarInfo()
+    {
+        _calendarYear = null;
+        _calendarMonth = null;
+        _calendarDay = null;
+        _calendarEra = null;
+        _daysInCalendarMonth = null;
+        _monthsInCalendarYear = null;
+    }
+
+    /// <summary>
+    /// Gets the segment value in the calendar system.
+    /// For Gregorian, this is the same as the Gregorian value.
+    /// For other calendars, uses the cached converted values.
+    /// </summary>
+    public int? GetCalendarSegmentValue(DateFieldSegmentType segmentType)
+    {
+        // For time segments, always use Gregorian (time is universal)
+        if (segmentType is DateFieldSegmentType.Hour or DateFieldSegmentType.Minute or DateFieldSegmentType.DayPeriod)
+        {
+            return GetSegmentValue(segmentType);
+        }
+
+        // If Gregorian calendar, use standard segment value
+        if (CalendarSystem == CalendarSystem.Gregorian)
+        {
+            return GetSegmentValue(segmentType);
+        }
+
+        // Use cached calendar values if available
+        if (_calendarYear.HasValue && _calendarMonth.HasValue && _calendarDay.HasValue)
+        {
+            return segmentType switch
+            {
+                DateFieldSegmentType.Year => _calendarYear.Value,
+                DateFieldSegmentType.Month => _calendarMonth.Value,
+                DateFieldSegmentType.Day => _calendarDay.Value,
+                _ => null
+            };
+        }
+
+        // Fallback to Gregorian if calendar info not yet loaded
+        return GetSegmentValue(segmentType);
+    }
+
+    /// <summary>
+    /// Gets the era string for the current calendar system.
+    /// Only relevant for calendars with eras (Japanese, etc.)
+    /// </summary>
+    public string? GetCalendarEra() => _calendarEra;
+
+    /// <summary>
+    /// Gets the number of days in the current month for the calendar system.
+    /// </summary>
+    public int GetDaysInCalendarMonth() => _daysInCalendarMonth ?? 31;
+
+    /// <summary>
+    /// Gets the number of months in the current year for the calendar system.
+    /// Important for Hebrew calendar which has 12 or 13 months.
+    /// </summary>
+    public int GetMonthsInCalendarYear() => _monthsInCalendarYear ?? 12;
+
+    /// <summary>
+    /// Gets whether the calendar system has been initialized.
+    /// </summary>
+    public bool HasCalendarInfo => _calendarYear.HasValue;
+
+    /// <summary>
+    /// Gets whether the calendar has eras (like Japanese).
+    /// </summary>
+    public bool HasEra => !string.IsNullOrEmpty(_calendarEra);
+
+    /// <summary>
+    /// Updates the format after auto-detection from JavaScript.
+    /// </summary>
+    public void SetDetectedFormat(string format)
+    {
+        Format = format;
+        NotifyStateChanged();
+    }
+
+    /// <summary>
+    /// Updates the locale after auto-detection from JavaScript.
+    /// </summary>
+    public void SetDetectedLocale(string locale)
+    {
+        Locale = locale;
+    }
+
+    #endregion
+
     /// <summary>
     /// Gets the current value is out of the min/max range.
     /// </summary>
@@ -141,7 +269,9 @@ public class DateFieldContext
     public void SetDateState(
         DateOnly? value,
         DateOnly placeholder,
-        string format,
+        string? format,
+        CalendarSystem calendarSystem,
+        string? locale,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -152,7 +282,10 @@ public class DateFieldContext
         IsDateTimeMode = false;
         DateValue = value;
         DatePlaceholder = placeholder;
-        Format = format;
+        HasExplicitFormat = format != null;
+        Format = format ?? "yyyy-MM-dd"; // Default format, will be overridden by auto-detection if null
+        CalendarSystem = calendarSystem;
+        Locale = locale ?? "en-US"; // Default, will be overridden by auto-detection if null
         TimeFormat = "HH:mm"; // Not used in DateOnly mode, but keep default
         Disabled = disabled;
         ReadOnly = readOnly;
@@ -176,8 +309,10 @@ public class DateFieldContext
     public void SetDateTimeState(
         DateTime? value,
         DateTime placeholder,
-        string format,
+        string? format,
         string timeFormat,
+        CalendarSystem calendarSystem,
+        string? locale,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -188,7 +323,10 @@ public class DateFieldContext
         IsDateTimeMode = true;
         DateTimeValue = value;
         DateTimePlaceholder = placeholder;
-        Format = format;
+        HasExplicitFormat = format != null;
+        Format = format ?? "yyyy-MM-dd"; // Default format, will be overridden by auto-detection if null
+        CalendarSystem = calendarSystem;
+        Locale = locale ?? "en-US"; // Default, will be overridden by auto-detection if null
         TimeFormat = timeFormat;
         Disabled = disabled;
         ReadOnly = readOnly;

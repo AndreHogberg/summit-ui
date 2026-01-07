@@ -160,7 +160,8 @@ public class DialogRoot : ComponentBase
         }
 
         _context.IsOpen = false;
-        _context.IsAnimatingClosed = true; // Keep content in DOM during close animations
+        // Note: IsContentAnimatingClosed and IsOverlayAnimatingClosed are set by
+        // DialogContent and DialogOverlay respectively when they register animation watchers
         await OpenChanged.InvokeAsync(false);
         await OnClose.InvokeAsync();
         StateHasChanged();

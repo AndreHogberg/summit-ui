@@ -147,8 +147,8 @@ public class CalendarDay : ComponentBase
         builder.AddAttribute(6, "aria-disabled", (isUnavailable || isDisabled) ? "true" : null);
         builder.AddAttribute(7, "aria-current", isToday ? "date" : null);
 
-        // Accessible label with full date
-        var ariaLabel = $"{date:dddd, MMMM d, yyyy}";
+        // Accessible label with full date (localized for the current calendar system)
+        var ariaLabel = Context.GetLocalizedDateString(date);
         if (isToday) ariaLabel += " (today)";
         if (isSelected) ariaLabel += " (selected)";
         builder.AddAttribute(8, "aria-label", ariaLabel);
@@ -171,14 +171,15 @@ public class CalendarDay : ComponentBase
         builder.AddMultipleAttributes(18, AdditionalAttributes);
         builder.AddElementReferenceCapture(19, elementRef => _elementRef = elementRef);
 
-        // Content: day number or custom content
+        // Content: day number (converted for current calendar system) or custom content
         if (ChildContent != null)
         {
             builder.AddContent(20, ChildContent);
         }
         else
         {
-            builder.AddContent(20, date.Day.ToString());
+            // Display the day number converted to the current calendar system
+            builder.AddContent(20, Context.GetDisplayDay(date).ToString());
         }
 
         builder.CloseElement();

@@ -167,10 +167,10 @@ public class DialogContent : ComponentBase, IAsyncDisposable
             try
             {
                 // Cancel any pending animation watcher if reopening
-                if (Context.IsAnimatingClosed)
+                if (Context.IsContentAnimatingClosed)
                 {
                     await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
-                    Context.IsAnimatingClosed = false;
+                    Context.IsContentAnimatingClosed = false;
                 }
                 _animationWatcherRegistered = false;
 
@@ -219,6 +219,7 @@ public class DialogContent : ComponentBase, IAsyncDisposable
 
             // Start waiting for close animations to complete
             _animationWatcherRegistered = true;
+            Context.IsContentAnimatingClosed = true;
             _dotNetRef ??= DotNetObjectReference.Create(this);
             await FloatingInterop.WaitForAnimationsCompleteAsync(
                 _elementRef,
@@ -293,7 +294,7 @@ public class DialogContent : ComponentBase, IAsyncDisposable
     {
         if (_isDisposed) return;
 
-        Context.IsAnimatingClosed = false;
+        Context.IsContentAnimatingClosed = false;
 
         // Only cleanup if still in closed state (user might have reopened during animation)
         if (!Context.IsOpen)
@@ -307,7 +308,8 @@ public class DialogContent : ComponentBase, IAsyncDisposable
         }
 
         Context.RaiseStateChanged();
-        // Trigger re-render to remove element from DOM now that animation is complete
+        // Trigger re-render to potentially remove element from DOM
+        // (only if overlay is also done animating)
         await InvokeAsync(StateHasChanged);
     }
 
@@ -317,7 +319,7 @@ public class DialogContent : ComponentBase, IAsyncDisposable
         _isDisposed = true;
 
         // Cancel any pending animation watcher
-        if (Context.IsAnimatingClosed)
+        if (Context.IsContentAnimatingClosed)
         {
             try
             {
@@ -327,7 +329,7 @@ public class DialogContent : ComponentBase, IAsyncDisposable
             {
                 // Ignore
             }
-            Context.IsAnimatingClosed = false;
+            Context.IsContentAnimatingClosed = false;
         }
 
         await CleanupAsync();

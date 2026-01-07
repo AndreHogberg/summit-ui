@@ -21,10 +21,6 @@
         <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
     </Target>
 
-    <ItemGroup>
-      <Folder Include="wwwroot\fonts\" />
-    </ItemGroup>
-
     <!-- Exclude npm-related files from publish -->
     <ItemGroup>
       <Content Update="package.json" CopyToPublishDirectory="Never" />

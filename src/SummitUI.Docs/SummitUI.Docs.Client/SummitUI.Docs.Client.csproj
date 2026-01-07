@@ -8,6 +8,9 @@
         <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
         <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        
+        <!-- Globalization: Use invariant mode to reduce bundle size (removes ~600KB ICU data) -->
+        <InvariantGlobalization>true</InvariantGlobalization>
     </PropertyGroup>
 
     <ItemGroup>

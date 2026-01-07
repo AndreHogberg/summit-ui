@@ -15,6 +15,11 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     private bool _localeInitialized;
     private string _effectiveLocale = "en-US";
     private WeekStartsOn _effectiveWeekStart = SummitUI.WeekStartsOn.Sunday;
+    
+    // Track previous values to detect changes that require re-fetching locale data
+    private CalendarSystem _previousCalendarSystem;
+    private string? _previousLocale;
+    private DateOnly _previousDisplayedMonth;
 
     [Inject] private CalendarJsInterop JsInterop { get; set; } = default!;
 
@@ -67,6 +72,14 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     /// If not specified, auto-detects from locale.
     /// </summary>
     [Parameter] public WeekStartsOn? WeekStartsOn { get; set; }
+
+    /// <summary>
+    /// The calendar system to use for display and navigation.
+    /// The bound Value remains as DateOnly (Gregorian), but dates are displayed
+    /// and navigated using the selected calendar system.
+    /// Defaults to Gregorian.
+    /// </summary>
+    [Parameter] public CalendarSystem CalendarSystem { get; set; } = CalendarSystem.Gregorian;
 
     /// <summary>
     /// Whether to always display 6 weeks for consistent height.
@@ -139,6 +152,7 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
             isControlled: isControlled,
             placeholder: Placeholder,
             locale: _effectiveLocale,
+            calendarSystem: CalendarSystem,
             weekStartsOn: _effectiveWeekStart,
             fixedWeeks: FixedWeeks,
             minValue: MinValue,
@@ -157,7 +171,62 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
         {
             await InitializeLocaleAsync();
             _localeInitialized = true;
+            
+            // Store initial values for change detection
+            _previousCalendarSystem = CalendarSystem;
+            _previousLocale = Locale;
+            _previousDisplayedMonth = _context.DisplayedMonth;
+            
+            // Fetch converted dates for non-Gregorian calendar systems
+            await UpdateConvertedDatesAsync();
+            
             StateHasChanged();
+        }
+        else if (firstRender)
+        {
+            // When locale detection is not needed (explicit params), still need to initialize
+            // Store initial values for change detection
+            _previousCalendarSystem = CalendarSystem;
+            _previousLocale = Locale;
+            _previousDisplayedMonth = _context.DisplayedMonth;
+            
+            // Fetch initial weekday names and heading
+            var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
+            _context.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
+            await UpdateMonthNameAsync();
+            
+            // Fetch converted dates for non-Gregorian calendar systems
+            await UpdateConvertedDatesAsync();
+            
+            StateHasChanged();
+        }
+        else if (_localeInitialized || !NeedsLocaleDetection)
+        {
+            // Check if CalendarSystem, Locale, or DisplayedMonth changed after initial render
+            var calendarChanged = _previousCalendarSystem != CalendarSystem;
+            var localeChanged = _previousLocale != Locale;
+            var monthChanged = _previousDisplayedMonth != _context.DisplayedMonth;
+            
+            if (calendarChanged || localeChanged || monthChanged)
+            {
+                _previousCalendarSystem = CalendarSystem;
+                _previousLocale = Locale;
+                _previousDisplayedMonth = _context.DisplayedMonth;
+                
+                // Re-fetch weekday names and heading with new settings
+                if (calendarChanged || localeChanged)
+                {
+                    var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
+                    _context.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
+                }
+                
+                await UpdateMonthNameAsync();
+                
+                // Re-fetch converted dates when calendar system, locale, or month changes
+                await UpdateConvertedDatesAsync();
+                
+                StateHasChanged();
+            }
         }
     }
 
@@ -185,7 +254,7 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
         }
 
         // Get localized weekday names
-        var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale);
+        var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
         _context.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
 
         // Get localized month name
@@ -198,6 +267,7 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
             isControlled: ValueChanged.HasDelegate,
             placeholder: Placeholder,
             locale: _effectiveLocale,
+            calendarSystem: CalendarSystem,
             weekStartsOn: _effectiveWeekStart,
             fixedWeeks: FixedWeeks,
             minValue: MinValue,
@@ -215,9 +285,32 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
         var heading = await JsInterop.GetMonthYearHeadingAsync(
             _effectiveLocale,
             _context.DisplayedMonth.Year,
-            _context.DisplayedMonth.Month
+            _context.DisplayedMonth.Month,
+            CalendarSystem
         );
         _context.SetMonthName(heading);
+    }
+
+    private async Task UpdateConvertedDatesAsync()
+    {
+        // Generate the month grid to get all dates that need conversion
+        var month = _context.GenerateMonth();
+        
+        // Batch convert all dates in the grid
+        var results = await JsInterop.BatchConvertFromGregorianAsync(
+            _effectiveLocale,
+            month.Dates,
+            CalendarSystem
+        );
+        
+        // Build the dictionary mapping Gregorian dates to converted info
+        var convertedDates = new Dictionary<DateOnly, (int Day, string LocalizedDateString)>();
+        for (int i = 0; i < month.Dates.Length && i < results.Length; i++)
+        {
+            convertedDates[month.Dates[i]] = results[i];
+        }
+        
+        _context.SetConvertedDates(convertedDates);
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)

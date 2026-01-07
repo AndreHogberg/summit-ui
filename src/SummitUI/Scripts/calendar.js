@@ -1,10 +1,248 @@
 /**
  * SummitUI Calendar JavaScript Module
- * Handles locale detection, Intl API formatting, and keyboard navigation support.
+ * Handles locale detection, Intl API formatting, calendar systems, and keyboard navigation support.
  */
+
+import {
+    CalendarDate,
+    GregorianCalendar,
+    JapaneseCalendar,
+    BuddhistCalendar,
+    TaiwanCalendar,
+    PersianCalendar,
+    IndianCalendar,
+    IslamicUmalquraCalendar,
+    IslamicCivilCalendar,
+    IslamicTabularCalendar,
+    HebrewCalendar,
+    CopticCalendar,
+    EthiopicCalendar,
+    EthiopicAmeteAlemCalendar,
+    toCalendar,
+    startOfMonth,
+    endOfMonth
+} from '@internationalized/date';
 
 // Store handlers to allow proper cleanup
 const elementHandlers = new Map();
+
+/**
+ * Maps C# CalendarSystem enum values to @internationalized/date calendar instances.
+ * The enum values are: Gregorian=0, Japanese=1, Buddhist=2, Taiwan=3, Persian=4,
+ * Indian=5, IslamicUmalqura=6, IslamicCivil=7, IslamicTabular=8, Hebrew=9,
+ * Coptic=10, Ethiopic=11, EthiopicAmeteAlem=12
+ */
+const calendarMap = {
+    0: () => new GregorianCalendar(),
+    1: () => new JapaneseCalendar(),
+    2: () => new BuddhistCalendar(),
+    3: () => new TaiwanCalendar(),
+    4: () => new PersianCalendar(),
+    5: () => new IndianCalendar(),
+    6: () => new IslamicUmalquraCalendar(),
+    7: () => new IslamicCivilCalendar(),
+    8: () => new IslamicTabularCalendar(),
+    9: () => new HebrewCalendar(),
+    10: () => new CopticCalendar(),
+    11: () => new EthiopicCalendar(),
+    12: () => new EthiopicAmeteAlemCalendar()
+};
+
+/**
+ * Maps C# CalendarSystem enum values to Intl calendar identifiers.
+ */
+const calendarIdentifierMap = {
+    0: 'gregory',
+    1: 'japanese',
+    2: 'buddhist',
+    3: 'roc',
+    4: 'persian',
+    5: 'indian',
+    6: 'islamic-umalqura',
+    7: 'islamic-civil',
+    8: 'islamic-tbla',
+    9: 'hebrew',
+    10: 'coptic',
+    11: 'ethiopic',
+    12: 'ethioaa'
+};
+
+/**
+ * Gets a calendar instance for the given calendar system enum value.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {Calendar} The calendar instance.
+ */
+function getCalendar(calendarSystem) {
+    const factory = calendarMap[calendarSystem];
+    return factory ? factory() : new GregorianCalendar();
+}
+
+/**
+ * Gets the Intl calendar identifier for the given calendar system enum value.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {string} The Intl calendar identifier.
+ */
+function getCalendarIdentifier(calendarSystem) {
+    return calendarIdentifierMap[calendarSystem] || 'gregory';
+}
+
+/**
+ * Converts a Gregorian date to a date in the specified calendar system.
+ * @param {number} gregorianYear - The Gregorian year.
+ * @param {number} gregorianMonth - The Gregorian month (1-12).
+ * @param {number} gregorianDay - The Gregorian day.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {{ year: number, month: number, day: number, era: string }} The date in the target calendar.
+ */
+export function convertFromGregorian(gregorianYear, gregorianMonth, gregorianDay, calendarSystem) {
+    const gregorianDate = new CalendarDate(new GregorianCalendar(), gregorianYear, gregorianMonth, gregorianDay);
+    const targetCalendar = getCalendar(calendarSystem);
+    const targetDate = toCalendar(gregorianDate, targetCalendar);
+    
+    return {
+        year: targetDate.year,
+        month: targetDate.month,
+        day: targetDate.day,
+        era: targetDate.era || ''
+    };
+}
+
+/**
+ * Converts a date from the specified calendar system to Gregorian.
+ * @param {number} year - The year in the source calendar.
+ * @param {number} month - The month in the source calendar (1-based).
+ * @param {number} day - The day in the source calendar.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {{ year: number, month: number, day: number }} The Gregorian date.
+ */
+export function convertToGregorian(year, month, day, calendarSystem) {
+    const sourceCalendar = getCalendar(calendarSystem);
+    const sourceDate = new CalendarDate(sourceCalendar, year, month, day);
+    const gregorianDate = toCalendar(sourceDate, new GregorianCalendar());
+    
+    return {
+        year: gregorianDate.year,
+        month: gregorianDate.month,
+        day: gregorianDate.day
+    };
+}
+
+/**
+ * Gets calendar month information for rendering a month grid.
+ * Returns information about the month in the specified calendar system,
+ * with all dates also provided as Gregorian equivalents for binding.
+ * @param {number} gregorianYear - The Gregorian year of the first day of the displayed month.
+ * @param {number} gregorianMonth - The Gregorian month (1-12).
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {object} Month information including days in month, months in year, etc.
+ */
+export function getCalendarMonthInfo(gregorianYear, gregorianMonth, calendarSystem) {
+    const gregorianDate = new CalendarDate(new GregorianCalendar(), gregorianYear, gregorianMonth, 1);
+    const targetCalendar = getCalendar(calendarSystem);
+    const targetDate = toCalendar(gregorianDate, targetCalendar);
+    
+    const calendar = targetDate.calendar;
+    const daysInMonth = calendar.getDaysInMonth(targetDate);
+    const monthsInYear = calendar.getMonthsInYear(targetDate);
+    
+    return {
+        year: targetDate.year,
+        month: targetDate.month,
+        day: targetDate.day,
+        era: targetDate.era || '',
+        daysInMonth: daysInMonth,
+        monthsInYear: monthsInYear
+    };
+}
+
+/**
+ * Gets the number of days in a month for a given calendar date.
+ * @param {number} year - The year in the calendar system.
+ * @param {number} month - The month in the calendar system (1-based).
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {number} The number of days in the month.
+ */
+export function getDaysInMonth(year, month, calendarSystem) {
+    const calendar = getCalendar(calendarSystem);
+    const date = new CalendarDate(calendar, year, month, 1);
+    return calendar.getDaysInMonth(date);
+}
+
+/**
+ * Gets the number of months in a year for a given calendar date.
+ * This is important for calendars like Hebrew which can have 12 or 13 months.
+ * @param {number} year - The year in the calendar system.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {number} The number of months in the year.
+ */
+export function getMonthsInYear(year, calendarSystem) {
+    const calendar = getCalendar(calendarSystem);
+    // Use month 1 as a reference point
+    const date = new CalendarDate(calendar, year, 1, 1);
+    return calendar.getMonthsInYear(date);
+}
+
+/**
+ * Batch converts multiple Gregorian dates to the specified calendar system.
+ * More efficient than calling convertFromGregorian for each date individually.
+ * @param {string} locale - The locale for formatting localized date strings.
+ * @param {Array<[number, number, number]>} dates - Array of [year, month, day] arrays.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value.
+ * @returns {Array<{day: number, localizedDate: string}>} Array of conversion results.
+ */
+export function batchConvertFromGregorian(locale, dates, calendarSystem) {
+    const results = [];
+    const targetCalendar = getCalendar(calendarSystem);
+    const calendarId = getCalendarIdentifier(calendarSystem);
+    
+    // Create the date formatter once for all dates
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    if (calendarId !== 'gregory') {
+        options.calendar = calendarId;
+    }
+    
+    let formatter;
+    try {
+        formatter = new Intl.DateTimeFormat(locale, options);
+    } catch {
+        formatter = null;
+    }
+    
+    for (const [year, month, day] of dates) {
+        try {
+            // Convert from Gregorian to target calendar
+            const gregorianDate = new CalendarDate(new GregorianCalendar(), year, month, day);
+            const targetDate = toCalendar(gregorianDate, targetCalendar);
+            
+            // Format the localized date string
+            let localizedDate;
+            if (formatter) {
+                const jsDate = new Date(year, month - 1, day);
+                localizedDate = formatter.format(jsDate);
+            } else {
+                localizedDate = `${month}/${day}/${year}`;
+            }
+            
+            results.push({
+                day: targetDate.day,
+                localizedDate: localizedDate
+            });
+        } catch {
+            // Fallback for any conversion errors
+            results.push({
+                day: day,
+                localizedDate: `${month}/${day}/${year}`
+            });
+        }
+    }
+    
+    return results;
+}
 
 /**
  * Gets the browser's current locale.
@@ -50,14 +288,20 @@ export function getFirstDayOfWeek(locale) {
 /**
  * Gets the localized month name.
  * @param {string} locale - The locale to use.
- * @param {number} year - The year.
- * @param {number} month - The month (1-12).
+ * @param {number} year - The Gregorian year.
+ * @param {number} month - The Gregorian month (1-12).
+ * @param {number} calendarSystem - The C# CalendarSystem enum value (optional, defaults to Gregorian).
  * @returns {string} The localized month name.
  */
-export function getMonthName(locale, year, month) {
+export function getMonthName(locale, year, month, calendarSystem = 0) {
     try {
         const date = new Date(year, month - 1, 1);
-        return new Intl.DateTimeFormat(locale, { month: 'long' }).format(date);
+        const options = { month: 'long' };
+        const calendarId = getCalendarIdentifier(calendarSystem);
+        if (calendarId !== 'gregory') {
+            options.calendar = calendarId;
+        }
+        return new Intl.DateTimeFormat(locale, options).format(date);
     } catch {
         const months = ['January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'];
@@ -68,16 +312,22 @@ export function getMonthName(locale, year, month) {
 /**
  * Gets the localized month and year heading.
  * @param {string} locale - The locale to use.
- * @param {number} year - The year.
- * @param {number} month - The month (1-12).
+ * @param {number} year - The Gregorian year.
+ * @param {number} month - The Gregorian month (1-12).
+ * @param {number} calendarSystem - The C# CalendarSystem enum value (optional, defaults to Gregorian).
  * @returns {string} The localized month and year string.
  */
-export function getMonthYearHeading(locale, year, month) {
+export function getMonthYearHeading(locale, year, month, calendarSystem = 0) {
     try {
         const date = new Date(year, month - 1, 1);
-        return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(date);
+        const options = { month: 'long', year: 'numeric' };
+        const calendarId = getCalendarIdentifier(calendarSystem);
+        if (calendarId !== 'gregory') {
+            options.calendar = calendarId;
+        }
+        return new Intl.DateTimeFormat(locale, options).format(date);
     } catch {
-        return `${getMonthName(locale, year, month)} ${year}`;
+        return `${getMonthName(locale, year, month, calendarSystem)} ${year}`;
     }
 }
 
@@ -85,9 +335,10 @@ export function getMonthYearHeading(locale, year, month) {
  * Gets localized weekday names (both short and long forms).
  * Returns arrays starting from Sunday (index 0).
  * @param {string} locale - The locale to use.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value (optional, defaults to Gregorian).
  * @returns {{ short: string[], long: string[] }} Object containing short and long weekday names.
  */
-export function getWeekdayNames(locale) {
+export function getWeekdayNames(locale, calendarSystem = 0) {
     const fallbackShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const fallbackLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -98,12 +349,21 @@ export function getWeekdayNames(locale) {
         // Start from a known Sunday (Jan 7, 2024 is a Sunday)
         const baseDate = new Date(2024, 0, 7);
         
+        const calendarId = getCalendarIdentifier(calendarSystem);
+        const shortOptions = { weekday: 'short' };
+        const longOptions = { weekday: 'long' };
+        
+        if (calendarId !== 'gregory') {
+            shortOptions.calendar = calendarId;
+            longOptions.calendar = calendarId;
+        }
+        
         for (let i = 0; i < 7; i++) {
             const date = new Date(baseDate);
             date.setDate(baseDate.getDate() + i);
             
-            shortNames.push(new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(date));
-            longNames.push(new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(date));
+            shortNames.push(new Intl.DateTimeFormat(locale, shortOptions).format(date));
+            longNames.push(new Intl.DateTimeFormat(locale, longOptions).format(date));
         }
         
         return { short: shortNames, long: longNames };
@@ -115,20 +375,26 @@ export function getWeekdayNames(locale) {
 /**
  * Gets the full localized date string for accessibility (aria-label).
  * @param {string} locale - The locale to use.
- * @param {number} year - The year.
- * @param {number} month - The month (1-12).
- * @param {number} day - The day of month.
+ * @param {number} year - The Gregorian year.
+ * @param {number} month - The Gregorian month (1-12).
+ * @param {number} day - The Gregorian day of month.
+ * @param {number} calendarSystem - The C# CalendarSystem enum value (optional, defaults to Gregorian).
  * @returns {string} The full localized date string.
  */
-export function getFullDateString(locale, year, month, day) {
+export function getFullDateString(locale, year, month, day, calendarSystem = 0) {
     try {
         const date = new Date(year, month - 1, day);
-        return new Intl.DateTimeFormat(locale, { 
+        const options = { 
             weekday: 'long', 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
-        }).format(date);
+        };
+        const calendarId = getCalendarIdentifier(calendarSystem);
+        if (calendarId !== 'gregory') {
+            options.calendar = calendarId;
+        }
+        return new Intl.DateTimeFormat(locale, options).format(date);
     } catch {
         return `${month}/${day}/${year}`;
     }

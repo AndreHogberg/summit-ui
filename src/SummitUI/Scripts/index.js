@@ -81,7 +81,13 @@ export {
     destroySegment as dateField_destroySegment,
     getBrowserLocale as dateField_getBrowserLocale,
     getSegmentLabels as dateField_getSegmentLabels,
-    getDayPeriodDesignators as dateField_getDayPeriodDesignators
+    getDayPeriodDesignators as dateField_getDayPeriodDesignators,
+    // Calendar system support
+    getLocaleDateFormat as dateField_getLocaleDateFormat,
+    getCalendarDateInfo as dateField_getCalendarDateInfo,
+    getSegmentBounds as dateField_getSegmentBounds,
+    addToDateSegment as dateField_addToDateSegment,
+    setDateSegmentValue as dateField_setDateSegmentValue
 } from './date-field.js';
 
 // Dropdown Menu exports (portal and trigger functionality only - keyboard nav handled by Blazor)
@@ -102,7 +108,7 @@ export {
     getScrollLockCount as dialog_getScrollLockCount
 } from './dialog.js';
 
-// Calendar exports (locale detection, Intl API, keyboard navigation)
+// Calendar exports (locale detection, Intl API, calendar systems, keyboard navigation)
 export {
     getBrowserLocale as calendar_getBrowserLocale,
     getFirstDayOfWeek as calendar_getFirstDayOfWeek,
@@ -112,5 +118,12 @@ export {
     getFullDateString as calendar_getFullDateString,
     initializeCalendar as calendar_initializeCalendar,
     focusDate as calendar_focusDate,
-    destroyCalendar as calendar_destroyCalendar
+    destroyCalendar as calendar_destroyCalendar,
+    // Calendar system functions
+    convertFromGregorian as calendar_convertFromGregorian,
+    convertToGregorian as calendar_convertToGregorian,
+    getCalendarMonthInfo as calendar_getCalendarMonthInfo,
+    getDaysInMonth as calendar_getDaysInMonth,
+    getMonthsInYear as calendar_getMonthsInYear,
+    batchConvertFromGregorian as calendar_batchConvertFromGregorian
 } from './calendar.js';

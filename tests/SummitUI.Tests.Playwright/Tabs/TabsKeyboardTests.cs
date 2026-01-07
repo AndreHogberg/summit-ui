@@ -187,11 +187,14 @@ public class TabsKeyboardTests : SummitTestBase
         // Arrow to the next tab
         await Page.Keyboard.PressAsync("ArrowRight");
 
+        // Wait for focus to move to trigger2 before pressing Space
+        var trigger2 = Page.GetByTestId("manual-trigger-2");
+        await Expect(trigger2).ToBeFocusedAsync();
+
         // Press Space to activate
         await Page.Keyboard.PressAsync(" ");
 
         // Now tab2 should be active
-        var trigger2 = Page.GetByTestId("manual-trigger-2");
         await Expect(trigger2).ToHaveAttributeAsync("data-state", "active");
     }
 
