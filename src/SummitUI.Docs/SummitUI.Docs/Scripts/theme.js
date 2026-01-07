@@ -54,9 +54,6 @@ export function isDarkMode() {
  * @param {'light' | 'dark' | 'system'} theme
  */
 export function applyTheme(theme) {
-    const isDark = theme === 'dark' || 
-        (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    
     const root = document.documentElement;
     
     // Remove both classes first
@@ -65,23 +62,6 @@ export function applyTheme(theme) {
     // Add the appropriate class (only if user has explicit preference)
     if (theme !== 'system') {
         root.classList.add(theme);
-    }
-    
-    // Update hljs theme
-    updateCodeTheme(isDark);
-}
-
-/**
- * Update the highlight.js theme based on dark mode
- * @param {boolean} isDark
- */
-function updateCodeTheme(isDark) {
-    const lightLink = document.getElementById('hljs-theme-light');
-    const darkLink = document.getElementById('hljs-theme-dark');
-    
-    if (lightLink && darkLink) {
-        lightLink.disabled = isDark;
-        darkLink.disabled = !isDark;
     }
 }
 

@@ -77,6 +77,17 @@
   --su-destructive-foreground: 127 29 29;  /* red-900 */
   --su-ring: 25 60 184;                /* #193CB8 - blue-800 */
 
+  /* Syntax highlighting colors (WCAG AA contrast on white) */
+  --hljs-base: 55 65 81;               /* gray-700 - base code text */
+  --hljs-comment: 107 114 128;         /* gray-500 - comments */
+  --hljs-keyword: 29 78 216;           /* blue-700 - keywords */
+  --hljs-string: 21 128 61;            /* green-700 - strings */
+  --hljs-number: 180 83 9;             /* amber-700 - numbers/literals */
+  --hljs-variable: 185 28 28;          /* red-700 - variables/tags */
+  --hljs-title: 126 34 206;            /* purple-700 - functions/titles */
+  --hljs-type: 15 118 110;             /* teal-700 - types/built-ins */
+  --hljs-attribute: 13 148 136;        /* teal-600 - attributes */
+
   /* Legacy HSL tokens */
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
@@ -125,6 +136,17 @@
   --su-destructive-foreground: 254 226 226; /* red-100 */
   --su-ring: 96 165 250;              /* #60A5FA - blue-400 */
 
+  /* Syntax highlighting colors (WCAG AA contrast on gray-900) */
+  --hljs-base: 229 231 235;           /* gray-200 - base code text */
+  --hljs-comment: 156 163 175;        /* gray-400 - comments */
+  --hljs-keyword: 96 165 250;         /* blue-400 - keywords */
+  --hljs-string: 74 222 128;          /* green-400 - strings */
+  --hljs-number: 251 191 36;          /* amber-400 - numbers/literals */
+  --hljs-variable: 248 113 113;       /* red-400 - variables/tags */
+  --hljs-title: 192 132 252;          /* purple-400 - functions/titles */
+  --hljs-type: 45 212 191;            /* teal-400 - types/built-ins */
+  --hljs-attribute: 94 234 212;       /* teal-300 - attributes */
+
   /* Legacy HSL tokens */
   --background: 222.2 84% 4.9%;
   --foreground: 210 40% 98%;
@@ -165,6 +187,17 @@
     --su-destructive: 127 29 29;           /* red-900 */
     --su-destructive-foreground: 254 226 226; /* red-100 */
     --su-ring: 96 165 250;              /* #60A5FA - blue-400 */
+
+    /* Syntax highlighting colors (WCAG AA contrast on gray-900) */
+    --hljs-base: 229 231 235;           /* gray-200 - base code text */
+    --hljs-comment: 156 163 175;        /* gray-400 - comments */
+    --hljs-keyword: 96 165 250;         /* blue-400 - keywords */
+    --hljs-string: 74 222 128;          /* green-400 - strings */
+    --hljs-number: 251 191 36;          /* amber-400 - numbers/literals */
+    --hljs-variable: 248 113 113;       /* red-400 - variables/tags */
+    --hljs-title: 192 132 252;          /* purple-400 - functions/titles */
+    --hljs-type: 45 212 191;            /* teal-400 - types/built-ins */
+    --hljs-attribute: 94 234 212;       /* teal-300 - attributes */
 
     /* Legacy HSL tokens */
     --background: 222.2 84% 4.9%;
@@ -271,9 +304,95 @@ code {
   @apply bg-transparent p-0;
 }
 
-/* Override highlight.js background */
+/* ============================================
+   Syntax Highlighting (highlight.js)
+   Uses CSS custom properties for theme switching
+   ============================================ */
+
+/* Base code block styles */
 .hljs {
   background: rgb(var(--su-card)) !important;
+  color: rgb(var(--hljs-base));
+}
+
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+/* Comments */
+.hljs-comment,
+.hljs-quote {
+  color: rgb(var(--hljs-comment));
+  font-style: italic;
+}
+
+/* Keywords and selectors */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta {
+  color: rgb(var(--hljs-keyword));
+}
+
+/* Strings and additions */
+.hljs-string,
+.hljs-addition,
+.hljs-bullet,
+.hljs-symbol {
+  color: rgb(var(--hljs-string));
+}
+
+/* Numbers and literals */
+.hljs-number,
+.hljs-literal,
+.hljs-params {
+  color: rgb(var(--hljs-number));
+}
+
+/* Variables, tags, and deletions */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-deletion,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp {
+  color: rgb(var(--hljs-variable));
+}
+
+/* Functions and titles */
+.hljs-title,
+.hljs-section,
+.hljs-title.function_ {
+  color: rgb(var(--hljs-title));
+}
+
+/* Types and built-ins */
+.hljs-type,
+.hljs-built_in,
+.hljs-link {
+  color: rgb(var(--hljs-type));
+}
+
+/* Attributes */
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: rgb(var(--hljs-attribute));
+}
+
+/* Emphasis */
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
 }
 
 /* API Reference Tables */

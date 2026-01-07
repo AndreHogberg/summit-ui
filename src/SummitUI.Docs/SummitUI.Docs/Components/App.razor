@@ -10,8 +10,6 @@
         // Inline theme initialization to prevent flash of incorrect theme
         (function() {
             const theme = localStorage.getItem('summitui-theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const isDark = theme === 'dark' || (theme !== 'light' && prefersDark);
             
             if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
@@ -19,22 +17,10 @@
                 document.documentElement.classList.add('light');
             }
             // If no theme set, system preference handles it via CSS media query
-            
-            // Disable the non-matching hljs theme stylesheet
-            document.addEventListener('DOMContentLoaded', function() {
-                const lightLink = document.getElementById('hljs-theme-light');
-                const darkLink = document.getElementById('hljs-theme-dark');
-                if (lightLink && darkLink) {
-                    lightLink.disabled = isDark;
-                    darkLink.disabled = !isDark;
-                }
-            });
         })();
     </script>
     <ResourcePreloader/>
     <link rel="stylesheet" href="@Assets["app.css"]"/>
-    <link id="hljs-theme-light" rel="stylesheet" href="@Assets["hljs-a11y-light.min.css"]"/>
-    <link id="hljs-theme-dark" rel="stylesheet" href="@Assets["hljs-a11y-dark.min.css"]"/>
     <ImportMap/>
     <HeadOutlet/>
 </head>
