@@ -8,7 +8,7 @@ namespace SummitUI;
 /// The date field component for DatePicker. Provides segmented date editing.
 /// This component extends DateFieldRoot and integrates with DatePickerContext.
 /// </summary>
-public class DatePickerField : ComponentBase
+public class DatePickerField : ComponentBase, IDisposable
 {
     [CascadingParameter] private DatePickerContext DatePickerContext { get; set; } = default!;
     [CascadingParameter] private EditContext? EditContext { get; set; }
@@ -102,6 +102,17 @@ public class DatePickerField : ComponentBase
     private readonly DateFieldContext _dateFieldContext = new();
     private ElementReference _fieldRef;
     private FieldIdentifier? _fieldIdentifier;
+    private bool _hasExplicitValue;
+
+    /// <summary>
+    /// Gets the effective value - uses explicit Value parameter if provided, otherwise falls back to context value.
+    /// </summary>
+    private DateOnly? EffectiveValue => _hasExplicitValue ? Value : DatePickerContext.Value;
+
+    /// <summary>
+    /// Gets the effective placeholder - uses explicit Placeholder parameter if provided, otherwise falls back to context placeholder.
+    /// </summary>
+    private DateOnly EffectivePlaceholder => Placeholder ?? DatePickerContext.Placeholder;
 
     protected override void OnInitialized()
     {
@@ -116,6 +127,9 @@ public class DatePickerField : ComponentBase
         }
 
         _dateFieldContext.OnStateChanged += HandleStateChanged;
+
+        // Subscribe to DatePickerContext state changes to sync value from calendar selection
+        DatePickerContext.OnStateChanged += HandleContextStateChanged;
     }
 
     private void HandleValidationStateChanged()
@@ -139,7 +153,25 @@ public class DatePickerField : ComponentBase
         }
     }
 
+    private void HandleContextStateChanged()
+    {
+        // When context value changes (e.g., from calendar selection), update the date field
+        if (!_hasExplicitValue)
+        {
+            UpdateDateFieldState();
+            StateHasChanged();
+        }
+    }
+
     protected override void OnParametersSet()
+    {
+        // Track if Value was explicitly provided (has a delegate means it's bound)
+        _hasExplicitValue = ValueChanged.HasDelegate;
+
+        UpdateDateFieldState();
+    }
+
+    private void UpdateDateFieldState()
     {
         // Determine effective disabled/readonly state (inherit from DatePickerContext if not explicitly set)
         var effectiveDisabled = Disabled || DatePickerContext.Disabled;
@@ -149,8 +181,8 @@ public class DatePickerField : ComponentBase
         var isInvalid = Invalid || IsOutOfRange();
 
         _dateFieldContext.SetDateState(
-            Value,
-            Placeholder ?? DateOnly.FromDateTime(DateTime.Today),
+            EffectiveValue,
+            EffectivePlaceholder,
             Format,
             CalendarSystem,
             Locale,
@@ -164,9 +196,10 @@ public class DatePickerField : ComponentBase
 
     private bool IsOutOfRange()
     {
-        if (!Value.HasValue) return false;
-        if (MinValue.HasValue && Value.Value < MinValue.Value) return true;
-        if (MaxValue.HasValue && Value.Value > MaxValue.Value) return true;
+        var value = EffectiveValue;
+        if (!value.HasValue) return false;
+        if (MinValue.HasValue && value.Value < MinValue.Value) return true;
+        if (MaxValue.HasValue && value.Value > MaxValue.Value) return true;
         return false;
     }
 
@@ -223,7 +256,7 @@ public class DatePickerField : ComponentBase
                 contextBuilder.OpenElement(11, "input");
                 contextBuilder.AddAttribute(12, "type", "hidden");
                 contextBuilder.AddAttribute(13, "name", Name);
-                contextBuilder.AddAttribute(14, "value", Value?.ToString("yyyy-MM-dd") ?? "");
+                contextBuilder.AddAttribute(14, "value", EffectiveValue?.ToString("yyyy-MM-dd") ?? "");
                 if (Required) contextBuilder.AddAttribute(15, "required", true);
                 contextBuilder.CloseElement();
             }
@@ -231,5 +264,11 @@ public class DatePickerField : ComponentBase
             contextBuilder.CloseElement();
         }));
         builder.CloseComponent();
+    }
+
+    public void Dispose()
+    {
+        _dateFieldContext.OnStateChanged -= HandleStateChanged;
+        DatePickerContext.OnStateChanged -= HandleContextStateChanged;
     }
 }

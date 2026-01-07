@@ -44,6 +44,16 @@ public sealed class DatePickerContext
     public bool ReadOnly { get; internal set; }
 
     /// <summary>
+    /// The current value from DatePickerRoot. Used by DatePickerField when no explicit Value is provided.
+    /// </summary>
+    public DateOnly? Value { get; internal set; }
+
+    /// <summary>
+    /// The placeholder date from DatePickerRoot. Used by DatePickerField when no explicit Placeholder is provided.
+    /// </summary>
+    public DateOnly Placeholder { get; internal set; } = DateOnly.FromDateTime(DateTime.Today);
+
+    /// <summary>
     /// Callback to toggle the popover state.
     /// </summary>
     public Func<Task> ToggleAsync { get; internal set; } = () => Task.CompletedTask;

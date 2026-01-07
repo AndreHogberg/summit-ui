@@ -883,6 +883,32 @@ public class DateFieldContext
     }
 
     /// <summary>
+    /// Gets the localized placeholder for a segment type.
+    /// Uses the static LocalePlaceholders dictionary based on current Locale.
+    /// </summary>
+    public string GetSegmentPlaceholder(DateFieldSegmentType type)
+    {
+        // DayPeriod uses the AM designator as placeholder
+        if (type == DateFieldSegmentType.DayPeriod)
+        {
+            return _amDesignator.ToLowerInvariant();
+        }
+
+        // Get placeholders from C# dictionary based on locale
+        var placeholders = LocalePlaceholders.GetPlaceholders(Locale);
+
+        return type switch
+        {
+            DateFieldSegmentType.Year => placeholders.GetValueOrDefault("year", "yyyy"),
+            DateFieldSegmentType.Month => placeholders.GetValueOrDefault("month", "mm"),
+            DateFieldSegmentType.Day => placeholders.GetValueOrDefault("day", "dd"),
+            DateFieldSegmentType.Hour => placeholders.GetValueOrDefault("hour", "––"),
+            DateFieldSegmentType.Minute => placeholders.GetValueOrDefault("minute", "––"),
+            _ => ""
+        };
+    }
+
+    /// <summary>
     /// Gets the localized label for a segment type.
     /// Falls back to English if labels haven't been loaded yet.
     /// </summary>

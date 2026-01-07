@@ -267,6 +267,58 @@ else
             External Toggle
         </button>
     </div>
+
+    <div class="test-section" data-testid="field-sync-section">
+        <h2>Field Sync (No Explicit Bind on Field)</h2>
+        <p>Tests that DatePickerField syncs with DatePickerRoot value when no explicit bind is provided on the field.</p>
+        <DatePickerRoot @bind-Value="_date6" CloseOnSelect="false" data-testid="field-sync-datepicker">
+            <DatePickerField class="datepicker-field" data-testid="field-sync-field">
+                <DatePickerLabel class="sr-only">Select a date</DatePickerLabel>
+                <DatePickerInput class="datepicker-segments" data-testid="field-sync-input" />
+                <DatePickerTrigger class="datepicker-trigger" data-testid="field-sync-trigger">
+                    <span>📅</span>
+                </DatePickerTrigger>
+            </DatePickerField>
+            <DatePickerPortal>
+                <DatePickerContent class="datepicker-content" data-testid="field-sync-content">
+                    <DatePickerCalendar @bind-Value="_date6" Context="ctx">
+                        <DatePickerCalendarHeader class="calendar-header">
+                            <DatePickerCalendarPrevButton class="calendar-nav-button">←</DatePickerCalendarPrevButton>
+                            <DatePickerCalendarHeading class="calendar-heading" />
+                            <DatePickerCalendarNextButton class="calendar-nav-button">→</DatePickerCalendarNextButton>
+                        </DatePickerCalendarHeader>
+                        <DatePickerCalendarGrid class="calendar-grid">
+                            <DatePickerCalendarGridHead>
+                                <DatePickerCalendarGridRow>
+                                    @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <DatePickerCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                                            @ctx.Weekdays[idx]
+                                        </DatePickerCalendarHeadCell>
+                                    }
+                                </DatePickerCalendarGridRow>
+                            </DatePickerCalendarGridHead>
+                            <DatePickerCalendarGridBody>
+                                @foreach (var week in ctx.CurrentMonth.Weeks)
+                                {
+                                    <DatePickerCalendarGridRow>
+                                        @foreach (var date in week)
+                                        {
+                                            <DatePickerCalendarCell Date="@date">
+                                                <DatePickerCalendarDay class="calendar-day" />
+                                            </DatePickerCalendarCell>
+                                        }
+                                    </DatePickerCalendarGridRow>
+                                }
+                            </DatePickerCalendarGridBody>
+                        </DatePickerCalendarGrid>
+                    </DatePickerCalendar>
+                </DatePickerContent>
+            </DatePickerPortal>
+        </DatePickerRoot>
+        <p data-testid="field-sync-value">Selected: @(_date6?.ToString("yyyy-MM-dd") ?? "None")</p>
+    </div>
 </div>
 }
 
@@ -425,6 +477,7 @@ else
     private DateOnly? _date3 = new DateOnly(2025, 1, 15);
     private DateOnly? _date4 = null;
     private DateOnly? _date5 = null;
+    private DateOnly? _date6 = null;
     private bool _isOpen = false;
     
     private DateOnly _minDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));

@@ -128,4 +128,44 @@ public class DatePickerSelectionTests : SummitTestBase
             await Assert.That(state).IsNotEqualTo("selected");
         }
     }
+
+    [Test]
+    public async Task SelectingDate_ShouldUpdate_FieldSegments_WhenFieldHasNoExplicitBinding()
+    {
+        // This test verifies that DatePickerField syncs with DatePickerRoot value
+        // when no explicit @bind-Value is provided on the field
+        var trigger = Page.GetByTestId("field-sync-trigger");
+        await trigger.ClickAsync();
+
+        var content = Page.GetByTestId("field-sync-content");
+        await Expect(content).ToBeVisibleAsync();
+
+        // Get the field input container to check segment values
+        var fieldInput = Page.GetByTestId("field-sync-input");
+
+        // Initially, segments should show placeholders (no value selected)
+        var initialSegments = fieldInput.Locator("[data-segment]:not([data-segment='literal'])");
+        var initialFirstSegment = initialSegments.First;
+        var initialPlaceholder = await initialFirstSegment.GetAttributeAsync("data-placeholder");
+        await Assert.That(initialPlaceholder).IsNotNull();
+
+        // Select a day from the calendar
+        var dayButton = content.Locator("[data-summit-calendar-day]:not([data-unavailable]):not([data-outside-month])").Nth(10);
+        var expectedDate = await dayButton.GetAttributeAsync("data-date");
+        await dayButton.ClickAsync();
+
+        // Verify the value display was updated (this works via root binding)
+        var valueDisplay = Page.GetByTestId("field-sync-value");
+        var displayText = await valueDisplay.TextContentAsync();
+        await Assert.That(displayText).Contains(expectedDate!);
+
+        // Verify that the field segments now show actual values (not placeholders)
+        // After selection, segments should no longer have data-placeholder attribute
+        var segments = fieldInput.Locator("[data-segment]:not([data-segment='literal'])");
+        var firstSegment = segments.First;
+
+        // The segment should now have a value and not be in placeholder state
+        var placeholder = await firstSegment.GetAttributeAsync("data-placeholder");
+        await Assert.That(placeholder).IsNull();
+    }
 }

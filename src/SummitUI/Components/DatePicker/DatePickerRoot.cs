@@ -245,6 +245,8 @@ public class DatePickerRoot : ComponentBase, IAsyncDisposable
         _context.CloseOnSelect = CloseOnSelect;
         _context.Disabled = Disabled;
         _context.ReadOnly = ReadOnly;
+        _context.Value = EffectiveValue;
+        _context.Placeholder = GetPlaceholder();
 
         // If controlled open state changed, notify the context so content re-renders
         if (previousIsOpen != IsOpen)
@@ -328,6 +330,9 @@ public class DatePickerRoot : ComponentBase, IAsyncDisposable
             _internalValue = newValue;
         }
 
+        // Update context value so DatePickerField can sync
+        _context.Value = ValueChanged.HasDelegate ? newValue : _internalValue;
+
         await ValueChanged.InvokeAsync(newValue);
         await OnValueChange.InvokeAsync(newValue);
 
@@ -337,6 +342,8 @@ public class DatePickerRoot : ComponentBase, IAsyncDisposable
             EditContext.NotifyFieldChanged(_fieldIdentifier.Value);
         }
 
+        // Notify context subscribers (DatePickerField) of the change
+        _context.RaiseStateChanged();
         StateHasChanged();
     }
 

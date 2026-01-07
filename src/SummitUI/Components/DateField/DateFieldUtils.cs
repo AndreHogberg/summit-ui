@@ -252,20 +252,11 @@ internal static class DateFieldUtils
 
     /// <summary>
     /// Gets the placeholder text for a segment type.
-    /// Returns lowercase format indicators like "yyyy", "mm", "dd".
+    /// Returns localized format indicators (e.g., "åååå" for Swedish, "yyyy" for English).
     /// </summary>
     public static string GetSegmentPlaceholder(DateFieldSegmentType type, DateFieldContext context)
     {
-        return type switch
-        {
-            DateFieldSegmentType.Year => "yyyy",
-            DateFieldSegmentType.Month => "mm",
-            DateFieldSegmentType.Day => "dd",
-            DateFieldSegmentType.Hour => "hh",
-            DateFieldSegmentType.Minute => "mm",
-            DateFieldSegmentType.DayPeriod => context.GetAmDesignator().ToLowerInvariant(),
-            _ => ""
-        };
+        return context.GetSegmentPlaceholder(type);
     }
 
     /// <summary>
