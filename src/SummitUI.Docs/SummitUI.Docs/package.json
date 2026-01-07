@@ -6,7 +6,8 @@
   "scripts": {
     "build:css": "tailwindcss -i ./Styles/app.css -o ./wwwroot/app.css --minify",
     "build:hljs": "esbuild Scripts/hljs-bundle.js --bundle --minify --outfile=wwwroot/hljs.bundle.min.js",
-    "build": "npm run build:css && npm run build:hljs",
+    "build:theme": "esbuild Scripts/theme.js --bundle --minify --outfile=wwwroot/theme.min.js --format=esm",
+    "build": "npm run build:css && npm run build:hljs && npm run build:theme",
     "watch:css": "tailwindcss -i ./Styles/app.css -o ./wwwroot/app.css --watch"
   },
   "keywords": [],

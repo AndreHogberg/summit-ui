@@ -1,3 +1,4 @@
+using SummitUI.Docs.Client.Services;
 using SummitUI.Docs.Components;
 using SummitUI.Extensions;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 builder.Services.AddSummitUI();
+builder.Services.AddScoped<ThemeJsInterop>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

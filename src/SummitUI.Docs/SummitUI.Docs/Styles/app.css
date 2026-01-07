@@ -173,10 +173,55 @@
 }
 
 /* ============================================
-   Dark Mode (System Preference)
+   Dark Mode (Hybrid: class-based + system preference fallback)
+   - .dark class: force dark mode
+   - .light class: force light mode  
+   - No class: follow system preference
    ============================================ */
+
+/* Explicit dark mode via .dark class on :root */
+:root.dark {
+  /* New design system tokens */
+  --su-primary: 96 165 250;           /* #60A5FA - blue-400 */
+  --su-primary-foreground: 3 7 18;    /* gray-950 */
+  --su-background: 3 7 18;            /* gray-950 */
+  --su-foreground: 249 250 251;       /* gray-50 */
+  --su-muted: 31 41 55;               /* gray-800 */
+  --su-muted-foreground: 209 213 219;   /* gray-300 */
+  --su-border: 55 65 81;              /* gray-700 */
+  --su-card: 17 24 39;                /* gray-900 */
+  --su-card-foreground: 249 250 251;  /* gray-50 */
+  --su-accent: 30 58 138;             /* blue-900 */
+  --su-accent-foreground: 219 234 254;/* blue-100 */
+  --su-destructive: 127 29 29;           /* red-900 */
+  --su-destructive-foreground: 254 226 226; /* red-100 */
+  --su-ring: 96 165 250;              /* #60A5FA - blue-400 */
+
+  /* Legacy HSL tokens */
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 6%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 6%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 213.1 93.9% 67.8%;         /* #60A5FA - blue-400 */
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 216 12% 84%;       /* gray-300 */
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 31%;              /* red-900 */
+  --destructive-foreground: 0 93% 94%;   /* red-100 */
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 226.8 76.1% 41%;            /* #193CB8 - blue-800 */
+}
+
+/* System preference dark mode (only when no explicit .light or .dark class is set) */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light):not(.dark) {
     /* New design system tokens */
     --su-primary: 96 165 250;           /* #60A5FA - blue-400 */
     --su-primary-foreground: 3 7 18;    /* gray-950 */
