@@ -76,7 +76,6 @@ Collapsible content panel that shows/hides based on state.
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | Value | string | **required** | Unique identifier for this accordion item |
-| As | string | "div" | HTML element to render |
 | Disabled | bool | false | Disable this specific item |
 
 ### AccordionHeader
@@ -90,7 +89,6 @@ Collapsible content panel that shows/hides based on state.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| As | string | "button" | HTML element to render |
 
 ### AccordionContent
 
@@ -129,7 +127,7 @@ Collapsible content panel that shows/hides based on state.
 Allow multiple items to be expanded simultaneously.
 
 ```razor
-<AccordionRoot Type="AccordionType.Multiple" 
+<AccordionRoot Type="AccordionType.Multiple"
                DefaultValues="@(new[] { "item-1", "item-2" })">
     <AccordionItem Value="item-1">
         <AccordionHeader>
@@ -155,7 +153,7 @@ Control the expanded state externally.
     private string? expandedItem = "item-1";
 }
 
-<AccordionRoot Value="@expandedItem" 
+<AccordionRoot Value="@expandedItem"
                ValueChanged="@(v => expandedItem = v)">
     <AccordionItem Value="item-1">
         <AccordionHeader>
