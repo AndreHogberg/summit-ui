@@ -44,7 +44,7 @@ public partial class SuLink : ComponentBase
 
     private string BaseClasses => Muted
         ? "text-su-muted-foreground hover:text-su-foreground underline-offset-4 hover:underline transition-colors"
-        : "text-su-primary dark:text-blue-400 hover:text-blue-950 dark:hover:text-blue-300 underline-offset-4 hover:underline transition-colors";
+        : "text-su-primary hover:text-su-primary/80 underline-offset-4 hover:underline transition-colors";
 
     private string? Target => External ? "_blank" : null;
 

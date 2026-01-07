@@ -549,15 +549,10 @@
         color: rgb(var(--su-primary-foreground));
     }
 
-    .calendar-day[data-outside-month] {
-        color: rgb(var(--su-muted-foreground));
-        opacity: 0.5;
-    }
-
+    .calendar-day[data-outside-month],
     .calendar-day[data-unavailable],
     .calendar-day:disabled {
-        color: rgb(var(--su-muted-foreground));
-        opacity: 0.5;
+        color: rgb(var(--su-muted-foreground));  /* zinc-500 light / zinc-400 dark - WCAG AA compliant */
         cursor: not-allowed;
     }
 

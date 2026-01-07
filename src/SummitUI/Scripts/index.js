@@ -127,3 +127,10 @@ export {
     getMonthsInYear as calendar_getMonthsInYear,
     batchConvertFromGregorian as calendar_batchConvertFromGregorian
 } from './calendar.js';
+
+// MediaQuery exports (reactive viewport/media query matching)
+export {
+    register as mediaQuery_register,
+    unregister as mediaQuery_unregister,
+    evaluate as mediaQuery_evaluate
+} from './media-query.js';

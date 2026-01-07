@@ -3,33 +3,33 @@
 
 <PageTitle>SummitUI - Accessible Blazor Components</PageTitle>
 
-<div class="relative flex flex-col items-center justify-center pt-24 pb-16 px-6 text-center">
+<div class="relative flex flex-col items-center justify-center pt-16 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 text-center">
     <div class="mx-auto flex max-w-[64rem] flex-col items-center gap-4">
         <div class="inline-flex items-center rounded-full border border-su-border bg-su-muted px-3 py-1 text-xs font-medium text-su-muted-foreground transition-colors">
             Now in early alpha
         </div>
-        <h1 class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 class="text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             Build accessible web apps <br class="hidden sm:inline"/> with speed
         </h1>
-        <p class="max-w-[42rem] leading-normal text-su-muted-foreground sm:text-xl sm:leading-8">
+        <p class="max-w-[42rem] leading-normal text-su-muted-foreground text-base sm:text-xl sm:leading-8">
             SummitUI is a headless, fully customizable component library for Blazor. Built with accessibility and performance in mind.
         </p>
-        <div class="flex flex-wrap items-center justify-center gap-4">
-            <NavLink tabindex="0" href="/docs" class="inline-flex items-center justify-center rounded-md bg-su-primary px-8 py-3 text-sm font-medium text-su-primary-foreground shadow transition-colors hover:bg-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2">Get Started</NavLink>
-            <NavLink tabindex="0" href="https://github.com/andrehogberg/summit-ui" target="_blank" class="inline-flex items-center justify-center rounded-md border border-su-border bg-su-background px-8 py-3 text-sm font-medium shadow-sm transition-colors hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2" rel="noopener noreferrer">GitHub</NavLink>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
+            <NavLink tabindex="0" href="/docs" class="w-full sm:w-auto inline-flex items-center justify-center rounded-md bg-su-primary px-8 py-3 text-sm font-medium text-su-primary-foreground shadow transition-colors hover:bg-su-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2">Get Started</NavLink>
+            <NavLink tabindex="0" href="https://github.com/andrehogberg/summit-ui" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center rounded-md border border-su-border bg-su-background px-8 py-3 text-sm font-medium shadow-sm transition-colors hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2" rel="noopener noreferrer">GitHub</NavLink>
         </div>
     </div>
 </div>
 
-<div class="container mx-auto px-6 pb-24">
+<div class="container mx-auto px-4 sm:px-6 pb-16 sm:pb-24">
     <div class="mx-auto max-w-md">
         <HomeTabsExample @rendermode="InteractiveWebAssembly" />
     </div>
 </div>
 
-<div class="bg-su-muted/50 py-24">
-    <div class="container mx-auto px-6">
-        <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+<div class="bg-su-muted/50 py-16 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-3">
             <div class="flex flex-col items-center space-y-4 text-center">
                 <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-su-primary text-su-primary-foreground shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>

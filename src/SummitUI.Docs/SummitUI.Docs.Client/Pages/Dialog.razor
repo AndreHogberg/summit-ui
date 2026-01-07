@@ -23,7 +23,7 @@
     <SuSection Title="Demo">
         <SuCard>
             <DialogRoot>
-                <DialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-white hover:bg-su-primary/90 transition-colors">
+                <DialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90 transition-colors">
                     Open Dialog
                 </DialogTrigger>
                 <DialogPortal>
@@ -34,18 +34,18 @@
                             Make changes to your profile here. Click save when you're done.
                         </DialogDescription>
                         <div class="grid gap-4 py-4">
-                            <div class="grid grid-cols-4 items-center gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
                                 <label class="text-sm font-medium">Name</label>
-                                <input class="col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" placeholder="Enter your name" />
+                                <input class="sm:col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" placeholder="Enter your name" />
                             </div>
-                            <div class="grid grid-cols-4 items-center gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
                                 <label class="text-sm font-medium">Email</label>
-                                <input class="col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" placeholder="Enter your email" type="email" />
+                                <input class="sm:col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" placeholder="Enter your email" type="email" />
                             </div>
                         </div>
                         <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
                             <DialogClose class="mt-2 sm:mt-0 inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent sm:mr-2">Cancel</DialogClose>
-                            <DialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-white hover:bg-su-primary/90">Save Changes</DialogClose>
+                            <DialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90">Save Changes</DialogClose>
                         </div>
                     </DialogContent>
                 </DialogPortal>
@@ -469,7 +469,7 @@
             <DialogContent class=""dialog-content"">
                 <DialogTitle>Parent Dialog</DialogTitle>
                 <DialogDescription>This is the parent dialog.</DialogDescription>
-                
+
                 <DialogRoot>
                     <DialogTrigger class=""btn btn-secondary"">Open Nested</DialogTrigger>
                     <DialogPortal>
@@ -482,7 +482,7 @@
                         </DialogOverlay>
                     </DialogPortal>
                 </DialogRoot>
-                
+
                 <DialogClose class=""btn btn-secondary"">Close Parent</DialogClose>
             </DialogContent>
         </DialogOverlay>
@@ -498,7 +498,7 @@
                 <DialogDescription>
                     Make changes to your profile here. Click save when you're done.
                 </DialogDescription>
-                
+
                 <EditForm Model=""@model"" OnValidSubmit=""HandleSubmit"">
                     <div class=""dialog-form"">
                         <div class=""form-group"">
@@ -510,7 +510,7 @@
                             <InputText id=""email"" class=""form-control"" @bind-Value=""model.Email"" />
                         </div>
                     </div>
-                    
+
                     <div class=""dialog-actions"">
                         <DialogClose type=""submit"" class=""btn btn-primary"">Save Changes</DialogClose>
                         <DialogClose class=""btn btn-secondary"">Cancel</DialogClose>

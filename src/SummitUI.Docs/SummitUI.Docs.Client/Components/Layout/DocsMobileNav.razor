@@ -29,8 +29,8 @@
 
     <header class="sticky top-0 z-50 w-full border-b border-su-border bg-su-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-su-background/60">
         <div class="flex h-14 items-center">
-            @* Left section - Logo area aligned with sidebar *@
-            <div class="flex h-full w-[280px] shrink-0 items-center border-r border-su-border px-6">
+            @* Left section - Logo area (responsive width) *@
+            <div class="flex h-full shrink-0 items-center px-4 md:w-[280px] md:border-r md:border-su-border md:px-6">
                 @* Hamburger Menu Button (mobile only) *@
                 <DialogTrigger class="mr-3 flex h-8 w-8 items-center justify-center rounded-md text-su-muted-foreground hover:text-su-foreground hover:bg-su-accent md:hidden transition-colors" 
                                aria-label="Open navigation menu">
@@ -49,12 +49,16 @@
             </div>
 
             @* Right section - Navigation *@
-            <div class="flex flex-1 items-center justify-between px-6">
-                <div class="flex items-center gap-4">
+            <div class="flex flex-1 items-center justify-between px-4 md:px-6">
+                @* Mobile: Show current page title *@
+                <span class="md:hidden text-sm font-medium text-su-foreground truncate max-w-[180px]">@CurrentPageTitle</span>
+                
+                @* Desktop: Show breadcrumbs *@
+                <div class="hidden md:flex items-center gap-4">
                     <Breadcrumbs />
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 ml-auto">
                     @* Theme Toggle Button *@
                     <button @onclick="ToggleThemeAsync"
                             class="flex h-8 w-8 items-center justify-center rounded-md text-su-muted-foreground hover:text-su-foreground hover:bg-su-accent transition-colors"
@@ -102,6 +106,23 @@
     private bool isSidebarOpen;
     private bool isDarkMode;
     private bool _isInitialized;
+
+    private string CurrentPageTitle
+    {
+        get
+        {
+            var uri = new Uri(Navigation.Uri);
+            var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            if (segments.Length == 0) return "Docs";
+            
+            var lastSegment = segments[^1];
+            if (string.Equals(lastSegment, "llms", StringComparison.OrdinalIgnoreCase)) return "llms.txt";
+            if (string.Equals(lastSegment, "docs", StringComparison.OrdinalIgnoreCase)) return "Introduction";
+            
+            // Capitalize first letter
+            return char.ToUpper(lastSegment[0]) + lastSegment[1..];
+        }
+    }
 
     private void CloseSidebar()
     {

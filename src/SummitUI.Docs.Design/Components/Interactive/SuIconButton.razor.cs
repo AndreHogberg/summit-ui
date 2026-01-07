@@ -60,12 +60,12 @@ public partial class SuIconButton : ComponentBase
 
     private string VariantClasses => Variant switch
     {
-        SuButtonVariant.Primary => "bg-su-primary text-su-primary-foreground shadow-sm hover:bg-blue-900",
+        SuButtonVariant.Primary => "bg-su-primary text-su-primary-foreground shadow-sm hover:bg-su-primary/90",
         SuButtonVariant.Secondary => "bg-su-muted text-su-foreground shadow-sm hover:bg-gray-200 dark:hover:bg-gray-700",
         SuButtonVariant.Ghost => "text-su-muted-foreground hover:bg-su-accent hover:text-su-foreground",
         SuButtonVariant.Outline => "border border-su-border bg-su-background text-su-foreground shadow-sm hover:bg-su-accent",
         SuButtonVariant.Destructive => "bg-su-destructive text-su-destructive-foreground shadow-sm hover:bg-red-600 dark:hover:bg-red-500",
-        SuButtonVariant.Link => "text-su-primary hover:text-blue-900 dark:hover:text-blue-300",
+        SuButtonVariant.Link => "text-su-primary hover:text-su-primary/80",
         _ => ""
     };
 

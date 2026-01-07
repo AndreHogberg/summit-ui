@@ -12,7 +12,8 @@
 
 /* ============================================
    SummitUI Design System Theme
-   Blue/White theme with system dark mode
+   Zinc (Black/White) theme with system dark mode
+   High contrast, shadcn-inspired color scheme
    ============================================ */
 
 @theme {
@@ -61,53 +62,53 @@
    Light Mode (Default)
    ============================================ */
 :root {
-  /* New design system tokens (RGB values for opacity support) */
-  --su-primary: 25 60 184;             /* #193CB8 - blue-800 */
-  --su-primary-foreground: 255 255 255; /* white */
+  /* New design system tokens (RGB values for opacity support) - Zinc Theme */
   --su-background: 255 255 255;         /* white */
-  --su-foreground: 3 7 18;              /* gray-950 */
-  --su-muted: 243 244 246;              /* gray-100 */
-  --su-muted-foreground: 75 85 99;       /* gray-600 */
-  --su-border: 229 231 235;             /* gray-200 */
+  --su-foreground: 9 9 11;              /* zinc-950 */
+  --su-primary: 24 24 27;               /* zinc-900 */
+  --su-primary-foreground: 250 250 250; /* zinc-50 */
+  --su-muted: 244 244 245;              /* zinc-100 */
+  --su-muted-foreground: 113 113 122;   /* zinc-500 */
+  --su-border: 228 228 231;             /* zinc-200 */
   --su-card: 255 255 255;               /* white */
-  --su-card-foreground: 3 7 18;         /* gray-950 */
-  --su-accent: 239 246 255;             /* blue-50 */
-  --su-accent-foreground: 30 58 138;    /* blue-900 */
-  --su-destructive: 254 202 202;          /* red-200 */
-  --su-destructive-foreground: 127 29 29;  /* red-900 */
-  --su-ring: 25 60 184;                /* #193CB8 - blue-800 */
+  --su-card-foreground: 9 9 11;         /* zinc-950 */
+  --su-accent: 244 244 245;             /* zinc-100 */
+  --su-accent-foreground: 24 24 27;     /* zinc-900 */
+  --su-destructive: 185 28 28;          /* red-700 - WCAG AA with white text */
+  --su-destructive-foreground: 255 255 255; /* white */
+  --su-ring: 24 24 27;                  /* zinc-900 */
 
   /* Syntax highlighting colors (WCAG AA contrast on white) */
-  --hljs-base: 55 65 81;               /* gray-700 - base code text */
-  --hljs-comment: 107 114 128;         /* gray-500 - comments */
-  --hljs-keyword: 29 78 216;           /* blue-700 - keywords */
-  --hljs-string: 21 128 61;            /* green-700 - strings */
+  --hljs-base: 63 63 70;               /* zinc-700 - base code text */
+  --hljs-comment: 113 113 122;         /* zinc-500 - comments */
+  --hljs-keyword: 24 24 27;            /* zinc-900 - keywords */
+  --hljs-string: 22 101 34;            /* green-800 - strings */
   --hljs-number: 180 83 9;             /* amber-700 - numbers/literals */
   --hljs-variable: 185 28 28;          /* red-700 - variables/tags */
-  --hljs-title: 126 34 206;            /* purple-700 - functions/titles */
+  --hljs-title: 88 28 135;             /* purple-900 - functions/titles */
   --hljs-type: 15 118 110;             /* teal-700 - types/built-ins */
-  --hljs-attribute: 13 148 136;        /* teal-600 - attributes */
+  --hljs-attribute: 17 94 89;          /* teal-800 - attributes */
 
-  /* Legacy HSL tokens */
+  /* Legacy HSL tokens (shadcn zinc) */
   --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  --foreground: 240 10% 3.9%;
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 240 10% 3.9%;
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 226.8 76.1% 41%;           /* #193CB8 - blue-800 */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 220 9% 34%;          /* gray-600 */
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 96% 89%;                /* red-200 */
-  --destructive-foreground: 0 63% 31%;     /* red-900 */
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 226.8 76.1% 41%;              /* #193CB8 - blue-800 */
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 72.2% 41.8%;           /* red-700 */
+  --destructive-foreground: 0 0% 100%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
   --radius: 0.5rem;
 }
 
@@ -120,105 +121,105 @@
 
 /* Explicit dark mode via .dark class on :root */
 :root.dark {
-  /* New design system tokens */
-  --su-primary: 96 165 250;           /* #60A5FA - blue-400 */
-  --su-primary-foreground: 3 7 18;    /* gray-950 */
-  --su-background: 3 7 18;            /* gray-950 */
-  --su-foreground: 249 250 251;       /* gray-50 */
-  --su-muted: 31 41 55;               /* gray-800 */
-  --su-muted-foreground: 209 213 219;   /* gray-300 */
-  --su-border: 55 65 81;              /* gray-700 */
-  --su-card: 17 24 39;                /* gray-900 */
-  --su-card-foreground: 249 250 251;  /* gray-50 */
-  --su-accent: 30 58 138;             /* blue-900 */
-  --su-accent-foreground: 219 234 254;/* blue-100 */
-  --su-destructive: 127 29 29;           /* red-900 */
-  --su-destructive-foreground: 254 226 226; /* red-100 */
-  --su-ring: 96 165 250;              /* #60A5FA - blue-400 */
+  /* New design system tokens - Zinc Dark */
+  --su-background: 9 9 11;              /* zinc-950 */
+  --su-foreground: 250 250 250;         /* zinc-50 */
+  --su-primary: 250 250 250;            /* zinc-50 */
+  --su-primary-foreground: 24 24 27;    /* zinc-900 */
+  --su-muted: 39 39 42;                 /* zinc-800 */
+  --su-muted-foreground: 161 161 170;   /* zinc-400 */
+  --su-border: 39 39 42;                /* zinc-800 */
+  --su-card: 9 9 11;                    /* zinc-950 */
+  --su-card-foreground: 250 250 250;    /* zinc-50 */
+  --su-accent: 39 39 42;                /* zinc-800 */
+  --su-accent-foreground: 250 250 250;  /* zinc-50 */
+  --su-destructive: 127 29 29;          /* red-900 */
+  --su-destructive-foreground: 250 250 250; /* zinc-50 */
+  --su-ring: 212 212 216;               /* zinc-300 */
 
-  /* Syntax highlighting colors (WCAG AA contrast on gray-900) */
-  --hljs-base: 229 231 235;           /* gray-200 - base code text */
-  --hljs-comment: 156 163 175;        /* gray-400 - comments */
-  --hljs-keyword: 96 165 250;         /* blue-400 - keywords */
-  --hljs-string: 74 222 128;          /* green-400 - strings */
-  --hljs-number: 251 191 36;          /* amber-400 - numbers/literals */
-  --hljs-variable: 248 113 113;       /* red-400 - variables/tags */
-  --hljs-title: 192 132 252;          /* purple-400 - functions/titles */
-  --hljs-type: 45 212 191;            /* teal-400 - types/built-ins */
-  --hljs-attribute: 94 234 212;       /* teal-300 - attributes */
+  /* Syntax highlighting colors (WCAG AA contrast on zinc-950) */
+  --hljs-base: 228 228 231;             /* zinc-200 - base code text */
+  --hljs-comment: 161 161 170;          /* zinc-400 - comments */
+  --hljs-keyword: 250 250 250;          /* zinc-50 - keywords */
+  --hljs-string: 74 222 128;            /* green-400 - strings */
+  --hljs-number: 251 191 36;            /* amber-400 - numbers/literals */
+  --hljs-variable: 248 113 113;         /* red-400 - variables/tags */
+  --hljs-title: 232 121 249;            /* fuchsia-400 - functions/titles */
+  --hljs-type: 45 212 191;              /* teal-400 - types/built-ins */
+  --hljs-attribute: 94 234 212;         /* teal-300 - attributes */
 
-  /* Legacy HSL tokens */
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 6%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 6%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 213.1 93.9% 67.8%;         /* #60A5FA - blue-400 */
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 216 12% 84%;       /* gray-300 */
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 63% 31%;              /* red-900 */
-  --destructive-foreground: 0 93% 94%;   /* red-100 */
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 226.8 76.1% 41%;            /* #193CB8 - blue-800 */
+  /* Legacy HSL tokens (shadcn zinc dark) */
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
 }
 
 /* System preference dark mode (only when no explicit .light or .dark class is set) */
 @media (prefers-color-scheme: dark) {
   :root:not(.light):not(.dark) {
-    /* New design system tokens */
-    --su-primary: 96 165 250;           /* #60A5FA - blue-400 */
-    --su-primary-foreground: 3 7 18;    /* gray-950 */
-    --su-background: 3 7 18;            /* gray-950 */
-    --su-foreground: 249 250 251;       /* gray-50 */
-    --su-muted: 31 41 55;               /* gray-800 */
-    --su-muted-foreground: 209 213 219;   /* gray-300 */
-    --su-border: 55 65 81;              /* gray-700 */
-    --su-card: 17 24 39;                /* gray-900 */
-    --su-card-foreground: 249 250 251;  /* gray-50 */
-    --su-accent: 30 58 138;             /* blue-900 */
-    --su-accent-foreground: 219 234 254;/* blue-100 */
-    --su-destructive: 127 29 29;           /* red-900 */
-    --su-destructive-foreground: 254 226 226; /* red-100 */
-    --su-ring: 96 165 250;              /* #60A5FA - blue-400 */
+    /* New design system tokens - Zinc Dark */
+    --su-background: 9 9 11;              /* zinc-950 */
+    --su-foreground: 250 250 250;         /* zinc-50 */
+    --su-primary: 250 250 250;            /* zinc-50 */
+    --su-primary-foreground: 24 24 27;    /* zinc-900 */
+    --su-muted: 39 39 42;                 /* zinc-800 */
+    --su-muted-foreground: 161 161 170;   /* zinc-400 */
+    --su-border: 39 39 42;                /* zinc-800 */
+    --su-card: 9 9 11;                    /* zinc-950 */
+    --su-card-foreground: 250 250 250;    /* zinc-50 */
+    --su-accent: 39 39 42;                /* zinc-800 */
+    --su-accent-foreground: 250 250 250;  /* zinc-50 */
+    --su-destructive: 127 29 29;          /* red-900 */
+    --su-destructive-foreground: 250 250 250; /* zinc-50 */
+    --su-ring: 212 212 216;               /* zinc-300 */
 
-    /* Syntax highlighting colors (WCAG AA contrast on gray-900) */
-    --hljs-base: 229 231 235;           /* gray-200 - base code text */
-    --hljs-comment: 156 163 175;        /* gray-400 - comments */
-    --hljs-keyword: 96 165 250;         /* blue-400 - keywords */
-    --hljs-string: 74 222 128;          /* green-400 - strings */
-    --hljs-number: 251 191 36;          /* amber-400 - numbers/literals */
-    --hljs-variable: 248 113 113;       /* red-400 - variables/tags */
-    --hljs-title: 192 132 252;          /* purple-400 - functions/titles */
-    --hljs-type: 45 212 191;            /* teal-400 - types/built-ins */
-    --hljs-attribute: 94 234 212;       /* teal-300 - attributes */
+    /* Syntax highlighting colors (WCAG AA contrast on zinc-950) */
+    --hljs-base: 228 228 231;             /* zinc-200 - base code text */
+    --hljs-comment: 161 161 170;          /* zinc-400 - comments */
+    --hljs-keyword: 250 250 250;          /* zinc-50 - keywords */
+    --hljs-string: 74 222 128;            /* green-400 - strings */
+    --hljs-number: 251 191 36;            /* amber-400 - numbers/literals */
+    --hljs-variable: 248 113 113;         /* red-400 - variables/tags */
+    --hljs-title: 232 121 249;            /* fuchsia-400 - functions/titles */
+    --hljs-type: 45 212 191;              /* teal-400 - types/built-ins */
+    --hljs-attribute: 94 234 212;         /* teal-300 - attributes */
 
-    /* Legacy HSL tokens */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 6%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 6%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 213.1 93.9% 67.8%;         /* #60A5FA - blue-400 */
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 216 12% 84%;       /* gray-300 */
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;              /* red-900 */
-    --destructive-foreground: 0 93% 94%;   /* red-100 */
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 226.8 76.1% 41%;            /* #193CB8 - blue-800 */
+    /* Legacy HSL tokens (shadcn zinc dark) */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 }
 

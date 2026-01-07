@@ -88,6 +88,12 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     public bool Disabled { get; set; }
 
     /// <summary>
+    /// Accessible label for the checkbox. Required when the checkbox is not wrapped in a label element.
+    /// </summary>
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
+    /// <summary>
     /// Callback invoked when the checked state changes.
     /// </summary>
     [Parameter]
@@ -228,26 +234,32 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         builder.AddAttribute(3, "id", _checkboxId);
         builder.AddAttribute(4, "aria-checked", AriaChecked);
         builder.AddAttribute(5, "aria-disabled", IsDisabled ? "true" : null);
-        builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-summit-checkbox", "");
+
+        if (!string.IsNullOrEmpty(AriaLabel))
+        {
+            builder.AddAttribute(6, "aria-label", AriaLabel);
+        }
+
+        builder.AddAttribute(7, "data-state", DataState);
+        builder.AddAttribute(8, "data-summit-checkbox", "");
 
         if (IsDisabled)
         {
-            builder.AddAttribute(8, "disabled", true);
-            builder.AddAttribute(9, "data-disabled", true);
+            builder.AddAttribute(9, "disabled", true);
+            builder.AddAttribute(10, "data-disabled", true);
         }
 
-        builder.AddAttribute(10, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddEventStopPropagationAttribute(11, "onclick", true);
-        builder.AddEventPreventDefaultAttribute(12, "onclick", true);
-        builder.AddMultipleAttributes(13, AdditionalAttributes);
-        builder.AddElementReferenceCapture(14, elemRef => _elementRef = elemRef);
+        builder.AddAttribute(11, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
+        builder.AddEventStopPropagationAttribute(12, "onclick", true);
+        builder.AddEventPreventDefaultAttribute(13, "onclick", true);
+        builder.AddMultipleAttributes(14, AdditionalAttributes);
+        builder.AddElementReferenceCapture(15, elemRef => _elementRef = elemRef);
 
         // Cascade checkbox context to child content
-        builder.OpenComponent<CascadingValue<CheckboxContext>>(15);
-        builder.AddComponentParameter(16, "Value", CurrentContext);
-        builder.AddComponentParameter(17, "IsFixed", false);
-        builder.AddComponentParameter(18, "ChildContent", ChildContent);
+        builder.OpenComponent<CascadingValue<CheckboxContext>>(16);
+        builder.AddComponentParameter(17, "Value", CurrentContext);
+        builder.AddComponentParameter(18, "IsFixed", false);
+        builder.AddComponentParameter(19, "ChildContent", ChildContent);
         builder.CloseComponent();
 
         builder.CloseElement();
@@ -255,15 +267,15 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         // Render hidden input for form submission when Name is provided
         if (!string.IsNullOrEmpty(EffectiveName))
         {
-            builder.OpenElement(19, "input");
-            builder.AddAttribute(20, "type", "hidden");
-            builder.AddAttribute(21, "name", EffectiveName);
-            builder.AddAttribute(22, "value", HiddenInputValue);
-            builder.AddAttribute(23, "disabled", IsDisabled);
+            builder.OpenElement(20, "input");
+            builder.AddAttribute(21, "type", "hidden");
+            builder.AddAttribute(22, "name", EffectiveName);
+            builder.AddAttribute(23, "value", HiddenInputValue);
+            builder.AddAttribute(24, "disabled", IsDisabled);
 
             if (Required)
             {
-                builder.AddAttribute(24, "required", true);
+                builder.AddAttribute(25, "required", true);
             }
 
             builder.CloseElement();

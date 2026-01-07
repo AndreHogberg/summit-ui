@@ -13,7 +13,7 @@ public partial class SuPromptButton : ComponentBase
     private const string ButtonClasses =
         "inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium " +
         "bg-su-primary text-su-primary-foreground shadow-sm " +
-        "hover:bg-blue-900 " +
+        "hover:bg-su-primary/90 " +
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 " +
         "transition-colors duration-150";
 

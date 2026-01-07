@@ -63,8 +63,15 @@
         observer.observe(document.body, { childList: true, subtree: true });
     });
 
-    // Also run after Blazor enhanced navigation
-    Blazor.addEventListener('enhancedload', initHighlighting);
+    // Run after Blazor enhanced navigation with a small delay to ensure content is rendered
+    Blazor.addEventListener('enhancedload', () => {
+        // Immediate attempt
+        initHighlighting();
+        // Delayed attempt to catch content rendered after the event
+        requestAnimationFrame(() => {
+            initHighlighting();
+        });
+    });
 </script>
 </body>
 

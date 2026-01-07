@@ -25,7 +25,7 @@
         <SuCard>
             <div class="flex flex-col gap-4">
                 <label class="flex items-center gap-3 cursor-pointer">
-                    <CheckboxRoot @bind-Checked="isChecked1" class="demo-checkbox">
+                    <CheckboxRoot @bind-Checked="isChecked1" AriaLabel="Accept terms and conditions" class="demo-checkbox">
                         <CheckboxIndicator class="demo-indicator">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 6 9 17l-5-5"/>
@@ -36,7 +36,7 @@
                 </label>
                 
                 <label class="flex items-center gap-3 cursor-pointer">
-                    <CheckboxRoot @bind-Checked="isChecked2" class="demo-checkbox">
+                    <CheckboxRoot @bind-Checked="isChecked2" AriaLabel="Subscribe to newsletter" class="demo-checkbox">
                         <CheckboxIndicator class="demo-indicator">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 6 9 17l-5-5"/>
@@ -47,7 +47,7 @@
                 </label>
                 
                 <label class="flex items-center gap-3 cursor-not-allowed opacity-50">
-                    <CheckboxRoot Disabled="true" class="demo-checkbox">
+                    <CheckboxRoot Disabled="true" AriaLabel="Disabled option" class="demo-checkbox">
                         <CheckboxIndicator class="demo-indicator">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 6 9 17l-5-5"/>
@@ -269,6 +269,10 @@
                         <span>Reflects the current state (<code>true</code>, <code>false</code>, or <code>mixed</code>)</span>
                     </li>
                     <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-label:</span>
+                        <span>Provides an accessible name when set via the <code>AriaLabel</code> parameter</span>
+                    </li>
+                    <li class="flex items-start gap-2">
                         <span class="text-su-foreground font-medium shrink-0">aria-disabled:</span>
                         <span>Set when the checkbox is disabled</span>
                     </li>
@@ -334,7 +338,8 @@
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Prevents interaction with the checkbox" },
         new() { Name = "Required", Type = "bool", Default = "false", Description = "Indicates checkbox must be checked for form submission" },
         new() { Name = "Name", Type = "string?", Default = "null", Description = "Form field name for hidden input" },
-        new() { Name = "Value", Type = "string?", Default = "\"on\"", Description = "Value submitted with form data" }
+        new() { Name = "Value", Type = "string?", Default = "\"on\"", Description = "Value submitted with form data" },
+        new() { Name = "AriaLabel", Type = "string?", Default = "null", Description = "Accessible label for the checkbox when not wrapped in a label element" }
     };
 
     private List<SuApiProperty> checkboxIndicatorProperties = new()

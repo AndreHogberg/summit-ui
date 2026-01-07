@@ -40,7 +40,7 @@ public partial class SuAlert : ComponentBase
         SuAlertVariant.Default =>
             "bg-su-background text-su-foreground border-su-border",
         SuAlertVariant.Info =>
-            "bg-blue-50 dark:bg-blue-950 text-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-800 [&>svg]:text-blue-600 dark:[&>svg]:text-blue-400",
+            "bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-700 [&>svg]:text-zinc-600 dark:[&>svg]:text-zinc-400",
         SuAlertVariant.Success =>
             "bg-green-50 dark:bg-green-950 text-green-900 dark:text-green-100 border-green-200 dark:border-green-800 [&>svg]:text-green-600 dark:[&>svg]:text-green-400",
         SuAlertVariant.Warning =>
