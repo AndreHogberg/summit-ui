@@ -67,52 +67,51 @@ public class CalendarDay : ComponentBase
     {
         // Handle keyboard navigation directly on the day button
         // This ensures screen readers receive the events (they focus on buttons, not the grid)
-        var root = Context.RootComponent;
-        if (root == null) return;
+        // Note: Works with or without RootComponent - uses CalendarContext methods directly
 
         switch (args.Key)
         {
             case "ArrowUp":
-                root.MoveFocusWeeks(-1);
+                Context.MoveFocusWeeks(-1);
                 break;
             case "ArrowDown":
-                root.MoveFocusWeeks(1);
+                Context.MoveFocusWeeks(1);
                 break;
             case "ArrowLeft":
-                root.MoveFocus(-1);
+                Context.MoveFocus(-1);
                 break;
             case "ArrowRight":
-                root.MoveFocus(1);
+                Context.MoveFocus(1);
                 break;
             case "Home":
-                root.FocusStartOfWeek();
+                Context.FocusStartOfWeek();
                 break;
             case "End":
-                root.FocusEndOfWeek();
+                Context.FocusEndOfWeek();
                 break;
             case "PageUp":
                 if (args.ShiftKey)
                 {
-                    await root.PreviousYear();
+                    Context.PreviousYear();
                 }
                 else
                 {
-                    await root.PreviousMonth();
+                    Context.PreviousMonth();
                 }
                 break;
             case "PageDown":
                 if (args.ShiftKey)
                 {
-                    await root.NextYear();
+                    Context.NextYear();
                 }
                 else
                 {
-                    await root.NextMonth();
+                    Context.NextMonth();
                 }
                 break;
             case "Enter":
             case " ":
-                await root.SelectFocusedDate();
+                await Context.SelectDateAsync(Context.FocusedDate);
                 break;
             default:
                 // Key not handled, don't prevent default

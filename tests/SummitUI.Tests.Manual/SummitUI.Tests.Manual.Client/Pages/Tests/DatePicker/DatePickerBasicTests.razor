@@ -1,0 +1,432 @@
+@page "/tests/datepicker/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>DatePicker Basic Tests</h1>
+    
+    <div class="test-section" data-testid="basic-section">
+        <h2>Basic DatePicker</h2>
+        <DatePickerRoot @bind-Value="_date1" data-testid="basic-datepicker">
+            <DatePickerField class="datepicker-field" data-testid="basic-field">
+                <DatePickerLabel class="sr-only">Select a date</DatePickerLabel>
+                <DatePickerInput class="datepicker-segments" />
+                <DatePickerTrigger class="datepicker-trigger" data-testid="basic-trigger">
+                    <span>📅</span>
+                </DatePickerTrigger>
+            </DatePickerField>
+            <DatePickerPortal>
+                <DatePickerContent class="datepicker-content" data-testid="basic-content">
+                    <DatePickerCalendar @bind-Value="_date1" data-testid="basic-calendar" Context="ctx">
+                        <DatePickerCalendarHeader class="calendar-header">
+                            <DatePickerCalendarPrevButton class="calendar-nav-button" data-testid="prev-button">←</DatePickerCalendarPrevButton>
+                            <DatePickerCalendarHeading class="calendar-heading" data-testid="heading" />
+                            <DatePickerCalendarNextButton class="calendar-nav-button" data-testid="next-button">→</DatePickerCalendarNextButton>
+                        </DatePickerCalendarHeader>
+                        <DatePickerCalendarGrid class="calendar-grid">
+                            <DatePickerCalendarGridHead>
+                                <DatePickerCalendarGridRow>
+                                    @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <DatePickerCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                                            @ctx.Weekdays[idx]
+                                        </DatePickerCalendarHeadCell>
+                                    }
+                                </DatePickerCalendarGridRow>
+                            </DatePickerCalendarGridHead>
+                            <DatePickerCalendarGridBody>
+                                @foreach (var week in ctx.CurrentMonth.Weeks)
+                                {
+                                    <DatePickerCalendarGridRow>
+                                        @foreach (var date in week)
+                                        {
+                                            <DatePickerCalendarCell Date="@date">
+                                                <DatePickerCalendarDay class="calendar-day" />
+                                            </DatePickerCalendarCell>
+                                        }
+                                    </DatePickerCalendarGridRow>
+                                }
+                            </DatePickerCalendarGridBody>
+                        </DatePickerCalendarGrid>
+                    </DatePickerCalendar>
+                </DatePickerContent>
+            </DatePickerPortal>
+        </DatePickerRoot>
+        <p data-testid="basic-value">Selected: @(_date1?.ToString("yyyy-MM-dd") ?? "None")</p>
+    </div>
+
+    <div class="test-section" data-testid="close-on-select-section">
+        <h2>Close On Select (disabled)</h2>
+        <DatePickerRoot @bind-Value="_date2" CloseOnSelect="false" data-testid="no-close-datepicker">
+            <DatePickerField class="datepicker-field" data-testid="no-close-field">
+                <DatePickerLabel class="sr-only">Select a date</DatePickerLabel>
+                <DatePickerInput class="datepicker-segments" />
+                <DatePickerTrigger class="datepicker-trigger" data-testid="no-close-trigger">
+                    <span>📅</span>
+                </DatePickerTrigger>
+            </DatePickerField>
+            <DatePickerPortal>
+                <DatePickerContent class="datepicker-content" data-testid="no-close-content">
+                    <DatePickerCalendar @bind-Value="_date2" Context="ctx">
+                        <DatePickerCalendarHeader class="calendar-header">
+                            <DatePickerCalendarPrevButton class="calendar-nav-button">←</DatePickerCalendarPrevButton>
+                            <DatePickerCalendarHeading class="calendar-heading" />
+                            <DatePickerCalendarNextButton class="calendar-nav-button">→</DatePickerCalendarNextButton>
+                        </DatePickerCalendarHeader>
+                        <DatePickerCalendarGrid class="calendar-grid">
+                            <DatePickerCalendarGridHead>
+                                <DatePickerCalendarGridRow>
+                                    @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <DatePickerCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                                            @ctx.Weekdays[idx]
+                                        </DatePickerCalendarHeadCell>
+                                    }
+                                </DatePickerCalendarGridRow>
+                            </DatePickerCalendarGridHead>
+                            <DatePickerCalendarGridBody>
+                                @foreach (var week in ctx.CurrentMonth.Weeks)
+                                {
+                                    <DatePickerCalendarGridRow>
+                                        @foreach (var date in week)
+                                        {
+                                            <DatePickerCalendarCell Date="@date">
+                                                <DatePickerCalendarDay class="calendar-day" />
+                                            </DatePickerCalendarCell>
+                                        }
+                                    </DatePickerCalendarGridRow>
+                                }
+                            </DatePickerCalendarGridBody>
+                        </DatePickerCalendarGrid>
+                    </DatePickerCalendar>
+                </DatePickerContent>
+            </DatePickerPortal>
+        </DatePickerRoot>
+        <p data-testid="no-close-value">Selected: @(_date2?.ToString("yyyy-MM-dd") ?? "None")</p>
+    </div>
+
+    <div class="test-section" data-testid="disabled-section">
+        <h2>Disabled DatePicker</h2>
+        <DatePickerRoot @bind-Value="_date3" Disabled="true" data-testid="disabled-datepicker">
+            <DatePickerField class="datepicker-field" data-testid="disabled-field">
+                <DatePickerLabel class="sr-only">Disabled</DatePickerLabel>
+                <DatePickerInput class="datepicker-segments" />
+                <DatePickerTrigger class="datepicker-trigger" data-testid="disabled-trigger">
+                    <span>📅</span>
+                </DatePickerTrigger>
+            </DatePickerField>
+            <DatePickerPortal>
+                <DatePickerContent class="datepicker-content">
+                    <DatePickerCalendar @bind-Value="_date3" Context="ctx">
+                        <DatePickerCalendarHeader class="calendar-header">
+                            <DatePickerCalendarPrevButton class="calendar-nav-button">←</DatePickerCalendarPrevButton>
+                            <DatePickerCalendarHeading class="calendar-heading" />
+                            <DatePickerCalendarNextButton class="calendar-nav-button">→</DatePickerCalendarNextButton>
+                        </DatePickerCalendarHeader>
+                        <DatePickerCalendarGrid class="calendar-grid">
+                            <DatePickerCalendarGridHead>
+                                <DatePickerCalendarGridRow>
+                                    @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <DatePickerCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                                            @ctx.Weekdays[idx]
+                                        </DatePickerCalendarHeadCell>
+                                    }
+                                </DatePickerCalendarGridRow>
+                            </DatePickerCalendarGridHead>
+                            <DatePickerCalendarGridBody>
+                                @foreach (var week in ctx.CurrentMonth.Weeks)
+                                {
+                                    <DatePickerCalendarGridRow>
+                                        @foreach (var date in week)
+                                        {
+                                            <DatePickerCalendarCell Date="@date">
+                                                <DatePickerCalendarDay class="calendar-day" />
+                                            </DatePickerCalendarCell>
+                                        }
+                                    </DatePickerCalendarGridRow>
+                                }
+                            </DatePickerCalendarGridBody>
+                        </DatePickerCalendarGrid>
+                    </DatePickerCalendar>
+                </DatePickerContent>
+            </DatePickerPortal>
+        </DatePickerRoot>
+    </div>
+
+    <div class="test-section" data-testid="minmax-section">
+        <h2>Min/Max Constraints</h2>
+        <DatePickerRoot @bind-Value="_date4" data-testid="minmax-datepicker">
+            <DatePickerField class="datepicker-field" MinValue="@_minDate" MaxValue="@_maxDate" data-testid="minmax-field">
+                <DatePickerLabel class="sr-only">Select a date</DatePickerLabel>
+                <DatePickerInput class="datepicker-segments" />
+                <DatePickerTrigger class="datepicker-trigger" data-testid="minmax-trigger">
+                    <span>📅</span>
+                </DatePickerTrigger>
+            </DatePickerField>
+            <DatePickerPortal>
+                <DatePickerContent class="datepicker-content" data-testid="minmax-content">
+                    <DatePickerCalendar @bind-Value="_date4" MinValue="@_minDate" MaxValue="@_maxDate" Context="ctx">
+                        <DatePickerCalendarHeader class="calendar-header">
+                            <DatePickerCalendarPrevButton class="calendar-nav-button">←</DatePickerCalendarPrevButton>
+                            <DatePickerCalendarHeading class="calendar-heading" />
+                            <DatePickerCalendarNextButton class="calendar-nav-button">→</DatePickerCalendarNextButton>
+                        </DatePickerCalendarHeader>
+                        <DatePickerCalendarGrid class="calendar-grid">
+                            <DatePickerCalendarGridHead>
+                                <DatePickerCalendarGridRow>
+                                    @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <DatePickerCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                                            @ctx.Weekdays[idx]
+                                        </DatePickerCalendarHeadCell>
+                                    }
+                                </DatePickerCalendarGridRow>
+                            </DatePickerCalendarGridHead>
+                            <DatePickerCalendarGridBody>
+                                @foreach (var week in ctx.CurrentMonth.Weeks)
+                                {
+                                    <DatePickerCalendarGridRow>
+                                        @foreach (var date in week)
+                                        {
+                                            <DatePickerCalendarCell Date="@date">
+                                                <DatePickerCalendarDay class="calendar-day" />
+                                            </DatePickerCalendarCell>
+                                        }
+                                    </DatePickerCalendarGridRow>
+                                }
+                            </DatePickerCalendarGridBody>
+                        </DatePickerCalendarGrid>
+                    </DatePickerCalendar>
+                </DatePickerContent>
+            </DatePickerPortal>
+        </DatePickerRoot>
+        <p>Min: @_minDate.ToString("yyyy-MM-dd"), Max: @_maxDate.ToString("yyyy-MM-dd")</p>
+        <p data-testid="minmax-value">Selected: @(_date4?.ToString("yyyy-MM-dd") ?? "None")</p>
+    </div>
+
+    <div class="test-section" data-testid="controlled-section">
+        <h2>Controlled Open State</h2>
+        <DatePickerRoot @bind-Value="_date5" @bind-Open="_isOpen" data-testid="controlled-datepicker">
+            <DatePickerField class="datepicker-field" data-testid="controlled-field">
+                <DatePickerLabel class="sr-only">Select a date</DatePickerLabel>
+                <DatePickerInput class="datepicker-segments" />
+                <DatePickerTrigger class="datepicker-trigger" data-testid="controlled-trigger">
+                    <span>📅</span>
+                </DatePickerTrigger>
+            </DatePickerField>
+            <DatePickerPortal>
+                <DatePickerContent class="datepicker-content" data-testid="controlled-content" OutsideClickBehavior="OutsideClickBehavior.Ignore">
+                    <DatePickerCalendar @bind-Value="_date5" Context="ctx">
+                        <DatePickerCalendarHeader class="calendar-header">
+                            <DatePickerCalendarPrevButton class="calendar-nav-button">←</DatePickerCalendarPrevButton>
+                            <DatePickerCalendarHeading class="calendar-heading" />
+                            <DatePickerCalendarNextButton class="calendar-nav-button">→</DatePickerCalendarNextButton>
+                        </DatePickerCalendarHeader>
+                        <DatePickerCalendarGrid class="calendar-grid">
+                            <DatePickerCalendarGridHead>
+                                <DatePickerCalendarGridRow>
+                                    @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <DatePickerCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                                            @ctx.Weekdays[idx]
+                                        </DatePickerCalendarHeadCell>
+                                    }
+                                </DatePickerCalendarGridRow>
+                            </DatePickerCalendarGridHead>
+                            <DatePickerCalendarGridBody>
+                                @foreach (var week in ctx.CurrentMonth.Weeks)
+                                {
+                                    <DatePickerCalendarGridRow>
+                                        @foreach (var date in week)
+                                        {
+                                            <DatePickerCalendarCell Date="@date">
+                                                <DatePickerCalendarDay class="calendar-day" />
+                                            </DatePickerCalendarCell>
+                                        }
+                                    </DatePickerCalendarGridRow>
+                                }
+                            </DatePickerCalendarGridBody>
+                        </DatePickerCalendarGrid>
+                    </DatePickerCalendar>
+                </DatePickerContent>
+            </DatePickerPortal>
+        </DatePickerRoot>
+        <p data-testid="controlled-open">Open: @_isOpen</p>
+        <button type="button" @onclick="() => _isOpen = !_isOpen" data-testid="external-toggle">
+            External Toggle
+        </button>
+    </div>
+</div>
+}
+
+<style>
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #eee;
+    }
+
+    .datepicker-field {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: white;
+    }
+
+    .datepicker-field:focus-within {
+        border-color: #0078d4;
+        outline: 2px solid rgba(0, 120, 212, 0.3);
+    }
+
+    .datepicker-field[data-disabled] {
+        opacity: 0.5;
+        background: #f5f5f5;
+    }
+
+    .datepicker-segments {
+        display: flex;
+        gap: 0;
+    }
+
+    .datepicker-trigger {
+        padding: 0.25rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 2px;
+    }
+
+    .datepicker-trigger:hover:not(:disabled) {
+        background: #f0f0f0;
+    }
+
+    .datepicker-trigger:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .datepicker-content {
+        padding: 1rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .calendar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .calendar-heading {
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .calendar-nav-button {
+        padding: 0.25rem 0.5rem;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .calendar-nav-button:hover:not(:disabled) {
+        background: #f0f0f0;
+    }
+
+    .calendar-nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .calendar-grid {
+        border-collapse: collapse;
+    }
+
+    .calendar-head-cell {
+        padding: 0.5rem;
+        text-align: center;
+        font-weight: 500;
+        color: #666;
+    }
+
+    .calendar-day {
+        width: 2.5rem;
+        height: 2.5rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 0.875rem;
+    }
+
+    .calendar-day:hover:not(:disabled) {
+        background: #f0f0f0;
+    }
+
+    .calendar-day[data-today] {
+        font-weight: bold;
+        color: #0078d4;
+    }
+
+    .calendar-day[data-state="selected"] {
+        background: #0078d4;
+        color: white;
+    }
+
+    .calendar-day[data-outside-month] {
+        color: #ccc;
+    }
+
+    .calendar-day[data-unavailable],
+    .calendar-day:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .calendar-day[data-focused] {
+        outline: 2px solid #0078d4;
+        outline-offset: 2px;
+    }
+</style>
+
+@code {
+    private DateOnly? _date1 = null;
+    private DateOnly? _date2 = null;
+    private DateOnly? _date3 = new DateOnly(2025, 1, 15);
+    private DateOnly? _date4 = null;
+    private DateOnly? _date5 = null;
+    private bool _isOpen = false;
+    
+    private DateOnly _minDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
+    private DateOnly _maxDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30));
+}

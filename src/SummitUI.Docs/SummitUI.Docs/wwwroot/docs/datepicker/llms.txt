@@ -1,0 +1,557 @@
+# DatePicker
+
+> A date picker component that combines segmented date input with a calendar popover for intuitive date selection.
+
+The DatePicker component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Combined segmented input and calendar popover for flexible date entry
+- Full keyboard navigation in both input and calendar
+- Localized date formatting and weekday names via browser Intl API
+- Multiple calendar systems (Gregorian, Persian, Islamic, Hebrew, etc.)
+- Min/max date constraints with visual feedback
+- EditForm integration with validation support
+- Controlled and uncontrolled modes
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<DatePickerRoot @bind-Value="date" Format="yyyy-MM-dd">
+    <DatePickerField>
+        <DatePickerLabel>Select a date</DatePickerLabel>
+        <DatePickerInput />
+        <DatePickerTrigger>Open</DatePickerTrigger>
+    </DatePickerField>
+    <DatePickerPortal>
+        <DatePickerContent>
+            <DatePickerCalendar @bind-Value="date" Context="cal">
+                <DatePickerCalendarHeader>
+                    <DatePickerCalendarPrevButton>Prev</DatePickerCalendarPrevButton>
+                    <DatePickerCalendarHeading />
+                    <DatePickerCalendarNextButton>Next</DatePickerCalendarNextButton>
+                </DatePickerCalendarHeader>
+                <DatePickerCalendarGrid>
+                    <DatePickerCalendarGridHead>
+                        <DatePickerCalendarGridRow>
+                            @for (int i = 0; i < cal.Weekdays.Length; i++)
+                            {
+                                var idx = i;
+                                <DatePickerCalendarHeadCell Abbreviation="@cal.WeekdaysLong[idx]">
+                                    @cal.Weekdays[idx]
+                                </DatePickerCalendarHeadCell>
+                            }
+                        </DatePickerCalendarGridRow>
+                    </DatePickerCalendarGridHead>
+                    <DatePickerCalendarGridBody>
+                        @foreach (var week in cal.CurrentMonth.Weeks)
+                        {
+                            <DatePickerCalendarGridRow>
+                                @foreach (var date in week)
+                                {
+                                    <DatePickerCalendarCell Date="@date">
+                                        <DatePickerCalendarDay />
+                                    </DatePickerCalendarCell>
+                                }
+                            </DatePickerCalendarGridRow>
+                        }
+                    </DatePickerCalendarGridBody>
+                </DatePickerCalendarGrid>
+            </DatePickerCalendar>
+        </DatePickerContent>
+    </DatePickerPortal>
+</DatePickerRoot>
+```
+
+## Sub-components
+
+### DatePickerRoot
+Root container managing state and cascading context.
+
+### DatePickerField
+Groups label, input segments, and trigger button.
+
+### DatePickerLabel
+Accessible label for the date picker.
+
+### DatePickerInput
+Container that renders date segments.
+
+### DatePickerSegment
+Individual editable segment (auto-generated).
+
+### DatePickerTrigger
+Button that opens the calendar popover.
+
+### DatePickerPortal
+Renders calendar in a portal container.
+
+### DatePickerContent
+Floating popover containing the calendar.
+
+### DatePickerCalendar
+Calendar grid for date selection.
+
+### DatePickerCalendarHeader
+Header containing navigation and heading.
+
+### DatePickerCalendarHeading
+Displays current month and year.
+
+### DatePickerCalendarPrevButton
+Navigate to previous month.
+
+### DatePickerCalendarNextButton
+Navigate to next month.
+
+### DatePickerCalendarGrid
+The calendar table element.
+
+### DatePickerCalendarGridHead
+Weekday header row container.
+
+### DatePickerCalendarGridBody
+Date rows container.
+
+### DatePickerCalendarGridRow
+Row in the calendar grid.
+
+### DatePickerCalendarHeadCell
+Weekday header cell.
+
+### DatePickerCalendarCell
+Container for a day button.
+
+### DatePickerCalendarDay
+Selectable day button.
+
+## API Reference
+
+### DatePickerRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | DateOnly? | null | Controlled selected date value |
+| DefaultValue | DateOnly? | null | Default value (uncontrolled) |
+| ValueChanged | EventCallback<DateOnly?> | - | Value change callback |
+| Placeholder | DateOnly? | Today | Placeholder date for initial calendar display |
+| Open | bool? | null | Controlled open state |
+| DefaultOpen | bool | false | Default open state |
+| OpenChanged | EventCallback<bool> | - | Open state change callback |
+| CloseOnSelect | bool | true | Close popover when date is selected |
+| Modal | bool | true | Trap focus within popover when open |
+| Format | string? | auto | Date format pattern (e.g., "yyyy-MM-dd") |
+| CalendarSystem | CalendarSystem | Gregorian | Calendar system for display |
+| Locale | string? | auto | Locale for formatting (e.g., "en-US") |
+| WeekStartsOn | WeekStartsOn? | auto | First day of the week |
+| FixedWeeks | bool | false | Always display 6 weeks |
+| MinValue | DateOnly? | null | Minimum selectable date |
+| MaxValue | DateOnly? | null | Maximum selectable date |
+| Disabled | bool | false | Disable the entire date picker |
+| ReadOnly | bool | false | Make the field read-only |
+| IsDateDisabled | Func<DateOnly, bool>? | null | Custom function to disable specific dates |
+| Name | string? | null | Form field name for submission |
+| Required | bool | false | Mark field as required |
+| Invalid | bool | false | Validation error state |
+
+### DatePickerField
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | DateOnly? | from Root | Override value from root |
+| ValueChanged | EventCallback<DateOnly?> | - | Value change callback |
+| Format | string? | from Root | Date format pattern |
+| CalendarSystem | CalendarSystem | Gregorian | Calendar system for display |
+| Locale | string? | from Root | Locale for formatting |
+| MinValue | DateOnly? | null | Minimum allowed date |
+| MaxValue | DateOnly? | null | Maximum allowed date |
+| Disabled | bool | false | Disable the field |
+| ReadOnly | bool | false | Make the field read-only |
+| Invalid | bool | false | Validation error state |
+| Name | string? | null | Form field name |
+| Required | bool | false | Mark field as required |
+
+### DatePickerContent
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "div" | HTML element to render |
+| Side | Side | Bottom | Placement side |
+| SideOffset | int | 0 | Offset from field (px) |
+| Align | Align | Start | Alignment along side axis |
+| AlignOffset | int | 0 | Alignment offset (px) |
+| AvoidCollisions | bool | true | Avoid viewport boundaries |
+| CollisionPadding | int | 8 | Viewport padding (px) |
+| TrapFocus | bool? | from Modal | Trap focus within content |
+| EscapeKeyBehavior | EscapeKeyBehavior | Close | Escape key behavior |
+| OutsideClickBehavior | OutsideClickBehavior | Close | Outside click behavior |
+
+### DatePickerCalendar
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | DateOnly? | null | Selected date |
+| ValueChanged | EventCallback<DateOnly?> | - | Value change callback |
+| Placeholder | DateOnly? | Today | Initial displayed month |
+| Locale | string? | auto | Locale for formatting |
+| WeekStartsOn | WeekStartsOn? | auto | First day of the week |
+| CalendarSystem | CalendarSystem | Gregorian | Calendar system |
+| FixedWeeks | bool | false | Always show 6 weeks |
+| MinValue | DateOnly? | null | Minimum selectable date |
+| MaxValue | DateOnly? | null | Maximum selectable date |
+| IsDateDisabled | Func<DateOnly, bool>? | null | Custom disable function |
+| Disabled | bool | false | Disable the calendar |
+| ReadOnly | bool | false | Make calendar read-only |
+
+## Enums
+
+### CalendarSystem
+
+```csharp
+public enum CalendarSystem
+{
+    Gregorian,     // Default Western calendar
+    Persian,       // Solar Hijri (Iran, Afghanistan)
+    Islamic,       // Hijri (Islamic lunar calendar)
+    IslamicCivil,  // Islamic civil calendar
+    Hebrew,        // Jewish calendar
+    Buddhist,      // Thai Buddhist calendar
+    Japanese,      // Japanese Imperial calendar
+    Chinese,       // Chinese lunar calendar
+    Coptic,        // Coptic calendar (Egypt)
+    Ethiopian,     // Ethiopian calendar
+    Indian         // Indian National calendar
+}
+```
+
+### WeekStartsOn
+
+```csharp
+public enum WeekStartsOn
+{
+    Sunday = 0,
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thursday = 4,
+    Friday = 5,
+    Saturday = 6
+}
+```
+
+## Examples
+
+### Basic Usage
+
+```razor
+@code {
+    private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
+}
+
+<DatePickerRoot @bind-Value="selectedDate" Format="yyyy-MM-dd">
+    <DatePickerField class="datepicker-field">
+        <DatePickerLabel>Select a date</DatePickerLabel>
+        <DatePickerInput />
+        <DatePickerTrigger>Calendar</DatePickerTrigger>
+    </DatePickerField>
+    <DatePickerPortal>
+        <DatePickerContent class="datepicker-content">
+            <DatePickerCalendar @bind-Value="selectedDate" Context="cal">
+                <!-- Calendar structure as shown in anatomy -->
+            </DatePickerCalendar>
+        </DatePickerContent>
+    </DatePickerPortal>
+</DatePickerRoot>
+
+<p>Selected: @(selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
+```
+
+### Min/Max Constraints
+
+Limit selectable dates to a specific range.
+
+```razor
+@code {
+    private DateOnly? date = null;
+    private DateOnly minDate = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly maxDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30));
+}
+
+<DatePickerRoot @bind-Value="date" MinValue="@minDate" MaxValue="@maxDate">
+    <DatePickerField MinValue="@minDate" MaxValue="@maxDate">
+        <DatePickerLabel>Select a date (next 30 days)</DatePickerLabel>
+        <DatePickerInput />
+        <DatePickerTrigger>Pick</DatePickerTrigger>
+    </DatePickerField>
+    <DatePickerPortal>
+        <DatePickerContent>
+            <DatePickerCalendar @bind-Value="date" 
+                                MinValue="@minDate" 
+                                MaxValue="@maxDate" 
+                                Context="cal">
+                <!-- Calendar structure -->
+            </DatePickerCalendar>
+        </DatePickerContent>
+    </DatePickerPortal>
+</DatePickerRoot>
+```
+
+### EditForm Integration
+
+Use with Blazor EditForm for form validation.
+
+```razor
+@code {
+    public class FormModel
+    {
+        [Required(ErrorMessage = "Birth date is required")]
+        public DateOnly? BirthDate { get; set; }
+    }
+    
+    private FormModel model = new();
+    private EditContext? editContext;
+    private bool submitted;
+    
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(model);
+    }
+    
+    private void HandleSubmit()
+    {
+        submitted = true;
+        if (editContext!.Validate())
+        {
+            // Process form
+        }
+    }
+}
+
+<EditForm EditContext="editContext" OnSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    
+    <DatePickerRoot @bind-Value="model.BirthDate">
+        <DatePickerField @bind-Value="model.BirthDate"
+                         Name="birthDate"
+                         Required="true"
+                         Invalid="@(submitted && model.BirthDate == null)">
+            <DatePickerLabel>Birth Date</DatePickerLabel>
+            <DatePickerInput />
+            <DatePickerTrigger>Select</DatePickerTrigger>
+        </DatePickerField>
+        <DatePickerPortal>
+            <DatePickerContent>
+                <DatePickerCalendar @bind-Value="model.BirthDate" Context="cal">
+                    <!-- Calendar structure -->
+                </DatePickerCalendar>
+            </DatePickerContent>
+        </DatePickerPortal>
+    </DatePickerRoot>
+    <ValidationMessage For="@(() => model.BirthDate)" />
+    
+    <button type="submit">Submit</button>
+</EditForm>
+```
+
+### Controlled Open State
+
+Control when the calendar popover opens and closes.
+
+```razor
+@code {
+    private DateOnly? date = null;
+    private bool isOpen = false;
+}
+
+<DatePickerRoot @bind-Value="date" @bind-Open="isOpen" CloseOnSelect="false">
+    <DatePickerField>
+        <DatePickerLabel>Select a date</DatePickerLabel>
+        <DatePickerInput />
+        <DatePickerTrigger>Open</DatePickerTrigger>
+    </DatePickerField>
+    <DatePickerPortal>
+        <DatePickerContent OutsideClickBehavior="OutsideClickBehavior.Ignore">
+            <DatePickerCalendar @bind-Value="date" Context="cal">
+                <!-- Calendar structure -->
+            </DatePickerCalendar>
+            <button @onclick="() => isOpen = false">Done</button>
+        </DatePickerContent>
+    </DatePickerPortal>
+</DatePickerRoot>
+
+<p>Open: @isOpen</p>
+<button @onclick="() => isOpen = !isOpen">Toggle Calendar</button>
+```
+
+### Different Calendar Systems
+
+Display dates in different calendar systems (Persian, Islamic, Hebrew, etc.).
+
+```razor
+@code {
+    private DateOnly? persianDate = DateOnly.FromDateTime(DateTime.Today);
+}
+
+<DatePickerRoot @bind-Value="persianDate" CalendarSystem="CalendarSystem.Persian" Locale="fa-IR">
+    <DatePickerField CalendarSystem="CalendarSystem.Persian">
+        <DatePickerLabel>Select a date (Persian calendar)</DatePickerLabel>
+        <DatePickerInput />
+        <DatePickerTrigger>Pick</DatePickerTrigger>
+    </DatePickerField>
+    <DatePickerPortal>
+        <DatePickerContent>
+            <DatePickerCalendar @bind-Value="persianDate" 
+                                CalendarSystem="CalendarSystem.Persian"
+                                Locale="fa-IR"
+                                WeekStartsOn="WeekStartsOn.Saturday"
+                                Context="cal">
+                <!-- Calendar structure -->
+            </DatePickerCalendar>
+        </DatePickerContent>
+    </DatePickerPortal>
+</DatePickerRoot>
+
+<p>Gregorian: @(persianDate?.ToString("yyyy-MM-dd") ?? "None")</p>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Popover open state (on root, content) |
+| data-state | "selected" | Selected day in calendar |
+| data-disabled | Present when disabled | Element is disabled |
+| data-readonly | Present when read-only | Element is read-only |
+| data-invalid | Present when invalid | Validation error state |
+| data-today | Present on today | Calendar day is today |
+| data-focused | Present when focused | Calendar day has keyboard focus |
+| data-outside-month | Present | Day is outside current month |
+| data-unavailable | Present | Day is outside min/max range |
+| data-segment | Segment type | Identifies segment type |
+| data-placeholder | Present when no value | Showing placeholder |
+
+### CSS Example
+
+```css
+/* DatePickerField */
+.datepicker-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+}
+
+.datepicker-field:focus-within {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+.datepicker-field[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.datepicker-field[data-invalid] {
+    border-color: #dc2626;
+}
+
+/* DatePickerContent */
+.datepicker-content {
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Calendar day */
+.calendar-day {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    background: transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.calendar-day:hover:not(:disabled) {
+    background: #f0f0f0;
+}
+
+.calendar-day[data-today] {
+    font-weight: bold;
+    color: #0066cc;
+}
+
+.calendar-day[data-state="selected"] {
+    background: #0066cc;
+    color: white;
+}
+
+.calendar-day[data-outside-month] {
+    color: #ccc;
+}
+
+.calendar-day[data-unavailable],
+.calendar-day:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.calendar-day[data-focused] {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation - Segments
+
+| Key | Action |
+|-----|--------|
+| ArrowUp | Increment the focused segment value |
+| ArrowDown | Decrement the focused segment value |
+| ArrowLeft | Move focus to previous segment |
+| ArrowRight | Move focus to next segment |
+| Tab | Move focus to next segment (or next element) |
+| 0-9 | Type numeric value directly into segment |
+| Backspace / Delete | Clear the value (sets to null) |
+
+### Keyboard Navigation - Calendar
+
+| Key | Action |
+|-----|--------|
+| ArrowUp | Move focus to same day in previous week |
+| ArrowDown | Move focus to same day in next week |
+| ArrowLeft | Move focus to previous day |
+| ArrowRight | Move focus to next day |
+| Enter / Space | Select the focused date |
+| Home | Move focus to first day of week |
+| End | Move focus to last day of week |
+| PageUp | Move focus to same day in previous month |
+| PageDown | Move focus to same day in next month |
+| Escape | Close the calendar popover |
+
+### ARIA Attributes
+
+- **DatePickerField:** Has `role="group"` with `aria-labelledby` pointing to label
+- **DatePickerTrigger:** Has `aria-haspopup="dialog"` and `aria-expanded`
+- **DatePickerContent:** Has `role="dialog"` with `aria-modal`
+- **Segments:** Each has `role="spinbutton"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`
+- **Calendar Grid:** Has `role="grid"` with proper `aria-label`
+- **Calendar Days:** Have `role="gridcell"` with `aria-selected` and `aria-disabled`

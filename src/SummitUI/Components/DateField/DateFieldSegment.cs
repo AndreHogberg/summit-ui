@@ -21,13 +21,33 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
 
     private ElementReference _elementRef;
     private DotNetObjectReference<DateFieldSegment>? _dotNetHelper;
+    private bool _isDisposed;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && Segment.Type != DateFieldSegmentType.Literal)
+        if (firstRender && Segment.Type != DateFieldSegmentType.Literal && !_isDisposed)
         {
             _dotNetHelper = DotNetObjectReference.Create(this);
-            await JsInterop.InitializeSegmentAsync(_elementRef, _dotNetHelper);
+            
+            // Check again after creating the reference in case we were disposed during the await
+            if (_isDisposed)
+            {
+                _dotNetHelper.Dispose();
+                return;
+            }
+            
+            try
+            {
+                await JsInterop.InitializeSegmentAsync(_elementRef, _dotNetHelper);
+            }
+            catch (ObjectDisposedException)
+            {
+                // Component was disposed during the JS call, safe to ignore
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit disconnected, safe to ignore
+            }
         }
     }
 
@@ -165,6 +185,9 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
+        
         _dotNetHelper?.Dispose();
         if (Segment.Type != DateFieldSegmentType.Literal)
         {
@@ -175,6 +198,10 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
             catch (JSDisconnectedException)
             {
                 // Safe to ignore, JS resources are cleaned up by the browser
+            }
+            catch (ObjectDisposedException)
+            {
+                // Safe to ignore, already disposed
             }
         }
     }
