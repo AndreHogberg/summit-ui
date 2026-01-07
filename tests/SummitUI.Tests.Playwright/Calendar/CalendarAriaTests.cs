@@ -27,7 +27,7 @@ public class CalendarAriaTests : SummitTestBase
         var grid = Page.GetByTestId("grid");
         var ariaLabelledBy = await grid.GetAttributeAsync("aria-labelledby");
         await Assert.That(ariaLabelledBy).IsNotNull();
-        
+
         // Verify the heading element exists with that ID
         var heading = Page.GetByTestId("heading");
         var headingId = await heading.GetAttributeAsync("id");
@@ -71,7 +71,7 @@ public class CalendarAriaTests : SummitTestBase
     {
         var section = Page.GetByTestId("basic-section");
         var todayButton = section.Locator("[data-summit-calendar-day][data-today]");
-        
+
         // Today might not be visible if we're looking at a different month
         var count = await todayButton.CountAsync();
         if (count > 0)
@@ -87,7 +87,7 @@ public class CalendarAriaTests : SummitTestBase
         var section = Page.GetByTestId("basic-section");
         var dayButton = section.Locator("[data-summit-calendar-day]:not([data-unavailable]):not([data-outside-month])").First;
         await dayButton.ClickAsync();
-        
+
         // Verify aria-selected is set
         await Expect(dayButton).ToHaveAttributeAsync("aria-selected", "true");
     }
@@ -98,7 +98,7 @@ public class CalendarAriaTests : SummitTestBase
         // Check the minmax section which has unavailable dates
         var section = Page.GetByTestId("minmax-section");
         var unavailableButton = section.Locator("[data-summit-calendar-day][data-unavailable]").First;
-        
+
         var count = await unavailableButton.CountAsync();
         if (count > 0)
         {
@@ -124,7 +124,7 @@ public class CalendarAriaTests : SummitTestBase
         // Check the monday-start section which has explicit weekday test ids
         var section = Page.GetByTestId("monday-start-section");
         var headCell = section.GetByTestId("weekday-0");
-        
+
         var abbr = await headCell.GetAttributeAsync("abbr");
         await Assert.That(abbr).IsNotNull();
         await Assert.That(abbr!.Length).IsGreaterThan(0);

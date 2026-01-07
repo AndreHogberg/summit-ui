@@ -62,7 +62,7 @@ public class DropdownMenuItem : ComponentBase, IDisposable
     protected override void OnInitialized()
     {
         _itemId = $"{Context.MenuId}-item-{Guid.NewGuid():N}";
-        
+
         if (!Disabled)
         {
             Context.RegisterItem(_itemId);
@@ -81,12 +81,12 @@ public class DropdownMenuItem : ComponentBase, IDisposable
             {
                 Context.UnregisterItemLabel(_itemId);
             }
-            
+
             if (!string.IsNullOrEmpty(TextValue))
             {
                 Context.RegisterItemLabel(_itemId, TextValue);
             }
-            
+
             _registeredTextValue = TextValue;
         }
     }
@@ -155,12 +155,12 @@ public class DropdownMenuItem : ComponentBase, IDisposable
         {
             Context.OnStateChanged -= HandleStateChanged;
         }
-        
+
         if (!Disabled)
         {
             Context.UnregisterItem(_itemId);
         }
-        
+
         if (_registeredTextValue != null)
         {
             Context.UnregisterItemLabel(_itemId);

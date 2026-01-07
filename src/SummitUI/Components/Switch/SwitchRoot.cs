@@ -10,12 +10,12 @@ public class SwitchRoot : ComponentBase
     /// The controlled checked state. When provided, the component operates in controlled mode.
     /// </summary>
     [Parameter] public bool? Checked { get; set; }
-    
+
     /// <summary>
     /// The default checked state for uncontrolled mode.
     /// </summary>
     [Parameter] public bool DefaultChecked { get; set; }
-    
+
     [Parameter] public EventCallback<bool> CheckedChanged { get; set; }
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool Required { get; set; }
@@ -52,14 +52,14 @@ public class SwitchRoot : ComponentBase
             childBuilder.AddAttribute(2, "role", "switch");
             childBuilder.AddAttribute(3, "aria-checked", IsChecked ? "true" : "false");
             childBuilder.AddAttribute(4, "data-state", IsChecked ? "checked" : "unchecked");
-            
+
             if (Disabled)
             {
                 childBuilder.AddAttribute(5, "disabled", true);
                 childBuilder.AddAttribute(6, "aria-disabled", "true");
                 childBuilder.AddAttribute(7, "data-disabled", "");
             }
-            
+
             childBuilder.AddAttribute(8, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClick));
             childBuilder.AddMultipleAttributes(9, AdditionalAttributes);
             childBuilder.AddContent(10, ChildContent);
@@ -82,7 +82,7 @@ public class SwitchRoot : ComponentBase
     private async Task HandleClick(MouseEventArgs args)
     {
         if (Disabled) return;
-        
+
         var newChecked = !IsChecked;
 
         if (!IsControlled)

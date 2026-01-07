@@ -36,19 +36,19 @@ public sealed class CheckboxGroupContext
     /// </summary>
     public Action NotifyStateChanged { get; internal set; } = () => { };
 
-   /// <summary>
-   /// Event raised when the context state changes.
-   /// Child components can subscribe to this to trigger re-renders.
-   /// </summary>
-   public event Action? OnStateChanged;
+    /// <summary>
+    /// Event raised when the context state changes.
+    /// Child components can subscribe to this to trigger re-renders.
+    /// </summary>
+    public event Action? OnStateChanged;
 
-   /// <summary>
-   /// Raises the OnStateChanged event to notify all subscribers.
-   /// </summary>
-   internal void RaiseStateChanged()
-   {
-       OnStateChanged?.Invoke();
-   }
+    /// <summary>
+    /// Raises the OnStateChanged event to notify all subscribers.
+    /// </summary>
+    internal void RaiseStateChanged()
+    {
+        OnStateChanged?.Invoke();
+    }
 
     /// <summary>
     /// Creates a new checkbox group context.

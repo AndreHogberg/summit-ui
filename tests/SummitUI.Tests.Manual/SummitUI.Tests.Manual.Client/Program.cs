@@ -1,5 +1,6 @@
-using SummitUI.Extensions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
+using SummitUI.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

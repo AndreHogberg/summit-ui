@@ -34,7 +34,7 @@ public class DialogFocusTests : SummitTestBase
 
         await Page.Keyboard.PressAsync("Tab");
         await Expect(saveButton).ToBeFocusedAsync();
-        
+
         // Wrap around
         await Page.Keyboard.PressAsync("Tab");
         await Expect(nameInput).ToBeFocusedAsync();

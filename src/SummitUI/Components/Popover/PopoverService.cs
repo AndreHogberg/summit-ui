@@ -16,7 +16,7 @@ public sealed class PopoverService
     {
         // Close all other open popovers before registering this one
         var popoversToClose = _openPopovers.Where(p => p != context).ToList();
-        
+
         foreach (var popover in popoversToClose)
         {
             await popover.CloseAsync();
@@ -42,7 +42,7 @@ public sealed class PopoverService
     public async Task CloseAllAsync()
     {
         var popoversToClose = _openPopovers.ToList();
-        
+
         foreach (var popover in popoversToClose)
         {
             await popover.CloseAsync();

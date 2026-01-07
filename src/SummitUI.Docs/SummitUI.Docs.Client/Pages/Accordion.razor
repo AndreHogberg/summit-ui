@@ -328,7 +328,6 @@
     private List<SuApiProperty> accordionItemProperties = new()
     {
         new() { Name = "Value", Type = "string", Required = true, Description = "Unique identifier for this accordion item" },
-        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" },
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable this specific item" }
     };
 
@@ -340,7 +339,6 @@
 
     private List<SuApiProperty> accordionTriggerProperties = new()
     {
-        new() { Name = "As", Type = "string", Default = "\"button\"", Description = "HTML element to render" }
     };
 
     private List<SuApiProperty> accordionContentProperties = new()

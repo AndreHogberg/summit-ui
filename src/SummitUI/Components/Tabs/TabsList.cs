@@ -1,7 +1,8 @@
-using SummitUI.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
+
+using SummitUI.Utilities;
 
 namespace SummitUI;
 
@@ -138,7 +139,7 @@ public class TabsList : ComponentBase, IAsyncDisposable
         {
             Context.FocusTriggerByIdAsync = null;
         }
-        
+
         return ValueTask.CompletedTask;
     }
 }

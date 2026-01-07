@@ -74,7 +74,7 @@ public class DropdownMenuCheckboxItem : ComponentBase, IDisposable
     protected override void OnInitialized()
     {
         _itemId = $"{Context.MenuId}-checkbox-{Guid.NewGuid():N}";
-        
+
         if (!Disabled)
         {
             Context.RegisterItem(_itemId);
@@ -116,12 +116,12 @@ public class DropdownMenuCheckboxItem : ComponentBase, IDisposable
         builder.AddEventPreventDefaultAttribute(13, "onkeydown", true);
         builder.AddEventStopPropagationAttribute(14, "onkeydown", true);
         builder.AddMultipleAttributes(15, AdditionalAttributes);
-        
+
         if (ChildContent is not null)
         {
             builder.AddContent(16, ChildContent(new DropdownMenuCheckboxItemContext { Checked = Checked, Indeterminate = Indeterminate }));
         }
-        
+
         builder.CloseElement();
     }
 
@@ -165,7 +165,7 @@ public class DropdownMenuCheckboxItem : ComponentBase, IDisposable
         {
             Context.OnStateChanged -= HandleStateChanged;
         }
-        
+
         if (!Disabled)
         {
             Context.UnregisterItem(_itemId);

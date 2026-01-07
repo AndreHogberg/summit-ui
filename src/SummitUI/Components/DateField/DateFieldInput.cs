@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+
 using SummitUI.Interop;
 
 namespace SummitUI;
@@ -10,14 +11,14 @@ namespace SummitUI;
 public class DateFieldInput : ComponentBase, IDisposable
 {
     [Inject] private DateFieldJsInterop JsInterop { get; set; } = default!;
-    
+
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
-    
+
     /// <summary>
     /// Optional custom rendering template for segments.
     /// </summary>
     [Parameter] public RenderFragment<IReadOnlyList<DateFieldSegmentState>>? ChildContent { get; set; }
-    
+
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private List<DateFieldSegmentState> _segments = new();
@@ -25,9 +26,9 @@ public class DateFieldInput : ComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
-        if (Context == null) 
+        if (Context == null)
             throw new InvalidOperationException("DateFieldInput must be used within a DateFieldRoot.");
-        
+
         Context.OnStateChanged += HandleStateChanged;
         RegenerateSegments();
     }
@@ -42,16 +43,16 @@ public class DateFieldInput : ComponentBase, IDisposable
         if (firstRender && !_localizationLoaded)
         {
             _localizationLoaded = true;
-            
+
             // Get browser locale and use it for segment labels and AM/PM designators
             var browserLocale = await JsInterop.GetBrowserLocaleAsync();
-            
+
             var labels = await JsInterop.GetSegmentLabelsAsync(browserLocale);
             Context.SetSegmentLabels(labels);
-            
+
             var designators = await JsInterop.GetDayPeriodDesignatorsAsync(browserLocale);
             Context.SetDayPeriodDesignators(designators.Am, designators.Pm);
-            
+
             StateHasChanged();
         }
     }
@@ -72,7 +73,7 @@ public class DateFieldInput : ComponentBase, IDisposable
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "role", "presentation");
         builder.AddMultipleAttributes(2, AdditionalAttributes);
-        
+
         if (ChildContent != null)
         {
             // Custom template rendering
@@ -90,7 +91,7 @@ public class DateFieldInput : ComponentBase, IDisposable
                 builder.CloseComponent();
             }
         }
-        
+
         builder.CloseElement();
     }
 

@@ -13,7 +13,7 @@ public class SwitchToggleTests : SummitTestBase
     public async Task Switch_ShouldToggle_OnClick()
     {
         var switchEl = Page.GetByTestId("basic-switch");
-        
+
         // Initial state
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "false");
         await Expect(switchEl).ToHaveAttributeAsync("data-state", "unchecked");
@@ -36,9 +36,9 @@ public class SwitchToggleTests : SummitTestBase
         var thumb = switchEl.Locator(".switch-thumb");
 
         await Expect(thumb).ToHaveAttributeAsync("data-state", "unchecked");
-        
+
         await switchEl.ClickAsync();
-        
+
         await Expect(thumb).ToHaveAttributeAsync("data-state", "checked");
     }
 
@@ -135,7 +135,7 @@ public class SwitchToggleTests : SummitTestBase
     public async Task DefaultCheckedSwitch_ShouldBeChecked_Initially()
     {
         var switchEl = Page.GetByTestId("default-checked-switch");
-        
+
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "true");
         await Expect(switchEl).ToHaveAttributeAsync("data-state", "checked");
     }
@@ -144,14 +144,14 @@ public class SwitchToggleTests : SummitTestBase
     public async Task DefaultCheckedSwitch_ShouldToggle_OnClick()
     {
         var switchEl = Page.GetByTestId("default-checked-switch");
-        
+
         // Initially checked
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "true");
-        
+
         // Toggle off
         await switchEl.ClickAsync();
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "false");
-        
+
         // Toggle back on
         await switchEl.ClickAsync();
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "true");
@@ -162,7 +162,7 @@ public class SwitchToggleTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("default-checked-switch");
         var thumb = switchEl.Locator(".switch-thumb");
-        
+
         await Expect(thumb).ToHaveAttributeAsync("data-state", "checked");
     }
 
@@ -175,7 +175,7 @@ public class SwitchToggleTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("labeled-switch");
         var labelText = Page.GetByText("Enable notifications");
-        
+
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "false");
 
         // Click on the label text (not the switch itself)
@@ -189,15 +189,15 @@ public class SwitchToggleTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("labeled-switch");
         var labelContainer = Page.GetByTestId("labeled-switch-container");
-        
+
         // Click the entire label area
         await labelContainer.ClickAsync();
-        
+
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "true");
-        
+
         // Click again
         await labelContainer.ClickAsync();
-        
+
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "false");
     }
 
@@ -210,7 +210,7 @@ public class SwitchToggleTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("basic-switch");
         var thumb = switchEl.Locator(".switch-thumb");
-        
+
         await Expect(thumb).ToHaveCountAsync(1);
     }
 
@@ -219,7 +219,7 @@ public class SwitchToggleTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("basic-switch");
         var thumb = switchEl.Locator(".switch-thumb");
-        
+
         var tagName = await thumb.EvaluateAsync<string>("el => el.tagName.toLowerCase()");
         await Assert.That(tagName).IsEqualTo("span");
     }
@@ -229,14 +229,14 @@ public class SwitchToggleTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("basic-switch");
         var thumb = switchEl.Locator(".switch-thumb");
-        
+
         // Initially unchecked
         await Expect(thumb).ToHaveAttributeAsync("data-state", "unchecked");
-        
+
         // Toggle
         await switchEl.ClickAsync();
         await Expect(thumb).ToHaveAttributeAsync("data-state", "checked");
-        
+
         // Toggle back
         await switchEl.ClickAsync();
         await Expect(thumb).ToHaveAttributeAsync("data-state", "unchecked");

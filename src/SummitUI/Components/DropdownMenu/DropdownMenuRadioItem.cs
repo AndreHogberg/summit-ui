@@ -59,7 +59,7 @@ public class DropdownMenuRadioItem : ComponentBase, IDisposable
     protected override void OnInitialized()
     {
         _itemId = $"{Context.MenuId}-radio-{Guid.NewGuid():N}";
-        
+
         if (!Disabled)
         {
             Context.RegisterItem(_itemId);
@@ -101,12 +101,12 @@ public class DropdownMenuRadioItem : ComponentBase, IDisposable
         builder.AddEventPreventDefaultAttribute(13, "onkeydown", true);
         builder.AddEventStopPropagationAttribute(14, "onkeydown", true);
         builder.AddMultipleAttributes(15, AdditionalAttributes);
-        
+
         if (ChildContent is not null)
         {
             builder.AddContent(16, ChildContent(new DropdownMenuRadioItemContext { Checked = IsSelected }));
         }
-        
+
         builder.CloseElement();
     }
 
@@ -116,7 +116,7 @@ public class DropdownMenuRadioItem : ComponentBase, IDisposable
 
         await RadioContext.OnValueChangeAsync(Value);
         await OnSelect.InvokeAsync();
-        
+
         // Close menu after radio selection (single choice made)
         await Context.SelectItemAsync();
     }
@@ -142,7 +142,7 @@ public class DropdownMenuRadioItem : ComponentBase, IDisposable
         {
             Context.OnStateChanged -= HandleStateChanged;
         }
-        
+
         if (!Disabled)
         {
             Context.UnregisterItem(_itemId);

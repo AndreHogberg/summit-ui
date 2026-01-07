@@ -1,6 +1,6 @@
 using TailwindMerge;
 
-namespace SummitUI.Docs.Design;
+namespace SummitUI.Docs.Design.Utilities;
 
 /// <summary>
 /// Utility class for managing Tailwind CSS class names with merge support.

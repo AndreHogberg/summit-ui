@@ -1,8 +1,9 @@
-using SummitUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+
+using SummitUI.Interop;
 
 namespace SummitUI;
 
@@ -120,7 +121,7 @@ public class DropdownMenuContent : ComponentBase, IAsyncDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-private ElementReference _elementRef;
+    private ElementReference _elementRef;
     private DotNetObjectReference<DropdownMenuContent>? _dotNetRef;
     private string? _floatingInstanceId;
     private string? _outsideClickListenerId;
@@ -149,7 +150,7 @@ private ElementReference _elementRef;
         Context.FocusTriggerAsync = FocusTriggerAsync;
     }
 
-protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_isDisposed) return;
         if (!RendererInfo.IsInteractive) return;
@@ -158,7 +159,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             // Set guard flag immediately to prevent concurrent initialization
             _isPositioning = true;
-            
+
             try
             {
                 // Cancel any pending animation watcher if reopening
@@ -220,7 +221,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 
                 // Highlight and focus first item
                 await HighlightFirstItemAsync();
-                
+
                 await OnOpenAutoFocus.InvokeAsync();
             }
             finally
@@ -235,8 +236,8 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
             _animationWatcherRegistered = true;
             _dotNetRef ??= DotNetObjectReference.Create(this);
             await FloatingInterop.WaitForAnimationsCompleteAsync(
-                _elementRef, 
-                _dotNetRef, 
+                _elementRef,
+                _dotNetRef,
                 nameof(OnCloseAnimationsComplete));
         }
 
@@ -345,7 +346,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         }
     }
 
-/// <summary>
+    /// <summary>
     /// Called from JavaScript when Escape key is pressed.
     /// </summary>
     [JSInvokable]
@@ -379,7 +380,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
             // Note: Focus return to trigger is handled in the close handlers
             // (HandleEscapeKey, HandleKeyFromItemAsync Tab) before Context.CloseAsync()
             // is called, because the component may be unmounted before OnAfterRenderAsync runs.
-            
+
             await OnCloseAutoFocus.InvokeAsync();
         }
 
@@ -607,7 +608,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         _typeaheadTimer = null;
     }
 
-public async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (_isDisposed) return;
         _isDisposed = true;

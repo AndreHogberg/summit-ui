@@ -13,25 +13,25 @@ internal static class DateFieldUtils
     public static List<DateFieldSegmentState> GetSegments(DateFieldContext context)
     {
         var segments = new List<DateFieldSegmentState>();
-        
+
         // Parse date format into segments
         segments.AddRange(ParsePattern(context.Format));
-        
+
         // Add time segments if in DateTime mode
         if (context.IsDateTimeMode)
         {
             // Add separator between date and time
-            segments.Add(new DateFieldSegmentState 
-            { 
-                Type = DateFieldSegmentType.Literal, 
-                LiteralValue = " " 
+            segments.Add(new DateFieldSegmentState
+            {
+                Type = DateFieldSegmentType.Literal,
+                LiteralValue = " "
             });
-            
+
             // Get time segments based on TimeFormat
             var timeSegments = GetTimeSegments(context);
             segments.AddRange(timeSegments);
         }
-        
+
         return segments;
     }
 
@@ -51,10 +51,10 @@ internal static class DateFieldUtils
                 // If we were building a literal, save it
                 if (lastDateChar == null && currentPart.Length > 0)
                 {
-                    segments.Add(new DateFieldSegmentState 
-                    { 
-                        Type = DateFieldSegmentType.Literal, 
-                        LiteralValue = currentPart.ToString() 
+                    segments.Add(new DateFieldSegmentState
+                    {
+                        Type = DateFieldSegmentType.Literal,
+                        LiteralValue = currentPart.ToString()
                     });
                     currentPart.Clear();
                 }
@@ -64,7 +64,7 @@ internal static class DateFieldUtils
                     segments.Add(CreateDateSegment(currentPart.ToString()));
                     currentPart.Clear();
                 }
-                
+
                 currentPart.Append(c);
                 lastDateChar = c;
             }
@@ -76,12 +76,12 @@ internal static class DateFieldUtils
                     segments.Add(CreateDateSegment(currentPart.ToString()));
                     currentPart.Clear();
                 }
-                
+
                 currentPart.Append(c);
                 lastDateChar = null;
             }
         }
-        
+
         // Handle remaining content
         if (currentPart.Length > 0)
         {
@@ -91,10 +91,10 @@ internal static class DateFieldUtils
             }
             else
             {
-                segments.Add(new DateFieldSegmentState 
-                { 
-                    Type = DateFieldSegmentType.Literal, 
-                    LiteralValue = currentPart.ToString() 
+                segments.Add(new DateFieldSegmentState
+                {
+                    Type = DateFieldSegmentType.Literal,
+                    LiteralValue = currentPart.ToString()
                 });
             }
         }
@@ -110,29 +110,29 @@ internal static class DateFieldUtils
         var segments = new List<DateFieldSegmentState>();
         var timeSeparator = context.GetTimeSeparator();
         var use12Hour = context.Uses12HourClock();
-        
+
         // Hour
         segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.Hour });
-        
+
         // Hour:Minute separator and minute
-        segments.Add(new DateFieldSegmentState 
-        { 
-            Type = DateFieldSegmentType.Literal, 
-            LiteralValue = timeSeparator 
+        segments.Add(new DateFieldSegmentState
+        {
+            Type = DateFieldSegmentType.Literal,
+            LiteralValue = timeSeparator
         });
         segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.Minute });
-        
+
         // AM/PM indicator for 12-hour clocks
         if (use12Hour)
         {
-            segments.Add(new DateFieldSegmentState 
-            { 
-                Type = DateFieldSegmentType.Literal, 
-                LiteralValue = " " 
+            segments.Add(new DateFieldSegmentState
+            {
+                Type = DateFieldSegmentType.Literal,
+                LiteralValue = " "
             });
             segments.Add(new DateFieldSegmentState { Type = DateFieldSegmentType.DayPeriod });
         }
-        
+
         return segments;
     }
 
@@ -147,12 +147,12 @@ internal static class DateFieldUtils
             'y' => DateFieldSegmentType.Year,
             _ => DateFieldSegmentType.Literal
         };
-        
+
         if (type == DateFieldSegmentType.Literal)
         {
             return new DateFieldSegmentState { Type = type, LiteralValue = format };
         }
-        
+
         return new DateFieldSegmentState { Type = type };
     }
 
@@ -178,7 +178,7 @@ internal static class DateFieldUtils
     public static int GetSegmentMax(DateFieldSegmentType type, DateFieldContext context)
     {
         var effectiveDate = context.EffectiveDateTime;
-        
+
         return type switch
         {
             DateFieldSegmentType.Year => 9999,
@@ -234,7 +234,7 @@ internal static class DateFieldUtils
         {
             return GetSegmentPlaceholder(type, context);
         }
-        
+
         // DayPeriod is special - uses boolean flag
         if (type == DateFieldSegmentType.DayPeriod)
         {
@@ -243,18 +243,18 @@ internal static class DateFieldUtils
             {
                 return GetSegmentPlaceholder(type, context);
             }
-            return isPm.Value 
-                ? context.GetPmDesignator() 
+            return isPm.Value
+                ? context.GetPmDesignator()
                 : context.GetAmDesignator();
         }
-        
+
         // Get the value from context
         var value = context.GetSegmentValue(type);
         if (!value.HasValue)
         {
             return GetSegmentPlaceholder(type, context);
         }
-        
+
         // Format the value
         return type switch
         {

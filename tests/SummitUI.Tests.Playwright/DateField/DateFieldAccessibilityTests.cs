@@ -1,4 +1,5 @@
 using Microsoft.Playwright;
+
 using TUnit.Playwright;
 
 namespace SummitUI.Tests.Playwright.DateField;
@@ -12,14 +13,14 @@ public class DateFieldAccessibilityTests : SummitTestBase
     {
         var section = Page.GetByTestId("basic-section");
         var daySegment = section.Locator("[data-segment='day']");
-        
+
         await Expect(daySegment).ToHaveAttributeAsync("role", "spinbutton");
         await Expect(daySegment).ToHaveAttributeAsync("aria-valuemin", "1");
-        
+
         var ariaLabel = await daySegment.GetAttributeAsync("aria-label");
         await Assert.That(ariaLabel).IsNotNull();
         await Assert.That(ariaLabel!.Length).IsGreaterThan(0);
-        
+
         var valueNow = await daySegment.GetAttributeAsync("aria-valuenow");
         await Assert.That(valueNow).IsEqualTo("15");
     }
@@ -38,7 +39,7 @@ public class DateFieldAccessibilityTests : SummitTestBase
         var section = Page.GetByTestId("datetime-section");
         var hourSegment = section.Locator("[data-segment='hour']");
         var minuteSegment = section.Locator("[data-segment='minute']");
-        
+
         await Expect(hourSegment).ToHaveAttributeAsync("role", "spinbutton");
         await Expect(minuteSegment).ToHaveAttributeAsync("role", "spinbutton");
         await Expect(minuteSegment).ToHaveAttributeAsync("aria-valuemax", "59");
@@ -49,7 +50,7 @@ public class DateFieldAccessibilityTests : SummitTestBase
     {
         var section = Page.GetByTestId("disabled-section");
         var segment = section.Locator("[data-segment='day']");
-        
+
         await Expect(segment).ToHaveAttributeAsync("data-disabled", "");
         await Expect(segment).ToHaveAttributeAsync("tabindex", "-1");
     }
@@ -67,7 +68,7 @@ public class DateFieldAccessibilityTests : SummitTestBase
     {
         var section = Page.GetByTestId("placeholder-section");
         var segment = section.Locator("[data-segment='day']");
-        
+
         await Expect(segment).ToHaveAttributeAsync("data-placeholder", "");
         var valueNow = await segment.GetAttributeAsync("aria-valuenow");
         await Assert.That(valueNow).IsNull();

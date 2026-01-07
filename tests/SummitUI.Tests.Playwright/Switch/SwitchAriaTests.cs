@@ -32,9 +32,9 @@ public class SwitchAriaTests : SummitTestBase
     public async Task Switch_ShouldHave_AriaCheckedTrue_WhenChecked()
     {
         var switchEl = Page.GetByTestId("basic-switch");
-        
+
         await switchEl.ClickAsync();
-        
+
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "true");
     }
 
@@ -49,9 +49,9 @@ public class SwitchAriaTests : SummitTestBase
     public async Task Switch_ShouldHave_DataStateChecked_WhenChecked()
     {
         var switchEl = Page.GetByTestId("basic-switch");
-        
+
         await switchEl.ClickAsync();
-        
+
         await Expect(switchEl).ToHaveAttributeAsync("data-state", "checked");
     }
 }

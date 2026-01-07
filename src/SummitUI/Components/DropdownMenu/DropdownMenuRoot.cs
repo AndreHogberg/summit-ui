@@ -1,6 +1,7 @@
-using SummitUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+
+using SummitUI.Interop;
 
 namespace SummitUI;
 

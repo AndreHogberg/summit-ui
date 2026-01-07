@@ -33,9 +33,9 @@ public class SwitchDisabledTests : SummitTestBase
     {
         var disabledSwitch = Page.GetByTestId("disabled-checked-switch");
         await Expect(disabledSwitch).ToHaveAttributeAsync("aria-checked", "true");
-        
+
         await disabledSwitch.ClickAsync(new() { Force = true });
-        
+
         await Expect(disabledSwitch).ToHaveAttributeAsync("aria-checked", "true");
     }
 
@@ -43,7 +43,7 @@ public class SwitchDisabledTests : SummitTestBase
     public async Task DisabledUncheckedSwitch_ShouldHave_DisabledAttributes()
     {
         var disabledSwitch = Page.GetByTestId("disabled-unchecked-switch");
-        
+
         await Expect(disabledSwitch).ToBeDisabledAsync();
         await Expect(disabledSwitch).ToHaveAttributeAsync("aria-disabled", "true");
         await Expect(disabledSwitch).ToHaveAttributeAsync("data-disabled", "");
@@ -54,9 +54,9 @@ public class SwitchDisabledTests : SummitTestBase
     {
         var disabledSwitch = Page.GetByTestId("disabled-unchecked-switch");
         await Expect(disabledSwitch).ToHaveAttributeAsync("aria-checked", "false");
-        
+
         await disabledSwitch.ClickAsync(new() { Force = true });
-        
+
         await Expect(disabledSwitch).ToHaveAttributeAsync("aria-checked", "false");
     }
 

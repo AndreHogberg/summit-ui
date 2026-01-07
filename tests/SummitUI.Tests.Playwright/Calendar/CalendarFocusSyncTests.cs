@@ -80,11 +80,11 @@ public class CalendarFocusSyncTests : SummitTestBase
         await Assert.That(domFocusedDate)
             .IsEqualTo(expectedDate)
             .Because("DOM focus should be on the expected date");
-        
+
         await Assert.That(dataFocusedDate)
             .IsEqualTo(expectedDate)
             .Because("data-focused attribute should be on the expected date");
-        
+
         await Assert.That(domFocusedDate)
             .IsEqualTo(dataFocusedDate)
             .Because("DOM focus and data-focused should be on the same element");
@@ -97,14 +97,14 @@ public class CalendarFocusSyncTests : SummitTestBase
     {
         // This test navigates from a date in one month to a date in the next month
         // and verifies that both DOM focus and data-focused are synchronized
-        
+
         var section = Page.GetByTestId("basic-section");
         await FocusCalendarDayAsync(section);
 
         // Get initial state
         var initialDataFocused = await GetDataFocusedDateAsync(section);
         var initialDomFocused = await GetDomFocusedDateAsync();
-        
+
         // They should start in sync
         await Assert.That(initialDomFocused).IsEqualTo(initialDataFocused);
 
@@ -119,7 +119,7 @@ public class CalendarFocusSyncTests : SummitTestBase
         {
             await Page.Keyboard.PressAsync("ArrowDown");
             await Page.WaitForTimeoutAsync(50); // Brief wait for state update
-            
+
             var newDataFocused = await GetDataFocusedDateAsync(section);
             currentDate = DateOnly.Parse(newDataFocused!);
             iterations++;
@@ -147,11 +147,11 @@ public class CalendarFocusSyncTests : SummitTestBase
     public async Task ArrowUp_CrossingMonthBoundary_ShouldSyncFocus()
     {
         var section = Page.GetByTestId("basic-section");
-        
+
         // Capture ALL console logs
         var consoleLogs = new List<string>();
         Page.Console += (_, msg) => consoleLogs.Add($"[{msg.Type}] {msg.Text}");
-        
+
         // Also listen for all focus events at document level
         await Page.EvaluateAsync(@"() => {
             window.__focusEvents = [];
@@ -168,7 +168,7 @@ public class CalendarFocusSyncTests : SummitTestBase
                 window.__focusEvents.push(`FOCUSOUT: ${tag}#${id} date=${date} at ${Date.now()}`);
             }, true);
         }");
-        
+
         await FocusCalendarDayAsync(section);
 
         // First navigate forward into the month so we have room to go back
@@ -179,7 +179,7 @@ public class CalendarFocusSyncTests : SummitTestBase
         var currentDataFocused = await GetDataFocusedDateAsync(section);
         var currentDate = DateOnly.Parse(currentDataFocused!);
         var currentMonth = currentDate.Month;
-        
+
         Console.WriteLine($"Starting from: {currentDataFocused}, Month: {currentMonth}");
 
         // Navigate up until we cross into the previous month
@@ -196,7 +196,7 @@ public class CalendarFocusSyncTests : SummitTestBase
             var newDataFocused = await GetDataFocusedDateAsync(section);
             var newDomFocused = await GetDomFocusedDateAsync();
             Console.WriteLine($"  After ArrowUp: data-focused={newDataFocused}, DOM focus={newDomFocused}");
-            
+
             currentDate = DateOnly.Parse(newDataFocused!);
             iterations++;
 
@@ -230,7 +230,7 @@ public class CalendarFocusSyncTests : SummitTestBase
         // Verify focus is synced
         var finalDataFocused = await GetDataFocusedDateAsync(section);
         var finalDomFocused = await GetDomFocusedDateAsync();
-        
+
         // Get more info about where DOM focus is
         var focusInfo = await Page.EvaluateAsync<string>(@"() => {
             const el = document.activeElement;
@@ -241,7 +241,7 @@ public class CalendarFocusSyncTests : SummitTestBase
             const html = el.outerHTML?.substring(0, 200) || 'no-html';
             return `Tag: ${tag}, Date: ${date}, Section: ${testId}, HTML: ${html}`;
         }");
-        
+
         Console.WriteLine($"Final: data-focused={finalDataFocused}, DOM focus={finalDomFocused}");
         Console.WriteLine($"Focus Info: {focusInfo}");
 
@@ -254,7 +254,7 @@ public class CalendarFocusSyncTests : SummitTestBase
     {
         // This is the specific bug scenario: navigate across month boundary, then press Enter
         // The selected date should match the focused date (data-focused), not some other date
-        
+
         var section = Page.GetByTestId("basic-section");
         await FocusCalendarDayAsync(section);
 

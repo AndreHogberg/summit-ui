@@ -71,7 +71,7 @@ public class PopoverOverlayTests : SummitTestBase
         // Tab to next element
         await Page.Keyboard.PressAsync("Tab");
         await Expect(closeButton).ToBeFocusedAsync();
-        
+
         // Tab again should wrap to input
         await Page.Keyboard.PressAsync("Tab");
         await Expect(input).ToBeFocusedAsync();

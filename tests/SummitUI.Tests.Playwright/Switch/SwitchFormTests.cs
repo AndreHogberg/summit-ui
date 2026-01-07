@@ -29,10 +29,10 @@ public class SwitchFormTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("notifications-switch");
         var hiddenInput = Page.Locator("input[name='notifications']");
-        
+
         // Toggle the switch on
         await switchEl.ClickAsync();
-        
+
         // Default value is "on" when no custom Value is set
         await Expect(hiddenInput).ToHaveAttributeAsync("value", "on");
     }
@@ -42,10 +42,10 @@ public class SwitchFormTests : SummitTestBase
     {
         var switchEl = Page.GetByTestId("marketing-switch");
         var hiddenInput = Page.Locator("input[name='marketing']");
-        
+
         // Toggle the switch on
         await switchEl.ClickAsync();
-        
+
         // Marketing switch has Value="yes"
         await Expect(hiddenInput).ToHaveAttributeAsync("value", "yes");
     }

@@ -1,6 +1,7 @@
-using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.JSInterop;
+
 using SummitUI.Interop;
 
 namespace SummitUI;
@@ -15,7 +16,7 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
 
     [Parameter, EditorRequired] public DateFieldSegmentState Segment { get; set; } = default!;
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    
+
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
 
     private ElementReference _elementRef;
@@ -60,37 +61,37 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
         var min = DateFieldUtils.GetSegmentMin(Segment.Type, Context);
         var max = DateFieldUtils.GetSegmentMax(Segment.Type, Context);
         var valueNow = GetValueNow();
-        
+
         builder.OpenElement(0, "span");
         builder.AddAttribute(1, "role", "spinbutton");
         builder.AddAttribute(2, "aria-label", ariaLabel);
         builder.AddAttribute(3, "aria-valuemin", min);
         builder.AddAttribute(4, "aria-valuemax", max);
-        
+
         if (valueNow.HasValue)
         {
             builder.AddAttribute(5, "aria-valuenow", valueNow.Value);
         }
-        
+
         builder.AddAttribute(6, "aria-valuetext", segmentText);
         builder.AddAttribute(7, "tabindex", Context.Disabled ? "-1" : "0");
         builder.AddAttribute(8, "data-segment", Segment.Type.ToString().ToLowerInvariant());
         builder.AddAttribute(9, "inputmode", Segment.Type == DateFieldSegmentType.DayPeriod ? "text" : "numeric");
-        
+
         if (Context.Disabled) builder.AddAttribute(10, "data-disabled", "");
         if (Context.ReadOnly) builder.AddAttribute(11, "data-readonly", "");
         if (!segmentHasValue) builder.AddAttribute(12, "data-placeholder", "");
-        
+
         builder.AddMultipleAttributes(13, AdditionalAttributes);
         builder.AddElementReferenceCapture(14, el => _elementRef = el);
-        
+
         // Wrap text content in aria-hidden span to prevent screen readers from 
         // reading both aria-valuetext and the visible text content
         builder.OpenElement(15, "span");
         builder.AddAttribute(16, "aria-hidden", "true");
         builder.AddContent(17, segmentText);
         builder.CloseElement();
-        
+
         builder.CloseElement();
     }
 
@@ -145,13 +146,13 @@ public class DateFieldSegment : ComponentBase, IAsyncDisposable
         {
             return null; // DayPeriod doesn't have a numeric value
         }
-        
+
         // Check if this specific segment has a value
         if (!Context.SegmentHasValue(Segment.Type))
         {
             return null;
         }
-        
+
         return Context.GetSegmentValue(Segment.Type);
     }
 

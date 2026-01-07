@@ -23,7 +23,7 @@ public class SwitchKeyboardTests : SummitTestBase
     public async Task Space_ShouldToggleSwitchOff()
     {
         var switchEl = Page.GetByTestId("basic-switch");
-        
+
         // First toggle on
         await switchEl.ClickAsync();
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "true");
@@ -51,7 +51,7 @@ public class SwitchKeyboardTests : SummitTestBase
     public async Task Enter_ShouldToggleSwitchOff()
     {
         var switchEl = Page.GetByTestId("basic-switch");
-        
+
         // First toggle on
         await switchEl.ClickAsync();
         await Expect(switchEl).ToHaveAttributeAsync("aria-checked", "true");
@@ -74,7 +74,7 @@ public class SwitchKeyboardTests : SummitTestBase
 
         // Tab to next focusable element
         await Page.Keyboard.PressAsync("Tab");
-        
+
         // Verify focus moved (some element has focus)
         var activeElement = Page.Locator(":focus");
         await Expect(activeElement).ToHaveCountAsync(1);

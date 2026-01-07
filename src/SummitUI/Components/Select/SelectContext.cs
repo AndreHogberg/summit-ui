@@ -49,12 +49,12 @@ public sealed class SelectContext<TValue> where TValue : notnull
     public Dictionary<string, bool> DisabledRegistry { get; } = new();
 
     private bool _isOpen;
-    
+
     /// <summary>
     /// Current open state of the select.
     /// </summary>
-    public bool IsOpen 
-    { 
+    public bool IsOpen
+    {
         get => _isOpen;
         internal set => _isOpen = value;
     }
@@ -198,7 +198,7 @@ public sealed class SelectContext<TValue> where TValue : notnull
     public string? GetKeyForValue(TValue? value)
     {
         if (value is null) return null;
-        
+
         foreach (var kvp in ItemRegistry)
         {
             if (EqualityComparer<TValue>.Default.Equals(kvp.Value, value))

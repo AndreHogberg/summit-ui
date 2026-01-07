@@ -9,7 +9,7 @@ namespace SummitUI;
 public class DateFieldLabel : ComponentBase
 {
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
-    
+
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 

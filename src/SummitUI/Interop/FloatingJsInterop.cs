@@ -44,7 +44,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask DestroyAsync(string instanceId)
     {
         if (string.IsNullOrEmpty(instanceId)) return;
-        
+
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_destroyFloating", instanceId);
     }
@@ -56,7 +56,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask UpdatePositionAsync(string instanceId)
     {
         if (string.IsNullOrEmpty(instanceId)) return;
-        
+
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_updatePosition", instanceId);
     }
@@ -143,7 +143,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask UnregisterOutsideClickAsync(string? listenerId)
     {
         if (string.IsNullOrEmpty(listenerId)) return;
-        
+
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_unregisterOutsideClick", listenerId);
     }
@@ -166,14 +166,14 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
             methodName);
     }
 
-/// <summary>
+    /// <summary>
     /// Unregister an Escape key listener.
     /// </summary>
     /// <param name="listenerId">The listener ID returned from RegisterEscapeKeyAsync.</param>
     public async ValueTask UnregisterEscapeKeyAsync(string? listenerId)
     {
         if (string.IsNullOrEmpty(listenerId)) return;
-        
+
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_unregisterEscapeKey", listenerId);
     }
@@ -228,7 +228,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask ClickElementByIdAsync(string elementId)
     {
         if (string.IsNullOrEmpty(elementId)) return;
-        
+
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_clickElementById", elementId);
     }
@@ -240,7 +240,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask ScrollElementIntoViewByIdAsync(string elementId)
     {
         if (string.IsNullOrEmpty(elementId)) return;
-        
+
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_scrollElementIntoViewById", elementId);
     }
@@ -252,7 +252,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask FocusElementByIdAsync(string elementId)
     {
         if (string.IsNullOrEmpty(elementId)) return;
-        
+
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("floating_focusElementById", elementId);
     }

@@ -69,12 +69,12 @@ public class CheckboxIndicator : ComponentBase
         builder.AddAttribute(1, "data-summit-checkbox-indicator", "");
         builder.AddAttribute(2, "data-state", DataState);
         builder.AddMultipleAttributes(3, AdditionalAttributes);
-        
+
         if (ChildContent is not null)
         {
             builder.AddContent(4, ChildContent);
         }
-        
+
         builder.CloseElement();
     }
 }

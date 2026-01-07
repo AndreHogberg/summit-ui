@@ -1,4 +1,5 @@
 using Microsoft.Playwright;
+
 using TUnit.Playwright;
 
 namespace SummitUI.Tests.Playwright.DropdownMenu;
@@ -11,16 +12,16 @@ public class DropdownMenuAriaTests : SummitTestBase
     public async Task Trigger_ShouldHave_AriaAttributes()
     {
         var trigger = Page.GetByTestId("basic-trigger");
-        
+
         await Expect(trigger).ToHaveAttributeAsync("aria-haspopup", "menu");
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
         await Expect(trigger).ToHaveAttributeAsync("data-state", "closed");
 
         await trigger.ClickAsync();
-        
+
         await Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
         await Expect(trigger).ToHaveAttributeAsync("data-state", "open");
-        
+
         var content = Page.GetByTestId("basic-content");
         var contentId = await content.GetAttributeAsync("id");
         await Expect(trigger).ToHaveAttributeAsync("aria-controls", contentId!);
@@ -36,7 +37,7 @@ public class DropdownMenuAriaTests : SummitTestBase
         await Expect(content).ToHaveAttributeAsync("role", "menu");
         await Expect(content).ToHaveAttributeAsync("aria-orientation", "vertical");
         await Expect(content).ToHaveAttributeAsync("data-state", "open");
-        
+
         var triggerId = await trigger.GetAttributeAsync("id");
         await Expect(content).ToHaveAttributeAsync("aria-labelledby", triggerId!);
     }

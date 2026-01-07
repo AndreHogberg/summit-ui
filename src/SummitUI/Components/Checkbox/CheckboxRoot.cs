@@ -1,7 +1,8 @@
-using SummitUI.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
+
+using SummitUI.Utilities;
 
 namespace SummitUI;
 
@@ -196,7 +197,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     {
         // Initialize internal state from default
         _internalChecked = DefaultChecked;
-        
+
         // Subscribe to group state changes if in a group
         if (IsInGroup)
         {
@@ -259,12 +260,12 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
             builder.AddAttribute(21, "name", EffectiveName);
             builder.AddAttribute(22, "value", HiddenInputValue);
             builder.AddAttribute(23, "disabled", IsDisabled);
-            
+
             if (Required)
             {
                 builder.AddAttribute(24, "required", true);
             }
-            
+
             builder.CloseElement();
         }
     }
@@ -303,7 +304,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         }
 
         await CheckedChanged.InvokeAsync(newChecked);
-        
+
         var newState = newChecked ? CheckedState.Checked : CheckedState.Unchecked;
         await OnCheckedChange.InvokeAsync(newState);
 
@@ -317,7 +318,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         {
             GroupContext.OnStateChanged -= HandleGroupStateChanged;
         }
-        
+
         if (_jsInitialized)
         {
             await SummitUtilities.DestroyCheckboxAsync(_elementRef);

@@ -13,24 +13,24 @@ public class DateFieldContext
     // Date value (DateOnly)
     public DateOnly? DateValue { get; private set; }
     public DateOnly DatePlaceholder { get; private set; } = DateOnly.FromDateTime(DateTime.Now);
-    
+
     // DateTime value
     public DateTime? DateTimeValue { get; private set; }
     public DateTime DateTimePlaceholder { get; private set; } = DateTime.Now;
-    
+
     // Indicates whether we're working with DateTime (true) or DateOnly (false)
     public bool IsDateTimeMode { get; private set; }
-    
+
     // Format configuration
     public string Format { get; private set; } = "yyyy-MM-dd";
     public string TimeFormat { get; private set; } = "HH:mm";
-    
+
     // Validation constraints
     public DateOnly? MinDate { get; private set; }
     public DateOnly? MaxDate { get; private set; }
     public DateTime? MinDateTime { get; private set; }
     public DateTime? MaxDateTime { get; private set; }
-    
+
     // States
     public bool Disabled { get; private set; }
     public bool ReadOnly { get; private set; }
@@ -39,14 +39,14 @@ public class DateFieldContext
     // Callbacks for value changes
     public EventCallback<DateOnly?> DateValueChanged { get; private set; }
     public EventCallback<DateTime?> DateTimeValueChanged { get; private set; }
-    
+
     // Cached segment labels from JavaScript Intl.DisplayNames
     private Dictionary<DateFieldSegmentType, string>? _segmentLabels;
-    
+
     // Cached AM/PM designators from JavaScript Intl.DateTimeFormat
     private string _amDesignator = "AM";
     private string _pmDesignator = "PM";
-    
+
     // Per-segment state tracking for partial value entry
     private HashSet<DateFieldSegmentType> _filledSegments = new();
     private int? _partialYear;
@@ -55,7 +55,7 @@ public class DateFieldContext
     private int? _partialHour;
     private int? _partialMinute;
     private bool? _partialIsPm;
-    
+
     public event Action? OnStateChanged;
 
     /// <summary>
@@ -65,7 +65,7 @@ public class DateFieldContext
     public DateTime EffectiveDateTime => IsDateTimeMode
         ? DateTimeValue ?? DateTimePlaceholder
         : (DateValue?.ToDateTime(TimeOnly.MinValue) ?? DatePlaceholder.ToDateTime(TimeOnly.MinValue));
-    
+
     /// <summary>
     /// Gets whether a value has been set (not null).
     /// </summary>
@@ -89,7 +89,7 @@ public class DateFieldContext
         {
             return DateFieldUtils.GetSegmentValue(segmentType, EffectiveDateTime, Uses12HourClock());
         }
-        
+
         return segmentType switch
         {
             DateFieldSegmentType.Year => _partialYear,
@@ -160,13 +160,13 @@ public class DateFieldContext
         MinDate = minValue;
         MaxDate = maxValue;
         DateValueChanged = valueChanged;
-        
+
         // Clear partial state when value is set externally
         if (value.HasValue)
         {
             ClearPartialState();
         }
-        
+
         NotifyStateChanged();
     }
 
@@ -196,13 +196,13 @@ public class DateFieldContext
         MinDateTime = minValue;
         MaxDateTime = maxValue;
         DateTimeValueChanged = valueChanged;
-        
+
         // Clear partial state when value is set externally
         if (value.HasValue)
         {
             ClearPartialState();
         }
-        
+
         NotifyStateChanged();
     }
 
@@ -212,7 +212,7 @@ public class DateFieldContext
     public async Task IncrementSegmentAsync(DateFieldSegmentType segmentType)
     {
         if (Disabled || ReadOnly) return;
-        
+
         // If we have a full value, update it directly (original behavior)
         if (HasValue)
         {
@@ -227,11 +227,11 @@ public class DateFieldContext
                 DateFieldSegmentType.DayPeriod => current.AddHours(12), // Toggle AM/PM
                 _ => current
             };
-            
+
             await UpdateValueAsync(newValue);
             return;
         }
-        
+
         // We're in partial state - get effective value for this segment (uses placeholder if not set)
         var effectiveCurrent = GetEffectiveDateTimeForSegment();
         var incrementedValue = segmentType switch
@@ -244,7 +244,7 @@ public class DateFieldContext
             DateFieldSegmentType.DayPeriod => effectiveCurrent.AddHours(12), // Toggle AM/PM
             _ => effectiveCurrent
         };
-        
+
         // Update the specific segment in partial state
         await SetSegmentFromDateTimeAsync(segmentType, incrementedValue);
     }
@@ -255,7 +255,7 @@ public class DateFieldContext
     public async Task DecrementSegmentAsync(DateFieldSegmentType segmentType)
     {
         if (Disabled || ReadOnly) return;
-        
+
         // If we have a full value, update it directly (original behavior)
         if (HasValue)
         {
@@ -270,11 +270,11 @@ public class DateFieldContext
                 DateFieldSegmentType.DayPeriod => current.AddHours(-12), // Toggle AM/PM
                 _ => current
             };
-            
+
             await UpdateValueAsync(newValue);
             return;
         }
-        
+
         // We're in partial state - get effective value for this segment (uses placeholder if not set)
         var effectiveCurrent = GetEffectiveDateTimeForSegment();
         var decrementedValue = segmentType switch
@@ -287,7 +287,7 @@ public class DateFieldContext
             DateFieldSegmentType.DayPeriod => effectiveCurrent.AddHours(-12), // Toggle AM/PM
             _ => effectiveCurrent
         };
-        
+
         // Update the specific segment in partial state
         await SetSegmentFromDateTimeAsync(segmentType, decrementedValue);
     }
@@ -298,7 +298,7 @@ public class DateFieldContext
     private DateTime GetEffectiveDateTimeForSegment()
     {
         if (HasValue) return EffectiveDateTime;
-        
+
         // Build from partial values, falling back to placeholder
         var placeholder = EffectiveDateTime;
         return new DateTime(
@@ -326,7 +326,7 @@ public class DateFieldContext
             DateFieldSegmentType.Minute => newValue.Minute,
             _ => 0
         };
-        
+
         // Handle DayPeriod specially
         if (segmentType == DateFieldSegmentType.DayPeriod)
         {
@@ -352,7 +352,7 @@ public class DateFieldContext
             SetPartialValue(segmentType, value);
             _filledSegments.Add(segmentType);
         }
-        
+
         // Check if all required segments are now filled
         if (AllRequiredSegmentsFilled())
         {
@@ -370,13 +370,13 @@ public class DateFieldContext
     public async Task SetSegmentValueAsync(DateFieldSegmentType segmentType, int value)
     {
         if (Disabled || ReadOnly) return;
-        
+
         // If we already have a full value, update it in place (original behavior)
         if (HasValue)
         {
             var current = EffectiveDateTime;
             DateTime newValue;
-            
+
             // For 12-hour clock, need to convert hour value properly
             if (segmentType == DateFieldSegmentType.Hour && Uses12HourClock())
             {
@@ -390,7 +390,7 @@ public class DateFieldContext
                     value += 12;
                 }
             }
-            
+
             try
             {
                 newValue = segmentType switch
@@ -408,11 +408,11 @@ public class DateFieldContext
                 // Invalid date value, ignore
                 return;
             }
-            
+
             await UpdateValueAsync(newValue);
             return;
         }
-        
+
         // We're in partial state - update the partial value
         // For 12-hour clock, need to convert hour value properly
         if (segmentType == DateFieldSegmentType.Hour && Uses12HourClock())
@@ -428,11 +428,11 @@ public class DateFieldContext
                 value += 12;
             }
         }
-        
+
         // Store the partial value
         SetPartialValue(segmentType, value);
         _filledSegments.Add(segmentType);
-        
+
         // Check if all required segments are now filled
         if (AllRequiredSegmentsFilled())
         {
@@ -450,17 +450,17 @@ public class DateFieldContext
     public async Task ClearSegmentAsync(DateFieldSegmentType segmentType)
     {
         if (Disabled || ReadOnly) return;
-        
+
         // If we have a full value, decompose it into partial values first
         if (HasValue)
         {
             DecomposeToPartialValues();
         }
-        
+
         // Clear the specific segment
         _filledSegments.Remove(segmentType);
         ClearPartialValue(segmentType);
-        
+
         // Set bound value to null since we no longer have a complete date
         if (IsDateTimeMode)
         {
@@ -478,10 +478,10 @@ public class DateFieldContext
                 await DateValueChanged.InvokeAsync(null);
             }
         }
-        
+
         NotifyStateChanged();
     }
-    
+
     /// <summary>
     /// Decomposes the current bound value into partial values for segment-level editing.
     /// </summary>
@@ -494,14 +494,14 @@ public class DateFieldContext
         _partialHour = dt.Hour;
         _partialMinute = dt.Minute;
         _partialIsPm = dt.Hour >= 12;
-        
+
         _filledSegments = new HashSet<DateFieldSegmentType>
         {
             DateFieldSegmentType.Year,
             DateFieldSegmentType.Month,
             DateFieldSegmentType.Day
         };
-        
+
         if (IsDateTimeMode)
         {
             _filledSegments.Add(DateFieldSegmentType.Hour);
@@ -510,7 +510,7 @@ public class DateFieldContext
                 _filledSegments.Add(DateFieldSegmentType.DayPeriod);
         }
     }
-    
+
     /// <summary>
     /// Clears a specific partial value.
     /// </summary>
@@ -526,7 +526,7 @@ public class DateFieldContext
             case DateFieldSegmentType.DayPeriod: _partialIsPm = null; break;
         }
     }
-    
+
     /// <summary>
     /// Sets a specific partial value.
     /// </summary>
@@ -541,7 +541,7 @@ public class DateFieldContext
             case DateFieldSegmentType.Minute: _partialMinute = value; break;
         }
     }
-    
+
     /// <summary>
     /// Checks if all required segments for the current mode are filled.
     /// </summary>
@@ -551,17 +551,17 @@ public class DateFieldContext
         if (!_filledSegments.Contains(DateFieldSegmentType.Year)) return false;
         if (!_filledSegments.Contains(DateFieldSegmentType.Month)) return false;
         if (!_filledSegments.Contains(DateFieldSegmentType.Day)) return false;
-        
+
         // Time segments required in DateTime mode
         if (IsDateTimeMode)
         {
             if (!_filledSegments.Contains(DateFieldSegmentType.Hour)) return false;
             if (!_filledSegments.Contains(DateFieldSegmentType.Minute)) return false;
         }
-        
+
         return true;
     }
-    
+
     /// <summary>
     /// Attempts to compose partial values into a full DateTime and set it as the bound value.
     /// </summary>
@@ -577,7 +577,7 @@ public class DateFieldContext
                 _partialMinute ?? 0,
                 0
             );
-            
+
             await UpdateValueAsync(newValue);
             ClearPartialState(); // Clear partial state since we now have a full value
         }
@@ -587,7 +587,7 @@ public class DateFieldContext
             NotifyStateChanged();
         }
     }
-    
+
     /// <summary>
     /// Clears all partial state values.
     /// </summary>
@@ -608,15 +608,15 @@ public class DateFieldContext
     public async Task SetDayPeriodAsync(string period)
     {
         if (Disabled || ReadOnly) return;
-        
+
         var wantPm = period.Equals("PM", StringComparison.OrdinalIgnoreCase);
-        
+
         // If we have a full value, update it directly (original behavior)
         if (HasValue)
         {
             var current = EffectiveDateTime;
             var isCurrentlyPm = current.Hour >= 12;
-            
+
             if (isCurrentlyPm != wantPm)
             {
                 var newValue = wantPm ? current.AddHours(12) : current.AddHours(-12);
@@ -624,15 +624,15 @@ public class DateFieldContext
             }
             return;
         }
-        
+
         // We're in partial state
         var isCurrentlyPmPartial = _partialIsPm ?? (EffectiveDateTime.Hour >= 12);
-        
+
         if (isCurrentlyPmPartial != wantPm)
         {
             _partialIsPm = wantPm;
             _filledSegments.Add(DateFieldSegmentType.DayPeriod);
-            
+
             // Also update the hour if we have one
             if (_partialHour.HasValue)
             {
@@ -645,7 +645,7 @@ public class DateFieldContext
                     _partialHour -= 12;
                 }
             }
-            
+
             // Check if all required segments are now filled
             if (AllRequiredSegmentsFilled())
             {
@@ -670,7 +670,7 @@ public class DateFieldContext
             DateValue = DateOnly.FromDateTime(newValue);
             await DateValueChanged.InvokeAsync(DateValue);
         }
-        
+
         NotifyStateChanged();
     }
 
@@ -754,7 +754,7 @@ public class DateFieldContext
         {
             return label;
         }
-        
+
         // Fallback to English defaults
         return type switch
         {

@@ -1,4 +1,5 @@
 using Microsoft.Playwright;
+
 using TUnit.Playwright;
 
 namespace SummitUI.Tests.Playwright.FocusTrap;
@@ -24,7 +25,7 @@ public class FocusTrapAccessibilityTests : SummitTestBase
             "el => el.contains(document.activeElement) || el === document.activeElement");
 
         await Assert.That(isFocusInTrap).IsTrue();
-        
+
         // Tab should not escape
         await Page.Keyboard.PressAsync("Tab");
         await Expect(Page.GetByTestId("external-button")).Not.ToBeFocusedAsync();
@@ -40,7 +41,7 @@ public class FocusTrapAccessibilityTests : SummitTestBase
 
         await Page.Keyboard.PressAsync("Tab");
         await Expect(closeButton).ToBeFocusedAsync();
-        
+
         await Page.Keyboard.PressAsync("Shift+Tab");
         await Expect(closeButton).ToBeFocusedAsync();
     }

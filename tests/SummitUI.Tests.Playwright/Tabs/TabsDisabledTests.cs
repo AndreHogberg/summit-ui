@@ -76,7 +76,7 @@ public class TabsDisabledTests : SummitTestBase
     public async Task DynamicDisabled_ShouldToggle_AriaDisabledAttribute()
     {
         var dynamicTrigger = Page.GetByTestId("dynamic-trigger-second");
-        
+
         // Initially disabled
         await Expect(dynamicTrigger).ToHaveAttributeAsync("aria-disabled", "true");
         await Expect(dynamicTrigger).ToHaveAttributeAsync("data-disabled", "");

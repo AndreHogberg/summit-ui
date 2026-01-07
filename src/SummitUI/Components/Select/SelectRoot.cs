@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -122,19 +123,19 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
     {
         _internalValue = DefaultValue;
         _internalOpen = DefaultOpen;
-        
+
         // Set up EditContext field identifier for validation
         if (EditContext is not null && ValueExpression is not null)
         {
             _fieldIdentifier = FieldIdentifier.Create(ValueExpression);
         }
-        
+
         _context.Value = EffectiveValue;
         _context.IsOpen = IsOpen;
         _context.Disabled = Disabled;
         _context.Required = Required;
         _context.Invalid = Invalid;
-        
+
         _context.ToggleAsync = ToggleAsync;
         _context.OpenAsync = OpenAsync;
         _context.CloseAsync = CloseAsync;
@@ -154,13 +155,13 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
         _context.Disabled = Disabled;
         _context.Required = Required;
         _context.Invalid = Invalid;
-        
+
         // Only update IsOpen from external Open parameter if it's controlled
         if (Open.HasValue)
         {
             _context.IsOpen = Open.Value;
         }
-        
+
         // For uncontrolled mode, DON'T touch IsOpen here - it's managed by Open/Close methods
         // The previous code `_context.IsOpen = _internalOpen` was causing issues because
         // OnParametersSet can be called during the CloseAsync flow (due to parent re-render
@@ -175,7 +176,7 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
         builder.AddComponentParameter(3, "ChildContent", (RenderFragment)(childBuilder =>
         {
             childBuilder.AddContent(0, ChildContent);
-            
+
             if (!string.IsNullOrEmpty(Name))
             {
                 childBuilder.OpenElement(1, "input");
@@ -191,7 +192,7 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
     private async Task ToggleAsync()
     {
         if (Disabled) return;
-        
+
         // Prevent re-opening within 100ms of a selection close
         // This handles the race condition where keyboard selection (via JS) and
         // Blazor's keydown handler both fire, and we need to prevent the re-open
@@ -200,7 +201,7 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
         {
             return;
         }
-        
+
         if (IsOpen)
             await CloseAsync();
         else
@@ -215,7 +216,7 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
         {
             return;
         }
-        
+
         if (Disabled || IsOpen) return;
 
         // Clear the item registry before opening to ensure items register in correct DOM order.
@@ -265,7 +266,7 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
     private async Task SelectItemAsync(TValue value, string? label)
     {
         if (Disabled) return;
-        
+
         // Update internal state for uncontrolled mode
         if (Value is null)
         {
@@ -274,20 +275,20 @@ public class SelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue :
 
         _context.Value = value;
         _context.SelectedLabel = label;
-        
+
         // IMPORTANT: Close BEFORE firing value changed events
         // This ensures _internalOpen is false when parent re-renders (due to ValueChanged)
         // and OnParametersSet runs on this component
         await CloseAsync();
-        
+
         // Set timestamp to prevent immediate re-opening from keyboard event handlers
         // The keyboard event (Enter/Space) that triggered selection will also fire
         // Blazor's onkeydown handler after this async method returns
         _lastSelectionCloseTime = DateTime.UtcNow;
-        
+
         await ValueChanged.InvokeAsync(value);
         await OnValueChange.InvokeAsync(value);
-        
+
         // Notify EditContext of the change for validation
         if (EditContext is not null && _fieldIdentifier.HasValue)
         {

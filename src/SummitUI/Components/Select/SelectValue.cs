@@ -32,9 +32,9 @@ public class SelectValue<TValue> : ComponentBase where TValue : notnull
     /// <summary>
     /// The text to display (selected label or placeholder).
     /// </summary>
-    private string? DisplayText => 
-        !string.IsNullOrEmpty(Context.SelectedLabel) 
-            ? Context.SelectedLabel 
+    private string? DisplayText =>
+        !string.IsNullOrEmpty(Context.SelectedLabel)
+            ? Context.SelectedLabel
             : Context.Value is not null
                 ? Context.Value.ToString()
                 : Placeholder;

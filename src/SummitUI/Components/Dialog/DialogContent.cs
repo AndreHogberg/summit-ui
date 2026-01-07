@@ -1,7 +1,8 @@
-using SummitUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
+
+using SummitUI.Interop;
 
 namespace SummitUI;
 
@@ -162,7 +163,7 @@ public class DialogContent : ComponentBase, IAsyncDisposable
         {
             // Set guard flag immediately to prevent concurrent initialization
             _isInitializing = true;
-            
+
             try
             {
                 // Cancel any pending animation watcher if reopening

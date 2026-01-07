@@ -1,6 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
+
 using SummitUI.Interop;
 using SummitUI.Utilities;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace SummitUI.Extensions;
 

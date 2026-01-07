@@ -25,12 +25,6 @@ public class AccordionItem : ComponentBase
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
-    /// HTML element to render. Defaults to "div".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "div";
-
-    /// <summary>
     /// Whether this specific item is disabled.
     /// </summary>
     [Parameter]
@@ -66,7 +60,7 @@ public class AccordionItem : ComponentBase
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenElement(0, As);
+        builder.OpenElement(0, "div");
         builder.AddAttribute(1, "data-state", DataState);
         builder.AddAttribute(2, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
         builder.AddAttribute(3, "data-summit-accordion-item", true);

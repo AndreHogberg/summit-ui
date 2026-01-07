@@ -1,8 +1,9 @@
-using SummitUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+
+using SummitUI.Interop;
 
 namespace SummitUI;
 
@@ -76,7 +77,7 @@ public class SelectTrigger<TValue> : ComponentBase, IAsyncDisposable where TValu
         if (firstRender)
         {
             Context.RegisterTrigger(_elementRef);
-            
+
             // Register trigger with JS to prevent default scroll on arrow keys
             await JsInterop.RegisterTriggerAsync(_elementRef);
             _isRegistered = true;
@@ -166,7 +167,7 @@ public class SelectTrigger<TValue> : ComponentBase, IAsyncDisposable where TValu
                 // Toggle dropdown
                 await Context.ToggleAsync();
                 break;
-                
+
             case "ArrowDown":
             case "ArrowUp":
                 // Open dropdown if closed
@@ -177,9 +178,9 @@ public class SelectTrigger<TValue> : ComponentBase, IAsyncDisposable where TValu
 
     private string DataState => Context.IsOpen ? "open" : "closed";
 
-    private string? HighlightedItemId => 
-        !string.IsNullOrEmpty(Context.HighlightedKey) 
-            ? Context.GetItemId(Context.HighlightedKey) 
+    private string? HighlightedItemId =>
+        !string.IsNullOrEmpty(Context.HighlightedKey)
+            ? Context.GetItemId(Context.HighlightedKey)
             : null;
 
     public async ValueTask DisposeAsync()

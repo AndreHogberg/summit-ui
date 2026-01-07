@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
+
 using SummitUI.Interop;
 
 namespace SummitUI;
@@ -10,7 +11,7 @@ namespace SummitUI;
 /// </summary>
 public class CalendarRoot : ComponentBase, IAsyncDisposable
 {
-    private CalendarContext _context = new();
+    private readonly CalendarContext _context = new();
     private bool _localeInitialized;
     private string _effectiveLocale = "en-US";
     private WeekStartsOn _effectiveWeekStart = SummitUI.WeekStartsOn.Sunday;

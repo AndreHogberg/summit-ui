@@ -61,7 +61,7 @@ public class TabsFocusTests : SummitTestBase
 
         // Active tab has tabindex 0
         await Expect(accountTrigger).ToHaveAttributeAsync("tabindex", "0");
-        
+
         // Inactive tabs have tabindex -1
         await Expect(passwordTrigger).ToHaveAttributeAsync("tabindex", "-1");
         await Expect(settingsTrigger).ToHaveAttributeAsync("tabindex", "-1");

@@ -1,9 +1,10 @@
-using SummitUI.Interop;
-using SummitUI.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+
+using SummitUI.Interop;
+using SummitUI.Utilities;
 
 namespace SummitUI;
 
@@ -30,12 +31,6 @@ public class AccordionTrigger : ComponentBase, IAsyncDisposable
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>
-    /// HTML element to render. Defaults to "button".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "button";
 
     /// <summary>
     /// Additional HTML attributes to apply.
@@ -80,7 +75,7 @@ public class AccordionTrigger : ComponentBase, IAsyncDisposable
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenElement(0, As);
+        builder.OpenElement(0, "button");
         builder.AddAttribute(1, "type", "button");
         builder.AddAttribute(2, "id", Context.GetTriggerId(ItemContext.Value));
         builder.AddAttribute(3, "aria-expanded", IsExpanded.ToString().ToLowerInvariant());

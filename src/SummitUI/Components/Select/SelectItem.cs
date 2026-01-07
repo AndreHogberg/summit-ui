@@ -74,7 +74,7 @@ public class SelectItem<TValue> : ComponentBase, IDisposable where TValue : notn
     /// <summary>
     /// Whether this item is currently selected.
     /// </summary>
-    private bool IsSelected => Context.Value is not null && 
+    private bool IsSelected => Context.Value is not null &&
                                EqualityComparer<TValue>.Default.Equals(Context.Value, Value);
 
     /// <summary>
@@ -90,7 +90,7 @@ public class SelectItem<TValue> : ComponentBase, IDisposable where TValue : notn
     protected override void OnInitialized()
     {
         RegisterWithContext();
-        
+
         // Subscribe to context state changes for highlighting updates
         Context.OnStateChanged += HandleStateChanged;
         _isSubscribed = true;

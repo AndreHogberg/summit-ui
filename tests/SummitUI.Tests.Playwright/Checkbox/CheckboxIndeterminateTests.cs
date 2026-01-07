@@ -45,7 +45,7 @@ public class CheckboxIndeterminateTests : SummitTestBase
     public async Task SelectAll_ShouldCheckAllItems_WhenIndeterminate()
     {
         var selectAllCheckbox = Page.GetByTestId("select-all-checkbox");
-        
+
         // Click select all
         await selectAllCheckbox.ClickAsync();
 
@@ -66,7 +66,7 @@ public class CheckboxIndeterminateTests : SummitTestBase
     public async Task SelectAll_ShouldUncheckAllItems_WhenChecked()
     {
         var selectAllCheckbox = Page.GetByTestId("select-all-checkbox");
-        
+
         // Click select all to check all items
         await selectAllCheckbox.ClickAsync();
         await Expect(selectAllCheckbox).ToHaveAttributeAsync("data-state", "checked");
@@ -91,7 +91,7 @@ public class CheckboxIndeterminateTests : SummitTestBase
     public async Task SelectAll_ShouldBecomeIndeterminate_WhenSomeItemsChecked()
     {
         var selectAllCheckbox = Page.GetByTestId("select-all-checkbox");
-        
+
         // First check all items
         await selectAllCheckbox.ClickAsync();
         await Expect(selectAllCheckbox).ToHaveAttributeAsync("data-state", "checked");

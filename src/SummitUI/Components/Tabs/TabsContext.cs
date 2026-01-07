@@ -19,7 +19,7 @@ internal sealed class TabTriggerInfo
 public sealed class TabsContext
 {
     private readonly List<TabTriggerInfo> _triggers = new();
-    
+
     /// <summary>
     /// Unique identifier for this tabs instance, used for ARIA relationships.
     /// </summary>

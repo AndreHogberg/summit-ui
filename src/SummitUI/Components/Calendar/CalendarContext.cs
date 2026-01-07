@@ -257,7 +257,7 @@ public class CalendarContext
         if (Disabled) return;
 
         _displayedMonth = _displayedMonth.AddMonths(-1);
-        
+
         // Keep focused date in sync if it's in the new month
         if (_focusedDate.Month != _displayedMonth.Month || _focusedDate.Year != _displayedMonth.Year)
         {
@@ -275,7 +275,7 @@ public class CalendarContext
         if (Disabled) return;
 
         _displayedMonth = _displayedMonth.AddMonths(1);
-        
+
         // Keep focused date in sync if it's in the new month
         if (_focusedDate.Month != _displayedMonth.Month || _focusedDate.Year != _displayedMonth.Year)
         {

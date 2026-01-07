@@ -1,7 +1,8 @@
-using SummitUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
+
+using SummitUI.Interop;
 
 namespace SummitUI;
 
@@ -85,7 +86,7 @@ public class AccordionContent : ComponentBase, IAsyncDisposable
         {
             // Closing: wait for animations to complete before hiding
             await JsInterop.SetContentHeightAsync(_elementRef);
-            
+
             if (_dotNetRef != null)
             {
                 await JsInterop.WaitForAnimationsCompleteAsync(_elementRef, _dotNetRef, nameof(OnAnimationsComplete));
@@ -132,7 +133,7 @@ public class AccordionContent : ComponentBase, IAsyncDisposable
     {
         // Determine if we should render based on presence state
         var shouldRenderNow = IsExpanded || ForceMount || _shouldRender;
-        
+
         if (!shouldRenderNow) return;
 
         // Ensure we render when expanded
@@ -165,7 +166,7 @@ public class AccordionContent : ComponentBase, IAsyncDisposable
     public async ValueTask DisposeAsync()
     {
         _disposed = true;
-        
+
         // Only call JS interop if we're in an interactive context
         // During SSR, RendererInfo.IsInteractive is false and JS isn't available
         if (RendererInfo.IsInteractive && _elementRef.Id != null)
@@ -179,7 +180,7 @@ public class AccordionContent : ComponentBase, IAsyncDisposable
                 // Circuit disconnected, ignore
             }
         }
-        
+
         _dotNetRef?.Dispose();
         GC.SuppressFinalize(this);
     }

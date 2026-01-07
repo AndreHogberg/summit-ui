@@ -1,7 +1,8 @@
-using SummitUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
+
+using SummitUI.Interop;
 
 namespace SummitUI;
 
@@ -148,7 +149,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         builder.AddAttribute(9, "style", "position: absolute; visibility: hidden;");
         builder.AddMultipleAttributes(10, AdditionalAttributes);
         builder.AddElementReferenceCapture(11, (elementRef) => { _elementRef = elementRef; });
-        
+
         // Wrap content in FocusTrap if enabled
         if (EffectiveTrapFocus)
         {
@@ -163,19 +164,19 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         {
             builder.AddContent(12, ChildContent);
         }
-        
+
         builder.CloseElement();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!RendererInfo.IsInteractive) return;
-        
+
         if (Context.IsOpen && !_isPositioned && !_isPositioning)
         {
             // Set guard flag immediately to prevent concurrent initialization
             _isPositioning = true;
-            
+
             try
             {
                 // Cancel any pending animation watcher if reopening
@@ -225,13 +226,13 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
                 }
 
                 _isPositioned = true;
-                
+
                 // Focus the content if not using FocusTrap (FocusTrap handles focus automatically)
                 if (!EffectiveTrapFocus)
                 {
                     await FloatingInterop.FocusFirstElementAsync(_elementRef);
                 }
-                
+
                 await OnOpenAutoFocus.InvokeAsync();
             }
             finally
@@ -246,8 +247,8 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
             _animationWatcherRegistered = true;
             _dotNetRef ??= DotNetObjectReference.Create(this);
             await FloatingInterop.WaitForAnimationsCompleteAsync(
-                _elementRef, 
-                _dotNetRef, 
+                _elementRef,
+                _dotNetRef,
                 nameof(OnCloseAnimationsComplete));
         }
 
@@ -257,9 +258,9 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
     private async Task CleanupAsync()
     {
         if (!_isPositioned) return;
-        
+
         _isPositioned = false;
-        
+
         try
         {
             // Cleanup Escape key listener
@@ -293,7 +294,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         }
     }
 
-/// <summary>
+    /// <summary>
     /// Called from JavaScript when an outside click is detected.
     /// </summary>
     [JSInvokable]
@@ -339,10 +340,10 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         if (!Context.IsOpen)
         {
             await CleanupAsync();
-            
+
             // Return focus to trigger
             await FloatingInterop.FocusElementAsync(Context.TriggerElement);
-            
+
             await OnCloseAutoFocus.InvokeAsync();
         }
 
@@ -351,7 +352,7 @@ public class PopoverContent : ComponentBase, IAsyncDisposable
         await InvokeAsync(StateHasChanged);
     }
 
-public async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (_isDisposed) return;
         _isDisposed = true;

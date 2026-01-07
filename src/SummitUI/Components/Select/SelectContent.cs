@@ -1,8 +1,9 @@
-using SummitUI.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+
+using SummitUI.Interop;
 
 namespace SummitUI;
 
@@ -98,7 +99,7 @@ public class SelectContent<TValue> : ComponentBase, IAsyncDisposable where TValu
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-private ElementReference _elementRef;
+    private ElementReference _elementRef;
     private DotNetObjectReference<SelectContent<TValue>>? _dotNetRef;
     private string? _floatingInstanceId;
     private string? _outsideClickListenerId;
@@ -126,7 +127,7 @@ private ElementReference _elementRef;
         // Subscribe to context state changes
         Context.OnStateChanged += HandleStateChanged;
         _isSubscribed = true;
-        
+
         // Register focus callback early so it's available when Close is called
         Context.FocusTriggerAsync = FocusTriggerAsync;
     }
@@ -136,15 +137,15 @@ private ElementReference _elementRef;
         await InvokeAsync(StateHasChanged);
     }
 
-protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!RendererInfo.IsInteractive) return;
-        
+
         if (Context.IsOpen && !_isPositioned && !_isPositioning)
         {
             // Set guard flag immediately to prevent concurrent initialization
             _isPositioning = true;
-            
+
             try
             {
                 // Cancel any pending animation watcher if reopening
@@ -225,8 +226,8 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
             _animationWatcherRegistered = true;
             _dotNetRef ??= DotNetObjectReference.Create(this);
             await FloatingInterop.WaitForAnimationsCompleteAsync(
-                _elementRef, 
-                _dotNetRef, 
+                _elementRef,
+                _dotNetRef,
                 nameof(OnCloseAnimationsComplete));
         }
 
@@ -337,7 +338,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         }
     }
 
-/// <summary>
+    /// <summary>
     /// Called from JavaScript when Escape key is pressed.
     /// </summary>
     [JSInvokable]
@@ -474,7 +475,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
             {
                 nextIndex = 0; // Loop to start
             }
-            
+
             // If we've looped all the way around, stop (all items disabled)
             if (nextIndex == startIndex && startIndex != -1)
             {
@@ -508,7 +509,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
             {
                 prevIndex = keys.Count - 1; // Loop to end
             }
-            
+
             // If we've looped all the way around, stop (all items disabled)
             if (prevIndex == startIndex && startIndex != keys.Count)
             {
@@ -652,7 +653,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         _typeaheadTimer = null;
     }
 
-public async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (_isDisposed) return;
         _isDisposed = true;
