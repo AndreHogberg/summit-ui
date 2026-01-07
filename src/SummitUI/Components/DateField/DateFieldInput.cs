@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-using SummitUI.Interop;
+using SummitUI.Services;
 
 namespace SummitUI;
 
@@ -10,7 +10,7 @@ namespace SummitUI;
 /// </summary>
 public class DateFieldInput : ComponentBase, IDisposable
 {
-    [Inject] private DateFieldJsInterop JsInterop { get; set; } = default!;
+    [Inject] private CalendarProvider CalendarProvider { get; set; } = default!;
 
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
 
@@ -22,7 +22,7 @@ public class DateFieldInput : ComponentBase, IDisposable
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private List<DateFieldSegmentState> _segments = new();
-    private bool _localizationLoaded;
+    private bool _initialized;
     private CalendarSystem _lastCalendarSystem;
     private DateTime? _lastValueForCalendarInfo;
 
@@ -33,98 +33,97 @@ public class DateFieldInput : ComponentBase, IDisposable
 
         Context.OnStateChanged += HandleStateChanged;
         _lastCalendarSystem = Context.CalendarSystem;
+        
+        // Initialize segment labels from culture
+        InitializeSegmentLabels();
+        
         RegenerateSegments();
     }
 
     protected override void OnParametersSet()
     {
+        // Refresh calendar info if calendar system or value changed
+        var needsCalendarRefresh = 
+            Context.CalendarSystem != _lastCalendarSystem ||
+            !DateTime.Equals(Context.EffectiveDateTime, _lastValueForCalendarInfo);
+
+        if (needsCalendarRefresh)
+        {
+            RefreshCalendarInfo();
+        }
+
         RegenerateSegments();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender && !_localizationLoaded)
+        if (firstRender && !_initialized)
         {
-            _localizationLoaded = true;
-
-            // Get browser locale and use it for segment labels and AM/PM designators
-            var browserLocale = await JsInterop.GetBrowserLocaleAsync();
-
-            // If Locale was not explicitly set, use browser locale
-            if (Context.Locale == "en-US" && browserLocale != "en-US")
-            {
-                Context.SetDetectedLocale(browserLocale);
-            }
-
-            // Auto-detect format based on locale if not explicitly set
-            if (!Context.HasExplicitFormat)
-            {
-                var localeFormat = await JsInterop.GetLocaleDateFormatAsync(Context.Locale);
-                Context.SetDetectedFormat(localeFormat.DateFormat);
-                RegenerateSegments();
-            }
-
-            var labels = await JsInterop.GetSegmentLabelsAsync(Context.Locale);
-            Context.SetSegmentLabels(labels);
-
-            var designators = await JsInterop.GetDayPeriodDesignatorsAsync(Context.Locale);
-            Context.SetDayPeriodDesignators(designators.Am, designators.Pm);
-
-            // Fetch initial calendar info
-            await RefreshCalendarInfoAsync();
-
-            StateHasChanged();
-        }
-        else if (_localizationLoaded)
-        {
-            // Check if we need to refresh calendar info (value or calendar system changed)
-            var needsCalendarRefresh = 
-                Context.CalendarSystem != _lastCalendarSystem ||
-                !DateTime.Equals(Context.EffectiveDateTime, _lastValueForCalendarInfo);
-
-            if (needsCalendarRefresh && Context.CalendarSystem != CalendarSystem.Gregorian)
-            {
-                await RefreshCalendarInfoAsync();
-                StateHasChanged();
-            }
+            _initialized = true;
+            // Calendar info is already computed synchronously in OnParametersSet
         }
     }
 
     /// <summary>
-    /// Refreshes the calendar info from JavaScript for the current date and calendar system.
+    /// Initializes segment labels from the culture's DateTimeFormatInfo.
     /// </summary>
-    private async Task RefreshCalendarInfoAsync()
+    private void InitializeSegmentLabels()
+    {
+        // Use English labels as fallback - segment labels are accessibility text
+        // and don't need complex localization for the date field to function correctly.
+        // The Culture's AM/PM designators are already used from DateTimeFormat.
+        var labels = new Dictionary<string, string>
+        {
+            ["year"] = "Year",
+            ["month"] = "Month",
+            ["day"] = "Day",
+            ["hour"] = "Hour",
+            ["minute"] = "Minute",
+            ["dayPeriod"] = "AM/PM"
+        };
+        Context.SetSegmentLabels(labels);
+    }
+
+    /// <summary>
+    /// Refreshes the calendar info using the CalendarProvider for the current date and calendar system.
+    /// </summary>
+    private void RefreshCalendarInfo()
     {
         _lastCalendarSystem = Context.CalendarSystem;
         _lastValueForCalendarInfo = Context.EffectiveDateTime;
 
-        // Only fetch if not Gregorian (Gregorian uses direct C# values)
+        // For Gregorian calendar, clear the cached info (uses direct DateTime values)
         if (Context.CalendarSystem == CalendarSystem.Gregorian)
         {
             Context.ClearCalendarInfo();
             return;
         }
 
-        var effectiveDate = Context.EffectiveDateTime;
-        
-        var calendarInfo = await JsInterop.GetCalendarDateInfoAsync(
-            effectiveDate.Year,
-            effectiveDate.Month,
-            effectiveDate.Day,
-            Context.CalendarSystem);
+        // Convert the Gregorian date to the target calendar system
+        var effectiveDate = DateOnly.FromDateTime(Context.EffectiveDateTime);
+        var monthInfo = CalendarProvider.GetCalendarMonthInfo(effectiveDate, Context.CalendarSystem);
 
         Context.SetCalendarInfo(
-            calendarInfo.Year,
-            calendarInfo.Month,
-            calendarInfo.Day,
-            calendarInfo.Era,
-            calendarInfo.DaysInMonth,
-            calendarInfo.MonthsInYear);
+            monthInfo.Year,
+            monthInfo.Month,
+            monthInfo.Day,
+            monthInfo.Era,
+            monthInfo.DaysInMonth,
+            monthInfo.MonthsInYear);
     }
 
     private void HandleStateChanged()
     {
-        // Only regenerate if necessary (segments structure doesn't change often)
+        // Refresh calendar info if needed
+        var needsCalendarRefresh = 
+            Context.CalendarSystem != _lastCalendarSystem ||
+            !DateTime.Equals(Context.EffectiveDateTime, _lastValueForCalendarInfo);
+
+        if (needsCalendarRefresh && Context.CalendarSystem != CalendarSystem.Gregorian)
+        {
+            RefreshCalendarInfo();
+        }
+
         StateHasChanged();
     }
 

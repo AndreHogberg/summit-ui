@@ -116,7 +116,7 @@ public class CalendarCell : ComponentBase
 
         builder.OpenComponent<CascadingValue<CalendarCellContext>>(9);
         builder.AddComponentParameter(10, "Value", cellContext);
-        builder.AddComponentParameter(11, "IsFixed", true);
+        builder.AddComponentParameter(11, "IsFixed", false);
         builder.AddComponentParameter(12, "ChildContent", (RenderFragment)(childBuilder =>
         {
             if (ChildContent != null)

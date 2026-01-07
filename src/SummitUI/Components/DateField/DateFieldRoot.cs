@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -37,10 +39,13 @@ public class DateFieldRoot : ComponentBase
     [Parameter] public CalendarSystem CalendarSystem { get; set; } = CalendarSystem.Gregorian;
 
     /// <summary>
-    /// The locale to use for formatting and localization.
-    /// If not specified, auto-detects from browser.
+    /// The culture to use for formatting and localization.
+    /// If not specified, uses <see cref="CultureInfo.CurrentCulture"/>.
     /// </summary>
-    [Parameter] public string? Locale { get; set; }
+    /// <remarks>
+    /// Users can create custom CultureInfo instances with their own translations and calendar configurations.
+    /// </remarks>
+    [Parameter] public CultureInfo? Culture { get; set; }
 
     /// <summary>
     /// Time format pattern for DateTime mode. Only used when binding to DateTimeValue.
@@ -144,6 +149,9 @@ public class DateFieldRoot : ComponentBase
         // Determine validation state
         var isInvalid = Invalid || IsOutOfRange();
 
+        // Determine effective culture
+        var effectiveCulture = Culture ?? CultureInfo.CurrentCulture;
+
         if (IsDateTimeMode)
         {
             _context.SetDateTimeState(
@@ -152,7 +160,7 @@ public class DateFieldRoot : ComponentBase
                 Format,
                 TimeFormat,
                 CalendarSystem,
-                Locale,
+                effectiveCulture,
                 Disabled,
                 ReadOnly,
                 isInvalid,
@@ -167,7 +175,7 @@ public class DateFieldRoot : ComponentBase
                 Placeholder,
                 Format,
                 CalendarSystem,
-                Locale,
+                effectiveCulture,
                 Disabled,
                 ReadOnly,
                 isInvalid,

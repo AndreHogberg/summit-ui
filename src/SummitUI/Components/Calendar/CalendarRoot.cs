@@ -1,8 +1,10 @@
+using System.Globalization;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.JSInterop;
 
 using SummitUI.Interop;
+using SummitUI.Services;
 
 namespace SummitUI;
 
@@ -12,27 +14,17 @@ namespace SummitUI;
 public class CalendarRoot : ComponentBase, IAsyncDisposable
 {
     private readonly CalendarContext _context = new();
-    private bool _localeInitialized;
-    private string _effectiveLocale = "en-US";
-    private WeekStartsOn _effectiveWeekStart = SummitUI.WeekStartsOn.Sunday;
+    private CultureInfo _effectiveCulture = CultureInfo.CurrentCulture;
+    private DayOfWeek _effectiveWeekStart = DayOfWeek.Sunday;
     
-    // Track previous values to detect changes that require re-fetching locale data
+    // Track previous values to detect changes that require re-computation
     private CalendarSystem _previousCalendarSystem;
-    private string? _previousLocale;
+    private CultureInfo? _previousCulture;
     private DateOnly _previousDisplayedMonth;
 
     [Inject] private CalendarJsInterop JsInterop { get; set; } = default!;
-
-    /// <summary>
-    /// Returns true if we need to wait for JS to detect locale/week start.
-    /// If both are explicitly provided, we don't need to wait.
-    /// </summary>
-    private bool NeedsLocaleDetection => !WeekStartsOn.HasValue || string.IsNullOrEmpty(Locale);
-
-    /// <summary>
-    /// Returns true if the calendar is ready to render its content.
-    /// </summary>
-    private bool IsReady => _localeInitialized || !NeedsLocaleDetection;
+    [Inject] private CalendarProvider CalendarProvider { get; set; } = default!;
+    [Inject] private CalendarFormatter CalendarFormatter { get; set; } = default!;
 
     #region Parameters
 
@@ -62,16 +54,19 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     [Parameter] public DateOnly? Placeholder { get; set; }
 
     /// <summary>
-    /// The locale to use for formatting (e.g., "en-US", "fr-FR").
-    /// If not specified, auto-detects from browser.
+    /// The culture to use for formatting and localization.
+    /// If not specified, uses <see cref="CultureInfo.CurrentCulture"/>.
     /// </summary>
-    [Parameter] public string? Locale { get; set; }
+    /// <remarks>
+    /// Users can create custom CultureInfo instances with their own translations and calendar configurations.
+    /// </remarks>
+    [Parameter] public CultureInfo? Culture { get; set; }
 
     /// <summary>
     /// The day of the week to start on.
-    /// If not specified, auto-detects from locale.
+    /// If not specified, uses the culture's default first day of week.
     /// </summary>
-    [Parameter] public WeekStartsOn? WeekStartsOn { get; set; }
+    [Parameter] public DayOfWeek? WeekStartsOn { get; set; }
 
     /// <summary>
     /// The calendar system to use for display and navigation.
@@ -134,24 +129,22 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     {
         var isControlled = ValueChanged.HasDelegate;
 
-        // If WeekStartsOn is explicitly set, use it immediately (don't wait for JS)
-        if (WeekStartsOn.HasValue)
-        {
-            _effectiveWeekStart = WeekStartsOn.Value;
-        }
+        // Determine effective culture
+        _effectiveCulture = Culture ?? CultureInfo.CurrentCulture;
 
-        // If Locale is explicitly set, use it immediately (don't wait for JS)
-        if (!string.IsNullOrEmpty(Locale))
-        {
-            _effectiveLocale = Locale;
-        }
+        // Determine effective week start
+        _effectiveWeekStart = WeekStartsOn ?? CalendarFormatter.GetFirstDayOfWeek(_effectiveCulture);
+
+        // Get localized weekday names synchronously from culture
+        var weekdayNames = CalendarFormatter.GetWeekdayNames(_effectiveCulture);
+        _context.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
 
         _context.SetState(
             value: Value,
             defaultValue: DefaultValue,
             isControlled: isControlled,
             placeholder: Placeholder,
-            locale: _effectiveLocale,
+            culture: _effectiveCulture,
             calendarSystem: CalendarSystem,
             weekStartsOn: _effectiveWeekStart,
             fixedWeeks: FixedWeeks,
@@ -163,142 +156,41 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
             valueChanged: ValueChanged,
             onValueChange: OnValueChange
         );
-    }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && NeedsLocaleDetection)
+        // Update month name and converted dates if calendar/culture/month changed
+        var cultureChanged = _previousCulture != _effectiveCulture;
+        var calendarChanged = _previousCalendarSystem != CalendarSystem;
+        var monthChanged = _previousDisplayedMonth != _context.DisplayedMonth;
+
+        if (cultureChanged || calendarChanged || monthChanged || _previousCulture == null)
         {
-            await InitializeLocaleAsync();
-            _localeInitialized = true;
+            UpdateMonthName();
+            UpdateConvertedDates();
             
-            // Store initial values for change detection
+            _previousCulture = _effectiveCulture;
             _previousCalendarSystem = CalendarSystem;
-            _previousLocale = Locale;
             _previousDisplayedMonth = _context.DisplayedMonth;
-            
-            // Fetch converted dates for non-Gregorian calendar systems
-            await UpdateConvertedDatesAsync();
-            
-            StateHasChanged();
-        }
-        else if (firstRender)
-        {
-            // When locale detection is not needed (explicit params), still need to initialize
-            // Store initial values for change detection
-            _previousCalendarSystem = CalendarSystem;
-            _previousLocale = Locale;
-            _previousDisplayedMonth = _context.DisplayedMonth;
-            
-            // Fetch initial weekday names and heading
-            var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
-            _context.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
-            await UpdateMonthNameAsync();
-            
-            // Fetch converted dates for non-Gregorian calendar systems
-            await UpdateConvertedDatesAsync();
-            
-            StateHasChanged();
-        }
-        else if (_localeInitialized || !NeedsLocaleDetection)
-        {
-            // Check if CalendarSystem, Locale, or DisplayedMonth changed after initial render
-            var calendarChanged = _previousCalendarSystem != CalendarSystem;
-            var localeChanged = _previousLocale != Locale;
-            var monthChanged = _previousDisplayedMonth != _context.DisplayedMonth;
-            
-            if (calendarChanged || localeChanged || monthChanged)
-            {
-                _previousCalendarSystem = CalendarSystem;
-                _previousLocale = Locale;
-                _previousDisplayedMonth = _context.DisplayedMonth;
-                
-                // Re-fetch weekday names and heading with new settings
-                if (calendarChanged || localeChanged)
-                {
-                    var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
-                    _context.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
-                }
-                
-                await UpdateMonthNameAsync();
-                
-                // Re-fetch converted dates when calendar system, locale, or month changes
-                await UpdateConvertedDatesAsync();
-                
-                StateHasChanged();
-            }
         }
     }
 
-    private async Task InitializeLocaleAsync()
+    private void UpdateMonthName()
     {
-        // Determine effective locale
-        if (!string.IsNullOrEmpty(Locale))
-        {
-            _effectiveLocale = Locale;
-        }
-        else
-        {
-            _effectiveLocale = await JsInterop.GetBrowserLocaleAsync();
-        }
-
-        // Determine effective week start
-        if (WeekStartsOn.HasValue)
-        {
-            _effectiveWeekStart = WeekStartsOn.Value;
-        }
-        else
-        {
-            var firstDay = await JsInterop.GetFirstDayOfWeekAsync(_effectiveLocale);
-            _effectiveWeekStart = (WeekStartsOn)firstDay;
-        }
-
-        // Get localized weekday names
-        var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
-        _context.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
-
-        // Get localized month name
-        await UpdateMonthNameAsync();
-
-        // Update context with effective values
-        _context.SetState(
-            value: Value,
-            defaultValue: DefaultValue,
-            isControlled: ValueChanged.HasDelegate,
-            placeholder: Placeholder,
-            locale: _effectiveLocale,
-            calendarSystem: CalendarSystem,
-            weekStartsOn: _effectiveWeekStart,
-            fixedWeeks: FixedWeeks,
-            minValue: MinValue,
-            maxValue: MaxValue,
-            disabled: Disabled,
-            readOnly: ReadOnly,
-            isDateDisabled: IsDateDisabled,
-            valueChanged: ValueChanged,
-            onValueChange: OnValueChange
-        );
-    }
-
-    private async Task UpdateMonthNameAsync()
-    {
-        var heading = await JsInterop.GetMonthYearHeadingAsync(
-            _effectiveLocale,
-            _context.DisplayedMonth.Year,
-            _context.DisplayedMonth.Month,
+        var heading = CalendarFormatter.GetMonthYearHeading(
+            _effectiveCulture,
+            _context.DisplayedMonth,
             CalendarSystem
         );
         _context.SetMonthName(heading);
     }
 
-    private async Task UpdateConvertedDatesAsync()
+    private void UpdateConvertedDates()
     {
         // Generate the month grid to get all dates that need conversion
         var month = _context.GenerateMonth();
         
         // Batch convert all dates in the grid
-        var results = await JsInterop.BatchConvertFromGregorianAsync(
-            _effectiveLocale,
+        var results = CalendarProvider.BatchConvertFromGregorian(
+            _effectiveCulture,
             month.Dates,
             CalendarSystem
         );
@@ -323,15 +215,6 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
         builder.AddAttribute(3, "data-readonly", ReadOnly ? "true" : null);
 
         builder.AddMultipleAttributes(4, AdditionalAttributes);
-
-        // Don't render calendar content until locale is ready
-        // This prevents the calendar from shifting when week start is auto-detected
-        if (!IsReady)
-        {
-            // Render nothing inside the root div - it will re-render when ready
-            builder.CloseElement();
-            return;
-        }
 
         // Visually hidden live region for screen reader announcements
         // This is needed because role="application" on the grid means screen readers
@@ -367,100 +250,22 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
         builder.CloseElement();
     }
 
-    #region JS Interop Callbacks
+    #region Internal Methods for Context
 
     /// <summary>
-    /// Called from JS when arrow key moves focus by days.
+    /// Gets the JS interop instance for focus management.
     /// </summary>
-    [JSInvokable]
-    public void MoveFocus(int days)
-    {
-        _context.MoveFocus(days);
-        _ = UpdateMonthNameIfChangedAsync();
-    }
+    internal CalendarJsInterop GetJsInterop() => JsInterop;
 
     /// <summary>
-    /// Called from JS when arrow key moves focus by weeks.
+    /// Updates the month heading when navigation occurs.
+    /// Called by CalendarContext when the displayed month changes.
     /// </summary>
-    [JSInvokable]
-    public void MoveFocusWeeks(int weeks)
+    internal void OnMonthChanged()
     {
-        _context.MoveFocusWeeks(weeks);
-        _ = UpdateMonthNameIfChangedAsync();
-    }
-
-    /// <summary>
-    /// Called from JS when Home key is pressed.
-    /// </summary>
-    [JSInvokable]
-    public void FocusStartOfWeek()
-    {
-        _context.FocusStartOfWeek();
-    }
-
-    /// <summary>
-    /// Called from JS when End key is pressed.
-    /// </summary>
-    [JSInvokable]
-    public void FocusEndOfWeek()
-    {
-        _context.FocusEndOfWeek();
-    }
-
-    /// <summary>
-    /// Called from JS when PageUp is pressed.
-    /// </summary>
-    [JSInvokable]
-    public async Task PreviousMonth()
-    {
-        _context.PreviousMonth();
-        await UpdateMonthNameAsync();
-    }
-
-    /// <summary>
-    /// Called from JS when PageDown is pressed.
-    /// </summary>
-    [JSInvokable]
-    public async Task NextMonth()
-    {
-        _context.NextMonth();
-        await UpdateMonthNameAsync();
-    }
-
-    /// <summary>
-    /// Called from JS when Shift+PageUp is pressed.
-    /// </summary>
-    [JSInvokable]
-    public async Task PreviousYear()
-    {
-        _context.PreviousYear();
-        await UpdateMonthNameAsync();
-    }
-
-    /// <summary>
-    /// Called from JS when Shift+PageDown is pressed.
-    /// </summary>
-    [JSInvokable]
-    public async Task NextYear()
-    {
-        _context.NextYear();
-        await UpdateMonthNameAsync();
-    }
-
-    /// <summary>
-    /// Called from JS when Enter/Space is pressed.
-    /// </summary>
-    [JSInvokable]
-    public async Task SelectFocusedDate()
-    {
-        await _context.SelectDateAsync(_context.FocusedDate);
-    }
-
-    private async Task UpdateMonthNameIfChangedAsync()
-    {
-        // Check if month changed and update name
-        await UpdateMonthNameAsync();
-        StateHasChanged();
+        UpdateMonthName();
+        UpdateConvertedDates();
+        _previousDisplayedMonth = _context.DisplayedMonth;
     }
 
     #endregion

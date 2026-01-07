@@ -135,9 +135,9 @@ public class DatePickerRoot : ComponentBase, IAsyncDisposable
 
     /// <summary>
     /// The day of the week to start on.
-    /// If not specified, auto-detects from locale.
+    /// If not specified, auto-detects from culture.
     /// </summary>
-    [Parameter] public WeekStartsOn? WeekStartsOn { get; set; }
+    [Parameter] public DayOfWeek? WeekStartsOn { get; set; }
 
     /// <summary>
     /// Whether to always display 6 weeks in the calendar for consistent height.

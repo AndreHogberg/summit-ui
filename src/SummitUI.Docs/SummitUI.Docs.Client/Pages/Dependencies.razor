@@ -72,129 +72,54 @@
                     </SuText>
                 </div>
             </SuCard>
-
-            @* Internationalized Date *@
-            <SuCard class="p-5">
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <SuHeading Level="SuHeadingLevel.H3">@@internationalized/date</SuHeading>
-                            <SuText Muted="true" Size="SuTextSize.Small" class="mt-1">v3.10.1</SuText>
-                        </div>
-                        <SuBadge Variant="SuBadgeVariant.Secondary" Size="SuSize.Small">~45 KB</SuBadge>
-                    </div>
-                    <SuText Muted="true">
-                        This library from Adobe provides calendar system support for displaying dates in non-Gregorian calendars. 
-                        It's essential for truly international date handling that .NET's built-in culture info cannot provide.
-                    </SuText>
-                    
-                    <SuHeading Level="SuHeadingLevel.H4">Supported Calendar Systems</SuHeading>
-                    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 text-sm">
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Gregorian
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Japanese (Eras)
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Buddhist
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Taiwan (Minguo)
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Persian (Solar Hijri)
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Indian (Saka)
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Islamic (Umm al-Qura)
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Islamic (Civil)
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Islamic (Tabular)
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Hebrew
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Coptic
-                        </div>
-                        <div class="flex items-center gap-2 text-su-muted-foreground">
-                            <span class="w-2 h-2 rounded-full bg-su-primary"></span>
-                            Ethiopic
-                        </div>
-                    </div>
-                    
-                    <SuText Muted="true" Size="SuTextSize.Small">
-                        <strong>Used by:</strong> Calendar, DateField, and DatePicker components.
-                    </SuText>
-                </div>
-            </SuCard>
         </div>
     </SuSection>
 
-    @* Why Not .NET CultureInfo *@
-    <SuSection Title="Why Not .NET CultureInfo?">
+    @* .NET Calendar System Integration *@
+    <SuSection Title=".NET Calendar System Integration">
         <SuText Muted="true">
-            .NET provides <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization.CultureInfo</code> 
-            and calendar classes like <code class="text-xs bg-su-muted px-1 py-0.5 rounded">JapaneseCalendar</code>, 
-            <code class="text-xs bg-su-muted px-1 py-0.5 rounded">HebrewCalendar</code>, etc. However, there are 
-            significant limitations when targeting Blazor WebAssembly:
+            SummitUI uses .NET's <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code> 
+            namespace for all calendar calculations and date formatting. This provides native support for multiple 
+            calendar systems without requiring JavaScript dependencies.
         </SuText>
 
         <div class="flex flex-col gap-4 mt-4">
-            <SuCard class="p-4 border-l-4 border-l-amber-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">ICU Data Size</SuHeading>
+            <SuCard class="p-4 border-l-4 border-l-green-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">Native .NET Calendar Support</SuHeading>
                 <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    .NET has optimized ICU for WebAssembly, reducing it from ~24 MB (full) to <strong>~1.4 MB</strong> 
-                    (~300 KB with Brotli). While this is a significant improvement, it's still much larger than 
-                    @@internationalized/date at ~45 KB (~15 KB gzipped). The sharded ICU data also has limitations - 
-                    it doesn't include all locales and some APIs like <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo.NativeName</code> 
-                    are not supported.
+                    Calendar components use <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo</code> 
+                    and .NET's built-in calendar classes (<code class="text-xs bg-su-muted px-1 py-0.5 rounded">JapaneseCalendar</code>, 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">PersianCalendar</code>, 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">HebrewCalendar</code>, etc.) for all date math 
+                    and formatting. No JavaScript interop is needed for calendar operations.
                 </SuText>
             </SuCard>
 
-            <SuCard class="p-4 border-l-4 border-l-amber-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">Invariant Globalization Mode</SuHeading>
+            <SuCard class="p-4 border-l-4 border-l-green-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">8 Calendar Systems</SuHeading>
                 <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    Many Blazor WebAssembly projects use <code class="text-xs bg-su-muted px-1 py-0.5 rounded">InvariantGlobalization</code> 
-                    to reduce bundle size. In this mode, non-Gregorian calendars are not available at all - 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">new JapaneseCalendar()</code> throws 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">PlatformNotSupportedException</code>.
+                    SummitUI supports all calendar systems available in .NET's <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code>: 
+                    Gregorian, Japanese (era-based), Buddhist, Taiwan (ROC), Persian, Islamic (Umm al-Qura and Civil), and Hebrew.
                 </SuText>
             </SuCard>
 
-            <SuCard class="p-4 border-l-4 border-l-amber-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">Browser Locale Detection</SuHeading>
+            <SuCard class="p-4 border-l-4 border-l-green-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">Reduced Bundle Size</SuHeading>
                 <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    The browser knows the user's preferred locale, date format, and first day of week. Accessing this 
-                    information requires JavaScript (<code class="text-xs bg-su-muted px-1 py-0.5 rounded">navigator.language</code>, 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">Intl.DateTimeFormat</code>). Using JavaScript for 
-                    calendar calculations ensures consistency with what the browser's Intl APIs would produce.
+                    By using .NET's native calendar support instead of JavaScript libraries like 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">@@internationalized/date</code>, the JavaScript 
+                    bundle is reduced by ~45 KB. Calendar components only need minimal JavaScript for DOM operations 
+                    (keyboard event handling and focus management).
                 </SuText>
             </SuCard>
 
-            <SuCard class="p-4 border-l-4 border-l-amber-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-amber-600 dark:text-amber-400">Calendar Complexity</SuHeading>
+            <SuCard class="p-4 border-l-4 border-l-green-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">CultureInfo Parameter</SuHeading>
                 <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    Calendars like Hebrew (12-13 months depending on leap year) and Islamic (lunar-based with astronomical 
-                    calculations) have complex rules. @@internationalized/date is battle-tested across Adobe's product suite 
-                    and handles edge cases correctly.
+                    Calendar components accept a <code class="text-xs bg-su-muted px-1 py-0.5 rounded">Culture</code> parameter 
+                    of type <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo?</code>. When not specified, 
+                    components default to <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo.CurrentCulture</code>. 
+                    This integrates naturally with ASP.NET Core's localization infrastructure.
                 </SuText>
             </SuCard>
         </div>
@@ -236,8 +161,8 @@
     <SuSection Title="Total Bundle Size">
         <SuText Muted="true">
             The complete bundled and minified <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> 
-            file is approximately <strong>62 KB</strong> uncompressed. With standard web server compression 
-            (gzip/brotli), this reduces to approximately <strong>18-20 KB</strong> over the wire.
+            file is approximately <strong>38 KB</strong> uncompressed. With standard web server compression 
+            (gzip/brotli), this reduces to approximately <strong>10-12 KB</strong> over the wire.
         </SuText>
         
         <div class="mt-4 p-4 bg-su-muted/50 rounded-lg">
@@ -247,23 +172,26 @@
                     <span class="font-mono">~15 KB</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-su-muted-foreground">@@internationalized/date</span>
-                    <span class="font-mono">~45 KB</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-su-muted-foreground">SummitUI internal JS</span>
-                    <span class="font-mono">~2 KB</span>
+                    <span class="text-su-muted-foreground">SummitUI internal JS (keyboard/focus)</span>
+                    <span class="font-mono">~23 KB</span>
                 </div>
                 <SuDivider class="my-2" />
                 <div class="flex justify-between font-medium">
                     <span>Total (minified)</span>
-                    <span class="font-mono">62 KB</span>
+                    <span class="font-mono">~38 KB</span>
                 </div>
                 <div class="flex justify-between text-su-muted-foreground">
                     <span>Total (compressed)</span>
-                    <span class="font-mono">~18-20 KB</span>
+                    <span class="font-mono">~10-12 KB</span>
                 </div>
             </div>
         </div>
+
+        <SuText Muted="true" Size="SuTextSize.Small" class="mt-4">
+            Calendar calculations and date formatting are handled entirely by .NET's 
+            <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code> namespace. 
+            JavaScript is only used for DOM operations that cannot be performed in C# (keyboard event 
+            interception, focus management).
+        </SuText>
     </SuSection>
 </div>

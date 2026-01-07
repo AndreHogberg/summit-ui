@@ -12,7 +12,6 @@
     "esbuild": "^0.25.0"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.7.4",
-    "@internationalized/date": "^3.10.1"
+    "@floating-ui/dom": "^1.7.4"
   }
 }

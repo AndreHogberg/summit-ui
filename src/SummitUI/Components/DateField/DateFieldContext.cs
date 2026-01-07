@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using Microsoft.AspNetCore.Components;
 
 namespace SummitUI;
@@ -31,9 +33,9 @@ public class DateFieldContext
     /// </summary>
     public bool HasExplicitFormat { get; private set; }
 
-    // Calendar system and locale
+    // Calendar system and culture
     public CalendarSystem CalendarSystem { get; private set; } = CalendarSystem.Gregorian;
-    public string Locale { get; private set; } = "en-US";
+    public CultureInfo Culture { get; private set; } = CultureInfo.CurrentCulture;
 
     // Cached calendar date info (converted from Gregorian to CalendarSystem)
     private int? _calendarYear;
@@ -222,20 +224,25 @@ public class DateFieldContext
     public bool HasEra => !string.IsNullOrEmpty(_calendarEra);
 
     /// <summary>
-    /// Updates the format after auto-detection from JavaScript.
+    /// Gets the default date format pattern based on the culture's short date pattern.
+    /// Converts the culture's pattern to use consistent format specifiers.
     /// </summary>
-    public void SetDetectedFormat(string format)
+    private static string GetDefaultDateFormat(CultureInfo culture)
     {
-        Format = format;
-        NotifyStateChanged();
-    }
-
-    /// <summary>
-    /// Updates the locale after auto-detection from JavaScript.
-    /// </summary>
-    public void SetDetectedLocale(string locale)
-    {
-        Locale = locale;
+        var pattern = culture.DateTimeFormat.ShortDatePattern;
+        
+        // Normalize the pattern to use consistent format specifiers
+        // Replace single-letter patterns with double-letter for consistency
+        pattern = pattern.Replace("M", "MM").Replace("MMMM", "MM").Replace("MMM", "MM");
+        pattern = pattern.Replace("d", "dd").Replace("dddd", "dd").Replace("ddd", "dd");
+        
+        // Ensure 4-digit year
+        if (!pattern.Contains("yyyy"))
+        {
+            pattern = pattern.Replace("yy", "yyyy");
+        }
+        
+        return pattern;
     }
 
     #endregion
@@ -271,7 +278,7 @@ public class DateFieldContext
         DateOnly placeholder,
         string? format,
         CalendarSystem calendarSystem,
-        string? locale,
+        CultureInfo culture,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -283,9 +290,9 @@ public class DateFieldContext
         DateValue = value;
         DatePlaceholder = placeholder;
         HasExplicitFormat = format != null;
-        Format = format ?? "yyyy-MM-dd"; // Default format, will be overridden by auto-detection if null
+        Format = format ?? GetDefaultDateFormat(culture);
         CalendarSystem = calendarSystem;
-        Locale = locale ?? "en-US"; // Default, will be overridden by auto-detection if null
+        Culture = culture;
         TimeFormat = "HH:mm"; // Not used in DateOnly mode, but keep default
         Disabled = disabled;
         ReadOnly = readOnly;
@@ -293,6 +300,10 @@ public class DateFieldContext
         MinDate = minValue;
         MaxDate = maxValue;
         DateValueChanged = valueChanged;
+
+        // Update AM/PM designators from culture
+        _amDesignator = culture.DateTimeFormat.AMDesignator;
+        _pmDesignator = culture.DateTimeFormat.PMDesignator;
 
         // Clear partial state when value is set externally
         if (value.HasValue)
@@ -312,7 +323,7 @@ public class DateFieldContext
         string? format,
         string timeFormat,
         CalendarSystem calendarSystem,
-        string? locale,
+        CultureInfo culture,
         bool disabled,
         bool readOnly,
         bool invalid,
@@ -324,9 +335,9 @@ public class DateFieldContext
         DateTimeValue = value;
         DateTimePlaceholder = placeholder;
         HasExplicitFormat = format != null;
-        Format = format ?? "yyyy-MM-dd"; // Default format, will be overridden by auto-detection if null
+        Format = format ?? GetDefaultDateFormat(culture);
         CalendarSystem = calendarSystem;
-        Locale = locale ?? "en-US"; // Default, will be overridden by auto-detection if null
+        Culture = culture;
         TimeFormat = timeFormat;
         Disabled = disabled;
         ReadOnly = readOnly;
@@ -334,6 +345,10 @@ public class DateFieldContext
         MinDateTime = minValue;
         MaxDateTime = maxValue;
         DateTimeValueChanged = valueChanged;
+
+        // Update AM/PM designators from culture
+        _amDesignator = culture.DateTimeFormat.AMDesignator;
+        _pmDesignator = culture.DateTimeFormat.PMDesignator;
 
         // Clear partial state when value is set externally
         if (value.HasValue)
@@ -884,7 +899,7 @@ public class DateFieldContext
 
     /// <summary>
     /// Gets the localized placeholder for a segment type.
-    /// Uses the static LocalePlaceholders dictionary based on current Locale.
+    /// Uses the static LocalePlaceholders dictionary based on current Culture.
     /// </summary>
     public string GetSegmentPlaceholder(DateFieldSegmentType type)
     {
@@ -894,8 +909,8 @@ public class DateFieldContext
             return _amDesignator.ToLowerInvariant();
         }
 
-        // Get placeholders from C# dictionary based on locale
-        var placeholders = LocalePlaceholders.GetPlaceholders(Locale);
+        // Get placeholders from C# dictionary based on culture
+        var placeholders = LocalePlaceholders.GetPlaceholders(Culture.Name);
 
         return type switch
         {

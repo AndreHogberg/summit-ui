@@ -2,6 +2,7 @@
 @rendermode InteractiveWebAssembly
 @layout DocsLayout
 @using SummitUI
+@using System.Globalization
 
 <PageTitle>SummitUI - Calendar</PageTitle>
 
@@ -97,7 +98,7 @@
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                13 calendar systems: Gregorian, Japanese, Buddhist, Persian, Hebrew, and more
+                8 calendar systems via .NET's System.Globalization: Gregorian, Japanese, Buddhist, Persian, Hebrew, and more
             </li>
         </ul>
     </SuSection>
@@ -291,7 +292,8 @@
     <SuSection Title="Calendar Systems">
         <div class="flex flex-col gap-6 animate-fade-in-up animate-duration-500 animate-delay-550">
             <SuText Size="SuTextSize.Small" Muted="true">
-                The calendar supports 13 different calendar systems. The selected date value is always stored as a Gregorian <code>DateOnly</code>, 
+                The calendar supports 8 different calendar systems using .NET's <code>System.Globalization</code> namespace. 
+                The selected date value is always stored as a Gregorian <code>DateOnly</code>, 
                 but displayed using the selected calendar system. This allows international users to interact with dates in their familiar format.
             </SuText>
 
@@ -328,7 +330,7 @@
                         <CalendarRoot FixedWeeks="true" 
                                       @bind-Value="_calendarSystemDate" 
                                       CalendarSystem="_selectedCalendarSystem"
-                                      Locale="@GetLocaleForCalendarSystem(_selectedCalendarSystem)"
+                                      Culture="@GetCultureForCalendarSystem(_selectedCalendarSystem)"
                                       class="calendar-demo" 
                                       Context="ctx">
                             <CalendarHeader class="flex items-center justify-between mb-4">
@@ -661,8 +663,8 @@
         new() { Name = "DefaultValue", Type = "DateOnly?", Default = "null", Description = "Default value when uncontrolled" },
         new() { Name = "OnValueChange", Type = "EventCallback<DateOnly?>", Description = "Alternative callback for value changes" },
         new() { Name = "Placeholder", Type = "DateOnly?", Default = "null", Description = "Placeholder date for initial display when no value is set" },
-        new() { Name = "Locale", Type = "string?", Default = "Browser locale", Description = "Locale for formatting (e.g., \"en-US\", \"de-DE\")" },
-        new() { Name = "WeekStartsOn", Type = "WeekStartsOn?", Default = "Locale default", Description = "First day of the week (Sunday, Monday, etc.)" },
+        new() { Name = "Culture", Type = "CultureInfo?", Default = "CurrentCulture", Description = "Culture for formatting (e.g., new CultureInfo(\"ja-JP\"))" },
+        new() { Name = "WeekStartsOn", Type = "WeekStartsOn?", Default = "Culture default", Description = "First day of the week (Sunday, Monday, etc.)" },
         new() { Name = "FixedWeeks", Type = "bool", Default = "false", Description = "Always display 6 weeks for consistent height" },
         new() { Name = "MinValue", Type = "DateOnly?", Default = "null", Description = "Minimum selectable date" },
         new() { Name = "MaxValue", Type = "DateOnly?", Default = "null", Description = "Maximum selectable date" },
@@ -830,14 +832,9 @@
         CalendarSystem.Buddhist => "Buddhist",
         CalendarSystem.Taiwan => "Taiwan (ROC)",
         CalendarSystem.Persian => "Persian (Jalali)",
-        CalendarSystem.Indian => "Indian (Saka)",
         CalendarSystem.IslamicUmalqura => "Islamic (Umm al-Qura)",
         CalendarSystem.IslamicCivil => "Islamic Civil",
-        CalendarSystem.IslamicTabular => "Islamic Tabular",
         CalendarSystem.Hebrew => "Hebrew",
-        CalendarSystem.Coptic => "Coptic",
-        CalendarSystem.Ethiopic => "Ethiopic",
-        CalendarSystem.EthiopicAmeteAlem => "Ethiopic (Amete Alem)",
         _ => system.ToString()
     };
 
@@ -848,32 +845,22 @@
         CalendarSystem.Buddhist => "Used in Thailand, Cambodia, Laos. Year = Gregorian + 543.",
         CalendarSystem.Taiwan => "Official calendar of Taiwan. Year = Gregorian - 1911 (Republic of China era).",
         CalendarSystem.Persian => "Solar calendar used in Iran and Afghanistan. Has different month lengths than Gregorian.",
-        CalendarSystem.Indian => "Official civil calendar of India (Saka era). Year = Gregorian - 78 (approximately).",
         CalendarSystem.IslamicUmalqura => "Lunar calendar used in Saudi Arabia. Based on astronomical calculations for crescent moon sightings.",
         CalendarSystem.IslamicCivil => "Tabular/arithmetic lunar calendar variant with predictable month lengths.",
-        CalendarSystem.IslamicTabular => "Algorithmic Islamic calendar variant. Similar to Civil but with a different epoch.",
         CalendarSystem.Hebrew => "Lunisolar calendar used in Israel and for Jewish observances. Has 12 or 13 months depending on leap years.",
-        CalendarSystem.Coptic => "Used by the Coptic Orthodox Church in Egypt. 12 months of 30 days plus 5-6 intercalary days.",
-        CalendarSystem.Ethiopic => "Official calendar of Ethiopia. Similar structure to Coptic. About 7-8 years behind Gregorian.",
-        CalendarSystem.EthiopicAmeteAlem => "Ethiopic calendar with alternate Amete Alem era calculation.",
         _ => ""
     };
 
-    private static string GetLocaleForCalendarSystem(CalendarSystem system) => system switch
+    private static CultureInfo? GetCultureForCalendarSystem(CalendarSystem system) => system switch
     {
-        CalendarSystem.Japanese => "ja-JP",
-        CalendarSystem.Buddhist => "th-TH",
-        CalendarSystem.Taiwan => "zh-TW",
-        CalendarSystem.Persian => "fa-IR",
-        CalendarSystem.Indian => "en-IN",
-        CalendarSystem.IslamicUmalqura => "ar-SA",
-        CalendarSystem.IslamicCivil => "ar",
-        CalendarSystem.IslamicTabular => "ar",
-        CalendarSystem.Hebrew => "he-IL",
-        CalendarSystem.Coptic => "en",
-        CalendarSystem.Ethiopic => "am-ET",
-        CalendarSystem.EthiopicAmeteAlem => "am-ET",
-        _ => "en-US"
+        CalendarSystem.Japanese => new CultureInfo("ja-JP"),
+        CalendarSystem.Buddhist => new CultureInfo("th-TH"),
+        CalendarSystem.Taiwan => new CultureInfo("zh-TW"),
+        CalendarSystem.Persian => new CultureInfo("fa-IR"),
+        CalendarSystem.IslamicUmalqura => new CultureInfo("ar-SA"),
+        CalendarSystem.IslamicCivil => new CultureInfo("ar"),
+        CalendarSystem.Hebrew => new CultureInfo("he-IL"),
+        _ => null
     };
 
     private List<SuApiProperty> calendarSystemInfo = new()
@@ -883,24 +870,21 @@
         new() { Name = "Buddhist", Type = "Thailand, Cambodia, Laos", Description = "Year = Gregorian + 543" },
         new() { Name = "Taiwan", Type = "Taiwan", Description = "ROC era, Year = Gregorian - 1911" },
         new() { Name = "Persian", Type = "Iran, Afghanistan", Description = "Solar calendar (Jalali)" },
-        new() { Name = "Indian", Type = "India", Description = "Saka era, official civil calendar" },
         new() { Name = "IslamicUmalqura", Type = "Saudi Arabia", Description = "Lunar, astronomical calculations" },
         new() { Name = "IslamicCivil", Type = "Islamic regions", Description = "Lunar, tabular/arithmetic" },
-        new() { Name = "IslamicTabular", Type = "Islamic regions", Description = "Lunar, algorithmic variant" },
-        new() { Name = "Hebrew", Type = "Israel", Description = "Lunisolar, 12-13 months" },
-        new() { Name = "Coptic", Type = "Egypt", Description = "Coptic Orthodox Church calendar" },
-        new() { Name = "Ethiopic", Type = "Ethiopia", Description = "Official calendar of Ethiopia" },
-        new() { Name = "EthiopicAmeteAlem", Type = "Ethiopia", Description = "Alternate era calculation" }
+        new() { Name = "Hebrew", Type = "Israel", Description = "Lunisolar, 12-13 months" }
     };
 
-    private const string calendarSystemExampleCode = @"@code {
+    private const string calendarSystemExampleCode = @"@using System.Globalization
+
+@code {
     private DateOnly? selectedDate;
     private CalendarSystem calendarSystem = CalendarSystem.Japanese;
 }
 
 <CalendarRoot @bind-Value=""selectedDate"" 
                CalendarSystem=""calendarSystem""
-               Locale=""ja-JP""
+               Culture=""new CultureInfo(""ja-JP"")""
                Context=""ctx"">
     <!-- Calendar content -->
     <!-- Heading will show Japanese era (e.g., 令和7年1月) -->

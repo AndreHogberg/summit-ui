@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
-using SummitUI.Interop;
-
 namespace SummitUI;
 
 /// <summary>
@@ -13,8 +11,6 @@ public class CalendarNextButton : ComponentBase
 {
     [CascadingParameter]
     private CalendarContext Context { get; set; } = default!;
-
-    [Inject] private CalendarJsInterop JsInterop { get; set; } = default!;
 
     /// <summary>
     /// The child content (button label).
@@ -37,19 +33,12 @@ public class CalendarNextButton : ComponentBase
         Context.OnStateChanged += StateHasChanged;
     }
 
-    private async Task HandleClick(MouseEventArgs args)
+    private void HandleClick(MouseEventArgs args)
     {
         if (Context.Disabled || !Context.CanNavigateNext) return;
 
+        // NextMonth() will call RootComponent.OnMonthChanged() to update month name
         Context.NextMonth();
-
-        // Update month name via JS
-        var heading = await JsInterop.GetMonthYearHeadingAsync(
-            Context.Locale,
-            Context.DisplayedMonth.Year,
-            Context.DisplayedMonth.Month
-        );
-        Context.SetMonthName(heading);
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)

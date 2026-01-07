@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using Microsoft.AspNetCore.Components;
 
 namespace SummitUI;
@@ -68,9 +70,9 @@ public class CalendarContext
     private DateOnly _displayedMonth;
 
     // Configuration
-    public string Locale { get; private set; } = "en-US";
+    public CultureInfo Culture { get; private set; } = CultureInfo.CurrentCulture;
     public CalendarSystem CalendarSystem { get; private set; } = CalendarSystem.Gregorian;
-    public WeekStartsOn WeekStartsOn { get; private set; } = WeekStartsOn.Sunday;
+    public DayOfWeek WeekStartsOn { get; private set; } = DayOfWeek.Sunday;
     public bool FixedWeeks { get; private set; }
     public DateOnly? MinValue { get; private set; }
     public DateOnly? MaxValue { get; private set; }
@@ -180,9 +182,9 @@ public class CalendarContext
         DateOnly? defaultValue,
         bool isControlled,
         DateOnly? placeholder,
-        string locale,
+        CultureInfo culture,
         CalendarSystem calendarSystem,
-        WeekStartsOn weekStartsOn,
+        DayOfWeek weekStartsOn,
         bool fixedWeeks,
         DateOnly? minValue,
         DateOnly? maxValue,
@@ -195,7 +197,7 @@ public class CalendarContext
         _value = value;
         _defaultValue = defaultValue;
         _isControlled = isControlled;
-        Locale = locale;
+        Culture = culture;
         CalendarSystem = calendarSystem;
         WeekStartsOn = weekStartsOn;
         FixedWeeks = fixedWeeks;
@@ -231,10 +233,13 @@ public class CalendarContext
     }
 
     /// <summary>
-    /// Sets the localized month name from JS Intl API.
+    /// Sets the localized month name.
     /// </summary>
     public void SetMonthName(string monthName)
     {
+        if (_monthName == monthName)
+            return;
+        
         _monthName = monthName;
         NotifyStateChanged();
     }
@@ -308,6 +313,9 @@ public class CalendarContext
             _focusedDate = ClampToMonth(_focusedDate, _displayedMonth);
         }
 
+        // Notify root to update month name and converted dates
+        RootComponent?.OnMonthChanged();
+
         NotifyStateChanged();
     }
 
@@ -326,6 +334,9 @@ public class CalendarContext
             _focusedDate = ClampToMonth(_focusedDate, _displayedMonth);
         }
 
+        // Notify root to update month name and converted dates
+        RootComponent?.OnMonthChanged();
+
         NotifyStateChanged();
     }
 
@@ -339,6 +350,9 @@ public class CalendarContext
         _displayedMonth = _displayedMonth.AddYears(-1);
         _focusedDate = ClampToValidDate(_focusedDate.AddYears(-1));
 
+        // Notify root to update month name and converted dates
+        RootComponent?.OnMonthChanged();
+
         NotifyStateChanged();
     }
 
@@ -351,6 +365,9 @@ public class CalendarContext
 
         _displayedMonth = _displayedMonth.AddYears(1);
         _focusedDate = ClampToValidDate(_focusedDate.AddYears(1));
+
+        // Notify root to update month name and converted dates
+        RootComponent?.OnMonthChanged();
 
         NotifyStateChanged();
     }
@@ -369,6 +386,9 @@ public class CalendarContext
         if (date.Year != _displayedMonth.Year || date.Month != _displayedMonth.Month)
         {
             _displayedMonth = new DateOnly(date.Year, date.Month, 1);
+            
+            // Notify root to update month name and converted dates
+            RootComponent?.OnMonthChanged();
         }
 
         // Mark that this calendar should receive browser focus

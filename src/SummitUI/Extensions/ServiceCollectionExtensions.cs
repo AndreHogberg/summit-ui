@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using SummitUI.Interop;
+using SummitUI.Services;
 using SummitUI.Utilities;
 
 namespace SummitUI.Extensions;
@@ -23,6 +24,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<FocusTrapJsInterop>();
         services.AddScoped<FloatingJsInterop>();
         services.AddScoped<MediaQueryJsInterop>();
+
+        // Calendar services (culture-based, no JS dependency)
+        services.AddSingleton<CalendarProvider>();
+        services.AddSingleton<CalendarFormatter>();
 
         // Component-specific services
         services.AddScoped<AccordionJsInterop>();

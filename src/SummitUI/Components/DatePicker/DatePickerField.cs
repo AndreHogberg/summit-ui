@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -42,9 +44,10 @@ public class DatePickerField : ComponentBase, IDisposable
     [Parameter] public CalendarSystem CalendarSystem { get; set; } = CalendarSystem.Gregorian;
 
     /// <summary>
-    /// The locale to use for formatting.
+    /// The culture to use for formatting and localization.
+    /// If not specified, uses <see cref="CultureInfo.CurrentCulture"/>.
     /// </summary>
-    [Parameter] public string? Locale { get; set; }
+    [Parameter] public CultureInfo? Culture { get; set; }
 
     /// <summary>
     /// The minimum selectable date.
@@ -180,12 +183,15 @@ public class DatePickerField : ComponentBase, IDisposable
         // Determine validation state
         var isInvalid = Invalid || IsOutOfRange();
 
+        // Determine effective culture
+        var effectiveCulture = Culture ?? CultureInfo.CurrentCulture;
+
         _dateFieldContext.SetDateState(
             EffectiveValue,
             EffectivePlaceholder,
             Format,
             CalendarSystem,
-            Locale,
+            effectiveCulture,
             effectiveDisabled,
             effectiveReadOnly,
             isInvalid,

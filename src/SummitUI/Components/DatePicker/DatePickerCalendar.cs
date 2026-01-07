@@ -1,8 +1,9 @@
+using System.Globalization;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.JSInterop;
 
-using SummitUI.Interop;
+using SummitUI.Services;
 
 namespace SummitUI;
 
@@ -13,28 +14,18 @@ namespace SummitUI;
 public class DatePickerCalendar : ComponentBase, IAsyncDisposable
 {
     private readonly CalendarContext _calendarContext = new();
-    private bool _localeInitialized;
-    private string _effectiveLocale = "en-US";
-    private WeekStartsOn _effectiveWeekStart = SummitUI.WeekStartsOn.Sunday;
+    private CultureInfo _effectiveCulture = CultureInfo.CurrentCulture;
+    private DayOfWeek _effectiveWeekStart = DayOfWeek.Sunday;
 
     // Track previous values to detect changes
     private CalendarSystem _previousCalendarSystem;
-    private string? _previousLocale;
+    private CultureInfo? _previousCulture;
     private DateOnly _previousDisplayedMonth;
 
-    [Inject] private CalendarJsInterop JsInterop { get; set; } = default!;
+    [Inject] private CalendarProvider CalendarProvider { get; set; } = default!;
+    [Inject] private CalendarFormatter CalendarFormatter { get; set; } = default!;
 
     [CascadingParameter] private DatePickerContext DatePickerContext { get; set; } = default!;
-
-    /// <summary>
-    /// Returns true if we need to wait for JS to detect locale/week start.
-    /// </summary>
-    private bool NeedsLocaleDetection => !WeekStartsOn.HasValue || string.IsNullOrEmpty(Locale);
-
-    /// <summary>
-    /// Returns true if the calendar is ready to render its content.
-    /// </summary>
-    private bool IsReady => _localeInitialized || !NeedsLocaleDetection;
 
     #region Parameters
 
@@ -64,14 +55,16 @@ public class DatePickerCalendar : ComponentBase, IAsyncDisposable
     [Parameter] public DateOnly? Placeholder { get; set; }
 
     /// <summary>
-    /// The locale to use for formatting.
+    /// The culture to use for formatting and localization.
+    /// If not specified, uses <see cref="CultureInfo.CurrentCulture"/>.
     /// </summary>
-    [Parameter] public string? Locale { get; set; }
+    [Parameter] public CultureInfo? Culture { get; set; }
 
     /// <summary>
     /// The day of the week to start on.
+    /// If not specified, uses the culture's default first day of week.
     /// </summary>
-    [Parameter] public WeekStartsOn? WeekStartsOn { get; set; }
+    [Parameter] public DayOfWeek? WeekStartsOn { get; set; }
 
     /// <summary>
     /// The calendar system to use for display.
@@ -126,8 +119,8 @@ public class DatePickerCalendar : ComponentBase, IAsyncDisposable
         if (DatePickerContext == null)
             throw new InvalidOperationException("DatePickerCalendar must be used within a DatePickerRoot.");
 
-        _calendarContext.OnStateChanged += StateHasChanged;
-        _calendarContext.SetRootComponent(null!); // We'll handle JS interop differently
+        _calendarContext.OnStateChanged += HandleStateChanged;
+        _calendarContext.SetRootComponent(null!); // We'll handle updates differently
     }
 
     protected override void OnParametersSet()
@@ -138,22 +131,22 @@ public class DatePickerCalendar : ComponentBase, IAsyncDisposable
         var effectiveDisabled = Disabled || DatePickerContext.Disabled;
         var effectiveReadOnly = ReadOnly || DatePickerContext.ReadOnly;
 
-        if (WeekStartsOn.HasValue)
-        {
-            _effectiveWeekStart = WeekStartsOn.Value;
-        }
+        // Determine effective culture
+        _effectiveCulture = Culture ?? CultureInfo.CurrentCulture;
 
-        if (!string.IsNullOrEmpty(Locale))
-        {
-            _effectiveLocale = Locale;
-        }
+        // Determine effective week start
+        _effectiveWeekStart = WeekStartsOn ?? CalendarFormatter.GetFirstDayOfWeek(_effectiveCulture);
+
+        // Get localized weekday names synchronously from culture
+        var weekdayNames = CalendarFormatter.GetWeekdayNames(_effectiveCulture);
+        _calendarContext.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
 
         _calendarContext.SetState(
             value: Value,
             defaultValue: DefaultValue,
             isControlled: isControlled,
             placeholder: Placeholder,
-            locale: _effectiveLocale,
+            culture: _effectiveCulture,
             calendarSystem: CalendarSystem,
             weekStartsOn: _effectiveWeekStart,
             fixedWeeks: FixedWeeks,
@@ -165,6 +158,66 @@ public class DatePickerCalendar : ComponentBase, IAsyncDisposable
             valueChanged: EventCallback.Factory.Create<DateOnly?>(this, HandleValueChangedAsync),
             onValueChange: OnValueChange
         );
+
+        // Update month name and converted dates if calendar/culture/month changed
+        var cultureChanged = _previousCulture != _effectiveCulture;
+        var calendarChanged = _previousCalendarSystem != CalendarSystem;
+        var monthChanged = _previousDisplayedMonth != _calendarContext.DisplayedMonth;
+
+        if (cultureChanged || calendarChanged || monthChanged || _previousCulture == null)
+        {
+            UpdateMonthName();
+            UpdateConvertedDates();
+            
+            _previousCulture = _effectiveCulture;
+            _previousCalendarSystem = CalendarSystem;
+            _previousDisplayedMonth = _calendarContext.DisplayedMonth;
+        }
+    }
+
+    private void HandleStateChanged()
+    {
+        // Check if month changed (from navigation)
+        if (_previousDisplayedMonth != _calendarContext.DisplayedMonth)
+        {
+            UpdateMonthName();
+            UpdateConvertedDates();
+            _previousDisplayedMonth = _calendarContext.DisplayedMonth;
+        }
+        
+        StateHasChanged();
+    }
+
+    private void UpdateMonthName()
+    {
+        var heading = CalendarFormatter.GetMonthYearHeading(
+            _effectiveCulture,
+            _calendarContext.DisplayedMonth,
+            CalendarSystem
+        );
+        _calendarContext.SetMonthName(heading);
+    }
+
+    private void UpdateConvertedDates()
+    {
+        // Generate the month grid to get all dates that need conversion
+        var month = _calendarContext.GenerateMonth();
+
+        // Batch convert all dates in the grid
+        var results = CalendarProvider.BatchConvertFromGregorian(
+            _effectiveCulture,
+            month.Dates,
+            CalendarSystem
+        );
+
+        // Build the dictionary mapping Gregorian dates to converted info
+        var convertedDates = new Dictionary<DateOnly, (int Day, string LocalizedDateString)>();
+        for (int i = 0; i < month.Dates.Length && i < results.Length; i++)
+        {
+            convertedDates[month.Dates[i]] = results[i];
+        }
+
+        _calendarContext.SetConvertedDates(convertedDates);
     }
 
     /// <summary>
@@ -182,140 +235,6 @@ public class DatePickerCalendar : ComponentBase, IAsyncDisposable
         }
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && NeedsLocaleDetection)
-        {
-            await InitializeLocaleAsync();
-            _localeInitialized = true;
-
-            _previousCalendarSystem = CalendarSystem;
-            _previousLocale = Locale;
-            _previousDisplayedMonth = _calendarContext.DisplayedMonth;
-
-            await UpdateConvertedDatesAsync();
-
-            StateHasChanged();
-        }
-        else if (firstRender)
-        {
-            _previousCalendarSystem = CalendarSystem;
-            _previousLocale = Locale;
-            _previousDisplayedMonth = _calendarContext.DisplayedMonth;
-
-            var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
-            _calendarContext.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
-            await UpdateMonthNameAsync();
-
-            await UpdateConvertedDatesAsync();
-
-            StateHasChanged();
-        }
-        else if (_localeInitialized || !NeedsLocaleDetection)
-        {
-            var calendarChanged = _previousCalendarSystem != CalendarSystem;
-            var localeChanged = _previousLocale != Locale;
-            var monthChanged = _previousDisplayedMonth != _calendarContext.DisplayedMonth;
-
-            if (calendarChanged || localeChanged || monthChanged)
-            {
-                _previousCalendarSystem = CalendarSystem;
-                _previousLocale = Locale;
-                _previousDisplayedMonth = _calendarContext.DisplayedMonth;
-
-                if (calendarChanged || localeChanged)
-                {
-                    var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
-                    _calendarContext.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
-                }
-
-                await UpdateMonthNameAsync();
-                await UpdateConvertedDatesAsync();
-
-                StateHasChanged();
-            }
-        }
-    }
-
-    private async Task InitializeLocaleAsync()
-    {
-        if (!string.IsNullOrEmpty(Locale))
-        {
-            _effectiveLocale = Locale;
-        }
-        else
-        {
-            _effectiveLocale = await JsInterop.GetBrowserLocaleAsync();
-        }
-
-        if (WeekStartsOn.HasValue)
-        {
-            _effectiveWeekStart = WeekStartsOn.Value;
-        }
-        else
-        {
-            var firstDay = await JsInterop.GetFirstDayOfWeekAsync(_effectiveLocale);
-            _effectiveWeekStart = (WeekStartsOn)firstDay;
-        }
-
-        var weekdayNames = await JsInterop.GetWeekdayNamesAsync(_effectiveLocale, CalendarSystem);
-        _calendarContext.SetWeekdayNames(weekdayNames.Short, weekdayNames.Long);
-
-        await UpdateMonthNameAsync();
-
-        // Inherit disabled/readonly from DatePickerContext
-        var effectiveDisabled = Disabled || DatePickerContext.Disabled;
-        var effectiveReadOnly = ReadOnly || DatePickerContext.ReadOnly;
-
-        _calendarContext.SetState(
-            value: Value,
-            defaultValue: DefaultValue,
-            isControlled: ValueChanged.HasDelegate,
-            placeholder: Placeholder,
-            locale: _effectiveLocale,
-            calendarSystem: CalendarSystem,
-            weekStartsOn: _effectiveWeekStart,
-            fixedWeeks: FixedWeeks,
-            minValue: MinValue,
-            maxValue: MaxValue,
-            disabled: effectiveDisabled,
-            readOnly: effectiveReadOnly,
-            isDateDisabled: IsDateDisabled,
-            valueChanged: EventCallback.Factory.Create<DateOnly?>(this, HandleValueChangedAsync),
-            onValueChange: OnValueChange
-        );
-    }
-
-    private async Task UpdateMonthNameAsync()
-    {
-        var heading = await JsInterop.GetMonthYearHeadingAsync(
-            _effectiveLocale,
-            _calendarContext.DisplayedMonth.Year,
-            _calendarContext.DisplayedMonth.Month,
-            CalendarSystem
-        );
-        _calendarContext.SetMonthName(heading);
-    }
-
-    private async Task UpdateConvertedDatesAsync()
-    {
-        var month = _calendarContext.GenerateMonth();
-
-        var results = await JsInterop.BatchConvertFromGregorianAsync(
-            _effectiveLocale,
-            month.Dates,
-            CalendarSystem
-        );
-
-        var convertedDates = new Dictionary<DateOnly, (int Day, string LocalizedDateString)>();
-        for (int i = 0; i < month.Dates.Length && i < results.Length; i++)
-        {
-            convertedDates[month.Dates[i]] = results[i];
-        }
-
-        _calendarContext.SetConvertedDates(convertedDates);
-    }
-
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         var effectiveDisabled = Disabled || DatePickerContext.Disabled;
@@ -327,12 +246,6 @@ public class DatePickerCalendar : ComponentBase, IAsyncDisposable
         builder.AddAttribute(3, "data-readonly", effectiveReadOnly ? "true" : null);
 
         builder.AddMultipleAttributes(4, AdditionalAttributes);
-
-        if (!IsReady)
-        {
-            builder.CloseElement();
-            return;
-        }
 
         // Live region for screen reader announcements
         builder.OpenElement(5, "div");
@@ -360,7 +273,7 @@ public class DatePickerCalendar : ComponentBase, IAsyncDisposable
 
     public ValueTask DisposeAsync()
     {
-        _calendarContext.OnStateChanged -= StateHasChanged;
+        _calendarContext.OnStateChanged -= HandleStateChanged;
         return ValueTask.CompletedTask;
     }
 }

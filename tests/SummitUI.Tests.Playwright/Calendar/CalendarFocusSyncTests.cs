@@ -55,10 +55,22 @@ public class CalendarFocusSyncTests : SummitTestBase
 
     /// <summary>
     /// Gets the date string of the element that has the data-focused attribute.
+    /// Waits for the element to be present with a short timeout.
     /// </summary>
-    private async Task<string?> GetDataFocusedDateAsync(ILocator section)
+    private async Task<string?> GetDataFocusedDateAsync(ILocator section, int timeoutMs = 1000)
     {
         var focusedDay = section.Locator("[data-summit-calendar-day][data-focused]");
+        
+        try
+        {
+            // Wait for the focused day to be visible
+            await focusedDay.First.WaitForAsync(new() { Timeout = timeoutMs });
+        }
+        catch (TimeoutException)
+        {
+            return null;
+        }
+        
         var count = await focusedDay.CountAsync();
         if (count == 0) return null;
         if (count > 1)
@@ -118,10 +130,29 @@ public class CalendarFocusSyncTests : SummitTestBase
         while (iterations < maxIterations)
         {
             await Page.Keyboard.PressAsync("ArrowDown");
-            await Page.WaitForTimeoutAsync(50); // Brief wait for state update
+            await Page.WaitForTimeoutAsync(100); // Wait for state update
 
             var newDataFocused = await GetDataFocusedDateAsync(section);
-            currentDate = DateOnly.Parse(newDataFocused!);
+            
+            // Debug: if no focused element, dump what we can find
+            if (newDataFocused == null)
+            {
+                var allDays = await section.Locator("[data-summit-calendar-day]").CountAsync();
+                var domFocus = await GetDomFocusedDateAsync();
+                Console.WriteLine($"DEBUG: After ArrowDown #{iterations + 1}: data-focused=null, DOM focus={domFocus}, total days={allDays}");
+                
+                // Try waiting a bit more
+                await Page.WaitForTimeoutAsync(500);
+                newDataFocused = await GetDataFocusedDateAsync(section);
+                Console.WriteLine($"DEBUG: After extra wait: data-focused={newDataFocused}");
+            }
+            
+            if (newDataFocused == null)
+            {
+                throw new InvalidOperationException($"No data-focused element found after ArrowDown iteration {iterations + 1}");
+            }
+            
+            currentDate = DateOnly.Parse(newDataFocused);
             iterations++;
 
             if (currentDate.Month != initialMonth)

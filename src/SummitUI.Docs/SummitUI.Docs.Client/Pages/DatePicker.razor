@@ -412,7 +412,7 @@
         new() { Name = "Modal", Type = "bool", Default = "true", Description = "Trap focus within popover when open" },
         new() { Name = "Format", Type = "string?", Default = "auto", Description = "Date format pattern (e.g., \"yyyy-MM-dd\")" },
         new() { Name = "CalendarSystem", Type = "CalendarSystem", Default = "Gregorian", Description = "Calendar system for display" },
-        new() { Name = "Locale", Type = "string?", Default = "auto", Description = "Locale for formatting (e.g., \"en-US\")" },
+        new() { Name = "Culture", Type = "CultureInfo?", Default = "CurrentCulture", Description = "Culture for formatting (e.g., new CultureInfo(\"fa-IR\"))" },
         new() { Name = "WeekStartsOn", Type = "WeekStartsOn?", Default = "auto", Description = "First day of the week" },
         new() { Name = "FixedWeeks", Type = "bool", Default = "false", Description = "Always display 6 weeks" },
         new() { Name = "MinValue", Type = "DateOnly?", Default = "null", Description = "Minimum selectable date" },
@@ -431,7 +431,7 @@
         new() { Name = "ValueChanged", Type = "EventCallback<DateOnly?>", Description = "Value change callback" },
         new() { Name = "Format", Type = "string?", Default = "from Root", Description = "Date format pattern" },
         new() { Name = "CalendarSystem", Type = "CalendarSystem", Default = "Gregorian", Description = "Calendar system for display" },
-        new() { Name = "Locale", Type = "string?", Default = "from Root", Description = "Locale for formatting" },
+        new() { Name = "Culture", Type = "CultureInfo?", Default = "from Root", Description = "Culture for formatting" },
         new() { Name = "MinValue", Type = "DateOnly?", Default = "null", Description = "Minimum allowed date" },
         new() { Name = "MaxValue", Type = "DateOnly?", Default = "null", Description = "Maximum allowed date" },
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable the field" },
@@ -460,7 +460,7 @@
         new() { Name = "Value", Type = "DateOnly?", Default = "null", Description = "Selected date" },
         new() { Name = "ValueChanged", Type = "EventCallback<DateOnly?>", Description = "Value change callback" },
         new() { Name = "Placeholder", Type = "DateOnly?", Default = "Today", Description = "Initial displayed month" },
-        new() { Name = "Locale", Type = "string?", Default = "auto", Description = "Locale for formatting" },
+        new() { Name = "Culture", Type = "CultureInfo?", Default = "CurrentCulture", Description = "Culture for formatting" },
         new() { Name = "WeekStartsOn", Type = "WeekStartsOn?", Default = "auto", Description = "First day of the week" },
         new() { Name = "CalendarSystem", Type = "CalendarSystem", Default = "Gregorian", Description = "Calendar system" },
         new() { Name = "FixedWeeks", Type = "bool", Default = "false", Description = "Always show 6 weeks" },
@@ -558,17 +558,14 @@
 
     private const string calendarSystemEnumCode = @"public enum CalendarSystem
 {
-    Gregorian,     // Default Western calendar
-    Persian,       // Solar Hijri (Iran, Afghanistan)
-    Islamic,       // Hijri (Islamic lunar calendar)
-    IslamicCivil,  // Islamic civil calendar
-    Hebrew,        // Jewish calendar
-    Buddhist,      // Thai Buddhist calendar
-    Japanese,      // Japanese Imperial calendar
-    Chinese,       // Chinese lunar calendar
-    Coptic,        // Coptic calendar (Egypt)
-    Ethiopian,     // Ethiopian calendar
-    Indian         // Indian National calendar
+    Gregorian,       // Default Western calendar
+    Japanese,        // Japanese Imperial calendar (era-based)
+    Buddhist,        // Thai Buddhist calendar
+    Taiwan,          // Taiwan (ROC) calendar
+    Persian,         // Solar Hijri (Iran, Afghanistan)
+    IslamicUmalqura, // Islamic Umm al-Qura (Saudi Arabia)
+    IslamicCivil,    // Islamic civil/tabular calendar
+    Hebrew           // Hebrew/Jewish calendar
 }";
 
     private const string weekStartsOnEnumCode = @"public enum WeekStartsOn
@@ -702,11 +699,13 @@
 <p>Open: @isOpen</p>
 <button @onclick=""() => isOpen = !isOpen"">Toggle Calendar</button>";
 
-    private const string calendarSystemExampleCode = @"@code {
+    private const string calendarSystemExampleCode = @"@using System.Globalization
+
+@code {
     private DateOnly? persianDate = DateOnly.FromDateTime(DateTime.Today);
 }
 
-<DatePickerRoot @bind-Value=""persianDate"" CalendarSystem=""CalendarSystem.Persian"" Locale=""fa-IR"">
+<DatePickerRoot @bind-Value=""persianDate"" CalendarSystem=""CalendarSystem.Persian"" Culture=""new CultureInfo(""fa-IR"")"">
     <DatePickerField CalendarSystem=""CalendarSystem.Persian"">
         <DatePickerLabel>Select a date (Persian calendar)</DatePickerLabel>
         <DatePickerInput />
@@ -716,7 +715,7 @@
         <DatePickerContent>
             <DatePickerCalendar @bind-Value=""persianDate"" 
                                 CalendarSystem=""CalendarSystem.Persian""
-                                Locale=""fa-IR""
+                                Culture=""new CultureInfo(""fa-IR"")""
                                 WeekStartsOn=""WeekStartsOn.Saturday""
                                 Context=""cal"">
                 <!-- Calendar structure -->

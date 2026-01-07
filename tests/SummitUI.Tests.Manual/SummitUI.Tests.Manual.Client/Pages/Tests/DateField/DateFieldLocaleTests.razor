@@ -1,5 +1,6 @@
 @page "/tests/date-field/locale"
 @rendermode InteractiveWebAssembly
+@using System.Globalization
 
 @if (!RendererInfo.IsInteractive)
 {
@@ -13,7 +14,7 @@ else
 
     <div class="test-section" data-testid="swedish-locale-section">
         <label>Swedish (sv-SE)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="sv-SE" Format="yyyy-MM-dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("sv-SE"))" Format="yyyy-MM-dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: åååå-mm-dd</p>
@@ -21,7 +22,7 @@ else
 
     <div class="test-section" data-testid="german-locale-section">
         <label>German (de-DE)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="de-DE" Format="dd.MM.yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("de-DE"))" Format="dd.MM.yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: tt.mm.jjjj</p>
@@ -29,7 +30,7 @@ else
 
     <div class="test-section" data-testid="french-locale-section">
         <label>French (fr-FR)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="fr-FR" Format="dd/MM/yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("fr-FR"))" Format="dd/MM/yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: jj/mm/aaaa</p>
@@ -37,7 +38,7 @@ else
 
     <div class="test-section" data-testid="norwegian-locale-section">
         <label>Norwegian (nb-NO)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="nb-NO" Format="yyyy-MM-dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("nb-NO"))" Format="yyyy-MM-dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: åååå-mm-dd</p>
@@ -45,7 +46,7 @@ else
 
     <div class="test-section" data-testid="danish-locale-section">
         <label>Danish (da-DK)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="da-DK" Format="yyyy-MM-dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("da-DK"))" Format="yyyy-MM-dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: åååå-mm-dd</p>
@@ -53,7 +54,7 @@ else
 
     <div class="test-section" data-testid="dutch-locale-section">
         <label>Dutch (nl-NL)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="nl-NL" Format="dd-MM-yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("nl-NL"))" Format="dd-MM-yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: dd-mm-jjjj</p>
@@ -61,7 +62,7 @@ else
 
     <div class="test-section" data-testid="spanish-locale-section">
         <label>Spanish (es-ES)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="es-ES" Format="dd/MM/yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("es-ES"))" Format="dd/MM/yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: dd/mm/aaaa</p>
@@ -69,7 +70,7 @@ else
 
     <div class="test-section" data-testid="italian-locale-section">
         <label>Italian (it-IT)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="it-IT" Format="dd/MM/yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("it-IT"))" Format="dd/MM/yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: gg/mm/aaaa</p>
@@ -77,7 +78,7 @@ else
 
     <div class="test-section" data-testid="portuguese-locale-section">
         <label>Portuguese (pt-PT)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="pt-PT" Format="dd/MM/yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("pt-PT"))" Format="dd/MM/yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: dd/mm/aaaa</p>
@@ -85,7 +86,7 @@ else
 
     <div class="test-section" data-testid="polish-locale-section">
         <label>Polish (pl-PL)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="pl-PL" Format="dd.MM.yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("pl-PL"))" Format="dd.MM.yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: dd.mm.rrrr</p>
@@ -93,7 +94,7 @@ else
 
     <div class="test-section" data-testid="russian-locale-section">
         <label>Russian (ru-RU)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="ru-RU" Format="dd.MM.yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("ru-RU"))" Format="dd.MM.yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: dd.mm.gggg (Cyrillic: дд.мм.гггг)</p>
@@ -101,7 +102,7 @@ else
 
     <div class="test-section" data-testid="finnish-locale-section">
         <label>Finnish (fi-FI)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="fi-FI" Format="dd.MM.yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("fi-FI"))" Format="dd.MM.yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: pp.kk.vvvv</p>
@@ -109,7 +110,7 @@ else
 
     <div class="test-section" data-testid="czech-locale-section">
         <label>Czech (cs-CZ)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="cs-CZ" Format="dd.MM.yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("cs-CZ"))" Format="dd.MM.yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: dd.mm.rrrr</p>
@@ -117,7 +118,7 @@ else
 
     <div class="test-section" data-testid="hungarian-locale-section">
         <label>Hungarian (hu-HU)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="hu-HU" Format="yyyy.MM.dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("hu-HU"))" Format="yyyy.MM.dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: eeee.hh.nn</p>
@@ -125,7 +126,7 @@ else
 
     <div class="test-section" data-testid="greek-locale-section">
         <label>Greek (el-GR)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="el-GR" Format="dd/MM/yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("el-GR"))" Format="dd/MM/yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: hh/mm/eeee (Greek: ηη/μμ/εεεε)</p>
@@ -133,7 +134,7 @@ else
 
     <div class="test-section" data-testid="japanese-locale-section">
         <label>Japanese (ja-JP)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="ja-JP" Format="yyyy/MM/dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("ja-JP"))" Format="yyyy/MM/dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: 年/月/日</p>
@@ -141,7 +142,7 @@ else
 
     <div class="test-section" data-testid="korean-locale-section">
         <label>Korean (ko-KR)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="ko-KR" Format="yyyy.MM.dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("ko-KR"))" Format="yyyy.MM.dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: 연도.월.일</p>
@@ -149,7 +150,7 @@ else
 
     <div class="test-section" data-testid="chinese-locale-section">
         <label>Chinese (zh-CN)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="zh-CN" Format="yyyy/MM/dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("zh-CN"))" Format="yyyy/MM/dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: 年/月/日</p>
@@ -157,7 +158,7 @@ else
 
     <div class="test-section" data-testid="arabic-locale-section">
         <label>Arabic (ar-SA)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="ar-SA" Format="dd/MM/yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("ar-SA"))" Format="dd/MM/yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: يوم/شهر/سنة</p>
@@ -165,7 +166,7 @@ else
 
     <div class="test-section" data-testid="turkish-locale-section">
         <label>Turkish (tr-TR)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="tr-TR" Format="dd.MM.yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("tr-TR"))" Format="dd.MM.yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: gg.aa.yyyy</p>
@@ -173,7 +174,7 @@ else
 
     <div class="test-section" data-testid="english-locale-section">
         <label>English (en-US)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="en-US" Format="MM/dd/yyyy">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("en-US"))" Format="MM/dd/yyyy">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: mm/dd/yyyy</p>
@@ -181,7 +182,7 @@ else
 
     <div class="test-section" data-testid="unknown-locale-section">
         <label>Unknown (xx-XX - should fallback to English)</label>
-        <DateFieldRoot @bind-Value="_nullDate" Locale="xx-XX" Format="yyyy-MM-dd">
+        <DateFieldRoot @bind-Value="_nullDate" Culture="@(new CultureInfo("xx-XX"))" Format="yyyy-MM-dd">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
         <p class="expected">Expected: yyyy-mm-dd (English fallback)</p>

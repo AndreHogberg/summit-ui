@@ -1,5 +1,6 @@
 @page "/tests/date-field/calendar-systems"
 @rendermode InteractiveWebAssembly
+@using System.Globalization
 
 @if (!RendererInfo.IsInteractive)
 {
@@ -60,22 +61,6 @@ else
         </DateFieldRoot>
     </div>
 
-    <div class="test-section" data-testid="indian-section">
-        <h3>Indian National Calendar (Saka)</h3>
-        <p class="info">Year = Gregorian - 78 (starts in March)</p>
-        <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" CalendarSystem="CalendarSystem.Indian">
-            <DateFieldInput class="datefield-input" />
-        </DateFieldRoot>
-    </div>
-
-    <div class="test-section" data-testid="ethiopic-section">
-        <h3>Ethiopic Calendar</h3>
-        <p class="info">About 7-8 years behind Gregorian</p>
-        <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" CalendarSystem="CalendarSystem.Ethiopic">
-            <DateFieldInput class="datefield-input" />
-        </DateFieldRoot>
-    </div>
-
     <div class="test-section" data-testid="auto-format-section">
         <h3>Auto-detect Format (no Format prop)</h3>
         <p class="info">Format should be detected from browser locale</p>
@@ -87,7 +72,7 @@ else
     <div class="test-section" data-testid="locale-override-section">
         <h3>Explicit Locale (de-DE)</h3>
         <p class="info">Should use dd.MM.yyyy format</p>
-        <DateFieldRoot @bind-Value="_date" Locale="de-DE">
+        <DateFieldRoot @bind-Value="_date" Culture="@(new CultureInfo("de-DE"))">
             <DateFieldInput class="datefield-input" />
         </DateFieldRoot>
     </div>

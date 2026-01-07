@@ -1,5 +1,6 @@
 @page "/tests/calendar/systems"
 @rendermode InteractiveWebAssembly
+@using System.Globalization
 
 @if (!RendererInfo.IsInteractive)
 {
@@ -15,7 +16,7 @@ else
     <div class="test-section" data-testid="japanese-section">
         <h2>Japanese Calendar</h2>
         <p class="description">Uses era names (Reiwa, Heisei, etc.) with year counting from era start.</p>
-        <CalendarRoot @bind-Value="_japaneseDate" CalendarSystem="CalendarSystem.Japanese" Locale="ja-JP" data-testid="calendar-japanese" Context="ctx">
+        <CalendarRoot @bind-Value="_japaneseDate" CalendarSystem="CalendarSystem.Japanese" Culture="@(new CultureInfo("ja-JP"))" data-testid="calendar-japanese" Context="ctx">
             <CalendarHeader class="calendar-header">
                 <CalendarPrevButton class="calendar-nav-button" data-testid="japanese-prev" />
                 <CalendarHeading class="calendar-heading" data-testid="japanese-heading" />
@@ -55,7 +56,7 @@ else
     <div class="test-section" data-testid="buddhist-section">
         <h2>Buddhist Calendar</h2>
         <p class="description">Year = Gregorian + 543. Used in Thailand, Cambodia, Laos.</p>
-        <CalendarRoot @bind-Value="_buddhistDate" CalendarSystem="CalendarSystem.Buddhist" Locale="th-TH" data-testid="calendar-buddhist" Context="ctx">
+        <CalendarRoot @bind-Value="_buddhistDate" CalendarSystem="CalendarSystem.Buddhist" Culture="@(new CultureInfo("th-TH"))" data-testid="calendar-buddhist" Context="ctx">
             <CalendarHeader class="calendar-header">
                 <CalendarPrevButton class="calendar-nav-button" />
                 <CalendarHeading class="calendar-heading" data-testid="buddhist-heading" />
@@ -95,7 +96,7 @@ else
     <div class="test-section" data-testid="taiwan-section">
         <h2>Taiwan (ROC) Calendar</h2>
         <p class="description">Year = Gregorian - 1911. Official calendar of Taiwan.</p>
-        <CalendarRoot @bind-Value="_taiwanDate" CalendarSystem="CalendarSystem.Taiwan" Locale="zh-TW" data-testid="calendar-taiwan" Context="ctx">
+        <CalendarRoot @bind-Value="_taiwanDate" CalendarSystem="CalendarSystem.Taiwan" Culture="@(new CultureInfo("zh-TW"))" data-testid="calendar-taiwan" Context="ctx">
             <CalendarHeader class="calendar-header">
                 <CalendarPrevButton class="calendar-nav-button" />
                 <CalendarHeading class="calendar-heading" data-testid="taiwan-heading" />
@@ -135,7 +136,7 @@ else
     <div class="test-section" data-testid="persian-section">
         <h2>Persian (Jalali) Calendar</h2>
         <p class="description">Solar calendar used in Iran and Afghanistan. Different month lengths.</p>
-        <CalendarRoot @bind-Value="_persianDate" CalendarSystem="CalendarSystem.Persian" Locale="fa-IR" data-testid="calendar-persian" Context="ctx">
+        <CalendarRoot @bind-Value="_persianDate" CalendarSystem="CalendarSystem.Persian" Culture="@(new CultureInfo("fa-IR"))" data-testid="calendar-persian" Context="ctx">
             <CalendarHeader class="calendar-header">
                 <CalendarPrevButton class="calendar-nav-button" />
                 <CalendarHeading class="calendar-heading" data-testid="persian-heading" />
@@ -171,51 +172,11 @@ else
         <p data-testid="persian-value">Gregorian Value: @(_persianDate?.ToString("yyyy-MM-dd") ?? "None")</p>
     </div>
 
-    <!-- Indian (Saka) Calendar -->
-    <div class="test-section" data-testid="indian-section">
-        <h2>Indian National Calendar (Saka)</h2>
-        <p class="description">Official civil calendar of India. Year starts from Saka era (78 AD).</p>
-        <CalendarRoot @bind-Value="_indianDate" CalendarSystem="CalendarSystem.Indian" Locale="en-IN" data-testid="calendar-indian" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" data-testid="indian-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
-                        @for (int i = 0; i < ctx.Weekdays.Length; i++)
-                        {
-                            var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
-                                @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
-                        }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
-                    @foreach (var week in ctx.CurrentMonth.Weeks)
-                    {
-                        <CalendarGridRow>
-                            @foreach (var date in week)
-                            {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
-                            }
-                        </CalendarGridRow>
-                    }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
-        <p data-testid="indian-value">Gregorian Value: @(_indianDate?.ToString("yyyy-MM-dd") ?? "None")</p>
-    </div>
-
     <!-- Islamic Umm al-Qura Calendar -->
     <div class="test-section" data-testid="islamic-umalqura-section">
         <h2>Islamic (Umm al-Qura) Calendar</h2>
         <p class="description">Lunar calendar based on astronomical calculations. Used in Saudi Arabia.</p>
-        <CalendarRoot @bind-Value="_islamicUmalquraDate" CalendarSystem="CalendarSystem.IslamicUmalqura" Locale="ar-SA" data-testid="calendar-islamic-umalqura" Context="ctx">
+        <CalendarRoot @bind-Value="_islamicUmalquraDate" CalendarSystem="CalendarSystem.IslamicUmalqura" Culture="@(new CultureInfo("ar-SA"))" data-testid="calendar-islamic-umalqura" Context="ctx">
             <CalendarHeader class="calendar-header">
                 <CalendarPrevButton class="calendar-nav-button" />
                 <CalendarHeading class="calendar-heading" data-testid="islamic-umalqura-heading" />
@@ -255,7 +216,7 @@ else
     <div class="test-section" data-testid="islamic-civil-section">
         <h2>Islamic Civil Calendar</h2>
         <p class="description">Tabular/arithmetic lunar calendar variant.</p>
-        <CalendarRoot @bind-Value="_islamicCivilDate" CalendarSystem="CalendarSystem.IslamicCivil" Locale="ar" data-testid="calendar-islamic-civil" Context="ctx">
+        <CalendarRoot @bind-Value="_islamicCivilDate" CalendarSystem="CalendarSystem.IslamicCivil" Culture="@(new CultureInfo("ar"))" data-testid="calendar-islamic-civil" Context="ctx">
             <CalendarHeader class="calendar-header">
                 <CalendarPrevButton class="calendar-nav-button" />
                 <CalendarHeading class="calendar-heading" data-testid="islamic-civil-heading" />
@@ -291,51 +252,11 @@ else
         <p data-testid="islamic-civil-value">Gregorian Value: @(_islamicCivilDate?.ToString("yyyy-MM-dd") ?? "None")</p>
     </div>
 
-    <!-- Islamic Tabular Calendar -->
-    <div class="test-section" data-testid="islamic-tabular-section">
-        <h2>Islamic Tabular Calendar</h2>
-        <p class="description">Algorithmic variant with different epoch than civil.</p>
-        <CalendarRoot @bind-Value="_islamicTabularDate" CalendarSystem="CalendarSystem.IslamicTabular" Locale="ar" data-testid="calendar-islamic-tabular" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" data-testid="islamic-tabular-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
-                        @for (int i = 0; i < ctx.Weekdays.Length; i++)
-                        {
-                            var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
-                                @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
-                        }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
-                    @foreach (var week in ctx.CurrentMonth.Weeks)
-                    {
-                        <CalendarGridRow>
-                            @foreach (var date in week)
-                            {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
-                            }
-                        </CalendarGridRow>
-                    }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
-        <p data-testid="islamic-tabular-value">Gregorian Value: @(_islamicTabularDate?.ToString("yyyy-MM-dd") ?? "None")</p>
-    </div>
-
     <!-- Hebrew Calendar -->
     <div class="test-section" data-testid="hebrew-section">
         <h2>Hebrew Calendar</h2>
         <p class="description">Lunisolar calendar with 12 or 13 months. Used in Israel and for Jewish observances.</p>
-        <CalendarRoot @bind-Value="_hebrewDate" CalendarSystem="CalendarSystem.Hebrew" Locale="he-IL" data-testid="calendar-hebrew" Context="ctx">
+        <CalendarRoot @bind-Value="_hebrewDate" CalendarSystem="CalendarSystem.Hebrew" Culture="@(new CultureInfo("he-IL"))" data-testid="calendar-hebrew" Context="ctx">
             <CalendarHeader class="calendar-header">
                 <CalendarPrevButton class="calendar-nav-button" />
                 <CalendarHeading class="calendar-heading" data-testid="hebrew-heading" />
@@ -369,126 +290,6 @@ else
             </CalendarGrid>
         </CalendarRoot>
         <p data-testid="hebrew-value">Gregorian Value: @(_hebrewDate?.ToString("yyyy-MM-dd") ?? "None")</p>
-    </div>
-
-    <!-- Coptic Calendar -->
-    <div class="test-section" data-testid="coptic-section">
-        <h2>Coptic Calendar</h2>
-        <p class="description">Used by the Coptic Orthodox Church in Egypt. 12 months of 30 days + intercalary days.</p>
-        <CalendarRoot @bind-Value="_copticDate" CalendarSystem="CalendarSystem.Coptic" Locale="en" data-testid="calendar-coptic" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" data-testid="coptic-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
-                        @for (int i = 0; i < ctx.Weekdays.Length; i++)
-                        {
-                            var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
-                                @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
-                        }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
-                    @foreach (var week in ctx.CurrentMonth.Weeks)
-                    {
-                        <CalendarGridRow>
-                            @foreach (var date in week)
-                            {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
-                            }
-                        </CalendarGridRow>
-                    }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
-        <p data-testid="coptic-value">Gregorian Value: @(_copticDate?.ToString("yyyy-MM-dd") ?? "None")</p>
-    </div>
-
-    <!-- Ethiopic Calendar -->
-    <div class="test-section" data-testid="ethiopic-section">
-        <h2>Ethiopic Calendar</h2>
-        <p class="description">Official calendar of Ethiopia. Similar structure to Coptic.</p>
-        <CalendarRoot @bind-Value="_ethiopicDate" CalendarSystem="CalendarSystem.Ethiopic" Locale="am-ET" data-testid="calendar-ethiopic" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" data-testid="ethiopic-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
-                        @for (int i = 0; i < ctx.Weekdays.Length; i++)
-                        {
-                            var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
-                                @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
-                        }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
-                    @foreach (var week in ctx.CurrentMonth.Weeks)
-                    {
-                        <CalendarGridRow>
-                            @foreach (var date in week)
-                            {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
-                            }
-                        </CalendarGridRow>
-                    }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
-        <p data-testid="ethiopic-value">Gregorian Value: @(_ethiopicDate?.ToString("yyyy-MM-dd") ?? "None")</p>
-    </div>
-
-    <!-- Ethiopic Amete Alem Calendar -->
-    <div class="test-section" data-testid="ethiopic-amete-alem-section">
-        <h2>Ethiopic (Amete Alem) Calendar</h2>
-        <p class="description">Ethiopic calendar with alternate era calculation.</p>
-        <CalendarRoot @bind-Value="_ethiopicAmeteAlemDate" CalendarSystem="CalendarSystem.EthiopicAmeteAlem" Locale="am-ET" data-testid="calendar-ethiopic-amete-alem" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" data-testid="ethiopic-amete-alem-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
-                        @for (int i = 0; i < ctx.Weekdays.Length; i++)
-                        {
-                            var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
-                                @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
-                        }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
-                    @foreach (var week in ctx.CurrentMonth.Weeks)
-                    {
-                        <CalendarGridRow>
-                            @foreach (var date in week)
-                            {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
-                            }
-                        </CalendarGridRow>
-                    }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
-        <p data-testid="ethiopic-amete-alem-value">Gregorian Value: @(_ethiopicAmeteAlemDate?.ToString("yyyy-MM-dd") ?? "None")</p>
     </div>
 </div>
 }
@@ -602,12 +403,7 @@ else
     private DateOnly? _buddhistDate = null;
     private DateOnly? _taiwanDate = null;
     private DateOnly? _persianDate = null;
-    private DateOnly? _indianDate = null;
     private DateOnly? _islamicUmalquraDate = null;
     private DateOnly? _islamicCivilDate = null;
-    private DateOnly? _islamicTabularDate = null;
     private DateOnly? _hebrewDate = null;
-    private DateOnly? _copticDate = null;
-    private DateOnly? _ethiopicDate = null;
-    private DateOnly? _ethiopicAmeteAlemDate = null;
 }
