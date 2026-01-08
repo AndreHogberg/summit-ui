@@ -71,7 +71,6 @@ public class CalendarContext
 
     // Configuration
     public CultureInfo Culture { get; private set; } = CultureInfo.CurrentCulture;
-    public CalendarSystem CalendarSystem { get; private set; } = CalendarSystem.Gregorian;
     public DayOfWeek WeekStartsOn { get; private set; } = DayOfWeek.Sunday;
     public bool FixedWeeks { get; private set; }
     public DateOnly? MinValue { get; private set; }
@@ -80,14 +79,10 @@ public class CalendarContext
     public bool ReadOnly { get; private set; }
     public Func<DateOnly, bool>? IsDateDisabled { get; private set; }
 
-    // Localized strings (populated from JS)
+    // Localized strings (populated from culture)
     private string[] _weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     private string[] _weekdaysLong = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     private string _monthName = "";
-    
-    // Converted day numbers for non-Gregorian calendar systems
-    // Key: Gregorian DateOnly, Value: (day number in target calendar, localized date string for aria-label)
-    private Dictionary<DateOnly, (int Day, string LocalizedDateString)> _convertedDates = [];
 
     // Screen reader announcement for focus changes (used with aria-live region)
     private string _focusAnnouncement = "";
@@ -183,7 +178,6 @@ public class CalendarContext
         bool isControlled,
         DateOnly? placeholder,
         CultureInfo culture,
-        CalendarSystem calendarSystem,
         DayOfWeek weekStartsOn,
         bool fixedWeeks,
         DateOnly? minValue,
@@ -198,7 +192,6 @@ public class CalendarContext
         _defaultValue = defaultValue;
         _isControlled = isControlled;
         Culture = culture;
-        CalendarSystem = calendarSystem;
         WeekStartsOn = weekStartsOn;
         FixedWeeks = fixedWeeks;
         MinValue = minValue;
@@ -222,7 +215,7 @@ public class CalendarContext
     }
 
     /// <summary>
-    /// Sets the localized weekday names from JS Intl API.
+    /// Sets the localized weekday names.
     /// </summary>
     public void SetWeekdayNames(string[] shortNames, string[] longNames)
     {
@@ -245,41 +238,18 @@ public class CalendarContext
     }
 
     /// <summary>
-    /// Sets the converted dates for non-Gregorian calendar systems.
+    /// Gets the display day number for a date.
     /// </summary>
-    /// <param name="convertedDates">Dictionary mapping Gregorian dates to (converted day number, localized date string).</param>
-    public void SetConvertedDates(Dictionary<DateOnly, (int Day, string LocalizedDateString)> convertedDates)
-    {
-        _convertedDates = convertedDates;
-    }
-
-    /// <summary>
-    /// Gets the display day number for a date, converted to the current calendar system.
-    /// </summary>
-    /// <param name="date">The Gregorian date.</param>
-    /// <returns>The day number in the current calendar system, or the Gregorian day if no conversion exists.</returns>
-    public int GetDisplayDay(DateOnly date)
-    {
-        if (CalendarSystem == CalendarSystem.Gregorian)
-            return date.Day;
-        
-        return _convertedDates.TryGetValue(date, out var info) ? info.Day : date.Day;
-    }
+    /// <param name="date">The date.</param>
+    /// <returns>The day number.</returns>
+    public int GetDisplayDay(DateOnly date) => date.Day;
 
     /// <summary>
     /// Gets the localized date string for accessibility (aria-label).
     /// </summary>
-    /// <param name="date">The Gregorian date.</param>
-    /// <returns>A localized date string, or a default Gregorian format if no conversion exists.</returns>
-    public string GetLocalizedDateString(DateOnly date)
-    {
-        if (CalendarSystem == CalendarSystem.Gregorian)
-            return $"{date:dddd, MMMM d, yyyy}";
-        
-        return _convertedDates.TryGetValue(date, out var info) 
-            ? info.LocalizedDateString 
-            : $"{date:dddd, MMMM d, yyyy}";
-    }
+    /// <param name="date">The date.</param>
+    /// <returns>A localized date string.</returns>
+    public string GetLocalizedDateString(DateOnly date) => date.ToString("D", Culture);
 
     /// <summary>
     /// Selects a date.
@@ -313,7 +283,7 @@ public class CalendarContext
             _focusedDate = ClampToMonth(_focusedDate, _displayedMonth);
         }
 
-        // Notify root to update month name and converted dates
+        // Notify root to update month name
         RootComponent?.OnMonthChanged();
 
         NotifyStateChanged();
@@ -334,7 +304,7 @@ public class CalendarContext
             _focusedDate = ClampToMonth(_focusedDate, _displayedMonth);
         }
 
-        // Notify root to update month name and converted dates
+        // Notify root to update month name
         RootComponent?.OnMonthChanged();
 
         NotifyStateChanged();
@@ -350,7 +320,7 @@ public class CalendarContext
         _displayedMonth = _displayedMonth.AddYears(-1);
         _focusedDate = ClampToValidDate(_focusedDate.AddYears(-1));
 
-        // Notify root to update month name and converted dates
+        // Notify root to update month name
         RootComponent?.OnMonthChanged();
 
         NotifyStateChanged();
@@ -366,7 +336,7 @@ public class CalendarContext
         _displayedMonth = _displayedMonth.AddYears(1);
         _focusedDate = ClampToValidDate(_focusedDate.AddYears(1));
 
-        // Notify root to update month name and converted dates
+        // Notify root to update month name
         RootComponent?.OnMonthChanged();
 
         NotifyStateChanged();
@@ -387,7 +357,7 @@ public class CalendarContext
         {
             _displayedMonth = new DateOnly(date.Year, date.Month, 1);
             
-            // Notify root to update month name and converted dates
+            // Notify root to update month name
             RootComponent?.OnMonthChanged();
         }
 
@@ -406,7 +376,7 @@ public class CalendarContext
     private void UpdateFocusAnnouncement(DateOnly date)
     {
         // Build the same label as used in CalendarDay aria-label
-        var label = $"{date:dddd, MMMM d, yyyy}";
+        var label = date.ToString("D", Culture);
         if (IsToday(date)) label += " (today)";
         if (IsSelected(date)) label += " (selected)";
         if (IsDateUnavailable(date)) label += " (unavailable)";

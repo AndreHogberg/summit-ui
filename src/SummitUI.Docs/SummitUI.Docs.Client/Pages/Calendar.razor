@@ -98,7 +98,7 @@
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                8 calendar systems via .NET's System.Globalization: Gregorian, Japanese, Buddhist, Persian, Hebrew, and more
+                Locale-aware formatting via .NET's CultureInfo
             </li>
         </ul>
     </SuSection>
@@ -288,124 +288,6 @@
         </div>
     </SuSection>
 
-    @* Calendar Systems *@
-    <SuSection Title="Calendar Systems">
-        <div class="flex flex-col gap-6 animate-fade-in-up animate-duration-500 animate-delay-550">
-            <SuText Size="SuTextSize.Small" Muted="true">
-                The calendar supports 8 different calendar systems using .NET's <code>System.Globalization</code> namespace. 
-                The selected date value is always stored as a Gregorian <code>DateOnly</code>, 
-                but displayed using the selected calendar system. This allows international users to interact with dates in their familiar format.
-            </SuText>
-
-            <SuCard>
-                <div class="flex flex-col gap-4">
-                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                        <label class="text-sm font-medium text-su-foreground">Calendar System:</label>
-                        <SelectRoot TValue="CalendarSystem" @bind-Value="_selectedCalendarSystem">
-                            <SelectTrigger TValue="CalendarSystem" class="demo-trigger w-[220px]">
-                                <SelectValue TValue="CalendarSystem" />
-                                <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6"/>
-                                </svg>
-                            </SelectTrigger>
-                            <SelectPortal TValue="CalendarSystem">
-                                <SelectContent TValue="CalendarSystem" class="demo-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
-                                    <SelectViewport TValue="CalendarSystem" class="demo-viewport max-h-[300px]">
-                                        @foreach (var system in Enum.GetValues<CalendarSystem>())
-                                        {
-                                            <SelectItem TValue="CalendarSystem" Value="@system" Label="@GetCalendarSystemLabel(system)" class="demo-item">
-                                                <span class="demo-item-check">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                                                </span>
-                                                <SelectItemText>@GetCalendarSystemLabel(system)</SelectItemText>
-                                            </SelectItem>
-                                        }
-                                    </SelectViewport>
-                                </SelectContent>
-                            </SelectPortal>
-                        </SelectRoot>
-                    </div>
-
-                    <div class="flex flex-col gap-2">
-                        <CalendarRoot FixedWeeks="true" 
-                                      @bind-Value="_calendarSystemDate" 
-                                      CalendarSystem="_selectedCalendarSystem"
-                                      Culture="@GetCultureForCalendarSystem(_selectedCalendarSystem)"
-                                      class="calendar-demo" 
-                                      Context="ctx">
-                            <CalendarHeader class="flex items-center justify-between mb-4">
-                                <CalendarPrevButton class="calendar-nav-btn" />
-                                <CalendarHeading class="text-sm font-semibold" />
-                                <CalendarNextButton class="calendar-nav-btn" />
-                            </CalendarHeader>
-                            <CalendarGrid class="w-full border-collapse">
-                                <CalendarGridHead>
-                                    <CalendarGridRow>
-                                        @for (int i = 0; i < ctx.Weekdays.Length; i++)
-                                        {
-                                            var idx = i;
-                                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
-                                                @ctx.Weekdays[idx]
-                                            </CalendarHeadCell>
-                                        }
-                                    </CalendarGridRow>
-                                </CalendarGridHead>
-                                <CalendarGridBody>
-                                    @foreach (var week in ctx.CurrentMonth.Weeks)
-                                    {
-                                        <CalendarGridRow>
-                                            @foreach (var date in week)
-                                            {
-                                                <CalendarCell Date="@date">
-                                                    <CalendarDay class="calendar-day" />
-                                                </CalendarCell>
-                                            }
-                                        </CalendarGridRow>
-                                    }
-                                </CalendarGridBody>
-                            </CalendarGrid>
-                        </CalendarRoot>
-                        <p class="text-xs text-su-muted-foreground mt-2">
-                            Selected (Gregorian): @(_calendarSystemDate?.ToString("yyyy-MM-dd") ?? "None")
-                        </p>
-                    </div>
-
-                    <SuText Size="SuTextSize.Small" Muted="true" class="mt-2">
-                        @GetCalendarSystemDescription(_selectedCalendarSystem)
-                    </SuText>
-                </div>
-            </SuCard>
-
-            <div class="flex flex-col gap-4">
-                <SuHeading Level="SuHeadingLevel.H3">Usage</SuHeading>
-                <SuCodeBlock Code="@calendarSystemExampleCode" Language="razor" />
-            </div>
-
-            <div class="flex flex-col gap-3">
-                <SuHeading Level="SuHeadingLevel.H3">Supported Calendar Systems</SuHeading>
-                <SuTable>
-                    <SuTableHeader>
-                        <SuTableRow>
-                            <SuTableHead>System</SuTableHead>
-                            <SuTableHead>Region</SuTableHead>
-                            <SuTableHead>Description</SuTableHead>
-                        </SuTableRow>
-                    </SuTableHeader>
-                    <SuTableBody>
-                        @foreach (var cal in calendarSystemInfo)
-                        {
-                            <SuTableRow>
-                                <SuTableCell class="font-mono text-su-primary font-medium">@cal.Name</SuTableCell>
-                                <SuTableCell class="text-su-muted-foreground text-sm">@cal.Type</SuTableCell>
-                                <SuTableCell class="text-su-muted-foreground">@cal.Description</SuTableCell>
-                            </SuTableRow>
-                        }
-                    </SuTableBody>
-                </SuTable>
-            </div>
-        </div>
-    </SuSection>
-
     @* Styling *@
     <SuSection Title="Styling">
         <div class="flex flex-col gap-12 animate-fade-in-up animate-duration-500 animate-delay-600">
@@ -562,95 +444,6 @@
         outline: 2px solid rgb(var(--su-primary));
         outline-offset: 2px;
     }
-
-    /* Select demo styles for Calendar System picker */
-    .demo-trigger {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.5rem 0.75rem;
-        background: rgb(var(--su-card));
-        border: 1px solid rgb(var(--su-border));
-        border-radius: 0.5rem;
-        cursor: pointer;
-        color: rgb(var(--su-foreground));
-        font-size: 0.875rem;
-        transition: border-color 0.15s, box-shadow 0.15s;
-    }
-
-    .demo-trigger:hover {
-        border-color: rgb(var(--su-muted-foreground) / 0.5);
-    }
-
-    .demo-trigger:focus {
-        outline: none;
-        border-color: rgb(var(--su-primary));
-        box-shadow: 0 0 0 2px rgb(var(--su-primary) / 0.2);
-    }
-
-    .demo-trigger[data-state="open"] {
-        border-color: rgb(var(--su-primary));
-    }
-
-    .demo-trigger[data-placeholder] {
-        color: rgb(var(--su-muted-foreground));
-    }
-
-    .demo-chevron {
-        transition: transform 0.2s ease;
-        color: rgb(var(--su-muted-foreground));
-    }
-
-    .demo-trigger[data-state="open"] .demo-chevron {
-        transform: rotate(180deg);
-    }
-
-    .demo-content {
-        background: rgb(var(--su-card));
-        border: 1px solid rgb(var(--su-border));
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 12px rgb(var(--su-foreground) / 0.1);
-        overflow: hidden;
-        min-width: 220px;
-    }
-
-    .demo-viewport {
-        padding: 0.25rem;
-        overflow-y: auto;
-    }
-
-    .demo-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.25rem;
-        cursor: pointer;
-        font-size: 0.875rem;
-        color: rgb(var(--su-foreground));
-        transition: background-color 0.1s;
-    }
-
-    .demo-item:hover,
-    .demo-item[data-highlighted] {
-        background: rgb(var(--su-accent));
-        color: rgb(var(--su-accent-foreground));
-    }
-
-    .demo-item[data-state="checked"] {
-        background: rgb(var(--su-primary) / 0.1);
-    }
-
-    .demo-item-check {
-        visibility: hidden;
-        color: rgb(var(--su-primary));
-        display: flex;
-        align-items: center;
-    }
-
-    .demo-item[data-state="checked"] .demo-item-check {
-        visibility: visible;
-    }
 </style>
 
 @code {
@@ -670,8 +463,7 @@
         new() { Name = "MaxValue", Type = "DateOnly?", Default = "null", Description = "Maximum selectable date" },
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disables the entire calendar" },
         new() { Name = "ReadOnly", Type = "bool", Default = "false", Description = "Allows navigation but prevents selection" },
-        new() { Name = "IsDateDisabled", Type = "Func<DateOnly, bool>?", Default = "null", Description = "Custom function to disable specific dates" },
-        new() { Name = "CalendarSystem", Type = "CalendarSystem", Default = "Gregorian", Description = "Calendar system to use for display (Japanese, Buddhist, Persian, etc.)" }
+        new() { Name = "IsDateDisabled", Type = "Func<DateOnly, bool>?", Default = "null", Description = "Custom function to disable specific dates" }
     };
 
     private List<SuApiProperty> dataAttributes = new()
@@ -820,74 +612,4 @@
 .calendar-day[data-focused] {
     @apply ring-2 ring-primary ring-offset-2;
 }";
-
-    // Calendar Systems Demo
-    private DateOnly? _calendarSystemDate = DateOnly.FromDateTime(DateTime.Today);
-    private CalendarSystem _selectedCalendarSystem = CalendarSystem.Gregorian;
-
-    private static string GetCalendarSystemLabel(CalendarSystem system) => system switch
-    {
-        CalendarSystem.Gregorian => "Gregorian",
-        CalendarSystem.Japanese => "Japanese",
-        CalendarSystem.Buddhist => "Buddhist",
-        CalendarSystem.Taiwan => "Taiwan (ROC)",
-        CalendarSystem.Persian => "Persian (Jalali)",
-        CalendarSystem.IslamicUmalqura => "Islamic (Umm al-Qura)",
-        CalendarSystem.IslamicCivil => "Islamic Civil",
-        CalendarSystem.Hebrew => "Hebrew",
-        _ => system.ToString()
-    };
-
-    private static string GetCalendarSystemDescription(CalendarSystem system) => system switch
-    {
-        CalendarSystem.Gregorian => "The standard Western calendar used worldwide.",
-        CalendarSystem.Japanese => "Uses era names (Reiwa, Heisei, Showa) based on the emperor's reign. Currently in the Reiwa era.",
-        CalendarSystem.Buddhist => "Used in Thailand, Cambodia, Laos. Year = Gregorian + 543.",
-        CalendarSystem.Taiwan => "Official calendar of Taiwan. Year = Gregorian - 1911 (Republic of China era).",
-        CalendarSystem.Persian => "Solar calendar used in Iran and Afghanistan. Has different month lengths than Gregorian.",
-        CalendarSystem.IslamicUmalqura => "Lunar calendar used in Saudi Arabia. Based on astronomical calculations for crescent moon sightings.",
-        CalendarSystem.IslamicCivil => "Tabular/arithmetic lunar calendar variant with predictable month lengths.",
-        CalendarSystem.Hebrew => "Lunisolar calendar used in Israel and for Jewish observances. Has 12 or 13 months depending on leap years.",
-        _ => ""
-    };
-
-    private static CultureInfo? GetCultureForCalendarSystem(CalendarSystem system) => system switch
-    {
-        CalendarSystem.Japanese => new CultureInfo("ja-JP"),
-        CalendarSystem.Buddhist => new CultureInfo("th-TH"),
-        CalendarSystem.Taiwan => new CultureInfo("zh-TW"),
-        CalendarSystem.Persian => new CultureInfo("fa-IR"),
-        CalendarSystem.IslamicUmalqura => new CultureInfo("ar-SA"),
-        CalendarSystem.IslamicCivil => new CultureInfo("ar"),
-        CalendarSystem.Hebrew => new CultureInfo("he-IL"),
-        _ => null
-    };
-
-    private List<SuApiProperty> calendarSystemInfo = new()
-    {
-        new() { Name = "Gregorian", Type = "Worldwide", Description = "Standard Western calendar" },
-        new() { Name = "Japanese", Type = "Japan", Description = "Era-based (Reiwa, Heisei, Showa)" },
-        new() { Name = "Buddhist", Type = "Thailand, Cambodia, Laos", Description = "Year = Gregorian + 543" },
-        new() { Name = "Taiwan", Type = "Taiwan", Description = "ROC era, Year = Gregorian - 1911" },
-        new() { Name = "Persian", Type = "Iran, Afghanistan", Description = "Solar calendar (Jalali)" },
-        new() { Name = "IslamicUmalqura", Type = "Saudi Arabia", Description = "Lunar, astronomical calculations" },
-        new() { Name = "IslamicCivil", Type = "Islamic regions", Description = "Lunar, tabular/arithmetic" },
-        new() { Name = "Hebrew", Type = "Israel", Description = "Lunisolar, 12-13 months" }
-    };
-
-    private const string calendarSystemExampleCode = @"@using System.Globalization
-
-@code {
-    private DateOnly? selectedDate;
-    private CalendarSystem calendarSystem = CalendarSystem.Japanese;
-}
-
-<CalendarRoot @bind-Value=""selectedDate"" 
-               CalendarSystem=""calendarSystem""
-               Culture=""new CultureInfo(""ja-JP"")""
-               Context=""ctx"">
-    <!-- Calendar content -->
-    <!-- Heading will show Japanese era (e.g., 令和7年1月) -->
-    <!-- Selected value remains Gregorian DateOnly -->
-</CalendarRoot>";
 }

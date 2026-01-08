@@ -18,12 +18,10 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     private DayOfWeek _effectiveWeekStart = DayOfWeek.Sunday;
     
     // Track previous values to detect changes that require re-computation
-    private CalendarSystem _previousCalendarSystem;
     private CultureInfo? _previousCulture;
     private DateOnly _previousDisplayedMonth;
 
     [Inject] private CalendarJsInterop JsInterop { get; set; } = default!;
-    [Inject] private CalendarProvider CalendarProvider { get; set; } = default!;
     [Inject] private CalendarFormatter CalendarFormatter { get; set; } = default!;
 
     #region Parameters
@@ -67,14 +65,6 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     /// If not specified, uses the culture's default first day of week.
     /// </summary>
     [Parameter] public DayOfWeek? WeekStartsOn { get; set; }
-
-    /// <summary>
-    /// The calendar system to use for display and navigation.
-    /// The bound Value remains as DateOnly (Gregorian), but dates are displayed
-    /// and navigated using the selected calendar system.
-    /// Defaults to Gregorian.
-    /// </summary>
-    [Parameter] public CalendarSystem CalendarSystem { get; set; } = CalendarSystem.Gregorian;
 
     /// <summary>
     /// Whether to always display 6 weeks for consistent height.
@@ -145,7 +135,6 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
             isControlled: isControlled,
             placeholder: Placeholder,
             culture: _effectiveCulture,
-            calendarSystem: CalendarSystem,
             weekStartsOn: _effectiveWeekStart,
             fixedWeeks: FixedWeeks,
             minValue: MinValue,
@@ -157,18 +146,15 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
             onValueChange: OnValueChange
         );
 
-        // Update month name and converted dates if calendar/culture/month changed
+        // Update month name if culture or month changed
         var cultureChanged = _previousCulture != _effectiveCulture;
-        var calendarChanged = _previousCalendarSystem != CalendarSystem;
         var monthChanged = _previousDisplayedMonth != _context.DisplayedMonth;
 
-        if (cultureChanged || calendarChanged || monthChanged || _previousCulture == null)
+        if (cultureChanged || monthChanged || _previousCulture == null)
         {
             UpdateMonthName();
-            UpdateConvertedDates();
             
             _previousCulture = _effectiveCulture;
-            _previousCalendarSystem = CalendarSystem;
             _previousDisplayedMonth = _context.DisplayedMonth;
         }
     }
@@ -177,32 +163,9 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     {
         var heading = CalendarFormatter.GetMonthYearHeading(
             _effectiveCulture,
-            _context.DisplayedMonth,
-            CalendarSystem
+            _context.DisplayedMonth
         );
         _context.SetMonthName(heading);
-    }
-
-    private void UpdateConvertedDates()
-    {
-        // Generate the month grid to get all dates that need conversion
-        var month = _context.GenerateMonth();
-        
-        // Batch convert all dates in the grid
-        var results = CalendarProvider.BatchConvertFromGregorian(
-            _effectiveCulture,
-            month.Dates,
-            CalendarSystem
-        );
-        
-        // Build the dictionary mapping Gregorian dates to converted info
-        var convertedDates = new Dictionary<DateOnly, (int Day, string LocalizedDateString)>();
-        for (int i = 0; i < month.Dates.Length && i < results.Length; i++)
-        {
-            convertedDates[month.Dates[i]] = results[i];
-        }
-        
-        _context.SetConvertedDates(convertedDates);
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -264,7 +227,6 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
     internal void OnMonthChanged()
     {
         UpdateMonthName();
-        UpdateConvertedDates();
         _previousDisplayedMonth = _context.DisplayedMonth;
     }
 

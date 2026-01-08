@@ -31,14 +31,6 @@ public class DateFieldRoot : ComponentBase
     [Parameter] public string? Format { get; set; }
 
     /// <summary>
-    /// The calendar system to use for display and navigation.
-    /// The bound Value remains as DateOnly/DateTime (Gregorian), but segments
-    /// display and navigate using the selected calendar system.
-    /// Defaults to Gregorian.
-    /// </summary>
-    [Parameter] public CalendarSystem CalendarSystem { get; set; } = CalendarSystem.Gregorian;
-
-    /// <summary>
     /// The culture to use for formatting and localization.
     /// If not specified, uses <see cref="CultureInfo.CurrentCulture"/>.
     /// </summary>
@@ -159,7 +151,6 @@ public class DateFieldRoot : ComponentBase
                 DateTimePlaceholder,
                 Format,
                 TimeFormat,
-                CalendarSystem,
                 effectiveCulture,
                 Disabled,
                 ReadOnly,
@@ -174,7 +165,6 @@ public class DateFieldRoot : ComponentBase
                 Value,
                 Placeholder,
                 Format,
-                CalendarSystem,
                 effectiveCulture,
                 Disabled,
                 ReadOnly,

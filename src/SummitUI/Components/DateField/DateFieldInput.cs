@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-using SummitUI.Services;
-
 namespace SummitUI;
 
 /// <summary>
@@ -10,8 +8,6 @@ namespace SummitUI;
 /// </summary>
 public class DateFieldInput : ComponentBase, IDisposable
 {
-    [Inject] private CalendarProvider CalendarProvider { get; set; } = default!;
-
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
 
     /// <summary>
@@ -22,9 +18,6 @@ public class DateFieldInput : ComponentBase, IDisposable
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private List<DateFieldSegmentState> _segments = new();
-    private bool _initialized;
-    private CalendarSystem _lastCalendarSystem;
-    private DateTime? _lastValueForCalendarInfo;
 
     protected override void OnInitialized()
     {
@@ -32,7 +25,6 @@ public class DateFieldInput : ComponentBase, IDisposable
             throw new InvalidOperationException("DateFieldInput must be used within a DateFieldRoot.");
 
         Context.OnStateChanged += HandleStateChanged;
-        _lastCalendarSystem = Context.CalendarSystem;
         
         // Initialize segment labels from culture
         InitializeSegmentLabels();
@@ -42,26 +34,7 @@ public class DateFieldInput : ComponentBase, IDisposable
 
     protected override void OnParametersSet()
     {
-        // Refresh calendar info if calendar system or value changed
-        var needsCalendarRefresh = 
-            Context.CalendarSystem != _lastCalendarSystem ||
-            !DateTime.Equals(Context.EffectiveDateTime, _lastValueForCalendarInfo);
-
-        if (needsCalendarRefresh)
-        {
-            RefreshCalendarInfo();
-        }
-
         RegenerateSegments();
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender && !_initialized)
-        {
-            _initialized = true;
-            // Calendar info is already computed synchronously in OnParametersSet
-        }
     }
 
     /// <summary>
@@ -84,46 +57,8 @@ public class DateFieldInput : ComponentBase, IDisposable
         Context.SetSegmentLabels(labels);
     }
 
-    /// <summary>
-    /// Refreshes the calendar info using the CalendarProvider for the current date and calendar system.
-    /// </summary>
-    private void RefreshCalendarInfo()
-    {
-        _lastCalendarSystem = Context.CalendarSystem;
-        _lastValueForCalendarInfo = Context.EffectiveDateTime;
-
-        // For Gregorian calendar, clear the cached info (uses direct DateTime values)
-        if (Context.CalendarSystem == CalendarSystem.Gregorian)
-        {
-            Context.ClearCalendarInfo();
-            return;
-        }
-
-        // Convert the Gregorian date to the target calendar system
-        var effectiveDate = DateOnly.FromDateTime(Context.EffectiveDateTime);
-        var monthInfo = CalendarProvider.GetCalendarMonthInfo(effectiveDate, Context.CalendarSystem);
-
-        Context.SetCalendarInfo(
-            monthInfo.Year,
-            monthInfo.Month,
-            monthInfo.Day,
-            monthInfo.Era,
-            monthInfo.DaysInMonth,
-            monthInfo.MonthsInYear);
-    }
-
     private void HandleStateChanged()
     {
-        // Refresh calendar info if needed
-        var needsCalendarRefresh = 
-            Context.CalendarSystem != _lastCalendarSystem ||
-            !DateTime.Equals(Context.EffectiveDateTime, _lastValueForCalendarInfo);
-
-        if (needsCalendarRefresh && Context.CalendarSystem != CalendarSystem.Gregorian)
-        {
-            RefreshCalendarInfo();
-        }
-
         StateHasChanged();
     }
 

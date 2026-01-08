@@ -1,32 +1,35 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\SummitUI.Docs.Client\SummitUI.Docs.Client.csproj"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.1"/>
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SummitUI.Docs.Client\SummitUI.Docs.Client.csproj"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.1"/>
+  </ItemGroup>
 
-    <PropertyGroup>
-        <RunNpmBuild Condition="'$(RunNpmBuild)' == ''">true</RunNpmBuild>
-    </PropertyGroup>
+  <PropertyGroup>
+    <RunNpmBuild Condition="'$(RunNpmBuild)' == ''">true</RunNpmBuild>
+  </PropertyGroup>
 
-    <Target Name="NpmBuild" BeforeTargets="Build" Condition="'$(RunNpmBuild)' == 'true'">
-        <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
-    </Target>
+  <Target Name="NpmBuild" BeforeTargets="Build" Condition="'$(RunNpmBuild)' == 'true'">
+    <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)"/>
+  </Target>
 
-    <!-- Exclude npm-related files from publish -->
-    <ItemGroup>
-      <Content Update="package.json" CopyToPublishDirectory="Never" />
-      <Content Update="package-lock.json" CopyToPublishDirectory="Never" />
-      <None Update="package.json" CopyToPublishDirectory="Never" />
-      <None Update="package-lock.json" CopyToPublishDirectory="Never" />
-    </ItemGroup>
+  <!-- Exclude npm-related files from publish -->
+  <ItemGroup>
+    <Content Update="package.json" CopyToPublishDirectory="Never"/>
+    <Content Update="package-lock.json" CopyToPublishDirectory="Never"/>
+    <None Update="package.json" CopyToPublishDirectory="Never"/>
+    <None Update="package-lock.json" CopyToPublishDirectory="Never"/>
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\docs\datepicker\llms.txt"/>
+  </ItemGroup>
 
 </Project>

@@ -1,14 +1,28 @@
 using System.Globalization;
-
 using Microsoft.AspNetCore.Components;
 
 namespace SummitUI;
 
 /// <summary>
-/// Shared context for DateField components, managing state and segment coordination.
+///     Shared context for DateField components, managing state and segment coordination.
 /// </summary>
 public class DateFieldContext
 {
+    // Cached AM/PM designators from JavaScript Intl.DateTimeFormat
+    private string _amDesignator = "AM";
+
+    // Per-segment state tracking for partial value entry
+    private HashSet<DateFieldSegmentType> _filledSegments = new();
+    private int? _partialDay;
+    private int? _partialHour;
+    private bool? _partialIsPm;
+    private int? _partialMinute;
+    private int? _partialMonth;
+    private int? _partialYear;
+    private string _pmDesignator = "PM";
+
+    // Cached segment labels from JavaScript Intl.DisplayNames
+    private Dictionary<DateFieldSegmentType, string>? _segmentLabels;
     public string Id { get; } = Identifier.NewId();
     public string LabelId => $"{Id}-label";
 
@@ -26,24 +40,15 @@ public class DateFieldContext
     // Format configuration
     public string Format { get; private set; } = "yyyy-MM-dd";
     public string TimeFormat { get; private set; } = "HH:mm";
-    
+
     /// <summary>
-    /// Indicates whether the Format was explicitly set by the user.
-    /// If false, the format will be auto-detected based on locale.
+    ///     Indicates whether the Format was explicitly set by the user.
+    ///     If false, the format will be auto-detected based on locale.
     /// </summary>
     public bool HasExplicitFormat { get; private set; }
 
-    // Calendar system and culture
-    public CalendarSystem CalendarSystem { get; private set; } = CalendarSystem.Gregorian;
+    // Culture for localization
     public CultureInfo Culture { get; private set; } = CultureInfo.CurrentCulture;
-
-    // Cached calendar date info (converted from Gregorian to CalendarSystem)
-    private int? _calendarYear;
-    private int? _calendarMonth;
-    private int? _calendarDay;
-    private string? _calendarEra;
-    private int? _daysInCalendarMonth;
-    private int? _monthsInCalendarYear;
 
     // Validation constraints
     public DateOnly? MinDate { get; private set; }
@@ -60,48 +65,82 @@ public class DateFieldContext
     public EventCallback<DateOnly?> DateValueChanged { get; private set; }
     public EventCallback<DateTime?> DateTimeValueChanged { get; private set; }
 
-    // Cached segment labels from JavaScript Intl.DisplayNames
-    private Dictionary<DateFieldSegmentType, string>? _segmentLabels;
-
-    // Cached AM/PM designators from JavaScript Intl.DateTimeFormat
-    private string _amDesignator = "AM";
-    private string _pmDesignator = "PM";
-
-    // Per-segment state tracking for partial value entry
-    private HashSet<DateFieldSegmentType> _filledSegments = new();
-    private int? _partialYear;
-    private int? _partialMonth;
-    private int? _partialDay;
-    private int? _partialHour;
-    private int? _partialMinute;
-    private bool? _partialIsPm;
-
-    public event Action? OnStateChanged;
-
     /// <summary>
-    /// Gets the effective DateTime value for display purposes.
-    /// Uses the actual value if set, otherwise returns the placeholder.
+    ///     Gets the effective DateTime value for display purposes.
+    ///     Uses the actual value if set, otherwise returns the placeholder.
     /// </summary>
     public DateTime EffectiveDateTime => IsDateTimeMode
         ? DateTimeValue ?? DateTimePlaceholder
-        : (DateValue?.ToDateTime(TimeOnly.MinValue) ?? DatePlaceholder.ToDateTime(TimeOnly.MinValue));
+        : DateValue?.ToDateTime(TimeOnly.MinValue) ?? DatePlaceholder.ToDateTime(TimeOnly.MinValue);
 
     /// <summary>
-    /// Gets whether a value has been set (not null).
+    ///     Gets whether a value has been set (not null).
     /// </summary>
     public bool HasValue => IsDateTimeMode ? DateTimeValue.HasValue : DateValue.HasValue;
 
     /// <summary>
-    /// Checks if a specific segment has a value (either from bound value or partial entry).
+    ///     Gets the current value is out of the min/max range.
+    /// </summary>
+    public bool IsOutOfRange
+    {
+        get
+        {
+            if (IsDateTimeMode)
+            {
+                if (!DateTimeValue.HasValue)
+                {
+                    return false;
+                }
+
+                if (MinDateTime.HasValue && DateTimeValue.Value < MinDateTime.Value)
+                {
+                    return true;
+                }
+
+                if (MaxDateTime.HasValue && DateTimeValue.Value > MaxDateTime.Value)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (!DateValue.HasValue)
+                {
+                    return false;
+                }
+
+                if (MinDate.HasValue && DateValue.Value < MinDate.Value)
+                {
+                    return true;
+                }
+
+                if (MaxDate.HasValue && DateValue.Value > MaxDate.Value)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public event Action? OnStateChanged;
+
+    /// <summary>
+    ///     Checks if a specific segment has a value (either from bound value or partial entry).
     /// </summary>
     public bool SegmentHasValue(DateFieldSegmentType segmentType)
     {
-        if (HasValue) return true;
+        if (HasValue)
+        {
+            return true;
+        }
+
         return _filledSegments.Contains(segmentType);
     }
 
     /// <summary>
-    /// Gets the numeric value for a segment, or null if in placeholder state.
+    ///     Gets the numeric value for a segment, or null if in placeholder state.
     /// </summary>
     public int? GetSegmentValue(DateFieldSegmentType segmentType)
     {
@@ -116,7 +155,7 @@ public class DateFieldContext
             DateFieldSegmentType.Month => _partialMonth,
             DateFieldSegmentType.Day => _partialDay,
             DateFieldSegmentType.Hour => Uses12HourClock() && _partialHour.HasValue
-                ? (_partialHour.Value % 12 == 0 ? 12 : _partialHour.Value % 12)
+                ? _partialHour.Value % 12 == 0 ? 12 : _partialHour.Value % 12
                 : _partialHour,
             DateFieldSegmentType.Minute => _partialMinute,
             _ => null
@@ -124,160 +163,51 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Gets whether the day period is PM, or null if in placeholder state.
+    ///     Gets whether the day period is PM, or null if in placeholder state.
     /// </summary>
     public bool? GetPartialIsPm()
     {
-        if (HasValue) return EffectiveDateTime.Hour >= 12;
+        if (HasValue)
+        {
+            return EffectiveDateTime.Hour >= 12;
+        }
+
         return _partialIsPm;
     }
 
-    #region Calendar System Support
+    #region Date Format Support
 
     /// <summary>
-    /// Sets the cached calendar date info from JavaScript.
-    /// This converts the current Gregorian date to the selected calendar system.
-    /// </summary>
-    public void SetCalendarInfo(int year, int month, int day, string era, int daysInMonth, int monthsInYear)
-    {
-        _calendarYear = year;
-        _calendarMonth = month;
-        _calendarDay = day;
-        _calendarEra = era;
-        _daysInCalendarMonth = daysInMonth;
-        _monthsInCalendarYear = monthsInYear;
-    }
-
-    /// <summary>
-    /// Clears the cached calendar info, forcing a refresh on next access.
-    /// </summary>
-    public void ClearCalendarInfo()
-    {
-        _calendarYear = null;
-        _calendarMonth = null;
-        _calendarDay = null;
-        _calendarEra = null;
-        _daysInCalendarMonth = null;
-        _monthsInCalendarYear = null;
-    }
-
-    /// <summary>
-    /// Gets the segment value in the calendar system.
-    /// For Gregorian, this is the same as the Gregorian value.
-    /// For other calendars, uses the cached converted values.
-    /// </summary>
-    public int? GetCalendarSegmentValue(DateFieldSegmentType segmentType)
-    {
-        // For time segments, always use Gregorian (time is universal)
-        if (segmentType is DateFieldSegmentType.Hour or DateFieldSegmentType.Minute or DateFieldSegmentType.DayPeriod)
-        {
-            return GetSegmentValue(segmentType);
-        }
-
-        // If Gregorian calendar, use standard segment value
-        if (CalendarSystem == CalendarSystem.Gregorian)
-        {
-            return GetSegmentValue(segmentType);
-        }
-
-        // Use cached calendar values if available
-        if (_calendarYear.HasValue && _calendarMonth.HasValue && _calendarDay.HasValue)
-        {
-            return segmentType switch
-            {
-                DateFieldSegmentType.Year => _calendarYear.Value,
-                DateFieldSegmentType.Month => _calendarMonth.Value,
-                DateFieldSegmentType.Day => _calendarDay.Value,
-                _ => null
-            };
-        }
-
-        // Fallback to Gregorian if calendar info not yet loaded
-        return GetSegmentValue(segmentType);
-    }
-
-    /// <summary>
-    /// Gets the era string for the current calendar system.
-    /// Only relevant for calendars with eras (Japanese, etc.)
-    /// </summary>
-    public string? GetCalendarEra() => _calendarEra;
-
-    /// <summary>
-    /// Gets the number of days in the current month for the calendar system.
-    /// </summary>
-    public int GetDaysInCalendarMonth() => _daysInCalendarMonth ?? 31;
-
-    /// <summary>
-    /// Gets the number of months in the current year for the calendar system.
-    /// Important for Hebrew calendar which has 12 or 13 months.
-    /// </summary>
-    public int GetMonthsInCalendarYear() => _monthsInCalendarYear ?? 12;
-
-    /// <summary>
-    /// Gets whether the calendar system has been initialized.
-    /// </summary>
-    public bool HasCalendarInfo => _calendarYear.HasValue;
-
-    /// <summary>
-    /// Gets whether the calendar has eras (like Japanese).
-    /// </summary>
-    public bool HasEra => !string.IsNullOrEmpty(_calendarEra);
-
-    /// <summary>
-    /// Gets the default date format pattern based on the culture's short date pattern.
-    /// Converts the culture's pattern to use consistent format specifiers.
+    ///     Gets the default date format pattern based on the culture's short date pattern.
+    ///     Converts the culture's pattern to use consistent format specifiers.
     /// </summary>
     private static string GetDefaultDateFormat(CultureInfo culture)
     {
-        var pattern = culture.DateTimeFormat.ShortDatePattern;
-        
+        string pattern = culture.DateTimeFormat.ShortDatePattern;
+
         // Normalize the pattern to use consistent format specifiers
         // Replace single-letter patterns with double-letter for consistency
         pattern = pattern.Replace("M", "MM").Replace("MMMM", "MM").Replace("MMM", "MM");
         pattern = pattern.Replace("d", "dd").Replace("dddd", "dd").Replace("ddd", "dd");
-        
+
         // Ensure 4-digit year
         if (!pattern.Contains("yyyy"))
         {
             pattern = pattern.Replace("yy", "yyyy");
         }
-        
+
         return pattern;
     }
 
     #endregion
 
     /// <summary>
-    /// Gets the current value is out of the min/max range.
-    /// </summary>
-    public bool IsOutOfRange
-    {
-        get
-        {
-            if (IsDateTimeMode)
-            {
-                if (!DateTimeValue.HasValue) return false;
-                if (MinDateTime.HasValue && DateTimeValue.Value < MinDateTime.Value) return true;
-                if (MaxDateTime.HasValue && DateTimeValue.Value > MaxDateTime.Value) return true;
-            }
-            else
-            {
-                if (!DateValue.HasValue) return false;
-                if (MinDate.HasValue && DateValue.Value < MinDate.Value) return true;
-                if (MaxDate.HasValue && DateValue.Value > MaxDate.Value) return true;
-            }
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Sets the state for DateOnly mode.
+    ///     Sets the state for DateOnly mode.
     /// </summary>
     public void SetDateState(
         DateOnly? value,
         DateOnly placeholder,
         string? format,
-        CalendarSystem calendarSystem,
         CultureInfo culture,
         bool disabled,
         bool readOnly,
@@ -291,7 +221,6 @@ public class DateFieldContext
         DatePlaceholder = placeholder;
         HasExplicitFormat = format != null;
         Format = format ?? GetDefaultDateFormat(culture);
-        CalendarSystem = calendarSystem;
         Culture = culture;
         TimeFormat = "HH:mm"; // Not used in DateOnly mode, but keep default
         Disabled = disabled;
@@ -315,14 +244,13 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Sets the state for DateTime mode.
+    ///     Sets the state for DateTime mode.
     /// </summary>
     public void SetDateTimeState(
         DateTime? value,
         DateTime placeholder,
         string? format,
         string timeFormat,
-        CalendarSystem calendarSystem,
         CultureInfo culture,
         bool disabled,
         bool readOnly,
@@ -336,7 +264,6 @@ public class DateFieldContext
         DateTimePlaceholder = placeholder;
         HasExplicitFormat = format != null;
         Format = format ?? GetDefaultDateFormat(culture);
-        CalendarSystem = calendarSystem;
         Culture = culture;
         TimeFormat = timeFormat;
         Disabled = disabled;
@@ -360,17 +287,20 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Increments the specified segment type.
+    ///     Increments the specified segment type.
     /// </summary>
     public async Task IncrementSegmentAsync(DateFieldSegmentType segmentType)
     {
-        if (Disabled || ReadOnly) return;
+        if (Disabled || ReadOnly)
+        {
+            return;
+        }
 
         // If we have a full value, update it directly (original behavior)
         if (HasValue)
         {
-            var current = EffectiveDateTime;
-            var newValue = segmentType switch
+            DateTime current = EffectiveDateTime;
+            DateTime newValue = segmentType switch
             {
                 DateFieldSegmentType.Year => current.AddYears(1),
                 DateFieldSegmentType.Month => current.AddMonths(1),
@@ -386,8 +316,8 @@ public class DateFieldContext
         }
 
         // We're in partial state - get effective value for this segment (uses placeholder if not set)
-        var effectiveCurrent = GetEffectiveDateTimeForSegment();
-        var incrementedValue = segmentType switch
+        DateTime effectiveCurrent = GetEffectiveDateTimeForSegment();
+        DateTime incrementedValue = segmentType switch
         {
             DateFieldSegmentType.Year => effectiveCurrent.AddYears(1),
             DateFieldSegmentType.Month => effectiveCurrent.AddMonths(1),
@@ -403,17 +333,20 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Decrements the specified segment type.
+    ///     Decrements the specified segment type.
     /// </summary>
     public async Task DecrementSegmentAsync(DateFieldSegmentType segmentType)
     {
-        if (Disabled || ReadOnly) return;
+        if (Disabled || ReadOnly)
+        {
+            return;
+        }
 
         // If we have a full value, update it directly (original behavior)
         if (HasValue)
         {
-            var current = EffectiveDateTime;
-            var newValue = segmentType switch
+            DateTime current = EffectiveDateTime;
+            DateTime newValue = segmentType switch
             {
                 DateFieldSegmentType.Year => current.AddYears(-1),
                 DateFieldSegmentType.Month => current.AddMonths(-1),
@@ -429,8 +362,8 @@ public class DateFieldContext
         }
 
         // We're in partial state - get effective value for this segment (uses placeholder if not set)
-        var effectiveCurrent = GetEffectiveDateTimeForSegment();
-        var decrementedValue = segmentType switch
+        DateTime effectiveCurrent = GetEffectiveDateTimeForSegment();
+        DateTime decrementedValue = segmentType switch
         {
             DateFieldSegmentType.Year => effectiveCurrent.AddYears(-1),
             DateFieldSegmentType.Month => effectiveCurrent.AddMonths(-1),
@@ -446,18 +379,22 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Gets the effective DateTime for segment operations, using partial values where available.
+    ///     Gets the effective DateTime for segment operations, using partial values where available.
     /// </summary>
     private DateTime GetEffectiveDateTimeForSegment()
     {
-        if (HasValue) return EffectiveDateTime;
+        if (HasValue)
+        {
+            return EffectiveDateTime;
+        }
 
         // Build from partial values, falling back to placeholder
-        var placeholder = EffectiveDateTime;
+        DateTime placeholder = EffectiveDateTime;
         return new DateTime(
             _partialYear ?? placeholder.Year,
             _partialMonth ?? placeholder.Month,
-            Math.Min(_partialDay ?? placeholder.Day, DateTime.DaysInMonth(_partialYear ?? placeholder.Year, _partialMonth ?? placeholder.Month)),
+            Math.Min(_partialDay ?? placeholder.Day,
+                DateTime.DaysInMonth(_partialYear ?? placeholder.Year, _partialMonth ?? placeholder.Month)),
             _partialHour ?? placeholder.Hour,
             _partialMinute ?? placeholder.Minute,
             0
@@ -465,12 +402,12 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Sets a segment value from a DateTime result (used by increment/decrement).
+    ///     Sets a segment value from a DateTime result (used by increment/decrement).
     /// </summary>
     private async Task SetSegmentFromDateTimeAsync(DateFieldSegmentType segmentType, DateTime newValue)
     {
         // Extract the relevant value from the DateTime
-        var value = segmentType switch
+        int value = segmentType switch
         {
             DateFieldSegmentType.Year => newValue.Year,
             DateFieldSegmentType.Month => newValue.Month,
@@ -487,8 +424,8 @@ public class DateFieldContext
             // Also update the hour if we have one
             if (_partialHour.HasValue)
             {
-                var currentHour = _partialHour.Value;
-                var isPm = _partialIsPm.Value;
+                int currentHour = _partialHour.Value;
+                bool isPm = _partialIsPm.Value;
                 if (isPm && currentHour < 12)
                 {
                     _partialHour = currentHour + 12;
@@ -498,6 +435,7 @@ public class DateFieldContext
                     _partialHour = currentHour - 12;
                 }
             }
+
             _filledSegments.Add(DateFieldSegmentType.DayPeriod);
         }
         else
@@ -518,22 +456,25 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Sets a specific segment to a new numeric value.
+    ///     Sets a specific segment to a new numeric value.
     /// </summary>
     public async Task SetSegmentValueAsync(DateFieldSegmentType segmentType, int value)
     {
-        if (Disabled || ReadOnly) return;
+        if (Disabled || ReadOnly)
+        {
+            return;
+        }
 
         // If we already have a full value, update it in place (original behavior)
         if (HasValue)
         {
-            var current = EffectiveDateTime;
+            DateTime current = EffectiveDateTime;
             DateTime newValue;
 
             // For 12-hour clock, need to convert hour value properly
             if (segmentType == DateFieldSegmentType.Hour && Uses12HourClock())
             {
-                var isPm = current.Hour >= 12;
+                bool isPm = current.Hour >= 12;
                 if (value == 12)
                 {
                     value = isPm ? 12 : 0;
@@ -548,11 +489,18 @@ public class DateFieldContext
             {
                 newValue = segmentType switch
                 {
-                    DateFieldSegmentType.Year => new DateTime(value, current.Month, Math.Min(current.Day, DateTime.DaysInMonth(value, current.Month)), current.Hour, current.Minute, 0),
-                    DateFieldSegmentType.Month => new DateTime(current.Year, value, Math.Min(current.Day, DateTime.DaysInMonth(current.Year, value)), current.Hour, current.Minute, 0),
-                    DateFieldSegmentType.Day => new DateTime(current.Year, current.Month, value, current.Hour, current.Minute, 0),
-                    DateFieldSegmentType.Hour => new DateTime(current.Year, current.Month, current.Day, value, current.Minute, 0),
-                    DateFieldSegmentType.Minute => new DateTime(current.Year, current.Month, current.Day, current.Hour, value, 0),
+                    DateFieldSegmentType.Year => new DateTime(value, current.Month,
+                        Math.Min(current.Day, DateTime.DaysInMonth(value, current.Month)), current.Hour, current.Minute,
+                        0),
+                    DateFieldSegmentType.Month => new DateTime(current.Year, value,
+                        Math.Min(current.Day, DateTime.DaysInMonth(current.Year, value)), current.Hour, current.Minute,
+                        0),
+                    DateFieldSegmentType.Day => new DateTime(current.Year, current.Month, value, current.Hour,
+                        current.Minute, 0),
+                    DateFieldSegmentType.Hour => new DateTime(current.Year, current.Month, current.Day, value,
+                        current.Minute, 0),
+                    DateFieldSegmentType.Minute => new DateTime(current.Year, current.Month, current.Day, current.Hour,
+                        value, 0),
                     _ => current
                 };
             }
@@ -571,7 +519,7 @@ public class DateFieldContext
         if (segmentType == DateFieldSegmentType.Hour && Uses12HourClock())
         {
             // Get current PM state, defaulting to placeholder if not set
-            var isPm = _partialIsPm ?? (EffectiveDateTime.Hour >= 12);
+            bool isPm = _partialIsPm ?? EffectiveDateTime.Hour >= 12;
             if (value == 12)
             {
                 value = isPm ? 12 : 0;
@@ -598,11 +546,14 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Clears a specific segment (sets it to placeholder state).
+    ///     Clears a specific segment (sets it to placeholder state).
     /// </summary>
     public async Task ClearSegmentAsync(DateFieldSegmentType segmentType)
     {
-        if (Disabled || ReadOnly) return;
+        if (Disabled || ReadOnly)
+        {
+            return;
+        }
 
         // If we have a full value, decompose it into partial values first
         if (HasValue)
@@ -636,11 +587,11 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Decomposes the current bound value into partial values for segment-level editing.
+    ///     Decomposes the current bound value into partial values for segment-level editing.
     /// </summary>
     private void DecomposeToPartialValues()
     {
-        var dt = EffectiveDateTime;
+        DateTime dt = EffectiveDateTime;
         _partialYear = dt.Year;
         _partialMonth = dt.Month;
         _partialDay = dt.Day;
@@ -650,9 +601,7 @@ public class DateFieldContext
 
         _filledSegments = new HashSet<DateFieldSegmentType>
         {
-            DateFieldSegmentType.Year,
-            DateFieldSegmentType.Month,
-            DateFieldSegmentType.Day
+            DateFieldSegmentType.Year, DateFieldSegmentType.Month, DateFieldSegmentType.Day
         };
 
         if (IsDateTimeMode)
@@ -660,12 +609,14 @@ public class DateFieldContext
             _filledSegments.Add(DateFieldSegmentType.Hour);
             _filledSegments.Add(DateFieldSegmentType.Minute);
             if (Uses12HourClock())
+            {
                 _filledSegments.Add(DateFieldSegmentType.DayPeriod);
+            }
         }
     }
 
     /// <summary>
-    /// Clears a specific partial value.
+    ///     Clears a specific partial value.
     /// </summary>
     private void ClearPartialValue(DateFieldSegmentType segmentType)
     {
@@ -681,7 +632,7 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Sets a specific partial value.
+    ///     Sets a specific partial value.
     /// </summary>
     private void SetPartialValue(DateFieldSegmentType segmentType, int value)
     {
@@ -696,33 +647,51 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Checks if all required segments for the current mode are filled.
+    ///     Checks if all required segments for the current mode are filled.
     /// </summary>
     private bool AllRequiredSegmentsFilled()
     {
         // Date segments always required
-        if (!_filledSegments.Contains(DateFieldSegmentType.Year)) return false;
-        if (!_filledSegments.Contains(DateFieldSegmentType.Month)) return false;
-        if (!_filledSegments.Contains(DateFieldSegmentType.Day)) return false;
+        if (!_filledSegments.Contains(DateFieldSegmentType.Year))
+        {
+            return false;
+        }
+
+        if (!_filledSegments.Contains(DateFieldSegmentType.Month))
+        {
+            return false;
+        }
+
+        if (!_filledSegments.Contains(DateFieldSegmentType.Day))
+        {
+            return false;
+        }
 
         // Time segments required in DateTime mode
         if (IsDateTimeMode)
         {
-            if (!_filledSegments.Contains(DateFieldSegmentType.Hour)) return false;
-            if (!_filledSegments.Contains(DateFieldSegmentType.Minute)) return false;
+            if (!_filledSegments.Contains(DateFieldSegmentType.Hour))
+            {
+                return false;
+            }
+
+            if (!_filledSegments.Contains(DateFieldSegmentType.Minute))
+            {
+                return false;
+            }
         }
 
         return true;
     }
 
     /// <summary>
-    /// Attempts to compose partial values into a full DateTime and set it as the bound value.
+    ///     Attempts to compose partial values into a full DateTime and set it as the bound value.
     /// </summary>
     private async Task TryComposeAndSetValueAsync()
     {
         try
         {
-            var newValue = new DateTime(
+            DateTime newValue = new(
                 _partialYear!.Value,
                 _partialMonth!.Value,
                 Math.Min(_partialDay!.Value, DateTime.DaysInMonth(_partialYear.Value, _partialMonth.Value)),
@@ -742,7 +711,7 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Clears all partial state values.
+    ///     Clears all partial state values.
     /// </summary>
     private void ClearPartialState()
     {
@@ -756,30 +725,34 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Sets the AM/PM period.
+    ///     Sets the AM/PM period.
     /// </summary>
     public async Task SetDayPeriodAsync(string period)
     {
-        if (Disabled || ReadOnly) return;
+        if (Disabled || ReadOnly)
+        {
+            return;
+        }
 
-        var wantPm = period.Equals("PM", StringComparison.OrdinalIgnoreCase);
+        bool wantPm = period.Equals("PM", StringComparison.OrdinalIgnoreCase);
 
         // If we have a full value, update it directly (original behavior)
         if (HasValue)
         {
-            var current = EffectiveDateTime;
-            var isCurrentlyPm = current.Hour >= 12;
+            DateTime current = EffectiveDateTime;
+            bool isCurrentlyPm = current.Hour >= 12;
 
             if (isCurrentlyPm != wantPm)
             {
-                var newValue = wantPm ? current.AddHours(12) : current.AddHours(-12);
+                DateTime newValue = wantPm ? current.AddHours(12) : current.AddHours(-12);
                 await UpdateValueAsync(newValue);
             }
+
             return;
         }
 
         // We're in partial state
-        var isCurrentlyPmPartial = _partialIsPm ?? (EffectiveDateTime.Hour >= 12);
+        bool isCurrentlyPmPartial = _partialIsPm ?? EffectiveDateTime.Hour >= 12;
 
         if (isCurrentlyPmPartial != wantPm)
         {
@@ -828,18 +801,16 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Determines if the time format uses 12-hour clock.
-    /// Checks for lowercase 'h' in the TimeFormat pattern.
+    ///     Determines if the time format uses 12-hour clock.
+    ///     Checks for lowercase 'h' in the TimeFormat pattern.
     /// </summary>
-    public bool Uses12HourClock()
-    {
+    public bool Uses12HourClock() =>
         // Look for lowercase 'h' which indicates 12-hour format
         // Uppercase 'H' indicates 24-hour format
-        return TimeFormat.Contains('h');
-    }
+        TimeFormat.Contains('h');
 
     /// <summary>
-    /// Gets the time separator from the TimeFormat pattern.
+    ///     Gets the time separator from the TimeFormat pattern.
     /// </summary>
     public string GetTimeSeparator()
     {
@@ -852,31 +823,28 @@ public class DateFieldContext
                 return c.ToString();
             }
         }
+
         return ":"; // Default fallback
     }
 
     /// <summary>
-    /// Gets the AM designator.
+    ///     Gets the AM designator.
     /// </summary>
     public string GetAmDesignator() => _amDesignator;
 
     /// <summary>
-    /// Gets the PM designator.
+    ///     Gets the PM designator.
     /// </summary>
     public string GetPmDesignator() => _pmDesignator;
 
     public void NotifyStateChanged() => OnStateChanged?.Invoke();
 
-    public void SetInvalid(bool invalid)
-    {
-        Invalid = invalid;
-    }
+    public void SetInvalid(bool invalid) => Invalid = invalid;
 
     /// <summary>
-    /// Sets the cached segment labels from JavaScript Intl.DisplayNames.
+    ///     Sets the cached segment labels from JavaScript Intl.DisplayNames.
     /// </summary>
-    public void SetSegmentLabels(Dictionary<string, string> labels)
-    {
+    public void SetSegmentLabels(Dictionary<string, string> labels) =>
         _segmentLabels = new Dictionary<DateFieldSegmentType, string>
         {
             [DateFieldSegmentType.Year] = labels.GetValueOrDefault("year", "Year"),
@@ -886,10 +854,9 @@ public class DateFieldContext
             [DateFieldSegmentType.Minute] = labels.GetValueOrDefault("minute", "Minute"),
             [DateFieldSegmentType.DayPeriod] = labels.GetValueOrDefault("dayPeriod", "AM/PM")
         };
-    }
 
     /// <summary>
-    /// Sets the cached AM/PM designators from JavaScript Intl.DateTimeFormat.
+    ///     Sets the cached AM/PM designators from JavaScript Intl.DateTimeFormat.
     /// </summary>
     public void SetDayPeriodDesignators(string am, string pm)
     {
@@ -898,8 +865,8 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Gets the localized placeholder for a segment type.
-    /// Uses the static LocalePlaceholders dictionary based on current Culture.
+    ///     Gets the localized placeholder for a segment type.
+    ///     Uses the static LocalePlaceholders dictionary based on current Culture.
     /// </summary>
     public string GetSegmentPlaceholder(DateFieldSegmentType type)
     {
@@ -910,7 +877,7 @@ public class DateFieldContext
         }
 
         // Get placeholders from C# dictionary based on culture
-        var placeholders = LocalePlaceholders.GetPlaceholders(Culture.Name);
+        Dictionary<string, string> placeholders = LocalePlaceholders.GetPlaceholders(Culture.Name);
 
         return type switch
         {
@@ -924,12 +891,12 @@ public class DateFieldContext
     }
 
     /// <summary>
-    /// Gets the localized label for a segment type.
-    /// Falls back to English if labels haven't been loaded yet.
+    ///     Gets the localized label for a segment type.
+    ///     Falls back to English if labels haven't been loaded yet.
     /// </summary>
     public string GetSegmentLabel(DateFieldSegmentType type)
     {
-        if (_segmentLabels != null && _segmentLabels.TryGetValue(type, out var label))
+        if (_segmentLabels != null && _segmentLabels.TryGetValue(type, out string? label))
         {
             return label;
         }
@@ -949,7 +916,7 @@ public class DateFieldContext
 }
 
 /// <summary>
-/// Represents the state of a single date field segment.
+///     Represents the state of a single date field segment.
 /// </summary>
 public class DateFieldSegmentState
 {

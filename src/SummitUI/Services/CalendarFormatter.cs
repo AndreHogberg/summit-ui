@@ -7,17 +7,6 @@ namespace SummitUI.Services;
 /// </summary>
 public sealed class CalendarFormatter
 {
-    private readonly CalendarProvider _calendarProvider;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CalendarFormatter"/> class.
-    /// </summary>
-    /// <param name="calendarProvider">The calendar provider for calendar system operations.</param>
-    public CalendarFormatter(CalendarProvider calendarProvider)
-    {
-        _calendarProvider = calendarProvider;
-    }
-
     /// <summary>
     /// Gets the first day of the week for the specified culture.
     /// </summary>
@@ -46,140 +35,66 @@ public sealed class CalendarFormatter
     }
 
     /// <summary>
-    /// Gets the localized month name for the specified calendar date.
+    /// Gets the localized month name for the specified date.
     /// </summary>
     /// <param name="culture">The culture to use for formatting.</param>
-    /// <param name="gregorianDate">The Gregorian date.</param>
-    /// <param name="calendarSystem">The calendar system for display.</param>
+    /// <param name="date">The date.</param>
     /// <returns>The localized month name.</returns>
-    public string GetMonthName(CultureInfo culture, DateOnly gregorianDate, CalendarSystem calendarSystem)
+    public string GetMonthName(CultureInfo culture, DateOnly date)
     {
-        var calendar = _calendarProvider.GetCalendar(calendarSystem);
-        var formatCulture = CreateCultureWithCalendar(culture, calendar);
-
-        var dateTime = gregorianDate.ToDateTime(TimeOnly.MinValue);
-        return dateTime.ToString("MMMM", formatCulture);
+        var dateTime = date.ToDateTime(TimeOnly.MinValue);
+        return dateTime.ToString("MMMM", culture);
     }
 
     /// <summary>
     /// Gets the localized month and year heading.
     /// </summary>
     /// <param name="culture">The culture to use for formatting.</param>
-    /// <param name="gregorianDate">The Gregorian date (first day of month).</param>
-    /// <param name="calendarSystem">The calendar system for display.</param>
+    /// <param name="date">The date (first day of month).</param>
     /// <returns>The localized month and year string.</returns>
-    public string GetMonthYearHeading(CultureInfo culture, DateOnly gregorianDate, CalendarSystem calendarSystem)
+    public string GetMonthYearHeading(CultureInfo culture, DateOnly date)
     {
-        var calendar = _calendarProvider.GetCalendar(calendarSystem);
-        var formatCulture = CreateCultureWithCalendar(culture, calendar);
-
-        var dateTime = gregorianDate.ToDateTime(TimeOnly.MinValue);
+        var dateTime = date.ToDateTime(TimeOnly.MinValue);
 
         // Use year/month format pattern, or fall back to "MMMM yyyy"
-        return dateTime.ToString("Y", formatCulture);
+        return dateTime.ToString("Y", culture);
     }
 
     /// <summary>
     /// Gets the full localized date string for accessibility (aria-label).
     /// </summary>
     /// <param name="culture">The culture to use for formatting.</param>
-    /// <param name="gregorianDate">The Gregorian date.</param>
-    /// <param name="calendarSystem">The calendar system for display.</param>
+    /// <param name="date">The date.</param>
     /// <returns>The full localized date string.</returns>
-    public string GetFullDateString(CultureInfo culture, DateOnly gregorianDate, CalendarSystem calendarSystem)
+    public string GetFullDateString(CultureInfo culture, DateOnly date)
     {
-        var calendar = _calendarProvider.GetCalendar(calendarSystem);
-        var formatCulture = CreateCultureWithCalendar(culture, calendar);
-
-        var dateTime = gregorianDate.ToDateTime(TimeOnly.MinValue);
+        var dateTime = date.ToDateTime(TimeOnly.MinValue);
 
         // "D" is the long date pattern (e.g., "Friday, January 7, 2026")
-        return dateTime.ToString("D", formatCulture);
+        return dateTime.ToString("D", culture);
     }
 
     /// <summary>
     /// Formats a date using the specified format pattern.
     /// </summary>
     /// <param name="culture">The culture to use for formatting.</param>
-    /// <param name="gregorianDate">The Gregorian date.</param>
+    /// <param name="date">The date.</param>
     /// <param name="format">The format pattern.</param>
-    /// <param name="calendarSystem">The calendar system for display.</param>
     /// <returns>The formatted date string.</returns>
-    public string FormatDate(CultureInfo culture, DateOnly gregorianDate, string format, CalendarSystem calendarSystem)
+    public string FormatDate(CultureInfo culture, DateOnly date, string format)
     {
-        var calendar = _calendarProvider.GetCalendar(calendarSystem);
-        var formatCulture = CreateCultureWithCalendar(culture, calendar);
-
-        var dateTime = gregorianDate.ToDateTime(TimeOnly.MinValue);
-        return dateTime.ToString(format, formatCulture);
+        var dateTime = date.ToDateTime(TimeOnly.MinValue);
+        return dateTime.ToString(format, culture);
     }
 
     /// <summary>
-    /// Gets the month names for the specified culture and calendar.
+    /// Gets the month names for the specified culture.
     /// </summary>
     /// <param name="culture">The culture to use for formatting.</param>
-    /// <param name="calendarSystem">The calendar system.</param>
     /// <returns>Array of month names (1-indexed, so index 0 is empty or January depending on culture).</returns>
-    public string[] GetMonthNames(CultureInfo culture, CalendarSystem calendarSystem)
+    public string[] GetMonthNames(CultureInfo culture)
     {
-        var calendar = _calendarProvider.GetCalendar(calendarSystem);
-        var formatCulture = CreateCultureWithCalendar(culture, calendar);
-
-        return formatCulture.DateTimeFormat.MonthNames;
-    }
-
-    /// <summary>
-    /// Creates a clone of the culture with the specified calendar set.
-    /// </summary>
-    private static CultureInfo CreateCultureWithCalendar(CultureInfo culture, Calendar calendar)
-    {
-        // Always try to set the calendar on a cloned culture
-        var clone = (CultureInfo)culture.Clone();
-        
-        try
-        {
-            clone.DateTimeFormat.Calendar = calendar;
-            return clone;
-        }
-        catch (ArgumentException)
-        {
-            // The calendar is not in the culture's OptionalCalendars list.
-            // Try to find a culture that natively supports this calendar.
-            var fallbackCulture = FindCultureForCalendar(calendar);
-            if (fallbackCulture != null)
-            {
-                var fallbackClone = (CultureInfo)fallbackCulture.Clone();
-                try
-                {
-                    fallbackClone.DateTimeFormat.Calendar = calendar;
-                    return fallbackClone;
-                }
-                catch (ArgumentException)
-                {
-                    // Still failed, return original culture
-                }
-            }
-            
-            return culture;
-        }
-    }
-    
-    /// <summary>
-    /// Finds a culture that natively supports the given calendar type.
-    /// </summary>
-    private static CultureInfo? FindCultureForCalendar(Calendar calendar)
-    {
-        return calendar switch
-        {
-            HebrewCalendar => new CultureInfo("he-IL"),
-            HijriCalendar => new CultureInfo("ar-SA"),
-            UmAlQuraCalendar => new CultureInfo("ar-SA"),
-            PersianCalendar => new CultureInfo("fa-IR"),
-            JapaneseCalendar => new CultureInfo("ja-JP"),
-            ThaiBuddhistCalendar => new CultureInfo("th-TH"),
-            TaiwanCalendar => new CultureInfo("zh-TW"),
-            _ => null
-        };
+        return culture.DateTimeFormat.MonthNames;
     }
 }
 

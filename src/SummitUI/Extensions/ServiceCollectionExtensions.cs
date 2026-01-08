@@ -25,8 +25,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<FloatingJsInterop>();
         services.AddScoped<MediaQueryJsInterop>();
 
-        // Calendar services (culture-based, no JS dependency)
-        services.AddSingleton<CalendarProvider>();
+        // Calendar formatting service (culture-based, no JS dependency)
         services.AddSingleton<CalendarFormatter>();
 
         // Component-specific services

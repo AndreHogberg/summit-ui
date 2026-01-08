@@ -75,44 +75,15 @@
         </div>
     </SuSection>
 
-    @* .NET Calendar System Integration *@
-    <SuSection Title=".NET Calendar System Integration">
+    @* .NET Localization Support *@
+    <SuSection Title=".NET Localization Support">
         <SuText Muted="true">
             SummitUI uses .NET's <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code> 
-            namespace for all calendar calculations and date formatting. This provides native support for multiple 
-            calendar systems without requiring JavaScript dependencies.
+            namespace for all date formatting and localization. This provides native support for locale-aware formatting
+            without requiring JavaScript dependencies.
         </SuText>
 
         <div class="flex flex-col gap-4 mt-4">
-            <SuCard class="p-4 border-l-4 border-l-green-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">Native .NET Calendar Support</SuHeading>
-                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    Calendar components use <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo</code> 
-                    and .NET's built-in calendar classes (<code class="text-xs bg-su-muted px-1 py-0.5 rounded">JapaneseCalendar</code>, 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">PersianCalendar</code>, 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">HebrewCalendar</code>, etc.) for all date math 
-                    and formatting. No JavaScript interop is needed for calendar operations.
-                </SuText>
-            </SuCard>
-
-            <SuCard class="p-4 border-l-4 border-l-green-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">8 Calendar Systems</SuHeading>
-                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    SummitUI supports all calendar systems available in .NET's <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code>: 
-                    Gregorian, Japanese (era-based), Buddhist, Taiwan (ROC), Persian, Islamic (Umm al-Qura and Civil), and Hebrew.
-                </SuText>
-            </SuCard>
-
-            <SuCard class="p-4 border-l-4 border-l-green-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">Reduced Bundle Size</SuHeading>
-                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    By using .NET's native calendar support instead of JavaScript libraries like 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">@@internationalized/date</code>, the JavaScript 
-                    bundle is reduced by ~45 KB. Calendar components only need minimal JavaScript for DOM operations 
-                    (keyboard event handling and focus management).
-                </SuText>
-            </SuCard>
-
             <SuCard class="p-4 border-l-4 border-l-green-500">
                 <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">CultureInfo Parameter</SuHeading>
                 <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
@@ -122,16 +93,16 @@
                     This integrates naturally with ASP.NET Core's localization infrastructure.
                 </SuText>
             </SuCard>
-        </div>
 
-        <SuAlert Variant="SuAlertVariant.Warning" class="mt-4">
-            <div class="text-sm">
-                <strong class="text-su-foreground">Value Binding Remains Gregorian:</strong> While SummitUI displays dates 
-                in the selected calendar system, the bound <code class="text-xs bg-su-muted px-1 py-0.5 rounded">DateOnly</code> 
-                or <code class="text-xs bg-su-muted px-1 py-0.5 rounded">DateTime</code> value is always Gregorian. This ensures 
-                compatibility with databases, APIs, and .NET date operations.
-            </div>
-        </SuAlert>
+            <SuCard class="p-4 border-l-4 border-l-green-500">
+                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">Locale-Aware Formatting</SuHeading>
+                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
+                    Date formats are automatically detected from the culture's 
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">ShortDatePattern</code>. For example, Swedish users see
+                    "åååå-MM-dd" format, while US users see "MM/dd/yyyy".
+                </SuText>
+            </SuCard>
+        </div>
     </SuSection>
 
     @* Build Tools *@
