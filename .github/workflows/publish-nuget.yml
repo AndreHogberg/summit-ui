@@ -72,9 +72,10 @@ jobs:
         run: dotnet build src/SummitUI/SummitUI.csproj --configuration Release --no-restore
 
       - name: Create NuGet package
-        run: dotnet pack src/SummitUI/SummitUI.csproj --configuration Release --no-build --output ./nupkg
+        run: dotnet pack src/SummitUI/SummitUI.csproj --configuration Release --output ./nupkg
 
       - name: Upload NuGet package artifact
+
         uses: actions/upload-artifact@v4
         with:
           name: nuget-package
