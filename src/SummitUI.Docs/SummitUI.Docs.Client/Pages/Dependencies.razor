@@ -10,7 +10,7 @@
         </div>
         <SuHeading Level="SuHeadingLevel.H1">JavaScript Dependencies</SuHeading>
         <SuText Lead="true" Muted="true">
-            SummitUI uses a small set of JavaScript dependencies for functionality that cannot be achieved 
+            SummitUI uses a small set of JavaScript dependencies for functionality that cannot be achieved
             with pure C# or that would require significantly more code to implement correctly.
         </SuText>
     </div>
@@ -18,15 +18,15 @@
     @* Philosophy *@
     <SuSection Title="Our Approach">
         <SuText Muted="true">
-            SummitUI follows a "C# first" philosophy. We prefer implementing logic in C# whenever possible, 
-            reserving JavaScript for tasks that are impossible in C# or require access to browser APIs not 
-            available through Blazor's standard interop. All JavaScript dependencies are bundled locally - 
+            SummitUI follows a "C# first" philosophy. We prefer implementing logic in C# whenever possible,
+            reserving JavaScript for tasks that are impossible in C# or require access to browser APIs not
+            available through Blazor's standard interop. All JavaScript dependencies are bundled locally -
             we never use external CDNs.
         </SuText>
         <SuAlert>
             <div class="text-sm">
-                <strong class="text-su-foreground">No CDN Dependencies:</strong> All JavaScript is bundled into a single 
-                <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> file and served from your application. 
+                <strong class="text-su-foreground">No CDN Dependencies:</strong> All JavaScript is bundled into a single
+                <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> file and served from your application.
                 This eliminates external network dependencies and ensures offline functionality.
             </div>
         </SuAlert>
@@ -46,7 +46,7 @@
                         <SuBadge Variant="SuBadgeVariant.Secondary" Size="SuSize.Small">~15 KB</SuBadge>
                     </div>
                     <SuText Muted="true">
-                        Floating UI provides intelligent positioning for floating elements like popovers, 
+                        Floating UI provides intelligent positioning for floating elements like popovers,
                         dropdowns, and tooltips. It handles complex positioning logic including:
                     </SuText>
                     <ul class="grid gap-2 text-sm text-su-muted-foreground">
@@ -75,42 +75,12 @@
         </div>
     </SuSection>
 
-    @* .NET Localization Support *@
-    <SuSection Title=".NET Localization Support">
-        <SuText Muted="true">
-            SummitUI uses .NET's <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code> 
-            namespace for all date formatting and localization. This provides native support for locale-aware formatting
-            without requiring JavaScript dependencies.
-        </SuText>
-
-        <div class="flex flex-col gap-4 mt-4">
-            <SuCard class="p-4 border-l-4 border-l-green-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">CultureInfo Parameter</SuHeading>
-                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    Calendar components accept a <code class="text-xs bg-su-muted px-1 py-0.5 rounded">Culture</code> parameter 
-                    of type <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo?</code>. When not specified, 
-                    components default to <code class="text-xs bg-su-muted px-1 py-0.5 rounded">CultureInfo.CurrentCulture</code>. 
-                    This integrates naturally with ASP.NET Core's localization infrastructure.
-                </SuText>
-            </SuCard>
-
-            <SuCard class="p-4 border-l-4 border-l-green-500">
-                <SuHeading Level="SuHeadingLevel.H4" class="text-green-600 dark:text-green-400">Locale-Aware Formatting</SuHeading>
-                <SuText Muted="true" Size="SuTextSize.Small" class="mt-2">
-                    Date formats are automatically detected from the culture's 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">ShortDatePattern</code>. For example, Swedish users see
-                    "åååå-MM-dd" format, while US users see "MM/dd/yyyy".
-                </SuText>
-            </SuCard>
-        </div>
-    </SuSection>
-
     @* Build Tools *@
     <SuSection Title="Build Tools">
         <SuText Muted="true">
             In addition to runtime dependencies, SummitUI uses build-time tools for bundling:
         </SuText>
-        
+
         <SuCard class="p-5 mt-4">
             <div class="flex flex-col gap-4">
                 <div class="flex items-start justify-between">
@@ -120,8 +90,8 @@
                     </div>
                 </div>
                 <SuText Muted="true">
-                    esbuild bundles and minifies all JavaScript modules into a single 
-                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> file. It's extremely fast 
+                    esbuild bundles and minifies all JavaScript modules into a single
+                    <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> file. It's extremely fast
                     (~10ms build times) and produces highly optimized output with tree-shaking to eliminate unused code.
                 </SuText>
             </div>
@@ -131,11 +101,11 @@
     @* Bundle Size *@
     <SuSection Title="Total Bundle Size">
         <SuText Muted="true">
-            The complete bundled and minified <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code> 
-            file is approximately <strong>38 KB</strong> uncompressed. With standard web server compression 
+            The complete bundled and minified <code class="text-xs bg-su-muted px-1 py-0.5 rounded">summitui.js</code>
+            file is approximately <strong>38 KB</strong> uncompressed. With standard web server compression
             (gzip/brotli), this reduces to approximately <strong>10-12 KB</strong> over the wire.
         </SuText>
-        
+
         <div class="mt-4 p-4 bg-su-muted/50 rounded-lg">
             <div class="flex flex-col gap-2 text-sm">
                 <div class="flex justify-between">
@@ -159,9 +129,9 @@
         </div>
 
         <SuText Muted="true" Size="SuTextSize.Small" class="mt-4">
-            Calendar calculations and date formatting are handled entirely by .NET's 
-            <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code> namespace. 
-            JavaScript is only used for DOM operations that cannot be performed in C# (keyboard event 
+            Calendar calculations and date formatting are handled entirely by .NET's
+            <code class="text-xs bg-su-muted px-1 py-0.5 rounded">System.Globalization</code> namespace.
+            JavaScript is only used for DOM operations that cannot be performed in C# (keyboard event
             interception, focus management).
         </SuText>
     </SuSection>

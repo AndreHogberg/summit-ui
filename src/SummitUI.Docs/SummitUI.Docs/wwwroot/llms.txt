@@ -7,8 +7,11 @@ SummitUI is a headless component library for Blazor that provides high-quality, 
 ## Components
 
 - [Accordion](https://www.summitui.com/docs/accordion/llms.txt)
+- [AlertDialog](https://www.summitui.com/docs/alertdialog/llms.txt)
+- [Calendar](https://www.summitui.com/docs/calendar/llms.txt)
 - [Checkbox](https://www.summitui.com/docs/checkbox/llms.txt)
 - [DateField](https://www.summitui.com/docs/datefield/llms.txt)
+- [Dialog](https://www.summitui.com/docs/dialog/llms.txt)
 - [DropdownMenu](https://www.summitui.com/docs/dropdownmenu/llms.txt)
 - [FocusTrap](https://www.summitui.com/docs/focustrap/llms.txt)
 - [Popover](https://www.summitui.com/docs/popover/llms.txt)
@@ -16,10 +19,15 @@ SummitUI is a headless component library for Blazor that provides high-quality, 
 - [Switch](https://www.summitui.com/docs/switch/llms.txt)
 - [Tabs](https://www.summitui.com/docs/tabs/llms.txt)
 
+## Guides
+
+- [DatePicker Composition](https://www.summitui.com/docs/guides/datepicker-composition/llms.txt)
+- [Drawer Composition](https://www.summitui.com/docs/guides/drawer-composition/llms.txt)
+
+
 ## Getting Started
 
 - [Installation](https://www.summitui.com/installation)
-- [Agent Skills](https://www.summitui.com/agent-skills)
 
 ## Principles
 
