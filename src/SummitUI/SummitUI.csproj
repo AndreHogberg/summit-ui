@@ -8,7 +8,7 @@
 
         <!-- NuGet Metadata -->
         <PackageId>SummitUI</PackageId>
-        <Version>0.0.5-alpha</Version>
+        <Version>0.0.6-alpha</Version>
         <Authors>André Högberg</Authors>
         <Company>André Högberg</Company>
         <Description>A headless Blazor component library focused on accessibility and customization. SummitUI provides unstyled, WCAG-compliant components that give you full control over your application's design.</Description>
