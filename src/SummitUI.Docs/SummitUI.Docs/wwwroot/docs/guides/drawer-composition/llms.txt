@@ -1,0 +1,81 @@
+# Drawer Composition
+
+Learn how to create drawers and side-panels by composing the Dialog component with Tailwind CSS.
+
+## Introduction
+
+SummitUI doesn't provide a standalone "Drawer" component. Instead, we provide a robust, WCAG-compliant Dialog component that can be styled to behave as a drawer. This approach gives you full control over positioning, dimensions, and animations.
+
+## Basic Left Drawer
+
+A standard drawer typically slides in from the left and occupies the full height of the viewport. We use fixed top-0 left-0 h-screen for positioning and Tailwind's animation utilities for the entrance/exit.
+
+```razor
+<DialogRoot>
+    <DialogTrigger class="...">Open Left Drawer</DialogTrigger>
+    <DialogPortal>
+        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+        <DialogContent class="fixed top-0 left-0 z-50 h-screen w-80 bg-su-background border-r border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300">
+            <DialogTitle>Left Drawer</DialogTitle>
+            <!-- Content -->
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>
+```
+
+## Positioning & Directions
+
+By changing a few Tailwind classes, you can anchor the drawer to any edge of the screen.
+
+Example classes for different directions:
+
+```razor
+<!-- Right Drawer -->
+<DialogContent class="fixed top-0 right-0 h-screen w-80 ... data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right" />
+
+<!-- Top Drawer -->
+<DialogContent class="fixed top-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-top data-[state=closed]:slide-out-to-top" />
+
+<!-- Bottom Drawer -->
+<DialogContent class="fixed bottom-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom" />
+```
+
+## Creating a Reusable Component
+
+If you plan to use drawers frequently, it's recommended to create a reusable component that handles the boilerplate styling.
+
+```razor
+// MyDrawer.razor
+<DialogRoot @bind-Open="Open">
+    <DialogPortal>
+        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm ..." />
+        <DialogContent class="@GetContentClass()">
+            <DialogTitle class="sr-only">@Title</DialogTitle>
+            @ChildContent
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public string Title { get; set; } = "Drawer";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public DrawerSide Side { get; set; } = DrawerSide.Left;
+
+    private string GetContentClass() => Side switch {
+        DrawerSide.Right => "fixed top-0 right-0 h-screen w-80 ... data-[state=open]:slide-in-from-right",
+        DrawerSide.Top => "fixed top-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-top",
+        DrawerSide.Bottom => "fixed bottom-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-bottom",
+        _ => "fixed top-0 left-0 h-screen w-80 ... data-[state=open]:slide-in-from-left"
+    };
+}
+```
+
+## Accessibility Best Practices
+
+When building drawers with Dialog, remember these key accessibility points:
+
+- DialogTitle is required: Even if you don't want a visible title, use DialogTitle with the sr-only class to provide a label for screen readers.
+- Focus Management: SummitUI automatically handles focus trapping and returns focus to the trigger when the drawer closes.
+- Keyboard Interaction: Users can close the drawer by pressing Esc.

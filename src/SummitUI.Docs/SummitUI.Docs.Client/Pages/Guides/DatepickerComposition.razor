@@ -1,4 +1,5 @@
 @page "/docs/guides/datepicker-composition"
+@using System.ComponentModel.DataAnnotations
 @using SummitUI.Docs.Client.Pages.Guides.Components
 @rendermode InteractiveWebAssembly
 @layout DocsLayout
@@ -8,8 +9,9 @@
 <div class="flex flex-col gap-12">
     @* Header *@
     <div class="flex flex-col gap-4">
-        <div>
+        <div class="flex items-center justify-between">
             <SuBadge Variant="SuBadgeVariant.Outline">Guide</SuBadge>
+            <SuPromptButton ComponentName="Datepicker Composition" Url="/docs/guides/datepicker-composition" />
         </div>
         <SuHeading Level="SuHeadingLevel.H1">
             Datepicker Composition
@@ -22,22 +24,28 @@
     @* Introduction *@
     <SuSection>
         <SuText>
-            SummitUI's headless architecture allows you to combine <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Calendar</code>, <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Popover</code>, and <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">DateField</code> components to create various datepicker experiences. This guide demonstrates two common patterns.
+            SummitUI's headless architecture allows you to combine <code
+                class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Calendar</code>, <code
+                class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Popover</code>, and <code
+                class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">DateField</code> components to create various
+            datepicker experiences. This guide demonstrates two common patterns and how to integrate them with <code
+                class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">EditForm</code>.
         </SuText>
     </SuSection>
 
     @* Pattern 1: Popover + Calendar *@
     <SuSection Title="Popover Datepicker">
         <SuText class="mb-6">
-            A simple datepicker button that opens a calendar popover. This pattern is great for forms where space is limited.
+            A simple datepicker button that opens a calendar popover. This pattern is great for forms where space is
+            limited.
         </SuText>
 
         <SuCard class="mb-6">
             <div class="p-6 flex justify-center border-b border-su-border bg-su-background/50">
-                <DatepickerPopover />
+                <DatepickerPopover/>
             </div>
             <div class="bg-su-muted/30">
-                <SuCodeBlock Code="@popoverExampleCode" Language="razor" />
+                <SuCodeBlock Code="@popoverExampleCode" Language="razor"/>
             </div>
         </SuCard>
     </SuSection>
@@ -45,21 +53,95 @@
     @* Pattern 2: DateField + Popover + Calendar *@
     <SuSection Title="DateField with Calendar">
         <SuText class="mb-6">
-            Combines a keyboard-friendly <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">DateField</code> input with a calendar button. This offers the best accessibility and usability, allowing users to type the date or pick it visually.
+            Combines a keyboard-friendly <code
+                class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">DateField</code> input with a calendar
+            button. This offers the best accessibility and usability, allowing users to type the date or pick it
+            visually.
         </SuText>
 
         <SuCard class="mb-6">
             <div class="p-6 flex justify-center border-b border-su-border bg-su-background/50">
-                <DatepickerWithField />
+                <DatepickerWithField/>
             </div>
             <div class="bg-su-muted/30">
-                <SuCodeBlock Code="@fieldExampleCode" Language="razor" />
+                <SuCodeBlock Code="@fieldExampleCode" Language="razor"/>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* EditForm Integration *@
+    <SuSection Title="EditForm Integration">
+        <SuText class="mb-6">
+            While <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">DateField</code> works with <code
+                class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">EditForm</code> out of the box (as it acts as
+            an input), the Popover+Calendar pattern requires a custom wrapper to work as a form component.
+        </SuText>
+
+        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Native DateField Support</SuHeading>
+        <SuText class="mb-6">
+            The <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">DateField</code> component implements
+            <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">InputBase</code> logic internally when you
+            use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">@@bind-Value</code>, making it fully
+            compatible with Blazor's validation system.
+        </SuText>
+        <div class="bg-su-muted/30 mb-8 rounded-md border border-su-border">
+            <SuCodeBlock Code="@dateFieldFormCode" Language="razor"/>
+        </div>
+
+        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Custom InputBase Wrapper</SuHeading>
+        <SuText class="mb-6">
+            To use the Popover+Calendar pattern in an <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">EditForm</code>,
+            create a wrapper component that inherits from <code
+                class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">InputBase&lt;DateOnly?&gt;</code>.
+        </SuText>
+
+        <SuCard class="mb-6">
+            <div class="p-6 flex flex-col gap-4 border-b border-su-border bg-su-background/50">
+                <EditForm Model="@_formModel" OnValidSubmit="HandleValidSubmit"
+                          class="space-y-4 w-full max-w-sm mx-auto">
+                    <DataAnnotationsValidator/>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-sm font-medium">Date of Birth</label>
+                        <FormDatepicker @bind-Value="_formModel.DateOfBirth" class="w-full"/>
+                        <ValidationMessage For="@(() => _formModel.DateOfBirth)" class="text-sm text-su-destructive"/>
+                    </div>
+                    <button type="submit"
+                            class="bg-su-primary text-su-primary-foreground hover:bg-su-primary/90 h-10 px-4 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2">
+                        Submit
+                    </button>
+                    @if (_lastSubmittedDate.HasValue)
+                    {
+                        <div class="mt-4 p-3 bg-su-muted rounded text-sm text-su-muted-foreground">
+                            Submitted: @_lastSubmittedDate.Value.ToString("D")
+                        </div>
+                    }
+                </EditForm>
+            </div>
+            <div class="bg-su-muted/30">
+                <SuCodeBlock Code="@customInputCode" Language="csharp"/>
             </div>
         </SuCard>
     </SuSection>
 </div>
 
 @code {
+    private readonly FormModel _formModel = new();
+    private DateOnly? _lastSubmittedDate;
+
+    private void HandleValidSubmit()
+    {
+        _lastSubmittedDate = _formModel.DateOfBirth;
+    }
+
+    private class FormModel
+    {
+        [Required(ErrorMessage = "Date of birth is required")]
+        public DateOnly? DateOfBirth { get; set; }
+    }
+
+    // Tailwind classes for the day button
+    private string DayClass => "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-su-accent hover:text-su-accent-foreground focus:bg-su-accent focus:text-su-accent-foreground rounded-md transition-colors data-[today]:bg-su-accent data-[today]:text-su-accent-foreground data-[selected]:bg-su-primary data-[selected]:text-su-primary-foreground data-[selected]:hover:bg-su-primary data-[selected]:hover:text-su-primary-foreground data-[selected]:focus:bg-su-primary data-[selected]:focus:text-su-primary-foreground data-[outside-month]:text-su-muted-foreground data-[outside-month]:opacity-50 data-[disabled]:text-su-muted-foreground data-[disabled]:opacity-50";
+
     private const string popoverExampleCode = @"<div class=""flex items-start"">
     <PopoverRoot @bind-Open=""_isPopoverOpen"">
         <PopoverTrigger class=""inline-flex h-10 w-[240px] items-center justify-start text-left font-normal rounded-md border border-su-border bg-su-background px-3 py-2 text-sm ring-offset-su-background hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"" aria-label=""Pick a date"">
@@ -169,50 +251,67 @@
                 class=""w-auto p-0 bg-su-card text-su-card-foreground border border-su-border rounded-md shadow-md outline-none""
                 Align=""Align.End"" SideOffset=""4"">
                 <CalendarRoot Value=""_date"" ValueChanged=""OnDateChanged"" class=""p-3"" Context=""ctx"">
-                    <CalendarHeader class=""flex items-center justify-between pt-1 relative pb-4"">
-                        <CalendarPrevButton
-                            class=""h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent""/>
-                        <CalendarHeading class=""text-sm font-medium""/>
-                        <CalendarNextButton
-                            class=""h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent""/>
-                    </CalendarHeader>
-                    <CalendarGrid class=""w-full border-collapse space-y-1"">
-                        <CalendarGridHead>
-                            <CalendarGridRow class=""flex"">
-                                @if (ctx.Weekdays != null)
-                                {
-                                    @for (var i = 0; i < ctx.Weekdays.Length; i++)
-                                    {
-                                        var idx = i;
-                                        <CalendarHeadCell Abbreviation=""@ctx.WeekdaysLong[idx]""
-                                                          class=""text-su-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"">
-                                            @ctx.Weekdays[idx]
-                                        </CalendarHeadCell>
-                                    }
-                                }
-                            </CalendarGridRow>
-                        </CalendarGridHead>
-                        <CalendarGridBody>
-                            @if (ctx.CurrentMonth != null)
-                            {
-                                @foreach (var week in ctx.CurrentMonth.Weeks)
-                                {
-                                    <CalendarGridRow class=""flex w-full mt-2"">
-                                        @foreach (var date in week)
-                                        {
-                                            <CalendarCell Date=""@date""
-                                                          class=""relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-su-accent [&:has([aria-selected].day-outside)]:bg-su-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md"">
-                                                <CalendarDay class=""@DayClass""/>
-                                            </CalendarCell>
-                                        }
-                                    </CalendarGridRow>
-                                }
-                            }
-                        </CalendarGridBody>
-                    </CalendarGrid>
+                    <!-- Calendar content same as above -->
                 </CalendarRoot>
             </PopoverContent>
         </PopoverPortal>
     </PopoverRoot>
 </div>";
+
+    private const string dateFieldFormCode = @"<EditForm Model=""_model"">
+    <DataAnnotationsValidator />
+
+    <DateFieldRoot @bind-Value=""_model.Date"">
+        <!-- DateField internals -->
+    </DateFieldRoot>
+    <ValidationMessage For=""@(() => _model.Date)"" />
+
+</EditForm>";
+
+    private const string customInputCode = @"// FormDatepicker.razor
+@using Microsoft.AspNetCore.Components.Forms
+@inherits InputBase<DateOnly?>
+
+<div class=""@Class"">
+    <PopoverRoot @bind-Open=""_isOpen"">
+        <PopoverTrigger class=""@GetTriggerClass()"" ...>
+             <!-- Trigger content showing CurrentValue -->
+        </PopoverTrigger>
+        <PopoverPortal>
+             <PopoverContent ...>
+                 <CalendarRoot Value=""CurrentValue"" ValueChanged=""OnValueChanged"" ... />
+             </PopoverContent>
+        </PopoverPortal>
+    </PopoverRoot>
+</div>
+
+@code {
+    private bool _isOpen;
+    [Parameter] public string? Class { get; set; }
+
+    private void OnValueChanged(DateOnly? newValue)
+    {
+        CurrentValue = newValue; // Updates the bound value and triggers validation
+        _isOpen = false;
+    }
+
+    private string GetTriggerClass()
+    {
+        // Add styling based on validation state
+        if (!string.IsNullOrEmpty(CssClass) && CssClass.Contains(""invalid""))
+        {
+             return ""... border-su-destructive text-su-destructive ..."";
+        }
+        return ""..."";
+    }
+
+    protected override bool TryParseValueFromString(string? value, out DateOnly? result, out string? validationErrorMessage)
+    {
+        // Not used for DateOnly? binding but required by InputBase
+        result = null;
+        validationErrorMessage = null;
+        return true;
+    }
+}";
+
 }

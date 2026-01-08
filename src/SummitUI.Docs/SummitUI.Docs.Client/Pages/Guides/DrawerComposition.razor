@@ -1,0 +1,220 @@
+@page "/docs/guides/drawer-composition"
+@rendermode InteractiveWebAssembly
+@layout DocsLayout
+
+<PageTitle>SummitUI - Drawer Composition</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+            <SuBadge Variant="SuBadgeVariant.Outline">Guide</SuBadge>
+            <SuPromptButton ComponentName="Drawer Composition" Url="/docs/guides/drawer-composition" />
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1">
+            Drawer Composition
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            Learn how to create drawers and side-panels by composing the Dialog component with Tailwind CSS.
+        </SuText>
+    </div>
+
+    @* Introduction *@
+    <SuSection>
+        <SuText>
+            SummitUI doesn't provide a standalone "Drawer" component. Instead, we provide a robust, WCAG-compliant <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Dialog</code> component that can be styled to behave as a drawer. This approach gives you full control over positioning, dimensions, and animations.
+        </SuText>
+    </SuSection>
+
+    @* Basic Left Drawer *@
+    <SuSection Title="Basic Left Drawer">
+        <SuText class="mb-6">
+            A standard drawer typically slides in from the left and occupies the full height of the viewport. We use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">fixed top-0 left-0 h-screen</code> for positioning and Tailwind's animation utilities for the entrance/exit.
+        </SuText>
+
+        <SuCard class="mb-6">
+            <div class="p-6 flex justify-center border-b border-su-border bg-su-background/50">
+                <DialogRoot @bind-Open="_leftOpen">
+                    <DialogTrigger class="inline-flex h-10 items-center justify-center rounded-md border border-su-border bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent transition-colors">
+                        Open Left Drawer
+                    </DialogTrigger>
+                    <DialogPortal>
+                        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+                        <DialogContent class="fixed top-0 left-0 z-50 h-screen w-80 bg-su-background border-r border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300">
+                            <div class="flex items-center justify-between mb-4">
+                                <DialogTitle class="text-lg font-semibold">Left Drawer</DialogTitle>
+                                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </DialogClose>
+                            </div>
+                            <DialogDescription class="text-sm text-su-muted-foreground mb-6">
+                                This drawer is positioned on the left side of the screen.
+                            </DialogDescription>
+                            <div class="space-y-4">
+                                <div class="h-4 w-full bg-su-muted rounded" />
+                                <div class="h-4 w-3/4 bg-su-muted rounded" />
+                                <div class="h-4 w-5/6 bg-su-muted rounded" />
+                            </div>
+                        </DialogContent>
+                    </DialogPortal>
+                </DialogRoot>
+            </div>
+            <div class="bg-su-muted/30">
+                <SuCodeBlock Code="@leftDrawerCode" Language="razor" />
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Positioning *@
+    <SuSection Title="Positioning & Directions">
+        <SuText class="mb-6">
+            By changing a few Tailwind classes, you can anchor the drawer to any edge of the screen.
+        </SuText>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+            <button @onclick="() => _rightOpen = true" class="flex flex-col items-center gap-2 p-4 rounded-lg border border-su-border hover:bg-su-accent transition-colors">
+                <div class="h-10 w-16 border-2 border-su-primary border-l-0 rounded-r-sm bg-su-primary/10" />
+                <span class="text-sm font-medium">Right</span>
+            </button>
+            <button @onclick="() => _topOpen = true" class="flex flex-col items-center gap-2 p-4 rounded-lg border border-su-border hover:bg-su-accent transition-colors">
+                <div class="h-10 w-16 border-2 border-su-primary border-b-0 rounded-t-sm bg-su-primary/10" />
+                <span class="text-sm font-medium">Top</span>
+            </button>
+            <button @onclick="() => _bottomOpen = true" class="flex flex-col items-center gap-2 p-4 rounded-lg border border-su-border hover:bg-su-accent transition-colors">
+                <div class="h-10 w-16 border-2 border-su-primary border-t-0 rounded-b-sm bg-su-primary/10" />
+                <span class="text-sm font-medium">Bottom</span>
+            </button>
+        </div>
+
+        <SuText class="mb-4">
+            Example classes for different directions:
+        </SuText>
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@directionsCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Reusable Drawer Section *@
+    <SuSection Title="Creating a Reusable Component">
+        <SuText class="mb-6">
+            If you plan to use drawers frequently, it's recommended to create a reusable component that handles the boilerplate styling.
+        </SuText>
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@reusableComponentCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility Best Practices">
+        <SuText>
+            When building drawers with <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Dialog</code>, remember these key accessibility points:
+        </SuText>
+        <ul class="list-disc ml-6 mt-4 space-y-2 text-su-muted-foreground">
+            <li><strong class="text-su-foreground">DialogTitle is required:</strong> Even if you don't want a visible title, use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">DialogTitle</code> with the <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">sr-only</code> class to provide a label for screen readers.</li>
+            <li><strong class="text-su-foreground">Focus Management:</strong> SummitUI automatically handles focus trapping and returns focus to the trigger when the drawer closes.</li>
+            <li><strong class="text-su-foreground">Keyboard Interaction:</strong> Users can close the drawer by pressing <kbd class="px-1.5 py-0.5 rounded border border-su-border bg-su-muted text-xs">Esc</kbd>.</li>
+        </ul>
+    </SuSection>
+</div>
+
+@* Hidden Dialogs for direction examples *@
+<DialogRoot @bind-Open="_rightOpen">
+    <DialogPortal>
+        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+        <DialogContent class="fixed top-0 right-0 z-50 h-screen w-80 bg-su-background border-l border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <DialogTitle class="text-lg font-semibold">Right Drawer</DialogTitle>
+                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </DialogClose>
+            </div>
+            <SuText>This drawer slides in from the right.</SuText>
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>
+
+<DialogRoot @bind-Open="_topOpen">
+    <DialogPortal>
+        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+        <DialogContent class="fixed top-0 left-0 z-50 w-full h-80 bg-su-background border-b border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-top data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <DialogTitle class="text-lg font-semibold">Top Drawer</DialogTitle>
+                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </DialogClose>
+            </div>
+            <SuText>This drawer slides down from the top.</SuText>
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>
+
+<DialogRoot @bind-Open="_bottomOpen">
+    <DialogPortal>
+        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+        <DialogContent class="fixed bottom-0 left-0 z-50 w-full h-80 bg-su-background border-t border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <DialogTitle class="text-lg font-semibold">Bottom Drawer</DialogTitle>
+                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </DialogClose>
+            </div>
+            <SuText>This drawer slides up from the bottom.</SuText>
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>
+
+@code {
+    private bool _leftOpen;
+    private bool _rightOpen;
+    private bool _topOpen;
+    private bool _bottomOpen;
+
+    private string leftDrawerCode = @"<DialogRoot>
+    <DialogTrigger class=""..."">Open Left Drawer</DialogTrigger>
+    <DialogPortal>
+        <DialogOverlay class=""fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300"" />
+        <DialogContent class=""fixed top-0 left-0 z-50 h-screen w-80 bg-su-background border-r border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300"">
+            <DialogTitle>Left Drawer</DialogTitle>
+            <!-- Content -->
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>";
+
+    private string directionsCode = @"<!-- Right Drawer -->
+<DialogContent class=""fixed top-0 right-0 h-screen w-80 ... data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right"" />
+
+<!-- Top Drawer -->
+<DialogContent class=""fixed top-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-top data-[state=closed]:slide-out-to-top"" />
+
+<!-- Bottom Drawer -->
+<DialogContent class=""fixed bottom-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom"" />";
+
+    private string reusableComponentCode = @"// MyDrawer.razor
+<DialogRoot @bind-Open=""Open"">
+    <DialogPortal>
+        <DialogOverlay class=""fixed inset-0 z-50 bg-black/60 backdrop-blur-sm ..."" />
+        <DialogContent class=""@GetContentClass()"">
+            <DialogTitle class=""sr-only"">@Title</DialogTitle>
+            @ChildContent
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public string Title { get; set; } = ""Drawer"";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public DrawerSide Side { get; set; } = DrawerSide.Left;
+
+    private string GetContentClass() => Side switch {
+        DrawerSide.Right => ""fixed top-0 right-0 h-screen w-80 ... data-[state=open]:slide-in-from-right"",
+        DrawerSide.Top => ""fixed top-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-top"",
+        DrawerSide.Bottom => ""fixed bottom-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-bottom"",
+        _ => ""fixed top-0 left-0 h-screen w-80 ... data-[state=open]:slide-in-from-left""
+    };
+}";
+}

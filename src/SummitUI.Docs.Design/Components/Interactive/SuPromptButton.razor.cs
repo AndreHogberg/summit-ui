@@ -34,6 +34,12 @@ public partial class SuPromptButton : ComponentBase
     public string? ComponentName { get; set; }
 
     /// <summary>
+    ///     The relative URL path to the documentation (e.g., "/docs/accordion" or "/docs/guides/my-guide").
+    /// </summary>
+    [Parameter]
+    public string? Url { get; set; }
+
+    /// <summary>
     ///     The base URL for the documentation site. Used to construct llms.txt URL.
     /// </summary>
     [Parameter]
@@ -64,14 +70,16 @@ public partial class SuPromptButton : ComponentBase
     private string BuildLlmsTxtUrl()
     {
         string baseUrl = BaseUrl.TrimEnd('/');
-        if (string.IsNullOrEmpty(ComponentName))
+        string path = string.IsNullOrEmpty(Url)
+            ? (string.IsNullOrEmpty(ComponentName) ? "" : $"docs/{ComponentName.ToLowerInvariant()}")
+            : Url.Trim('/');
+
+        if (string.IsNullOrEmpty(path))
         {
             return $"{baseUrl}/llms.txt";
         }
 
-        // Convert component name to lowercase URL segment (e.g., "Accordion" -> "accordion")
-        string urlSegment = ComponentName.ToLowerInvariant();
-        return $"{baseUrl}/docs/{urlSegment}/llms.txt";
+        return $"{baseUrl}/{path}/llms.txt";
     }
 
     private async Task OpenChatGpt()
@@ -85,20 +93,22 @@ public partial class SuPromptButton : ComponentBase
     private async Task OpenClaude()
     {
         string prompt = BuildPrompt();
-        await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", prompt);
-        await JsRuntime.InvokeVoidAsync("window.open", "https://claude.ai/new", "_blank");
+        string encodedPrompt = Uri.EscapeDataString(prompt);
+        await JsRuntime.InvokeVoidAsync("window.open", $"https://claude.ai/new?q={encodedPrompt}", "_blank");
     }
 
     private string BuildPrompt()
     {
         string componentContext = string.IsNullOrEmpty(ComponentName)
             ? "SummitUI components"
-            : $"the {ComponentName} component in SummitUI";
+            : (ComponentName.EndsWith("Composition") || ComponentName.Contains("Guide") 
+                ? $"{ComponentName}" 
+                : $"the {ComponentName} component");
 
         string llmsTxtUrl = BuildLlmsTxtUrl();
 
         return $"""
-                I'm using SummitUI, a Blazor component library. Please help me understand {componentContext}.
+                I'm using SummitUI, a Blazor component library. Please help me understand {componentContext} in SummitUI.
 
                 You can find the full documentation at: {llmsTxtUrl}
 
