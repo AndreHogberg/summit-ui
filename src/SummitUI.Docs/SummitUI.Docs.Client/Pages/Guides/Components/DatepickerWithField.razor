@@ -1,0 +1,90 @@
+<div class="flex items-start gap-2">
+    <PopoverRoot @bind-Open="_isPopoverOpen">
+        <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" class="group">
+            <DateFieldLabel class="sr-only">Date</DateFieldLabel>
+            <DateFieldInput
+                class="flex flex-row gap-4 justify-between h-10 w-full items-center rounded-md border border-su-border bg-su-background pl-3 py-2 text-sm ring-offset-su-background focus-within:ring-2 focus-within:ring-su-ring focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                <div class="flex flex-row gap-1 items-center">
+                    @foreach (var segment in context)
+                    {
+                        <DateFieldSegment Segment="@segment"/>
+                    }
+                </div>
+                <PopoverTrigger
+                    class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-su-background text-su-foreground hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2"
+                    aria-label="Open calendar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </PopoverTrigger>
+            </DateFieldInput>
+        </DateFieldRoot>
+        <PopoverPortal>
+            <PopoverContent
+                class="w-auto p-0 bg-su-card text-su-card-foreground border border-su-border rounded-md shadow-md outline-none"
+                Align="Align.End" SideOffset="4">
+                <CalendarRoot Value="_date" ValueChanged="OnDateChanged" class="p-3" Context="ctx">
+                    <CalendarHeader class="flex items-center justify-between pt-1 relative pb-4">
+                        <CalendarPrevButton
+                            class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent"/>
+                        <CalendarHeading class="text-sm font-medium"/>
+                        <CalendarNextButton
+                            class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent"/>
+                    </CalendarHeader>
+                    <CalendarGrid class="w-full border-collapse space-y-1">
+                        <CalendarGridHead>
+                            <CalendarGridRow class="flex">
+                                @if (ctx.Weekdays != null)
+                                {
+                                    @for (var i = 0; i < ctx.Weekdays.Length; i++)
+                                    {
+                                        var idx = i;
+                                        <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]"
+                                                          class="text-su-muted-foreground rounded-md w-9 font-normal text-[0.8rem]">
+                                            @ctx.Weekdays[idx]
+                                        </CalendarHeadCell>
+                                    }
+                                }
+                            </CalendarGridRow>
+                        </CalendarGridHead>
+                        <CalendarGridBody>
+                            @if (ctx.CurrentMonth != null)
+                            {
+                                @foreach (var week in ctx.CurrentMonth.Weeks)
+                                {
+                                    <CalendarGridRow class="flex w-full mt-2">
+                                        @foreach (var date in week)
+                                        {
+                                            <CalendarCell Date="@date"
+                                                          class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-su-accent [&:has([aria-selected].day-outside)]:bg-su-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md">
+                                                <CalendarDay class="@DayClass"/>
+                                            </CalendarCell>
+                                        }
+                                    </CalendarGridRow>
+                                }
+                            }
+                        </CalendarGridBody>
+                    </CalendarGrid>
+                </CalendarRoot>
+            </PopoverContent>
+        </PopoverPortal>
+    </PopoverRoot>
+</div>
+
+@code {
+    private DateOnly? _date = DateOnly.FromDateTime(DateTime.Today);
+    private bool _isPopoverOpen;
+
+    private void OnDateChanged(DateOnly? newDate)
+    {
+        _date = newDate;
+        _isPopoverOpen = false; // Close popover on selection
+    }
+
+    // Tailwind classes for the day button
+    private string DayClass => "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-su-accent hover:text-su-accent-foreground focus:bg-su-accent focus:text-su-accent-foreground rounded-md transition-colors data-[today]:bg-su-accent data-[today]:text-su-accent-foreground data-[selected]:bg-su-primary data-[selected]:text-su-primary-foreground data-[selected]:hover:bg-su-primary data-[selected]:hover:text-su-primary-foreground data-[selected]:focus:bg-su-primary data-[selected]:focus:text-su-primary-foreground data-[outside-month]:text-su-muted-foreground data-[outside-month]:opacity-50 data-[disabled]:text-su-muted-foreground data-[disabled]:opacity-50";
+}
