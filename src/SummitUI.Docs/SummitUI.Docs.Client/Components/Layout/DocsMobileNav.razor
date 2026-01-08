@@ -165,6 +165,10 @@
         {
             // Ignore - component is being disposed
         }
+        catch (ObjectDisposedException)
+        {
+            // Ignore - JS module reference was disposed
+        }
     }
 
     private async Task ToggleThemeAsync()
@@ -173,9 +177,11 @@
         isDarkMode = newTheme == "dark";
     }
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
         Navigation.LocationChanged -= OnLocationChanged;
-        await ThemeInterop.DisposeAsync();
+        // Note: Do not dispose ThemeInterop here - it's a scoped service managed by DI
+        // Disposing it would break other components sharing the same instance
+        return ValueTask.CompletedTask;
     }
 }

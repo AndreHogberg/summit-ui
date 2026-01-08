@@ -1,5 +1,4 @@
 @inherits LayoutComponentBase
-@implements IAsyncDisposable
 @inject NavigationManager Navigation
 @inject ThemeJsInterop ThemeInterop
 
@@ -129,16 +128,15 @@
         {
             // Ignore - component is being disposed
         }
+        catch (ObjectDisposedException)
+        {
+            // Ignore - JS module reference was disposed
+        }
     }
 
     private async Task ToggleThemeAsync()
     {
         var newTheme = await ThemeInterop.ToggleThemeAsync();
         isDarkMode = newTheme == "dark";
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await ThemeInterop.DisposeAsync();
     }
 }
