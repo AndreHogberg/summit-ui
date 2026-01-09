@@ -38,15 +38,18 @@ public class PortalOutlet : ComponentBase, IDisposable
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        var sequence = 0;
-
-        foreach (var (id, content) in PortalService.GetPortals())
+        var portals = PortalService.GetPortals().ToList();
+        
+        for (var i = 0; i < portals.Count; i++)
         {
+            var (id, content) = portals[i];
+            var baseSequence = i * 10; // Use stable sequences per portal
+            
             // Each portal gets its own container div at the body level
-            builder.OpenElement(sequence++, "div");
-            builder.AddAttribute(sequence++, "id", id);
-            builder.AddAttribute(sequence++, "data-summit-portal", true);
-            builder.AddContent(sequence++, content);
+            builder.OpenElement(baseSequence, "div");
+            builder.AddAttribute(baseSequence + 1, "id", id);
+            builder.AddAttribute(baseSequence + 2, "data-summit-portal", true);
+            builder.AddContent(baseSequence + 3, content);
             builder.CloseElement();
         }
     }

@@ -234,9 +234,10 @@
 
     .dialog-content {
         position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        inset: 0;
+        margin: auto;
+        width: fit-content;
+        height: fit-content;
         background: white;
         border-radius: 8px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -316,22 +317,22 @@
     @@keyframes contentShow {
         from {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(0.95);
+            scale: 0.95;
         }
         to {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            scale: 1;
         }
     }
 
     @@keyframes contentHide {
         from {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            scale: 1;
         }
         to {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(0.95);
+            scale: 0.95;
         }
     }
 </style>

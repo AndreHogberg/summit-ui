@@ -6,6 +6,7 @@ namespace SummitUI;
 /// <summary>
 /// Renders dialog children in a fixed-position container at the top of the stacking context.
 /// This avoids z-index and overflow issues that can occur with nested DOM structures.
+/// Uses depth-based z-index calculation for proper nested dialog stacking.
 /// </summary>
 public class DialogPortal : ComponentBase, IDisposable
 {
@@ -46,14 +47,18 @@ public class DialogPortal : ComponentBase, IDisposable
         // Only render when open or during close animation
         if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
 
+        // Calculate z-index based on depth (base 9999, increment by 10 per depth level)
+        var zIndex = 9999 + (Context.Depth * 10);
+
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "id", ActualContainerId);
         builder.AddAttribute(2, "data-summit-dialog-portal", true);
-        builder.AddAttribute(3, "style", "position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; pointer-events: none;");
+        builder.AddAttribute(3, "data-depth", Context.Depth);
+        builder.AddAttribute(4, "style", $"position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: {zIndex}; pointer-events: none;");
 
-        builder.OpenElement(4, "div");
-        builder.AddAttribute(5, "style", "pointer-events: auto;");
-        builder.AddContent(6, ChildContent);
+        builder.OpenElement(5, "div");
+        builder.AddAttribute(6, "style", "pointer-events: auto;");
+        builder.AddContent(7, ChildContent);
         builder.CloseElement();
 
         builder.CloseElement();
