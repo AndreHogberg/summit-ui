@@ -230,10 +230,12 @@
   * {
     @apply border-su-border;
   }
-  body {
+  html, body {
     @apply bg-su-background text-su-foreground antialiased;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: clip;
+    max-width: 100vw;
   }
 }
 

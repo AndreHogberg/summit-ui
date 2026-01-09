@@ -2,9 +2,9 @@
 @inject NavigationManager Navigation
 @inject ThemeJsInterop ThemeInterop
 
-<div class="min-h-screen bg-su-background text-su-foreground">
+<div class="min-h-screen bg-su-background text-su-foreground max-w-full">
     <header class="sticky top-0 z-50 w-full border-b border-su-border bg-su-background/95 backdrop-blur supports-[backdrop-filter]:bg-su-background/60">
-        <div class="container mx-auto flex h-14 items-center justify-between px-4 sm:px-6">
+        <div class="container mx-auto flex h-14 items-center justify-between px-4 sm:px-6 max-w-full">
             <div class="flex items-center gap-2">
                 <a href="/" class="flex items-center gap-2 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 rounded-md transition-colors" aria-label="SummitUI Home">
                     <img src="/Logo.svg" alt="SummitUI Logo" class="h-7 w-7 rounded-md" />
@@ -93,7 +93,7 @@
         </div>
     </header>
 
-    <main id="main-content" class="flex-1">
+    <main id="main-content" class="flex-1 min-w-0 max-w-full">
         @Body
     </main>
 </div>
