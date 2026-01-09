@@ -15,49 +15,51 @@
             Toast Composition
         </SuHeading>
         <SuText Lead="true" Muted="true">
-            Learn how to extend SummitUI's toast components to create custom notification interfaces like ShowSuccess(), ShowError(), and more.
+            Learn how to create a custom toast wrapper with semantic methods like ShowSuccess(), ShowError(), and more using SummitUI's generic toast queue.
         </SuText>
     </div>
 
     @* Introduction *@
     <SuSection>
         <SuText>
-            SummitUI provides headless toast primitives that you can compose into your own notification system.
-            While you can use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">IToastService</code> directly,
-            most applications benefit from creating a custom abstraction with semantic methods like
+            SummitUI provides a generic <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">IToastQueue&lt;TContent&gt;</code> 
+            that you can compose into your own notification system. While you can use it directly with any content type,
+            most applications benefit from creating a custom wrapper with semantic methods like
             <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ShowSuccess()</code>,
             <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ShowError()</code>, and
             <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ShowWarning()</code>.
         </SuText>
     </SuSection>
 
-    @* Basic Toast Service Extension *@
-    <SuSection Title="Extending IToastService">
+    @* Define Toast Content Type *@
+    <SuSection Title="1. Define Your Toast Content Type">
         <SuText class="mb-6">
-            Create a custom interface that extends <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">IToastService</code>
-            with your application's semantic toast methods.
+            First, create a record or class that holds all the data your toasts need.
         </SuText>
 
         <SuCard class="mb-6">
             <div class="bg-su-muted/30">
-                <SuCodeBlock Code="@extendServiceCode" Language="csharp" />
+                <SuCodeBlock Code="@contentTypeCode" Language="csharp" />
             </div>
         </SuCard>
+    </SuSection>
 
+    @* Create Extension Methods *@
+    <SuSection Title="2. Create Extension Methods">
         <SuText class="mb-6">
-            Implement the custom service by inheriting from <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ToastService</code>:
+            Create extension methods on <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">IToastQueue&lt;TContent&gt;</code>
+            for semantic toast operations:
         </SuText>
 
         <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
-            <SuCodeBlock Code="@implementServiceCode" Language="csharp" />
+            <SuCodeBlock Code="@extensionMethodsCode" Language="csharp" />
         </div>
     </SuSection>
 
     @* Registration *@
-    <SuSection Title="Registering Your Service">
+    <SuSection Title="3. Register the Toast Queue">
         <SuText class="mb-6">
-            Register your custom service in <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Program.cs</code>.
-            You'll need to register both the base interface and your custom interface pointing to the same instance.
+            Register your toast queue in <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Program.cs</code>:
         </SuText>
 
         <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
@@ -65,22 +67,22 @@
         </div>
     </SuSection>
 
-    @* Creating Toast Viewport Component *@
-    <SuSection Title="Custom Toast Viewport">
+    @* Creating Toast Component *@
+    <SuSection Title="4. Create a Reusable Toast Component">
         <SuText class="mb-6">
-            Create a reusable viewport component that renders toasts from your service with consistent styling.
-            This encapsulates all the toast rendering logic in one place.
+            Create a toast component that renders your content type with consistent styling. 
+            ToastRegion automatically portals to body to avoid CSS stacking context issues.
         </SuText>
 
         <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
-            <SuCodeBlock Code="@viewportComponentCode" Language="razor" />
+            <SuCodeBlock Code="@toastComponentCode" Language="razor" />
         </div>
     </SuSection>
 
     @* Layout Integration *@
-    <SuSection Title="Layout Integration">
+    <SuSection Title="5. Add to Layout">
         <SuText class="mb-6">
-            Add the provider and viewport to your layout file to make toasts available throughout your application.
+            Add the toast component to your layout file to make toasts available throughout your application.
         </SuText>
 
         <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
@@ -89,9 +91,9 @@
     </SuSection>
 
     @* Usage Example *@
-    <SuSection Title="Using Your Toast Service">
+    <SuSection Title="6. Using Your Toast Extensions">
         <SuText class="mb-6">
-            Now you can inject and use your semantic toast service anywhere in your application.
+            Now you can inject and use your semantic toast methods anywhere in your application.
         </SuText>
 
         <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden mb-6">
@@ -113,48 +115,33 @@
 
         <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Tailwind Approach</SuHeading>
         <SuText class="mb-6">
-            Use Tailwind's <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-[variant=*]:</code> selector in your viewport component.
+            Use Tailwind's <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-[variant=*]:</code> selector.
         </SuText>
         <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
             <SuCodeBlock Code="@tailwindVariantCode" Language="razor" />
         </div>
     </SuSection>
 
-    @* Advanced: Custom Actions *@
-    <SuSection Title="Toasts with Actions">
+    @* Swipe to Dismiss *@
+    <SuSection Title="Swipe to Dismiss">
         <SuText class="mb-6">
-            Add action buttons to toasts for undo operations or navigation.
-            Remember: actions should be safe to ignore since toasts auto-dismiss.
-        </SuText>
-
-        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Service Method</SuHeading>
-        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden mb-6">
-            <SuCodeBlock Code="@actionServiceCode" Language="csharp" />
-        </div>
-
-        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Rendering Actions in Viewport</SuHeading>
-        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
-            <SuCodeBlock Code="@actionViewportCode" Language="razor" />
-        </div>
-    </SuSection>
-
-    @* Advanced: Promise-based Toasts *@
-    <SuSection Title="Async Toasts (Promise Pattern)">
-        <SuText class="mb-6">
-            Create promise-based toasts that update based on async operation results - perfect for API calls.
+            Enable swipe gestures on touch devices. The Toast component tracks swipe state via data attributes 
+            and CSS variables for smooth animations.
         </SuText>
 
         <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden mb-6">
-            <SuCodeBlock Code="@promiseServiceCode" Language="csharp" />
+            <SuCodeBlock Code="@swipeCode" Language="razor" />
         </div>
 
         <SuText class="mb-6">
-            Use the promise toast for async operations:
+            Available swipe data attributes:
         </SuText>
-
-        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
-            <SuCodeBlock Code="@promiseUsageCode" Language="razor" />
-        </div>
+        <ul class="list-disc ml-6 space-y-2 text-su-muted-foreground">
+            <li><code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-swipe="start"</code> - Swipe gesture started</li>
+            <li><code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-swipe="move"</code> - Swipe in progress</li>
+            <li><code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-swipe="end"</code> - Swipe completed (past threshold)</li>
+            <li><code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-swipe="cancel"</code> - Swipe cancelled</li>
+        </ul>
     </SuSection>
 
     @* Accessibility Considerations *@
@@ -164,193 +151,156 @@
         </SuText>
         <ul class="list-disc ml-6 mt-4 space-y-2 text-su-muted-foreground">
             <li>
-                <strong class="text-su-foreground">Use Foreground for important messages:</strong>
-                Error toasts should use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ToastType.Foreground</code>
-                for immediate screen reader announcement.
+                <strong class="text-su-foreground">Provide GetAnnouncementText:</strong>
+                This function tells screen readers what to announce for each toast.
             </li>
             <li>
-                <strong class="text-su-foreground">Use Background for non-critical notifications:</strong>
-                Success confirmations can use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ToastType.Background</code>
-                to avoid interrupting the user.
+                <strong class="text-su-foreground">Use Assertive for errors:</strong>
+                Set <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Priority = ToastPriority.Assertive</code>
+                for error toasts to announce immediately.
             </li>
             <li>
-                <strong class="text-su-foreground">Provide clear altText for actions:</strong>
-                The <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">AltText</code> prop describes
-                an alternative way to perform the action for screen reader users.
+                <strong class="text-su-foreground">Use Polite for non-critical:</strong>
+                Success and info toasts should use the default Polite priority.
             </li>
             <li>
                 <strong class="text-su-foreground">Give errors longer duration:</strong>
-                Error messages should remain visible longer (e.g., 8-10 seconds) to give users time to read them.
+                Error messages should remain visible longer (e.g., 8-10 seconds).
             </li>
             <li>
                 <strong class="text-su-foreground">Document the hotkey:</strong>
-                Let users know they can press F8 to focus the toast viewport.
+                Let users know they can press the configured hotkey to focus the toast region.
+            </li>
+            <li>
+                <strong class="text-su-foreground">Localize AriaLabel:</strong>
+                The AriaLabel on ToastRegion should be localized (e.g., "Notifications", "Aviseringar").
             </li>
         </ul>
     </SuSection>
 </div>
 
 @code {
-    private const string extendServiceCode = @"// Services/IAppToastService.cs
-public interface IAppToastService : IToastService
+    private const string contentTypeCode = @"// Models/AppToastContent.cs
+public record AppToastContent
 {
-    void ShowSuccess(string message, string? title = null);
-    void ShowError(string message, string? title = null);
-    void ShowWarning(string message, string? title = null);
-    void ShowInfo(string message, string? title = null);
+    public string? Title { get; init; }
+    public string? Description { get; init; }
+    public string Variant { get; init; } = ""default"";
+    public AppToastAction? Action { get; init; }
+}
+
+public record AppToastAction
+{
+    public required string Label { get; init; }
+    public Action? OnClick { get; init; }
+    public string? AltText { get; init; }
 }";
 
-    private const string implementServiceCode = @"// Services/AppToastService.cs
-public class AppToastService : ToastService, IAppToastService
+    private const string extensionMethodsCode = @"// Extensions/ToastQueueExtensions.cs
+public static class ToastQueueExtensions
 {
-    public void ShowSuccess(string message, string? title = null)
-    {
-        Show(new ToastOptions
-        {
-            Title = title ?? ""Success"",
-            Message = message,
-            Variant = ""success"",
-            Type = ToastType.Background,  // Non-intrusive
-            Duration = 4000
-        });
-    }
+    public static string Show(this IToastQueue<AppToastContent> queue, string description)
+        => queue.Add(new AppToastContent { Description = description },
+            new ToastOptions { Timeout = 5000 });
 
-    public void ShowError(string message, string? title = null)
-    {
-        Show(new ToastOptions
-        {
-            Title = title ?? ""Error"",
-            Message = message,
-            Variant = ""error"",
-            Type = ToastType.Foreground,  // Announce immediately
-            Duration = 8000  // Longer for errors
-        });
-    }
+    public static string Show(this IToastQueue<AppToastContent> queue, string title, string description)
+        => queue.Add(new AppToastContent { Title = title, Description = description },
+            new ToastOptions { Timeout = 5000 });
 
-    public void ShowWarning(string message, string? title = null)
-    {
-        Show(new ToastOptions
-        {
-            Title = title ?? ""Warning"",
-            Message = message,
-            Variant = ""warning"",
-            Type = ToastType.Foreground,
-            Duration = 6000
-        });
-    }
+    public static string Success(this IToastQueue<AppToastContent> queue, string title, string description)
+        => queue.Add(new AppToastContent { Title = title, Description = description, Variant = ""success"" },
+            new ToastOptions { Timeout = 5000 });
 
-    public void ShowInfo(string message, string? title = null)
-    {
-        Show(new ToastOptions
-        {
-            Title = title ?? ""Info"",
-            Message = message,
-            Variant = ""info"",
-            Type = ToastType.Background,
-            Duration = 5000
-        });
-    }
+    public static string Error(this IToastQueue<AppToastContent> queue, string title, string description)
+        => queue.Add(new AppToastContent { Title = title, Description = description, Variant = ""error"" },
+            new ToastOptions { Timeout = 8000, Priority = ToastPriority.Assertive });
+
+    public static string Warning(this IToastQueue<AppToastContent> queue, string title, string description)
+        => queue.Add(new AppToastContent { Title = title, Description = description, Variant = ""warning"" },
+            new ToastOptions { Timeout = 6000, Priority = ToastPriority.Assertive });
+
+    public static string ShowWithAction(
+        this IToastQueue<AppToastContent> queue,
+        string title,
+        string description,
+        AppToastAction action)
+        => queue.Add(
+            new AppToastContent { Title = title, Description = description, Action = action },
+            new ToastOptions { Timeout = 6000 });
 }";
 
     private const string registrationCode = @"// Program.cs
-builder.Services.AddSummitUI();  // Registers base toast components
+builder.Services.AddSummitUI();
+builder.Services.AddToastQueue<AppToastContent>();";
 
-// Replace default IToastService with your custom implementation
-builder.Services.AddSingleton<AppToastService>();
-builder.Services.AddSingleton<IToastService>(sp => sp.GetRequiredService<AppToastService>());
-builder.Services.AddSingleton<IAppToastService>(sp => sp.GetRequiredService<AppToastService>());";
+    private const string toastComponentCode = @"@* Components/AppToast.razor *@
+@using SummitUI
+@inject IToastQueue<AppToastContent> Queue
 
-    private const string viewportComponentCode = @"@* Components/AppToastViewport.razor *@
-@inject IToastService ToastService
-@implements IDisposable
+<ToastRegion TContent=""AppToastContent""
+             AriaLabel=""Notifications""
+             GetAnnouncementText=""GetAnnouncementText""
+             Hotkey=""@([""F8""])""
+             class=""pointer-events-none absolute inset-0 overflow-clip flex flex-col-reverse items-end gap-2 p-4 z-[9999] outline-none"">
+    <ToastTemplate Context=""toast"">
+        <Toast TContent=""AppToastContent""
+               ToastData=""toast""
+               SwipeDirection=""SummitUI.SwipeDirection.Right""
+               SwipeThreshold=""50""
+               class=""group pointer-events-auto relative flex w-full max-w-[420px] items-center justify-between gap-4 overflow-hidden rounded-md border bg-background p-4 shadow-lg transition-all animate-in slide-in-from-right-full data-[swipe=move]:transition-none data-[swipe=move]:translate-x-[var(--summit-toast-swipe-move-x)] data-[swipe=end]:animate-out data-[swipe=end]:slide-out-to-right-full""
+               data-variant=""@toast.Content.Variant"">
 
-<ToastViewport class=""fixed bottom-0 right-0 z-50 flex max-h-screen w-full flex-col-reverse gap-2 p-4 sm:max-w-[420px]"">
-    @foreach (var toast in _toasts.ToList())
-    {
-        <ToastRoot @key=""toast.Id""
-                   Duration=""toast.Duration""
-                   Type=""toast.Type""
-                   OpenChanged=""open => HandleOpenChanged(toast.Id, open)""
-                   class=""group pointer-events-auto relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-md border p-4 shadow-lg transition-all data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right""
-                   data-variant=""@toast.Variant"">
-
-            <div class=""flex flex-col gap-1"">
-                @if (!string.IsNullOrEmpty(toast.Title))
+            <div class=""grid gap-1"">
+                @if (!string.IsNullOrEmpty(toast.Content.Title))
                 {
-                    <ToastTitle class=""text-sm font-semibold"">
-                        @toast.Title
-                    </ToastTitle>
+                    <div class=""text-sm font-semibold"">@toast.Content.Title</div>
                 }
-                <ToastDescription class=""text-sm opacity-90"">
-                    @toast.Message
-                </ToastDescription>
+                @if (!string.IsNullOrEmpty(toast.Content.Description))
+                {
+                    <div class=""text-sm text-muted-foreground"">@toast.Content.Description</div>
+                }
             </div>
 
-            <ToastClose class=""absolute right-2 top-2 rounded-md p-1 opacity-0 transition-opacity hover:opacity-100 focus:opacity-100 group-hover:opacity-100"" />
-        </ToastRoot>
-    }
-</ToastViewport>
+            <div class=""flex items-center gap-2"">
+                @if (toast.Content.Action is not null)
+                {
+                    <button 
+                        @onclick=""@(() => { toast.Content.Action.OnClick?.Invoke(); Queue.Close(toast.Key); })""
+                        class=""inline-flex h-8 items-center justify-center rounded-md border px-3 text-sm font-medium"">
+                        @toast.Content.Action.Label
+                    </button>
+                }
+                <ToastCloseButton aria-label=""Close notification"" class=""..."">
+                    ×
+                </ToastCloseButton>
+            </div>
+        </Toast>
+    </ToastTemplate>
+</ToastRegion>
 
 @code {
-    private List<ToastNotification> _toasts = new();
-
-    protected override void OnInitialized()
+    private string GetAnnouncementText(AppToastContent content)
     {
-        ToastService.OnShow += HandleShow;
-        ToastService.OnDismiss += HandleDismiss;
-        ToastService.OnDismissAll += HandleDismissAll;
-    }
-
-    private void HandleShow(ToastNotification toast)
-    {
-        _toasts.Add(toast);
-        InvokeAsync(StateHasChanged);
-    }
-
-    private void HandleDismiss(string id)
-    {
-        _toasts.RemoveAll(t => t.Id == id);
-        InvokeAsync(StateHasChanged);
-    }
-
-    private void HandleDismissAll()
-    {
-        _toasts.Clear();
-        InvokeAsync(StateHasChanged);
-    }
-
-    private void HandleOpenChanged(string id, bool open)
-    {
-        if (!open)
-        {
-            ToastService.Dismiss(id);
-        }
-    }
-
-    public void Dispose()
-    {
-        ToastService.OnShow -= HandleShow;
-        ToastService.OnDismiss -= HandleDismiss;
-        ToastService.OnDismissAll -= HandleDismissAll;
+        if (!string.IsNullOrEmpty(content.Title) && !string.IsNullOrEmpty(content.Description))
+            return $""{content.Title}. {content.Description}"";
+        return content.Title ?? content.Description ?? """";
     }
 }";
 
     private const string layoutCode = @"@* MainLayout.razor *@
 @inherits LayoutComponentBase
 
-<ToastProvider Duration=""5000"" SwipeDirection=""SwipeDirection.Right"">
-    <div class=""app-container"">
-        <NavMenu />
-        <main>
-            @Body
-        </main>
-    </div>
+<div class=""app-container"">
+    <NavMenu />
+    <main>
+        @Body
+    </main>
+</div>
 
-    <AppToastViewport />
-</ToastProvider>";
+<AppToast />";
 
     private const string usageCode = @"@* Any component in your app *@
-@inject IAppToastService Toast
+@inject IToastQueue<AppToastContent> Toast
 
 <button @onclick=""SaveData"">Save</button>
 
@@ -360,163 +310,62 @@ builder.Services.AddSingleton<IAppToastService>(sp => sp.GetRequiredService<AppT
         try
         {
             await DataService.SaveAsync();
-            Toast.ShowSuccess(""Your changes have been saved."");
+            Toast.Success(""Saved!"", ""Your changes have been saved."");
         }
         catch (ValidationException ex)
         {
-            Toast.ShowWarning(ex.Message, ""Validation Error"");
+            Toast.Warning(""Validation Error"", ex.Message);
         }
         catch (Exception ex)
         {
-            Toast.ShowError(""Failed to save changes. Please try again."");
+            Toast.Error(""Error"", ""Failed to save changes. Please try again."");
         }
     }
 }";
 
     private const string cssVariantCode = @"/* Global CSS */
-.toast {
-    background: var(--su-card);
-    border: 1px solid var(--su-border);
-}
-
-.toast[data-variant=""success""] {
-    background: var(--su-primary);
-    color: var(--su-primary-foreground);
-    border-color: var(--su-primary);
-}
-
-.toast[data-variant=""error""] {
-    background: var(--su-destructive);
-    color: var(--su-destructive-foreground);
-    border-color: var(--su-destructive);
-}
-
-.toast[data-variant=""warning""] {
-    background: hsl(45 93% 47%);
-    color: hsl(0 0% 0%);
-    border-color: hsl(45 93% 47%);
-}
-
-.toast[data-variant=""info""] {
-    background: hsl(199 89% 48%);
+[data-variant=""success""] {
+    background: var(--color-green-600);
     color: white;
-    border-color: hsl(199 89% 48%);
-}";
-
-    private const string tailwindVariantCode = @"<ToastRoot 
-    class=""... 
-        data-[variant=success]:bg-green-600 data-[variant=success]:text-white data-[variant=success]:border-green-600
-        data-[variant=error]:bg-red-600 data-[variant=error]:text-white data-[variant=error]:border-red-600
-        data-[variant=warning]:bg-yellow-500 data-[variant=warning]:text-black data-[variant=warning]:border-yellow-500
-        data-[variant=info]:bg-blue-500 data-[variant=info]:text-white data-[variant=info]:border-blue-500""
-    data-variant=""@toast.Variant"">
-    ...
-</ToastRoot>";
-
-    private const string actionServiceCode = @"// Extend with undoable actions
-public void ShowSuccessWithUndo(string message, Action onUndo, string? title = null)
-{
-    Show(new ToastOptions
-    {
-        Title = title ?? ""Success"",
-        Message = message,
-        Variant = ""success"",
-        Duration = 6000,  // Longer to allow undo
-        Action = new ToastActionOptions
-        {
-            Label = ""Undo"",
-            AltText = ""Press Ctrl+Z or click to undo this action"",
-            OnClick = onUndo
-        }
-    });
+    border-color: var(--color-green-600);
 }
 
-// Usage
-Toast.ShowSuccessWithUndo(
-    ""Item deleted."",
-    onUndo: () => RestoreItem(itemId)
-);";
+[data-variant=""error""] {
+    background: var(--color-red-600);
+    color: white;
+    border-color: var(--color-red-600);
+}
 
-    private const string actionViewportCode = @"@* In your viewport component *@
-<ToastRoot @key=""toast.Id"" ...>
-    <div class=""flex flex-col gap-1"">
-        @if (!string.IsNullOrEmpty(toast.Title))
-        {
-            <ToastTitle class=""text-sm font-semibold"">@toast.Title</ToastTitle>
-        }
-        <ToastDescription class=""text-sm opacity-90"">@toast.Message</ToastDescription>
-    </div>
-
-    <div class=""flex items-center gap-2"">
-        @if (toast.Action is not null)
-        {
-            <ToastAction 
-                AltText=""@toast.Action.AltText""
-                OnClick=""@(() => toast.Action.OnClick?.Invoke())""
-                class=""inline-flex h-8 items-center justify-center rounded border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary"">
-                @toast.Action.Label
-            </ToastAction>
-        }
-        <ToastClose />
-    </div>
-</ToastRoot>";
-
-    private const string promiseServiceCode = @"// Promise-based toast for async operations
-public async Task<string> ShowPromise<T>(
-    Func<Task<T>> promise,
-    string loadingMessage,
-    Func<T, string> successMessage,
-    Func<Exception, string>? errorMessage = null)
-{
-    // Show loading toast
-    var id = Show(new ToastOptions
-    {
-        Message = loadingMessage,
-        Variant = ""loading"",
-        Duration = null  // Don't auto-dismiss
-    });
-
-    try
-    {
-        var result = await promise();
-        
-        // Update to success
-        Update(id, new ToastOptions
-        {
-            Title = ""Success"",
-            Message = successMessage(result),
-            Variant = ""success"",
-            Duration = 4000
-        });
-    }
-    catch (Exception ex)
-    {
-        // Update to error
-        Update(id, new ToastOptions
-        {
-            Title = ""Error"",
-            Message = errorMessage?.Invoke(ex) ?? ex.Message,
-            Variant = ""error"",
-            Duration = 8000
-        });
-    }
-
-    return id;
+[data-variant=""warning""] {
+    background: var(--color-yellow-500);
+    color: black;
+    border-color: var(--color-yellow-500);
 }";
 
-    private const string promiseUsageCode = @"@inject IAppToastService Toast
+    private const string tailwindVariantCode = @"<Toast 
+    class=""... 
+        data-[variant=success]:bg-green-600 data-[variant=success]:text-white 
+        data-[variant=error]:bg-red-600 data-[variant=error]:text-white 
+        data-[variant=warning]:bg-yellow-500 data-[variant=warning]:text-black""
+    data-variant=""@toast.Content.Variant"">
+    ...
+</Toast>";
 
-<button @onclick=""SubmitForm"">Submit</button>
+    private const string swipeCode = @"@* Enable swipe-to-dismiss with visual feedback *@
+<Toast TContent=""AppToastContent""
+       ToastData=""toast""
+       SwipeDirection=""SummitUI.SwipeDirection.Right""
+       SwipeThreshold=""50""
+       class=""...
+           data-[swipe=move]:transition-none
+           data-[swipe=move]:translate-x-[var(--summit-toast-swipe-move-x)]
+           data-[swipe=end]:animate-out
+           data-[swipe=end]:slide-out-to-right-full"">
+    ...
+</Toast>
 
-@code {
-    private async Task SubmitForm()
-    {
-        await Toast.ShowPromise(
-            promise: () => Api.SubmitAsync(formData),
-            loadingMessage: ""Submitting your form..."",
-            successMessage: result => $""Form submitted! Reference: {result.Id}"",
-            errorMessage: ex => ""Failed to submit. Please try again.""
-        );
-    }
-}";
+@* Available SwipeDirection values: Left, Right, Up, Down *@
+@* CSS variables during swipe: *@
+@* --summit-toast-swipe-move-x (horizontal offset) *@
+@* --summit-toast-swipe-move-y (vertical offset) *@";
 }

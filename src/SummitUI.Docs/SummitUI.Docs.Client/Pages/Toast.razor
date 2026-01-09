@@ -82,7 +82,15 @@
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
-                Programmatic dismissal with returned toast key
+                Swipe-to-dismiss with configurable direction and threshold
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Portal to body - avoids CSS stacking context issues
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Keyboard shortcut (hotkey) to focus toast region
             </li>
         </ul>
     </SuSection>
@@ -120,11 +128,11 @@
         <div class="grid gap-4 sm:grid-cols-2">
             <SuCard>
                 <SuCardTitle>ToastRegion&lt;TContent&gt;</SuCardTitle>
-                <SuCardDescription class="mt-1">ARIA landmark region that contains all toasts. Injects IToastQueue&lt;TContent&gt; from DI and subscribes to changes.</SuCardDescription>
+                <SuCardDescription class="mt-1">ARIA landmark region that contains all toasts. Automatically portals to body to avoid CSS stacking context issues.</SuCardDescription>
             </SuCard>
             <SuCard>
                 <SuCardTitle>Toast&lt;TContent&gt;</SuCardTitle>
-                <SuCardDescription class="mt-1">Individual toast with role="alertdialog". Receives QueuedToast&lt;TContent&gt; and renders your template.</SuCardDescription>
+                <SuCardDescription class="mt-1">Individual toast with role="alertdialog". Supports swipe-to-dismiss with configurable direction.</SuCardDescription>
             </SuCard>
             <SuCard>
                 <SuCardTitle>ToastCloseButton</SuCardTitle>
@@ -229,6 +237,7 @@
                         <SuTableRow>
                             <SuTableHead>Property</SuTableHead>
                             <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
                             <SuTableHead>Description</SuTableHead>
                         </SuTableRow>
                     </SuTableHeader>
@@ -236,12 +245,32 @@
                         <SuTableRow>
                             <SuTableCell><code>AriaLabel</code></SuTableCell>
                             <SuTableCell><code>string?</code></SuTableCell>
+                            <SuTableCell><code>null</code></SuTableCell>
                             <SuTableCell>Accessible label for the toast region. Should be localized.</SuTableCell>
                         </SuTableRow>
                         <SuTableRow>
                             <SuTableCell><code>ToastTemplate</code></SuTableCell>
                             <SuTableCell><code>RenderFragment&lt;QueuedToast&lt;TContent&gt;&gt;</code></SuTableCell>
+                            <SuTableCell><code>null</code></SuTableCell>
                             <SuTableCell>Template for rendering each toast.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>GetAnnouncementText</code></SuTableCell>
+                            <SuTableCell><code>Func&lt;TContent, string&gt;?</code></SuTableCell>
+                            <SuTableCell><code>null</code></SuTableCell>
+                            <SuTableCell>Function to get screen reader announcement text from toast content.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>Hotkey</code></SuTableCell>
+                            <SuTableCell><code>string[]?</code></SuTableCell>
+                            <SuTableCell><code>null</code></SuTableCell>
+                            <SuTableCell>Keyboard shortcut to focus the toast region (e.g., ["F8"] or ["altKey", "KeyT"]).</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>UsePortal</code></SuTableCell>
+                            <SuTableCell><code>bool</code></SuTableCell>
+                            <SuTableCell><code>true</code></SuTableCell>
+                            <SuTableCell>Whether to render in a portal appended to body. Avoids CSS stacking context issues.</SuTableCell>
                         </SuTableRow>
                     </SuTableBody>
                 </SuTable>
@@ -255,6 +284,7 @@
                         <SuTableRow>
                             <SuTableHead>Property</SuTableHead>
                             <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
                             <SuTableHead>Description</SuTableHead>
                         </SuTableRow>
                     </SuTableHeader>
@@ -262,7 +292,20 @@
                         <SuTableRow>
                             <SuTableCell><code>ToastData</code></SuTableCell>
                             <SuTableCell><code>QueuedToast&lt;TContent&gt;</code></SuTableCell>
+                            <SuTableCell>Required</SuTableCell>
                             <SuTableCell>The queued toast data including key and user-defined content.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>SwipeDirection</code></SuTableCell>
+                            <SuTableCell><code>SwipeDirection?</code></SuTableCell>
+                            <SuTableCell><code>null</code></SuTableCell>
+                            <SuTableCell>Direction to swipe for dismissal (Left, Right, Up, Down). Null disables swipe.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>SwipeThreshold</code></SuTableCell>
+                            <SuTableCell><code>int</code></SuTableCell>
+                            <SuTableCell><code>50</code></SuTableCell>
+                            <SuTableCell>Distance in pixels required to trigger swipe dismissal.</SuTableCell>
                         </SuTableRow>
                     </SuTableBody>
                 </SuTable>
@@ -280,6 +323,10 @@
             <div>
                 <SuHeading Level="SuHeadingLevel.H4">With Timeout</SuHeading>
                 <SuCodeBlock Code="@timeoutExample" Language="csharp" />
+            </div>
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">Swipe to Dismiss</SuHeading>
+                <SuCodeBlock Code="@swipeExample" Language="razor" />
             </div>
             <div>
                 <SuHeading Level="SuHeadingLevel.H4">Programmatic Dismissal</SuHeading>
@@ -305,7 +352,7 @@
             </li>
             <li class="flex items-start gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
-                <span><strong>Aria-Live:</strong> Uses polite or assertive live regions for screen reader announcements.</span>
+                <span><strong>Aria-Live:</strong> Uses polite or assertive live regions via GetAnnouncementText callback.</span>
             </li>
             <li class="flex items-start gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
@@ -314,6 +361,10 @@
             <li class="flex items-start gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
                 <span><strong>Pause on Interaction:</strong> Timers pause on hover and focus to give users control.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><strong>Keyboard Hotkey:</strong> Configurable hotkey (e.g., F8) to focus the toast region.</span>
             </li>
             <li class="flex items-start gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
@@ -370,11 +421,18 @@ builder.Services.AddToastQueue<MyToast>();
 """;
 
     private string step3Code = """
-@* In your layout *@
-<ToastRegion TContent="MyToast" AriaLabel="Notifications"
-             class="fixed bottom-4 right-4 flex flex-col-reverse gap-2">
+@* In your layout - ToastRegion automatically portals to body *@
+<ToastRegion TContent="MyToast" 
+             AriaLabel="Notifications"
+             GetAnnouncementText="t => t.Description ?? t.Title"
+             Hotkey="@(["F8"])"
+             class="absolute inset-0 overflow-clip flex flex-col-reverse items-end gap-2 p-4 z-50">
     <ToastTemplate Context="toast">
-        <Toast TContent="MyToast" ToastData="toast" class="bg-slate-800 text-white p-4 rounded-lg">
+        <Toast TContent="MyToast" 
+               ToastData="toast" 
+               SwipeDirection="SwipeDirection.Right"
+               SwipeThreshold="50"
+               class="bg-slate-800 text-white p-4 rounded-lg max-w-[420px]">
             <span class="font-semibold">@toast.Content.Title</span>
             @if (toast.Content.Description is not null)
             {
@@ -392,11 +450,12 @@ builder.Services.AddToastQueue<MyToast>();
 """;
 
     private string anatomyCode = """
-ToastRegion (ARIA landmark region, injects IToastQueue<TContent>)
-└── ToastTemplate (RenderFragment<QueuedToast<TContent>>)
-    └── Toast (role="alertdialog")
-        ├── [Your content markup]
-        └── ToastCloseButton
+ToastRegion (ARIA landmark, portals to body by default)
+├── ToastTemplate (RenderFragment<QueuedToast<TContent>>)
+│   └── Toast (role="alertdialog", swipe-to-dismiss support)
+│       ├── [Your content markup]
+│       └── ToastCloseButton
+└── Aria-live regions (polite + assertive for screen readers)
 """;
 
     private string simpleExample = """
@@ -413,6 +472,24 @@ Toasts.Add(
     new("Upload complete"),
     new ToastOptions { Timeout = 8000 }
 );
+""";
+
+    private string swipeExample = """
+@* Enable swipe-to-dismiss on the Toast component *@
+<Toast TContent="MyToast" 
+       ToastData="toast"
+       SwipeDirection="SwipeDirection.Right"
+       SwipeThreshold="50"
+       class="... data-[swipe=move]:transition-none 
+              data-[swipe=move]:translate-x-[var(--summit-toast-swipe-move-x)]
+              data-[swipe=end]:animate-out data-[swipe=end]:slide-out-to-right-full">
+    ...
+</Toast>
+
+@* Swipe directions available: Left, Right, Up, Down *@
+@* CSS variables set during swipe: *@
+@* --summit-toast-swipe-move-x (horizontal movement) *@
+@* --summit-toast-swipe-move-y (vertical movement) *@
 """;
 
     private string dismissExample = """
