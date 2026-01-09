@@ -1,0 +1,104 @@
+# Separator
+
+> Visually or semantically separates content.
+
+The Separator component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Horizontal and vertical orientations
+- Semantic separator role with proper ARIA attributes
+- Decorative mode for purely visual separators
+- Data attributes for easy styling
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the component and use it as follows:
+
+```razor
+<SeparatorRoot />
+```
+
+## API Reference
+
+### SeparatorRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Orientation | SeparatorOrientation | Horizontal | The orientation of the separator |
+| Decorative | bool | false | When true, the separator is purely visual with no semantic meaning |
+
+## Examples
+
+### Horizontal Separator
+
+```razor
+<p>Content above</p>
+<SeparatorRoot class="my-separator" />
+<p>Content below</p>
+```
+
+### Vertical Separator
+
+Use vertical separators to divide inline content.
+
+```razor
+<div style="display: flex; align-items: center; gap: 1rem;">
+    <span>Blog</span>
+    <SeparatorRoot Orientation="SeparatorOrientation.Vertical" class="my-separator-vertical" />
+    <span>Docs</span>
+    <SeparatorRoot Orientation="SeparatorOrientation.Vertical" class="my-separator-vertical" />
+    <span>Source</span>
+</div>
+```
+
+### Decorative Separator
+
+Use decorative mode when the separator is purely visual and should be ignored by screen readers.
+
+```razor
+@* Decorative separator - ignored by screen readers *@
+<SeparatorRoot Decorative="true" class="my-separator" />
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-orientation | "horizontal" \| "vertical" | The orientation of the separator |
+
+### CSS Example
+
+```css
+/* Horizontal separator */
+.separator {
+    height: 1px;
+    width: 100%;
+    background-color: #e0e0e0;
+    margin: 1rem 0;
+}
+
+/* Vertical separator */
+.separator[data-orientation="vertical"] {
+    width: 1px;
+    height: 100%;
+    margin: 0 1rem;
+}
+```
+
+## Accessibility
+
+### ARIA Attributes
+
+- **role:** `separator` is set on the element (or `none` when decorative)
+- **aria-orientation:** Set to `horizontal` or `vertical` (only when not decorative)
+
+When `Decorative="true"`, the separator uses `role="none"` to indicate it has no semantic meaning and should be ignored by assistive technologies. The `data-orientation` attribute is still present for styling purposes.

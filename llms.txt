@@ -26,6 +26,7 @@ dotnet add package SummitUI
 - [DropdownMenu](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/dropdownmenu.md): Context menus with items, checkboxes, and radio groups
 - [Popover](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/popover.md): Floating content panels with flexible positioning
 - [Select](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/select.md): Dropdown selection with full accessibility
+- [Separator](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/separator.md): Visually or semantically separates content
 - [Switch](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/switch.md): Binary toggle control
 - [Tabs](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/tabs.md): Tabbed interface with keyboard navigation
 

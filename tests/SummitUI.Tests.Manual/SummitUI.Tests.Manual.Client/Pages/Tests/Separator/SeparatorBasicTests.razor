@@ -1,0 +1,71 @@
+@page "/tests/separator/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Separator Basic Tests</h1>
+    
+    <!-- Semantic Horizontal Separator -->
+    <div class="test-section" data-testid="horizontal-section">
+        <h2>Horizontal Separator (Default)</h2>
+        <p>Content above</p>
+        <SeparatorRoot data-testid="separator-horizontal" class="separator" />
+        <p>Content below</p>
+    </div>
+    
+    <!-- Semantic Vertical Separator -->
+    <div class="test-section" data-testid="vertical-section">
+        <h2>Vertical Separator</h2>
+        <div style="display: flex; align-items: center; height: 50px;">
+            <span>Left</span>
+            <SeparatorRoot Orientation="SeparatorOrientation.Vertical" data-testid="separator-vertical" class="separator-vertical" />
+            <span>Right</span>
+        </div>
+    </div>
+    
+    <!-- Decorative Separator (no semantic meaning) -->
+    <div class="test-section" data-testid="decorative-section">
+        <h2>Decorative Separator</h2>
+        <p>This separator is purely visual and has no semantic meaning.</p>
+        <SeparatorRoot Decorative="true" data-testid="separator-decorative" class="separator" />
+        <p>Screen readers will ignore this separator.</p>
+    </div>
+    
+    <!-- Decorative Vertical Separator -->
+    <div class="test-section" data-testid="decorative-vertical-section">
+        <h2>Decorative Vertical Separator</h2>
+        <div style="display: flex; align-items: center; height: 50px;">
+            <span>Left</span>
+            <SeparatorRoot Orientation="SeparatorOrientation.Vertical" Decorative="true" data-testid="separator-decorative-vertical" class="separator-vertical" />
+            <span>Right</span>
+        </div>
+    </div>
+</div>
+}
+
+<style>
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .separator {
+        height: 1px;
+        background-color: #e0e0e0;
+        margin: 1rem 0;
+    }
+    
+    .separator-vertical {
+        width: 1px;
+        height: 100%;
+        background-color: #e0e0e0;
+        margin: 0 1rem;
+    }
+</style>

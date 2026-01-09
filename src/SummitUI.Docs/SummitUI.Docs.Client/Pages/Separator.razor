@@ -1,0 +1,232 @@
+@page "/docs/separator"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+@using SummitUI.Docs.Design
+<PageTitle>SummitUI - Separator</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Separator
+            <SuPromptButton ComponentName="Separator" Url="/docs/separator" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            Visually or semantically separates content.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <div class="space-y-1">
+                    <h4 class="text-sm font-medium text-su-foreground">SummitUI</h4>
+                    <p class="text-sm text-su-muted-foreground">An open-source UI component library.</p>
+                </div>
+                <SeparatorRoot class="demo-separator" />
+                <div class="flex h-5 items-center space-x-4 text-sm">
+                    <span>Blog</span>
+                    <SeparatorRoot Orientation="SeparatorOrientation.Vertical" class="demo-separator-vertical" />
+                    <span>Docs</span>
+                    <SeparatorRoot Orientation="SeparatorOrientation.Vertical" class="demo-separator-vertical" />
+                    <span>Source</span>
+                </div>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Horizontal and vertical orientations
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Semantic separator role with proper ARIA attributes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Decorative mode for purely visual separators
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Data attributes for easy styling
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the component and use it as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-3">
+            <SuHeading Level="SuHeadingLevel.H3">SeparatorRoot</SuHeading>
+            <SuTable>
+                <SuTableHeader>
+                    <SuTableRow>
+                        <SuTableHead>Property</SuTableHead>
+                        <SuTableHead>Type</SuTableHead>
+                        <SuTableHead>Default</SuTableHead>
+                        <SuTableHead>Description</SuTableHead>
+                    </SuTableRow>
+                </SuTableHeader>
+                <SuTableBody>
+                    @foreach (var prop in separatorProperties)
+                    {
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">@prop.Name</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                        </SuTableRow>
+                    }
+                </SuTableBody>
+            </SuTable>
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Horizontal Separator</SuHeading>
+                <SuCodeBlock Code="@horizontalExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Vertical Separator</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use vertical separators to divide inline content.</SuText>
+                <SuCodeBlock Code="@verticalExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Decorative Separator</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use decorative mode when the separator is purely visual and should be ignored by screen readers.</SuText>
+                <SuCodeBlock Code="@decorativeExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-4">
+            <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+            <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">role:</span>
+                    <span><code>separator</code> is set on the element (or <code>none</code> when decorative)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">aria-orientation:</span>
+                    <span>Set to <code>horizontal</code> or <code>vertical</code> (only when not decorative)</span>
+                </li>
+            </ul>
+        </div>
+    </SuSection>
+</div>
+
+<style>
+    .demo-separator {
+        height: 1px;
+        width: 100%;
+        background-color: rgb(var(--su-border));
+    }
+    
+    .demo-separator-vertical {
+        width: 1px;
+        height: 100%;
+        background-color: rgb(var(--su-border));
+    }
+</style>
+
+@code {
+    private List<SuApiProperty> separatorProperties = new()
+    {
+        new() { Name = "Orientation", Type = "SeparatorOrientation", Default = "Horizontal", Description = "The orientation of the separator" },
+        new() { Name = "Decorative", Type = "bool", Default = "false", Description = "When true, the separator is purely visual with no semantic meaning" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-orientation", Type = "\"horizontal\" | \"vertical\"", Description = "The orientation of the separator" }
+    };
+
+    private const string anatomyCode = @"<SeparatorRoot />";
+
+    private const string horizontalExampleCode = @"<p>Content above</p>
+<SeparatorRoot class=""my-separator"" />
+<p>Content below</p>";
+
+    private const string verticalExampleCode = @"<div style=""display: flex; align-items: center; gap: 1rem;"">
+    <span>Blog</span>
+    <SeparatorRoot Orientation=""SeparatorOrientation.Vertical"" class=""my-separator-vertical"" />
+    <span>Docs</span>
+    <SeparatorRoot Orientation=""SeparatorOrientation.Vertical"" class=""my-separator-vertical"" />
+    <span>Source</span>
+</div>";
+
+    private const string decorativeExampleCode = @"@* Decorative separator - ignored by screen readers *@
+<SeparatorRoot Decorative=""true"" class=""my-separator"" />";
+
+    private const string cssExampleCode = @"/* Horizontal separator */
+.separator {
+    height: 1px;
+    width: 100%;
+    background-color: #e0e0e0;
+    margin: 1rem 0;
+}
+
+/* Vertical separator */
+.separator[data-orientation=""vertical""] {
+    width: 1px;
+    height: 100%;
+    margin: 0 1rem;
+}";
+}
