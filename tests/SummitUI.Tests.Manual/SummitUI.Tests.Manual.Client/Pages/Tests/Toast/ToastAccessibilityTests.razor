@@ -1,0 +1,158 @@
+@page "/tests/toast/accessibility"
+@rendermode InteractiveWebAssembly
+@inject IToastQueue<TestToastContent> Toasts
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Toast Accessibility Tests</h1>
+    
+    <div class="test-section">
+        <h2>ARIA Attributes Test</h2>
+        <p>Press F8 to jump to the toast viewport.</p>
+        
+        <button type="button" @onclick="ShowForegroundToast" data-testid="show-foreground">
+            Show Foreground Toast (assertive)
+        </button>
+        <button type="button" @onclick="ShowBackgroundToast" data-testid="show-background">
+            Show Background Toast (polite)
+        </button>
+    </div>
+
+    <ToastRegion TContent="TestToastContent"
+                 AriaLabel="Test notifications (F8)"
+                 Hotkey="@(["F8"])"
+                 GetAnnouncementText="GetAnnouncementText"
+                 class="toast-viewport"
+                 data-testid="toast-viewport">
+        <ToastTemplate Context="toast">
+            <Toast TContent="TestToastContent"
+                   ToastData="toast"
+                   class="toast-root"
+                   data-testid="@(toast.Content.Variant == "assertive" ? "foreground-toast" : "background-toast")"
+                   data-variant="@toast.Content.Variant">
+                @if (!string.IsNullOrEmpty(toast.Content.Title))
+                {
+                    <div class="toast-title" data-testid="@(toast.Content.Variant == "assertive" ? "foreground-title" : "background-title")">
+                        @toast.Content.Title
+                    </div>
+                }
+                <div class="toast-description" data-testid="@(toast.Content.Variant == "assertive" ? "foreground-description" : "background-description")">
+                    @toast.Content.Description
+                </div>
+                @if (toast.Content.Action is not null)
+                {
+                    <button type="button"
+                            @onclick="@(() => { toast.Content.Action.OnClick?.Invoke(); Toasts.Close(toast.Key); })"
+                            data-testid="foreground-action">
+                        @toast.Content.Action.Label
+                    </button>
+                }
+                <ToastCloseButton aria-label="Dismiss notification" 
+                                  class="toast-close" 
+                                  data-testid="@(toast.Content.Variant == "assertive" ? "foreground-close" : "background-close")">
+                    ×
+                </ToastCloseButton>
+            </Toast>
+        </ToastTemplate>
+    </ToastRegion>
+    
+    <button type="button" data-testid="focus-test-after">Focusable element after viewport</button>
+</div>
+}
+
+@code {
+    private void ShowForegroundToast()
+    {
+        Toasts.Add(new TestToastContent
+        {
+            Title = "Foreground Toast",
+            Description = "This is an assertive announcement.",
+            Variant = "assertive",
+            Action = new TestToastAction
+            {
+                Label = "Retry",
+                AltText = "Press Enter to retry the operation",
+                OnClick = () => { }
+            }
+        }, new ToastOptions { Priority = ToastPriority.Assertive });
+    }
+
+    private void ShowBackgroundToast()
+    {
+        Toasts.Add(new TestToastContent
+        {
+            Title = "Background Toast",
+            Description = "This is a polite announcement.",
+            Variant = "polite"
+        }, new ToastOptions { Priority = ToastPriority.Polite });
+    }
+
+    private string GetAnnouncementText(TestToastContent content)
+    {
+        if (!string.IsNullOrEmpty(content.Title))
+        {
+            return $"{content.Title}. {content.Description}";
+        }
+        return content.Description;
+    }
+}
+
+<style>
+    .test-section {
+        margin-bottom: 24px;
+        padding: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .test-section button {
+        margin-right: 8px;
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+    }
+    
+    .toast-viewport {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 400px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        z-index: 1000;
+    }
+    
+    [data-summit-toast-root] {
+        position: relative;
+        padding: 16px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    [data-summit-toast-title] {
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    
+    [data-summit-toast-close] {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 18px;
+    }
+</style>

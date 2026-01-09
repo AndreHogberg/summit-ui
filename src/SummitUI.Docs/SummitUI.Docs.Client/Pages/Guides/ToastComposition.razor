@@ -1,0 +1,522 @@
+@page "/docs/guides/toast-composition"
+@rendermode InteractiveWebAssembly
+@layout DocsLayout
+
+<PageTitle>SummitUI - Toast Composition</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+            <SuBadge Variant="SuBadgeVariant.Outline">Guide</SuBadge>
+            <SuPromptButton ComponentName="Toast Composition" Url="/docs/guides/toast-composition" />
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1">
+            Toast Composition
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            Learn how to extend SummitUI's toast components to create custom notification interfaces like ShowSuccess(), ShowError(), and more.
+        </SuText>
+    </div>
+
+    @* Introduction *@
+    <SuSection>
+        <SuText>
+            SummitUI provides headless toast primitives that you can compose into your own notification system.
+            While you can use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">IToastService</code> directly,
+            most applications benefit from creating a custom abstraction with semantic methods like
+            <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ShowSuccess()</code>,
+            <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ShowError()</code>, and
+            <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ShowWarning()</code>.
+        </SuText>
+    </SuSection>
+
+    @* Basic Toast Service Extension *@
+    <SuSection Title="Extending IToastService">
+        <SuText class="mb-6">
+            Create a custom interface that extends <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">IToastService</code>
+            with your application's semantic toast methods.
+        </SuText>
+
+        <SuCard class="mb-6">
+            <div class="bg-su-muted/30">
+                <SuCodeBlock Code="@extendServiceCode" Language="csharp" />
+            </div>
+        </SuCard>
+
+        <SuText class="mb-6">
+            Implement the custom service by inheriting from <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ToastService</code>:
+        </SuText>
+
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@implementServiceCode" Language="csharp" />
+        </div>
+    </SuSection>
+
+    @* Registration *@
+    <SuSection Title="Registering Your Service">
+        <SuText class="mb-6">
+            Register your custom service in <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">Program.cs</code>.
+            You'll need to register both the base interface and your custom interface pointing to the same instance.
+        </SuText>
+
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@registrationCode" Language="csharp" />
+        </div>
+    </SuSection>
+
+    @* Creating Toast Viewport Component *@
+    <SuSection Title="Custom Toast Viewport">
+        <SuText class="mb-6">
+            Create a reusable viewport component that renders toasts from your service with consistent styling.
+            This encapsulates all the toast rendering logic in one place.
+        </SuText>
+
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@viewportComponentCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Layout Integration *@
+    <SuSection Title="Layout Integration">
+        <SuText class="mb-6">
+            Add the provider and viewport to your layout file to make toasts available throughout your application.
+        </SuText>
+
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@layoutCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Usage Example *@
+    <SuSection Title="Using Your Toast Service">
+        <SuText class="mb-6">
+            Now you can inject and use your semantic toast service anywhere in your application.
+        </SuText>
+
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden mb-6">
+            <SuCodeBlock Code="@usageCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Custom Toast Styling *@
+    <SuSection Title="Styling Toast Variants">
+        <SuText class="mb-6">
+            Use the <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-variant</code> attribute
+            to apply variant-specific styling via CSS or Tailwind classes.
+        </SuText>
+
+        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">CSS Approach</SuHeading>
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden mb-6">
+            <SuCodeBlock Code="@cssVariantCode" Language="css" />
+        </div>
+
+        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Tailwind Approach</SuHeading>
+        <SuText class="mb-6">
+            Use Tailwind's <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">data-[variant=*]:</code> selector in your viewport component.
+        </SuText>
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@tailwindVariantCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Advanced: Custom Actions *@
+    <SuSection Title="Toasts with Actions">
+        <SuText class="mb-6">
+            Add action buttons to toasts for undo operations or navigation.
+            Remember: actions should be safe to ignore since toasts auto-dismiss.
+        </SuText>
+
+        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Service Method</SuHeading>
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden mb-6">
+            <SuCodeBlock Code="@actionServiceCode" Language="csharp" />
+        </div>
+
+        <SuHeading Level="SuHeadingLevel.H3" class="mb-4">Rendering Actions in Viewport</SuHeading>
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@actionViewportCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Advanced: Promise-based Toasts *@
+    <SuSection Title="Async Toasts (Promise Pattern)">
+        <SuText class="mb-6">
+            Create promise-based toasts that update based on async operation results - perfect for API calls.
+        </SuText>
+
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden mb-6">
+            <SuCodeBlock Code="@promiseServiceCode" Language="csharp" />
+        </div>
+
+        <SuText class="mb-6">
+            Use the promise toast for async operations:
+        </SuText>
+
+        <div class="bg-su-muted/30 rounded-md border border-su-border overflow-hidden">
+            <SuCodeBlock Code="@promiseUsageCode" Language="razor" />
+        </div>
+    </SuSection>
+
+    @* Accessibility Considerations *@
+    <SuSection Title="Accessibility Considerations">
+        <SuText>
+            When building your toast abstraction, keep these accessibility best practices in mind:
+        </SuText>
+        <ul class="list-disc ml-6 mt-4 space-y-2 text-su-muted-foreground">
+            <li>
+                <strong class="text-su-foreground">Use Foreground for important messages:</strong>
+                Error toasts should use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ToastType.Foreground</code>
+                for immediate screen reader announcement.
+            </li>
+            <li>
+                <strong class="text-su-foreground">Use Background for non-critical notifications:</strong>
+                Success confirmations can use <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">ToastType.Background</code>
+                to avoid interrupting the user.
+            </li>
+            <li>
+                <strong class="text-su-foreground">Provide clear altText for actions:</strong>
+                The <code class="text-su-foreground bg-su-muted px-1 py-0.5 rounded">AltText</code> prop describes
+                an alternative way to perform the action for screen reader users.
+            </li>
+            <li>
+                <strong class="text-su-foreground">Give errors longer duration:</strong>
+                Error messages should remain visible longer (e.g., 8-10 seconds) to give users time to read them.
+            </li>
+            <li>
+                <strong class="text-su-foreground">Document the hotkey:</strong>
+                Let users know they can press F8 to focus the toast viewport.
+            </li>
+        </ul>
+    </SuSection>
+</div>
+
+@code {
+    private const string extendServiceCode = @"// Services/IAppToastService.cs
+public interface IAppToastService : IToastService
+{
+    void ShowSuccess(string message, string? title = null);
+    void ShowError(string message, string? title = null);
+    void ShowWarning(string message, string? title = null);
+    void ShowInfo(string message, string? title = null);
+}";
+
+    private const string implementServiceCode = @"// Services/AppToastService.cs
+public class AppToastService : ToastService, IAppToastService
+{
+    public void ShowSuccess(string message, string? title = null)
+    {
+        Show(new ToastOptions
+        {
+            Title = title ?? ""Success"",
+            Message = message,
+            Variant = ""success"",
+            Type = ToastType.Background,  // Non-intrusive
+            Duration = 4000
+        });
+    }
+
+    public void ShowError(string message, string? title = null)
+    {
+        Show(new ToastOptions
+        {
+            Title = title ?? ""Error"",
+            Message = message,
+            Variant = ""error"",
+            Type = ToastType.Foreground,  // Announce immediately
+            Duration = 8000  // Longer for errors
+        });
+    }
+
+    public void ShowWarning(string message, string? title = null)
+    {
+        Show(new ToastOptions
+        {
+            Title = title ?? ""Warning"",
+            Message = message,
+            Variant = ""warning"",
+            Type = ToastType.Foreground,
+            Duration = 6000
+        });
+    }
+
+    public void ShowInfo(string message, string? title = null)
+    {
+        Show(new ToastOptions
+        {
+            Title = title ?? ""Info"",
+            Message = message,
+            Variant = ""info"",
+            Type = ToastType.Background,
+            Duration = 5000
+        });
+    }
+}";
+
+    private const string registrationCode = @"// Program.cs
+builder.Services.AddSummitUI();  // Registers base toast components
+
+// Replace default IToastService with your custom implementation
+builder.Services.AddSingleton<AppToastService>();
+builder.Services.AddSingleton<IToastService>(sp => sp.GetRequiredService<AppToastService>());
+builder.Services.AddSingleton<IAppToastService>(sp => sp.GetRequiredService<AppToastService>());";
+
+    private const string viewportComponentCode = @"@* Components/AppToastViewport.razor *@
+@inject IToastService ToastService
+@implements IDisposable
+
+<ToastViewport class=""fixed bottom-0 right-0 z-50 flex max-h-screen w-full flex-col-reverse gap-2 p-4 sm:max-w-[420px]"">
+    @foreach (var toast in _toasts.ToList())
+    {
+        <ToastRoot @key=""toast.Id""
+                   Duration=""toast.Duration""
+                   Type=""toast.Type""
+                   OpenChanged=""open => HandleOpenChanged(toast.Id, open)""
+                   class=""group pointer-events-auto relative flex w-full items-center justify-between gap-4 overflow-hidden rounded-md border p-4 shadow-lg transition-all data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right""
+                   data-variant=""@toast.Variant"">
+
+            <div class=""flex flex-col gap-1"">
+                @if (!string.IsNullOrEmpty(toast.Title))
+                {
+                    <ToastTitle class=""text-sm font-semibold"">
+                        @toast.Title
+                    </ToastTitle>
+                }
+                <ToastDescription class=""text-sm opacity-90"">
+                    @toast.Message
+                </ToastDescription>
+            </div>
+
+            <ToastClose class=""absolute right-2 top-2 rounded-md p-1 opacity-0 transition-opacity hover:opacity-100 focus:opacity-100 group-hover:opacity-100"" />
+        </ToastRoot>
+    }
+</ToastViewport>
+
+@code {
+    private List<ToastNotification> _toasts = new();
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnShow += HandleShow;
+        ToastService.OnDismiss += HandleDismiss;
+        ToastService.OnDismissAll += HandleDismissAll;
+    }
+
+    private void HandleShow(ToastNotification toast)
+    {
+        _toasts.Add(toast);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleDismiss(string id)
+    {
+        _toasts.RemoveAll(t => t.Id == id);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleDismissAll()
+    {
+        _toasts.Clear();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleOpenChanged(string id, bool open)
+    {
+        if (!open)
+        {
+            ToastService.Dismiss(id);
+        }
+    }
+
+    public void Dispose()
+    {
+        ToastService.OnShow -= HandleShow;
+        ToastService.OnDismiss -= HandleDismiss;
+        ToastService.OnDismissAll -= HandleDismissAll;
+    }
+}";
+
+    private const string layoutCode = @"@* MainLayout.razor *@
+@inherits LayoutComponentBase
+
+<ToastProvider Duration=""5000"" SwipeDirection=""SwipeDirection.Right"">
+    <div class=""app-container"">
+        <NavMenu />
+        <main>
+            @Body
+        </main>
+    </div>
+
+    <AppToastViewport />
+</ToastProvider>";
+
+    private const string usageCode = @"@* Any component in your app *@
+@inject IAppToastService Toast
+
+<button @onclick=""SaveData"">Save</button>
+
+@code {
+    private async Task SaveData()
+    {
+        try
+        {
+            await DataService.SaveAsync();
+            Toast.ShowSuccess(""Your changes have been saved."");
+        }
+        catch (ValidationException ex)
+        {
+            Toast.ShowWarning(ex.Message, ""Validation Error"");
+        }
+        catch (Exception ex)
+        {
+            Toast.ShowError(""Failed to save changes. Please try again."");
+        }
+    }
+}";
+
+    private const string cssVariantCode = @"/* Global CSS */
+.toast {
+    background: var(--su-card);
+    border: 1px solid var(--su-border);
+}
+
+.toast[data-variant=""success""] {
+    background: var(--su-primary);
+    color: var(--su-primary-foreground);
+    border-color: var(--su-primary);
+}
+
+.toast[data-variant=""error""] {
+    background: var(--su-destructive);
+    color: var(--su-destructive-foreground);
+    border-color: var(--su-destructive);
+}
+
+.toast[data-variant=""warning""] {
+    background: hsl(45 93% 47%);
+    color: hsl(0 0% 0%);
+    border-color: hsl(45 93% 47%);
+}
+
+.toast[data-variant=""info""] {
+    background: hsl(199 89% 48%);
+    color: white;
+    border-color: hsl(199 89% 48%);
+}";
+
+    private const string tailwindVariantCode = @"<ToastRoot 
+    class=""... 
+        data-[variant=success]:bg-green-600 data-[variant=success]:text-white data-[variant=success]:border-green-600
+        data-[variant=error]:bg-red-600 data-[variant=error]:text-white data-[variant=error]:border-red-600
+        data-[variant=warning]:bg-yellow-500 data-[variant=warning]:text-black data-[variant=warning]:border-yellow-500
+        data-[variant=info]:bg-blue-500 data-[variant=info]:text-white data-[variant=info]:border-blue-500""
+    data-variant=""@toast.Variant"">
+    ...
+</ToastRoot>";
+
+    private const string actionServiceCode = @"// Extend with undoable actions
+public void ShowSuccessWithUndo(string message, Action onUndo, string? title = null)
+{
+    Show(new ToastOptions
+    {
+        Title = title ?? ""Success"",
+        Message = message,
+        Variant = ""success"",
+        Duration = 6000,  // Longer to allow undo
+        Action = new ToastActionOptions
+        {
+            Label = ""Undo"",
+            AltText = ""Press Ctrl+Z or click to undo this action"",
+            OnClick = onUndo
+        }
+    });
+}
+
+// Usage
+Toast.ShowSuccessWithUndo(
+    ""Item deleted."",
+    onUndo: () => RestoreItem(itemId)
+);";
+
+    private const string actionViewportCode = @"@* In your viewport component *@
+<ToastRoot @key=""toast.Id"" ...>
+    <div class=""flex flex-col gap-1"">
+        @if (!string.IsNullOrEmpty(toast.Title))
+        {
+            <ToastTitle class=""text-sm font-semibold"">@toast.Title</ToastTitle>
+        }
+        <ToastDescription class=""text-sm opacity-90"">@toast.Message</ToastDescription>
+    </div>
+
+    <div class=""flex items-center gap-2"">
+        @if (toast.Action is not null)
+        {
+            <ToastAction 
+                AltText=""@toast.Action.AltText""
+                OnClick=""@(() => toast.Action.OnClick?.Invoke())""
+                class=""inline-flex h-8 items-center justify-center rounded border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary"">
+                @toast.Action.Label
+            </ToastAction>
+        }
+        <ToastClose />
+    </div>
+</ToastRoot>";
+
+    private const string promiseServiceCode = @"// Promise-based toast for async operations
+public async Task<string> ShowPromise<T>(
+    Func<Task<T>> promise,
+    string loadingMessage,
+    Func<T, string> successMessage,
+    Func<Exception, string>? errorMessage = null)
+{
+    // Show loading toast
+    var id = Show(new ToastOptions
+    {
+        Message = loadingMessage,
+        Variant = ""loading"",
+        Duration = null  // Don't auto-dismiss
+    });
+
+    try
+    {
+        var result = await promise();
+        
+        // Update to success
+        Update(id, new ToastOptions
+        {
+            Title = ""Success"",
+            Message = successMessage(result),
+            Variant = ""success"",
+            Duration = 4000
+        });
+    }
+    catch (Exception ex)
+    {
+        // Update to error
+        Update(id, new ToastOptions
+        {
+            Title = ""Error"",
+            Message = errorMessage?.Invoke(ex) ?? ex.Message,
+            Variant = ""error"",
+            Duration = 8000
+        });
+    }
+
+    return id;
+}";
+
+    private const string promiseUsageCode = @"@inject IAppToastService Toast
+
+<button @onclick=""SubmitForm"">Submit</button>
+
+@code {
+    private async Task SubmitForm()
+    {
+        await Toast.ShowPromise(
+            promise: () => Api.SubmitAsync(formData),
+            loadingMessage: ""Submitting your form..."",
+            successMessage: result => $""Form submitted! Reference: {result.Id}"",
+            errorMessage: ex => ""Failed to submit. Please try again.""
+        );
+    }
+}";
+}

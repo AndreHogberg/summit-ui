@@ -1,0 +1,190 @@
+@page "/tests/toast/basic"
+@rendermode InteractiveWebAssembly
+@inject IToastQueue<TestToastContent> Toasts
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Toast Basic Tests</h1>
+    
+    <div class="test-section">
+        <h2>Queue-Based Toasts</h2>
+        <button type="button" @onclick="ShowSimpleToast" data-testid="show-simple-toast">
+            Show Simple Toast
+        </button>
+        <button type="button" @onclick="ShowTitleToast" data-testid="show-title-toast">
+            Show Toast with Title
+        </button>
+        <button type="button" @onclick="ShowActionToast" data-testid="show-action-toast">
+            Show Toast with Action
+        </button>
+        <button type="button" @onclick="DismissAllToasts" data-testid="dismiss-all">
+            Dismiss All
+        </button>
+    </div>
+
+    <ToastRegion TContent="TestToastContent"
+                 AriaLabel="Notifications"
+                 GetAnnouncementText="GetAnnouncementText"
+                 class="toast-viewport"
+                 data-testid="toast-viewport">
+        <ToastTemplate Context="toast">
+            <Toast TContent="TestToastContent"
+                   ToastData="toast"
+                   class="toast-root"
+                   data-testid="@($"toast-{toast.Key}")"
+                   data-variant="@toast.Content.Variant">
+                @if (!string.IsNullOrEmpty(toast.Content.Title))
+                {
+                    <div class="toast-title" data-testid="@($"toast-title-{toast.Key}")">
+                        @toast.Content.Title
+                    </div>
+                }
+                <div class="toast-description" data-testid="@($"toast-description-{toast.Key}")">
+                    @toast.Content.Description
+                </div>
+                @if (toast.Content.Action is not null)
+                {
+                    <button type="button"
+                            @onclick="@(() => { toast.Content.Action.OnClick?.Invoke(); Toasts.Close(toast.Key); })"
+                            data-testid="@($"toast-action-{toast.Key}")">
+                        @toast.Content.Action.Label
+                    </button>
+                }
+                <ToastCloseButton class="toast-close" data-testid="@($"toast-close-{toast.Key}")">
+                    ×
+                </ToastCloseButton>
+            </Toast>
+        </ToastTemplate>
+    </ToastRegion>
+</div>
+}
+
+@code {
+    private string? _lastActionResult;
+
+    private void ShowSimpleToast()
+    {
+        Toasts.Show("This is a simple toast message.");
+    }
+
+    private void ShowTitleToast()
+    {
+        Toasts.Show("Success", "Your changes have been saved successfully.");
+    }
+
+    private void ShowActionToast()
+    {
+        Toasts.ShowWithAction(
+            "File Deleted",
+            "The file was moved to trash.",
+            new TestToastAction
+            {
+                Label = "Undo",
+                AltText = "Undo file deletion",
+                OnClick = () => _lastActionResult = "Action clicked!"
+            });
+    }
+
+    private void DismissAllToasts()
+    {
+        Toasts.CloseAll();
+    }
+
+    private string GetAnnouncementText(TestToastContent content)
+    {
+        if (!string.IsNullOrEmpty(content.Title))
+        {
+            return $"{content.Title}. {content.Description}";
+        }
+        return content.Description;
+    }
+}
+
+<style>
+    .test-section {
+        margin-bottom: 24px;
+        padding: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .test-section button {
+        margin-right: 8px;
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+    }
+    
+    .toast-viewport {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 400px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        z-index: 1000;
+    }
+    
+    [data-summit-toast-root] {
+        position: relative;
+        padding: 16px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    [data-summit-toast-root][data-variant="warning"] {
+        border-color: #f59e0b;
+        background: #fffbeb;
+    }
+    
+    [data-summit-toast-title] {
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    
+    [data-summit-toast-close] {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    
+    /* Swipe animations */
+    [data-summit-toast-root][data-swipe="move"] {
+        transform: translateX(var(--summit-toast-swipe-move-x, 0));
+    }
+    
+    [data-summit-toast-root][data-swipe="cancel"] {
+        transform: translateX(0);
+        transition: transform 200ms ease-out;
+    }
+    
+    [data-summit-toast-root][data-swipe="end"] {
+        animation: slide-right 200ms ease-out forwards;
+    }
+    
+    @@keyframes slide-right {
+        from {
+            transform: translateX(var(--summit-toast-swipe-end-x, 0));
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+</style>

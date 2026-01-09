@@ -1,0 +1,77 @@
+@using SummitUI
+@implements IDisposable
+
+@* 
+    DocsToast - Toast notification component for the docs site.
+    Uses the new generic ToastQueue<TContent> API with swipe-to-dismiss.
+    The ToastRegion automatically portals to body to avoid CSS stacking context issues.
+*@
+
+<ToastRegion TContent="DocsToastContent" 
+             AriaLabel="Notifications"
+             GetAnnouncementText="GetAnnouncementText"
+             Hotkey="@(["F8"])"
+             class="pointer-events-none absolute inset-0 overflow-clip flex flex-col-reverse items-end gap-2 p-4 z-[9999] outline-none">
+    <ToastTemplate Context="toast">
+        <Toast TContent="DocsToastContent" 
+               ToastData="toast"
+               SwipeDirection="SummitUI.SwipeDirection.Right"
+               SwipeThreshold="50"
+               class="group pointer-events-auto relative flex w-full max-w-[420px] items-center justify-between gap-4 overflow-hidden rounded-md border border-su-border bg-su-background p-4 shadow-lg transition-all animate-in slide-in-from-bottom-full data-[swipe=move]:transition-none data-[swipe=move]:translate-x-[var(--summit-toast-swipe-move-x)] data-[swipe=end]:animate-out data-[swipe=end]:slide-out-to-right-full sm:slide-in-from-right-full"
+               data-variant="@toast.Content.Variant">
+
+            <div class="grid gap-1">
+                @if (!string.IsNullOrEmpty(toast.Content.Title))
+                {
+                    <div class="text-sm font-semibold text-su-foreground">
+                        @toast.Content.Title
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(toast.Content.Description))
+                {
+                    <div class="text-sm text-su-muted-foreground">
+                        @toast.Content.Description
+                    </div>
+                }
+            </div>
+
+            <div class="flex items-center gap-2">
+                @if (toast.Content.Action is not null)
+                {
+                    <button 
+                        @onclick="@(() => { toast.Content.Action.OnClick?.Invoke(); Queue.Close(toast.Key); })"
+                        class="inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-su-border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-su-accent focus:outline-none focus:ring-2 focus:ring-su-ring disabled:pointer-events-none disabled:opacity-50">
+                        @toast.Content.Action.Label
+                    </button>
+                }
+                <ToastCloseButton 
+                    aria-label="Close notification"
+                    class="absolute right-2 top-2 rounded-md p-1 text-su-foreground/50 opacity-0 transition-opacity hover:text-su-foreground focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-su-ring group-hover:opacity-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </ToastCloseButton>
+            </div>
+        </Toast>
+    </ToastTemplate>
+</ToastRegion>
+
+@code {
+    [Inject]
+    private IToastQueue<DocsToastContent> Queue { get; set; } = default!;
+
+    private string GetAnnouncementText(DocsToastContent content)
+    {
+        if (!string.IsNullOrEmpty(content.Title) && !string.IsNullOrEmpty(content.Description))
+        {
+            return $"{content.Title}. {content.Description}";
+        }
+        return content.Title ?? content.Description ?? "";
+    }
+
+    public void Dispose()
+    {
+        // ToastRegion handles its own disposal
+    }
+}

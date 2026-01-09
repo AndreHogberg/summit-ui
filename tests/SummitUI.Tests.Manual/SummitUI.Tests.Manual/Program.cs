@@ -1,4 +1,6 @@
+using SummitUI;
 using SummitUI.Extensions;
+using SummitUI.Tests.Manual.Client;
 using SummitUI.Tests.Manual.Client.Pages;
 using SummitUI.Tests.Manual.Components;
 
@@ -11,6 +13,7 @@ builder.Services.AddRazorComponents()
 
 // Add SummitUI services
 builder.Services.AddSummitUI();
+builder.Services.AddToastQueue<TestToastContent>();
 
 var app = builder.Build();
 

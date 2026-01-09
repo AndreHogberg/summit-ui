@@ -117,3 +117,14 @@ export {
     unregister as mediaQuery_unregister,
     evaluate as mediaQuery_evaluate
 } from './media-query.js';
+
+// Toast exports (hotkey, swipe gesture, and portal support)
+export {
+    createPortal as toast_createPortal,
+    destroyPortal as toast_destroyPortal,
+    registerHotkey as toast_registerHotkey,
+    unregisterHotkey as toast_unregisterHotkey,
+    registerSwipe as toast_registerSwipe,
+    unregisterSwipe as toast_unregisterSwipe,
+    focusViewport as toast_focusViewport
+} from './toast.js';

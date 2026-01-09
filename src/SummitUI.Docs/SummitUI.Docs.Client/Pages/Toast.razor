@@ -1,0 +1,454 @@
+@page "/docs/toast"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+@using SummitUI.Docs.Design
+@inject IToastQueue<DocsToastContent> Toasts
+<PageTitle>SummitUI - Toast</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Toast
+            <SuPromptButton ComponentName="Toast" Url="/docs/toast" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A succinct message that is displayed temporarily. Toasts are auto-dismissible and should not interrupt the user.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button 
+                    @onclick="ShowDefaultToast"
+                    class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90 transition-colors">
+                    Show Toast
+                </button>
+                <button 
+                    @onclick="ShowToastWithTitle"
+                    class="inline-flex items-center justify-center rounded-md border border-su-border bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent transition-colors">
+                    With Title
+                </button>
+                <button 
+                    @onclick="ShowToastWithAction"
+                    class="inline-flex items-center justify-center rounded-md border border-su-border bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent transition-colors">
+                    With Action
+                </button>
+                <button 
+                    @onclick="ShowSuccessToast"
+                    class="inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 transition-colors">
+                    Success
+                </button>
+                <button 
+                    @onclick="ShowErrorToast"
+                    class="inline-flex items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors">
+                    Error
+                </button>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Generic content type - define your own toast structure
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Auto-close with configurable duration (minimum 5s for accessibility)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Pause on hover and focus for user control
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with aria-live announcements
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                DI-based queue - inject and use anywhere
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Template-based rendering - full control over toast appearance
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Programmatic dismissal with returned toast key
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Quick Start *@
+    <SuSection Title="Quick Start" Description="Get toasts working in 3 steps:">
+        <div class="flex flex-col gap-6">
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">1. Define your toast content type</SuHeading>
+                <SuCodeBlock Code="@step1Code" Language="csharp" />
+            </div>
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">2. Register in Program.cs</SuHeading>
+                <SuCodeBlock Code="@step2Code" Language="csharp" />
+            </div>
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">3. Add ToastRegion to your layout and inject the queue</SuHeading>
+                <SuCodeBlock Code="@step3Code" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="The toast system consists of these components:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Components">
+        <div class="grid gap-4 sm:grid-cols-2">
+            <SuCard>
+                <SuCardTitle>ToastRegion&lt;TContent&gt;</SuCardTitle>
+                <SuCardDescription class="mt-1">ARIA landmark region that contains all toasts. Injects IToastQueue&lt;TContent&gt; from DI and subscribes to changes.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>Toast&lt;TContent&gt;</SuCardTitle>
+                <SuCardDescription class="mt-1">Individual toast with role="alertdialog". Receives QueuedToast&lt;TContent&gt; and renders your template.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>ToastCloseButton</SuCardTitle>
+                <SuCardDescription class="mt-1">A button that closes the parent toast. Uses cascading values to find the toast key.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>IToastQueue&lt;TContent&gt;</SuCardTitle>
+                <SuCardDescription class="mt-1">The queue interface. Inject this to add toasts from anywhere in your app.</SuCardDescription>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @* IToastQueue *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">IToastQueue&lt;TContent&gt;</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Method</SuTableHead>
+                            <SuTableHead>Returns</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell><code>Add(content, options?)</code></SuTableCell>
+                            <SuTableCell><code>string</code></SuTableCell>
+                            <SuTableCell>Add a toast to the queue. Returns a key for programmatic dismissal.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>Close(key)</code></SuTableCell>
+                            <SuTableCell><code>void</code></SuTableCell>
+                            <SuTableCell>Close a specific toast by its key.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>CloseAll()</code></SuTableCell>
+                            <SuTableCell><code>void</code></SuTableCell>
+                            <SuTableCell>Close all toasts immediately.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>PauseAll()</code></SuTableCell>
+                            <SuTableCell><code>void</code></SuTableCell>
+                            <SuTableCell>Pause all auto-dismiss timers.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>ResumeAll()</code></SuTableCell>
+                            <SuTableCell><code>void</code></SuTableCell>
+                            <SuTableCell>Resume all auto-dismiss timers.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>Subscribe(callback)</code></SuTableCell>
+                            <SuTableCell><code>Action</code></SuTableCell>
+                            <SuTableCell>Subscribe to queue changes. Returns unsubscribe function.</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            @* ToastOptions *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ToastOptions</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell><code>Timeout</code></SuTableCell>
+                            <SuTableCell><code>int?</code></SuTableCell>
+                            <SuTableCell><code>null</code></SuTableCell>
+                            <SuTableCell>Auto-dismiss timeout in milliseconds. Minimum 5000ms enforced. Null means no auto-dismiss.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>Priority</code></SuTableCell>
+                            <SuTableCell><code>ToastPriority</code></SuTableCell>
+                            <SuTableCell><code>Polite</code></SuTableCell>
+                            <SuTableCell>Screen reader announcement priority. Polite or Assertive.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>OnClose</code></SuTableCell>
+                            <SuTableCell><code>Action?</code></SuTableCell>
+                            <SuTableCell><code>null</code></SuTableCell>
+                            <SuTableCell>Callback when the toast is closed (by user or timeout).</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            @* ToastRegion *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ToastRegion&lt;TContent&gt;</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell><code>AriaLabel</code></SuTableCell>
+                            <SuTableCell><code>string?</code></SuTableCell>
+                            <SuTableCell>Accessible label for the toast region. Should be localized.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell><code>ToastTemplate</code></SuTableCell>
+                            <SuTableCell><code>RenderFragment&lt;QueuedToast&lt;TContent&gt;&gt;</code></SuTableCell>
+                            <SuTableCell>Template for rendering each toast.</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            @* Toast *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Toast&lt;TContent&gt;</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell><code>ToastData</code></SuTableCell>
+                            <SuTableCell><code>QueuedToast&lt;TContent&gt;</code></SuTableCell>
+                            <SuTableCell>The queued toast data including key and user-defined content.</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">Simple Toast</SuHeading>
+                <SuCodeBlock Code="@simpleExample" Language="razor" />
+            </div>
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">With Timeout</SuHeading>
+                <SuCodeBlock Code="@timeoutExample" Language="csharp" />
+            </div>
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">Programmatic Dismissal</SuHeading>
+                <SuCodeBlock Code="@dismissExample" Language="csharp" />
+            </div>
+            <div>
+                <SuHeading Level="SuHeadingLevel.H4">Custom Extension Methods</SuHeading>
+                <SuCodeBlock Code="@extensionExample" Language="csharp" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><strong>ARIA Landmark:</strong> ToastRegion renders as role="region" for screen reader navigation.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><strong>Alert Dialog:</strong> Each toast has role="alertdialog" for proper screen reader announcements.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><strong>Aria-Live:</strong> Uses polite or assertive live regions for screen reader announcements.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><strong>Minimum Timeout:</strong> 5000ms minimum enforced for users who need time to read.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><strong>Pause on Interaction:</strong> Timers pause on hover and focus to give users control.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg>
+                <span><strong>Localization:</strong> AriaLabel must be provided by the user for proper localization.</span>
+            </li>
+        </ul>
+    </SuSection>
+</div>
+
+@code {
+    private void ShowDefaultToast()
+    {
+        Toasts.Show("Your message has been sent.");
+    }
+
+    private void ShowToastWithTitle()
+    {
+        Toasts.Show("Scheduled", "Your meeting has been scheduled for tomorrow at 3pm.");
+    }
+
+    private void ShowToastWithAction()
+    {
+        Toasts.ShowWithAction(
+            "Event Created",
+            "Your event has been created successfully.",
+            new DocsToastAction
+            {
+                Label = "Undo",
+                OnClick = () => Toasts.Show("Action undone!"),
+                AltText = "Undo the event creation"
+            }
+        );
+    }
+
+    private void ShowSuccessToast()
+    {
+        Toasts.Success("Success!", "Your changes have been saved.");
+    }
+
+    private void ShowErrorToast()
+    {
+        Toasts.Error("Error", "Failed to save changes. Please try again.");
+    }
+
+    private string step1Code = """
+// Define your toast content type - can be anything you want
+public record MyToast(string Title, string? Description = null);
+""";
+
+    private string step2Code = """
+// In Program.cs
+builder.Services.AddSummitUI();
+builder.Services.AddToastQueue<MyToast>();
+""";
+
+    private string step3Code = """
+@* In your layout *@
+<ToastRegion TContent="MyToast" AriaLabel="Notifications"
+             class="fixed bottom-4 right-4 flex flex-col-reverse gap-2">
+    <ToastTemplate Context="toast">
+        <Toast TContent="MyToast" ToastData="toast" class="bg-slate-800 text-white p-4 rounded-lg">
+            <span class="font-semibold">@toast.Content.Title</span>
+            @if (toast.Content.Description is not null)
+            {
+                <p class="text-sm opacity-80">@toast.Content.Description</p>
+            }
+            <ToastCloseButton aria-label="Close">×</ToastCloseButton>
+        </Toast>
+    </ToastTemplate>
+</ToastRegion>
+
+@* In any component *@
+@inject IToastQueue<MyToast> Toasts
+
+<button @onclick="() => Toasts.Add(new(\"Saved!\"))">Save</button>
+""";
+
+    private string anatomyCode = """
+ToastRegion (ARIA landmark region, injects IToastQueue<TContent>)
+└── ToastTemplate (RenderFragment<QueuedToast<TContent>>)
+    └── Toast (role="alertdialog")
+        ├── [Your content markup]
+        └── ToastCloseButton
+""";
+
+    private string simpleExample = """
+@inject IToastQueue<MyToast> Toasts
+
+<button @onclick="() => Toasts.Add(new(\"Hello!\"))">
+    Show Toast
+</button>
+""";
+
+    private string timeoutExample = """
+// Auto-dismiss after 8 seconds
+Toasts.Add(
+    new("Upload complete"),
+    new ToastOptions { Timeout = 8000 }
+);
+""";
+
+    private string dismissExample = """
+string? processingKey;
+
+void StartProcessing()
+{
+    processingKey = Toasts.Add(
+        new("Processing..."),
+        new ToastOptions { OnClose = () => processingKey = null }
+    );
+}
+
+void CancelProcessing()
+{
+    if (processingKey is not null)
+    {
+        Toasts.Close(processingKey);
+    }
+}
+""";
+
+    private string extensionExample = """
+// Create extension methods for common patterns
+public static class MyToastExtensions
+{
+    public static string Success(this IToastQueue<MyToast> queue, string message)
+        => queue.Add(new(message) { Variant = "success" });
+
+    public static string Error(this IToastQueue<MyToast> queue, string message)
+        => queue.Add(new(message) { Variant = "error" },
+            new() { Priority = ToastPriority.Assertive });
+}
+
+// Usage
+Toasts.Success("File saved!");
+Toasts.Error("Upload failed");
+""";
+}
