@@ -6,17 +6,17 @@
 <div class="min-h-screen bg-su-background text-su-foreground">
     <DocsMobileNav @rendermode="InteractiveWebAssembly" />
 
-    <div class="flex">
+    <div class="flex max-w-full">
         @* Desktop Sidebar *@
-        <aside class="sticky top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-280px shrink-0 border-r border-su-border md:block">
+        <aside class="sticky top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-[280px] shrink-0 border-r border-su-border md:block">
             <div class="sidebar-scroll-area">
                 <DocsSidebar />
             </div>
         </aside>
 
         @* Content Area *@
-        <main class="flex-1 px-6 py-8 md:px-10 md:py-12 lg:px-16">
-            <div class="mx-auto max-w-3xl">
+        <main class="flex-1 min-w-0 px-6 py-8 md:px-10 md:py-12 lg:px-16">
+            <div class="mx-auto max-w-3xl w-full">
                 @Body
             </div>
         </main>
