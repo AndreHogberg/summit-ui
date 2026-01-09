@@ -5,25 +5,33 @@
 
 <div class="relative flex flex-col items-center justify-center pt-16 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 text-center">
     <div class="mx-auto flex max-w-[64rem] flex-col items-center gap-4">
-        <div class="inline-flex items-center rounded-full border border-su-border bg-su-muted px-3 py-1 text-xs font-medium text-su-muted-foreground transition-colors">
+        <div
+            class="inline-flex items-center rounded-full border border-su-border bg-su-muted px-3 py-1 text-xs font-medium text-su-muted-foreground transition-colors">
             Now in early alpha
         </div>
         <h1 class="text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             Build accessible web apps <br class="hidden sm:inline"/> with speed
         </h1>
         <p class="max-w-[42rem] leading-normal text-su-muted-foreground text-base sm:text-xl sm:leading-8">
-            SummitUI is a headless, fully customizable component library for Blazor. Built with accessibility and performance in mind.
+            SummitUI is a headless, fully customizable component library for Blazor. Built with accessibility and
+            performance in mind.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
-            <NavLink tabindex="0" href="/docs" class="w-full sm:w-auto inline-flex items-center justify-center rounded-md bg-su-primary px-8 py-3 text-sm font-medium text-su-primary-foreground shadow transition-colors hover:bg-su-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2">Get Started</NavLink>
-            <NavLink tabindex="0" href="https://github.com/andrehogberg/summit-ui" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center rounded-md border border-su-border bg-su-background px-8 py-3 text-sm font-medium shadow-sm transition-colors hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2" rel="noopener noreferrer">GitHub</NavLink>
+            <NavLink tabindex="0" href="/docs"
+                     class="w-full sm:w-auto inline-flex items-center justify-center rounded-md bg-su-primary px-8 py-3 text-sm font-medium text-su-primary-foreground shadow transition-colors hover:bg-su-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2">
+                Get Started
+            </NavLink>
+            <NavLink tabindex="0" href="https://github.com/andrehogberg/summit-ui" target="_blank"
+                     class="w-full sm:w-auto inline-flex items-center justify-center rounded-md border border-su-border bg-su-background px-8 py-3 text-sm font-medium shadow-sm transition-colors hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2"
+                     rel="noopener noreferrer">GitHub
+            </NavLink>
         </div>
     </div>
 </div>
 
 <div class="container mx-auto px-4 sm:px-6 pb-16 sm:pb-24">
     <div class="mx-auto max-w-md">
-        <HomeTabsExample @rendermode="InteractiveWebAssembly" />
+        <HomeTabsExample @rendermode="InteractiveWebAssembly"/>
     </div>
 </div>
 
@@ -31,25 +39,45 @@
     <div class="container mx-auto px-4 sm:px-6">
         <div class="grid grid-cols-1 gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-3">
             <div class="flex flex-col items-center space-y-4 text-center">
-                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-su-primary text-su-primary-foreground shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <div
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-su-primary text-su-primary-foreground shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold">Headless</h3>
-                <p class="text-su-muted-foreground">Unstyled components that give you full control over the look and feel. Bring your own CSS or utility classes.</p>
+                <p class="text-su-muted-foreground">Unstyled components that give you full control over the look and
+                    feel. Bring your own CSS or utility classes.</p>
             </div>
             <div class="flex flex-col items-center space-y-4 text-center">
-                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-su-primary text-su-primary-foreground shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 5-5 5 5"/><path d="m12 13 4 4 3-3"/><path d="M4 14a5 5 0 0 0 10 0v-4a5 5 0 0 0-10 0Z"/><path d="m8 6 4-4 4 4"/></svg>
+                <div
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-su-primary text-su-primary-foreground shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="lucide lucide-person-standing-icon lucide-person-standing">
+                        <circle cx="12" cy="5" r="1"/>
+                        <path d="m9 20 3-6 3 6"/>
+                        <path d="m6 8 6 2 6-2"/>
+                        <path d="M12 10v4"/>
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold">Accessible</h3>
-                <p class="text-su-muted-foreground">Built with WAI-ARIA patterns to ensure your app is accessible to everyone. Keyboard navigation works out of the box.</p>
+                <p class="text-su-muted-foreground">Built with WAI-ARIA patterns to ensure your app is accessible to
+                    everyone. Keyboard navigation works out of the box.</p>
             </div>
             <div class="flex flex-col items-center space-y-4 text-center">
-                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-su-primary text-su-primary-foreground shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-su-primary text-su-primary-foreground shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold">Type Safe</h3>
-                <p class="text-su-muted-foreground">Built completely in C# for Blazor. Enjoy strong typing, intellisense, and compile-time checking.</p>
+                <p class="text-su-muted-foreground">Built completely in C# for Blazor. Enjoy strong typing,
+                    intellisense, and compile-time checking.</p>
             </div>
         </div>
     </div>
