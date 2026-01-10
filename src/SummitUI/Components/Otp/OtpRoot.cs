@@ -215,8 +215,8 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
         await UpdateValueAsync(newValue);
 
         // Check for completion
-        if (_previousValue != null && 
-            _previousValue.Length < MaxLength && 
+        if (_previousValue != null &&
+            _previousValue.Length < MaxLength &&
             newValue.Length == MaxLength)
         {
             await OnComplete.InvokeAsync(newValue);
@@ -225,12 +225,12 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
         _previousValue = newValue;
     }
 
-    private async Task HandlePaste(ClipboardEventArgs e)
-    {
-        // Note: ClipboardEventArgs doesn't give us the text in Blazor
-        // The paste handling is done in JS or via the input event
-        // This is here for future enhancement if needed
-    }
+    // private async Task HandlePaste(ClipboardEventArgs e)
+    // {
+    //     // Note: ClipboardEventArgs doesn't give us the text in Blazor
+    //     // The paste handling is done in JS or via the input event
+    //     // This is here for future enhancement if needed
+    // }
 
     private async Task UpdateValueAsync(string newValue)
     {
@@ -286,7 +286,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "data-otp-root", true);
         builder.AddAttribute(2, "style", "position: relative; cursor: " + (Disabled ? "default" : "text") + "; user-select: none; -webkit-user-select: none;");
-        
+
         if (_isFocused)
         {
             builder.AddAttribute(3, "data-focused", true);
@@ -299,7 +299,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
         {
             builder.AddAttribute(5, "data-placeholder-shown", true);
         }
-        
+
         builder.AddMultipleAttributes(6, AdditionalAttributes);
         builder.AddElementReferenceCapture(7, el => _containerElement = el);
 
@@ -307,7 +307,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
         // Using display:contents so parent's flex/grid layout passes through
         builder.OpenElement(8, "div");
         builder.AddAttribute(9, "style", "display: contents; pointer-events: none;");
-        
+
         if (ChildContent != null)
         {
             builder.AddContent(10, ChildContent(context));
@@ -317,7 +317,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
             // Default slot rendering
             builder.OpenElement(11, "div");
             builder.AddAttribute(12, "style", "display: flex; gap: 0.5rem;");
-            
+
             foreach (var slot in context.Slots)
             {
                 builder.OpenComponent<OtpSlot>(13);
@@ -325,10 +325,10 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
                 builder.SetKey(slot.Index);
                 builder.CloseComponent();
             }
-            
+
             builder.CloseElement();
         }
-        
+
         builder.CloseElement();
 
         // Hidden input layer
@@ -343,7 +343,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
         builder.AddAttribute(27, "maxlength", MaxLength);
         builder.AddAttribute(28, "value", CurrentValue);
         builder.AddAttribute(29, "disabled", Disabled);
-        
+
         if (!string.IsNullOrEmpty(Name))
         {
             builder.AddAttribute(30, "name", Name);
@@ -356,7 +356,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
         {
             builder.AddAttribute(32, "aria-placeholder", Placeholder);
         }
-        
+
         // Styling to make input invisible but interactive
         var textAlignCss = TextAlign switch
         {
@@ -364,7 +364,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
             OtpTextAlign.Right => "right",
             _ => "left"
         };
-        
+
         builder.AddAttribute(33, "style", $@"
             position: absolute;
             inset: 0;
@@ -389,7 +389,7 @@ public class OtpRoot : ComponentBase, IAsyncDisposable
 
         builder.AddAttribute(34, "oninput", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleInput));
         builder.AddElementReferenceCapture(35, el => _inputElement = el);
-        
+
         builder.CloseElement(); // input
         builder.CloseElement(); // input wrapper div
         builder.CloseElement(); // container div
