@@ -1,0 +1,134 @@
+@page "/tests/otp/form"
+@rendermode InteractiveWebAssembly
+@using System.ComponentModel.DataAnnotations
+
+@* 
+    Test page for OTP EditForm integration.
+    Tests validation and form submission with OTP component.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <div class="space-y-4">
+        <EditForm Model="model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit" data-testid="otp-form">
+            <DataAnnotationsValidator />
+            
+            <div class="space-y-2">
+                <label>Enter 6-digit code</label>
+                <OtpRoot @bind-Value="model.Code" MaxLength="6" data-testid="otp-input" class="otp-container" Context="otp">
+                    @foreach (var slot in otp.Slots)
+                    {
+                        <OtpSlot Slot="slot" class="otp-slot">
+                            <OtpCaret class="otp-caret" />
+                        </OtpSlot>
+                    }
+                </OtpRoot>
+                <ValidationMessage For="() => model.Code" data-testid="otp-validation" />
+            </div>
+            
+            <button type="submit" data-testid="submit-button" class="submit-btn">Submit</button>
+        </EditForm>
+        
+        <div data-testid="form-state">
+            <div data-testid="current-value">Value: @model.Code</div>
+            <div data-testid="submit-count">Submits: @_submitCount</div>
+            <div data-testid="last-result">Result: @_lastResult</div>
+        </div>
+    </div>
+</div>
+}
+
+@code {
+    private VerificationModel model = new();
+    private int _submitCount;
+    private string _lastResult = "none";
+
+    private void HandleValidSubmit()
+    {
+        _submitCount++;
+        _lastResult = $"valid:{model.Code}";
+    }
+    
+    private void HandleInvalidSubmit()
+    {
+        _submitCount++;
+        _lastResult = "invalid";
+    }
+
+    public class VerificationModel
+    {
+        [Required(ErrorMessage = "Code is required")]
+        [StringLength(6, MinimumLength = 6, ErrorMessage = "Code must be 6 digits")]
+        public string Code { get; set; } = "";
+    }
+}
+
+<style>
+    .space-y-4 > * + * {
+        margin-top: 1rem;
+    }
+    
+    .space-y-2 > * + * {
+        margin-top: 0.5rem;
+    }
+    
+    .otp-container {
+        display: inline-flex;
+        gap: 0.5rem;
+        padding: 0.25rem;
+    }
+    
+    .otp-slot {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        background: white;
+    }
+    
+    .otp-slot[data-active] {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+        border-color: #0d6efd;
+    }
+    
+    .otp-caret {
+        width: 2px;
+        height: 1.5rem;
+        background: currentColor;
+        animation: caret-blink 1s ease-out infinite;
+    }
+    
+    @@keyframes caret-blink {
+        0%, 70%, 100% { opacity: 1; }
+        20%, 50% { opacity: 0; }
+    }
+    
+    .submit-btn {
+        padding: 0.5rem 1rem;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .submit-btn:hover {
+        background: #0b5ed7;
+    }
+    
+    .validation-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+    }
+</style>
