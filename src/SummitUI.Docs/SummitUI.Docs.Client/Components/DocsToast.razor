@@ -1,35 +1,42 @@
 @using SummitUI
 @implements IDisposable
 
-@* 
+@*
     DocsToast - Toast notification component for the docs site.
     Uses the new generic ToastQueue<TContent> API with swipe-to-dismiss.
     The ToastRegion automatically portals to body to avoid CSS stacking context issues.
 *@
 
-<ToastRegion TContent="DocsToastContent" 
+<ToastRegion TContent="DocsToastContent"
              AriaLabel="Notifications"
              GetAnnouncementText="GetAnnouncementText"
              Hotkey="@(["F8"])"
              class="pointer-events-none fixed inset-0 flex flex-col-reverse items-end gap-2 p-4 sm:p-6 z-[9999] outline-none">
     <ToastTemplate Context="toast">
-        <Toast TContent="DocsToastContent" 
+        @{
+            var titleId = $"toast-title-{toast.Key}";
+            var descId = $"toast-desc-{toast.Key}";
+            var urgency = toast.Content.Variant == "error" ? ToastUrgency.Assertive : ToastUrgency.Polite;
+        }
+        <Toast TContent="DocsToastContent"
                ToastData="toast"
-               SwipeDirection="SummitUI.SwipeDirection.Right"
+               SwipeDirection="SwipeDirection.Right"
                SwipeThreshold="50"
+               Urgency="urgency"
+               AriaLabelledBy="@(!string.IsNullOrEmpty(toast.Content.Title) ? titleId : null)"
+               AriaDescribedBy="@(!string.IsNullOrEmpty(toast.Content.Description) ? descId : null)"
                class="group pointer-events-auto relative flex w-full max-w-[420px] items-center justify-between gap-4 overflow-hidden rounded-md border border-su-border bg-su-background p-4 shadow-lg transition-all animate-in slide-in-from-bottom-full data-[swipe=move]:transition-none data-[swipe=move]:translate-x-[var(--summit-toast-swipe-move-x)] data-[swipe=end]:animate-out data-[swipe=end]:slide-out-to-right-full sm:slide-in-from-right-full"
                data-variant="@toast.Content.Variant">
-
             <div class="grid gap-1">
                 @if (!string.IsNullOrEmpty(toast.Content.Title))
                 {
-                    <div class="text-sm font-semibold text-su-foreground">
+                    <div id="@titleId" data-summit-toast-title class="text-sm font-semibold text-su-foreground">
                         @toast.Content.Title
                     </div>
                 }
                 @if (!string.IsNullOrEmpty(toast.Content.Description))
                 {
-                    <div class="text-sm text-su-muted-foreground">
+                    <div id="@descId" data-summit-toast-description class="text-sm text-su-muted-foreground">
                         @toast.Content.Description
                     </div>
                 }
@@ -38,13 +45,15 @@
             <div class="flex items-center gap-2">
                 @if (toast.Content.Action is not null)
                 {
-                    <button 
+                    <button
                         @onclick="@(() => { toast.Content.Action.OnClick?.Invoke(); Queue.Close(toast.Key); })"
+                        data-summit-toast-action
+                        data-summit-toast-announce-alt="@toast.Content.Action.AltText"
                         class="inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-su-border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-su-accent focus:outline-none focus:ring-2 focus:ring-su-ring disabled:pointer-events-none disabled:opacity-50">
                         @toast.Content.Action.Label
                     </button>
                 }
-                <ToastCloseButton 
+                <ToastCloseButton
                     aria-label="Close notification"
                     class="absolute right-2 top-2 rounded-md p-1 text-su-foreground/50 opacity-0 transition-opacity hover:text-su-foreground focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-su-ring group-hover:opacity-100">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -20,12 +20,28 @@ public enum SwipeDirection
 }
 
 /// <summary>
-/// An individual toast notification. Renders as an ARIA alertdialog.
+/// Urgency level for toast notifications, affecting aria-live announcements.
+/// </summary>
+public enum ToastUrgency
+{
+    /// <summary>
+    /// Polite announcements (aria-live="polite"). Background, non-critical messages.
+    /// </summary>
+    Polite,
+    /// <summary>
+    /// Assertive announcements (aria-live="assertive"). Foreground, important messages.
+    /// </summary>
+    Assertive
+}
+
+/// <summary>
+/// An individual toast notification. Renders as an ARIA live region with role="status".
 /// </summary>
 /// <typeparam name="TContent">User-defined toast content type.</typeparam>
 /// <remarks>
 /// <para>
-/// Each toast is a non-modal alertdialog with proper ARIA attributes.
+/// Each toast is an ARIA live region with proper accessibility attributes including
+/// aria-live (assertive/polite), aria-atomic, and keyboard focusability.
 /// Users provide their own content via ChildContent.
 /// </para>
 /// </remarks>
@@ -70,6 +86,24 @@ public class Toast<TContent> : ComponentBase, IAsyncDisposable
     public int SwipeThreshold { get; set; } = 50;
 
     /// <summary>
+    /// Urgency level for screen reader announcements. Default is Assertive.
+    /// </summary>
+    [Parameter]
+    public ToastUrgency Urgency { get; set; } = ToastUrgency.Assertive;
+
+    /// <summary>
+    /// ID of the element that labels this toast (for aria-labelledby).
+    /// </summary>
+    [Parameter]
+    public string? AriaLabelledBy { get; set; }
+
+    /// <summary>
+    /// ID of the element that describes this toast (for aria-describedby).
+    /// </summary>
+    [Parameter]
+    public string? AriaDescribedBy { get; set; }
+
+    /// <summary>
     /// Additional attributes to apply to the toast element.
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
@@ -84,11 +118,32 @@ public class Toast<TContent> : ComponentBase, IAsyncDisposable
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         var seq = 0;
+        var ariaLive = Urgency == ToastUrgency.Assertive ? "assertive" : "polite";
 
         builder.OpenElement(seq++, "div");
-        builder.AddAttribute(seq++, "role", "alertdialog");
-        builder.AddAttribute(seq++, "aria-modal", "false");
+        builder.AddAttribute(seq++, "role", "status");
+        builder.AddAttribute(seq++, "aria-live", ariaLive);
+        builder.AddAttribute(seq++, "aria-atomic", "true");
+        builder.AddAttribute(seq++, "data-summit-toast-root", "");
+        builder.AddAttribute(seq++, "data-state", "open");
         builder.AddAttribute(seq++, "data-toast-key", ToastData.Key);
+        builder.AddAttribute(seq++, "class", "toast-root");
+
+        if (SwipeDirection.HasValue)
+        {
+            builder.AddAttribute(seq++, "data-swipe-direction", SwipeDirection.Value.ToString().ToLowerInvariant());
+        }
+
+        if (!string.IsNullOrEmpty(AriaLabelledBy))
+        {
+            builder.AddAttribute(seq++, "aria-labelledby", AriaLabelledBy);
+        }
+
+        if (!string.IsNullOrEmpty(AriaDescribedBy))
+        {
+            builder.AddAttribute(seq++, "aria-describedby", AriaDescribedBy);
+        }
+
         builder.AddMultipleAttributes(seq++, AdditionalAttributes);
         builder.AddElementReferenceCapture(seq++, el => _elementRef = el);
         builder.SetKey(ToastData.Key);

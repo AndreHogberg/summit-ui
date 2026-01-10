@@ -30,31 +30,43 @@ else
                  class="toast-viewport"
                  data-testid="toast-viewport">
         <ToastTemplate Context="toast">
+            @{
+                var titleId = $"toast-title-{toast.Key}";
+                var descId = $"toast-desc-{toast.Key}";
+                var urgency = toast.Content.Variant == "assertive" ? ToastUrgency.Assertive : ToastUrgency.Polite;
+                var testIdPrefix = toast.Content.Variant == "assertive" ? "foreground" : "background";
+            }
             <Toast TContent="TestToastContent"
                    ToastData="toast"
+                   Urgency="urgency"
+                   SwipeDirection="SwipeDirection.Right"
+                   AriaLabelledBy="@(!string.IsNullOrEmpty(toast.Content.Title) ? titleId : null)"
+                   AriaDescribedBy="@descId"
                    class="toast-root"
-                   data-testid="@(toast.Content.Variant == "assertive" ? "foreground-toast" : "background-toast")"
+                   data-testid="@($"{testIdPrefix}-toast")"
                    data-variant="@toast.Content.Variant">
                 @if (!string.IsNullOrEmpty(toast.Content.Title))
                 {
-                    <div class="toast-title" data-testid="@(toast.Content.Variant == "assertive" ? "foreground-title" : "background-title")">
+                    <div id="@titleId" data-summit-toast-title class="toast-title" data-testid="@($"{testIdPrefix}-title")">
                         @toast.Content.Title
                     </div>
                 }
-                <div class="toast-description" data-testid="@(toast.Content.Variant == "assertive" ? "foreground-description" : "background-description")">
+                <div id="@descId" data-summit-toast-description class="toast-description" data-testid="@($"{testIdPrefix}-description")">
                     @toast.Content.Description
                 </div>
                 @if (toast.Content.Action is not null)
                 {
                     <button type="button"
                             @onclick="@(() => { toast.Content.Action.OnClick?.Invoke(); Toasts.Close(toast.Key); })"
+                            data-summit-toast-action
+                            data-summit-toast-announce-alt="@toast.Content.Action.AltText"
                             data-testid="foreground-action">
                         @toast.Content.Action.Label
                     </button>
                 }
-                <ToastCloseButton aria-label="Dismiss notification" 
-                                  class="toast-close" 
-                                  data-testid="@(toast.Content.Variant == "assertive" ? "foreground-close" : "background-close")">
+                <ToastCloseButton aria-label="Dismiss notification"
+                                  class="toast-close"
+                                  data-testid="@($"{testIdPrefix}-close")">
                     ×
                 </ToastCloseButton>
             </Toast>

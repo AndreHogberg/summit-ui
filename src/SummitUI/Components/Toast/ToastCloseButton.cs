@@ -55,12 +55,13 @@ public class ToastCloseButton : ComponentBase
         var seq = 0;
 
         builder.OpenElement(seq++, Element);
-        
+
         if (Element == "button")
         {
             builder.AddAttribute(seq++, "type", "button");
         }
-        
+
+        builder.AddAttribute(seq++, "data-summit-toast-close", "");
         builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClick));
         builder.AddMultipleAttributes(seq++, AdditionalAttributes);
         builder.AddContent(seq++, ChildContent);

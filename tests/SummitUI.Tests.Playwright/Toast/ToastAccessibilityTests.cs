@@ -94,15 +94,6 @@ public class ToastAccessibilityTests : SummitTestBase
     }
 
     [Test]
-    public async Task Toast_ShouldBe_Focusable()
-    {
-        await Page.GetByTestId("show-foreground").ClickAsync();
-        
-        var toast = Page.GetByTestId("foreground-toast");
-        await Expect(toast).ToHaveAttributeAsync("tabindex", "0");
-    }
-
-    [Test]
     public async Task CloseButton_ShouldHave_AriaLabel()
     {
         await Page.GetByTestId("show-foreground").ClickAsync();

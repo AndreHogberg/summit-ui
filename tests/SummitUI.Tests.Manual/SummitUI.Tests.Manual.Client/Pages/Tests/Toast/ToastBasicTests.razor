@@ -10,7 +10,7 @@ else
 {
 <div data-testid="page-ready">
     <h1>Toast Basic Tests</h1>
-    
+
     <div class="test-section">
         <h2>Queue-Based Toasts</h2>
         <button type="button" @onclick="ShowSimpleToast" data-testid="show-simple-toast">
@@ -27,30 +27,47 @@ else
         </button>
     </div>
 
+    <div class="test-section">
+        <h2>Declarative Toast</h2>
+        <button type="button" @onclick="ToggleDeclarativeToast" data-testid="show-declarative">
+            @(showDeclarative ? "Hide" : "Show") Declarative Toast
+        </button>
+    </div>
+
     <ToastRegion TContent="TestToastContent"
                  AriaLabel="Notifications"
                  GetAnnouncementText="GetAnnouncementText"
                  class="toast-viewport"
                  data-testid="toast-viewport">
         <ToastTemplate Context="toast">
+            @{
+                var titleId = $"toast-title-{toast.Key}";
+                var descId = $"toast-desc-{toast.Key}";
+                var urgency = toast.Content.Variant == "warning" ? ToastUrgency.Assertive : ToastUrgency.Polite;
+            }
             <Toast TContent="TestToastContent"
                    ToastData="toast"
+                   Urgency="urgency"
+                   AriaLabelledBy="@(!string.IsNullOrEmpty(toast.Content.Title) ? titleId : null)"
+                   AriaDescribedBy="@descId"
                    class="toast-root"
                    data-testid="@($"toast-{toast.Key}")"
                    data-variant="@toast.Content.Variant">
                 @if (!string.IsNullOrEmpty(toast.Content.Title))
                 {
-                    <div class="toast-title" data-testid="@($"toast-title-{toast.Key}")">
+                    <div id="@titleId" data-summit-toast-title class="toast-title" data-testid="@($"toast-title-{toast.Key}")">
                         @toast.Content.Title
                     </div>
                 }
-                <div class="toast-description" data-testid="@($"toast-description-{toast.Key}")">
+                <div id="@descId" data-summit-toast-description class="toast-description" data-testid="@($"toast-description-{toast.Key}")">
                     @toast.Content.Description
                 </div>
                 @if (toast.Content.Action is not null)
                 {
                     <button type="button"
                             @onclick="@(() => { toast.Content.Action.OnClick?.Invoke(); Toasts.Close(toast.Key); })"
+                            data-summit-toast-action
+                            data-summit-toast-announce-alt="@toast.Content.Action.AltText"
                             data-testid="@($"toast-action-{toast.Key}")">
                         @toast.Content.Action.Label
                     </button>
@@ -61,11 +78,63 @@ else
             </Toast>
         </ToastTemplate>
     </ToastRegion>
+
+    @if (showDeclarative)
+    {
+        <div class="declarative-toast-container">
+            @{
+                var declTitleId = "declarative-title";
+                var declDescId = "declarative-description";
+            }
+            <Toast TContent="TestToastContent"
+                   ToastData="@declarativeToast"
+                   Urgency="ToastUrgency.Polite"
+                   AriaLabelledBy="@declTitleId"
+                   AriaDescribedBy="@declDescId"
+                   class="toast-root"
+                   data-testid="declarative-toast">
+                <div id="@declTitleId" data-summit-toast-title class="toast-title" data-testid="declarative-title">
+                    Declarative Toast
+                </div>
+                <div id="@declDescId" data-summit-toast-description class="toast-description" data-testid="declarative-description">
+                    This toast is declared in markup
+                </div>
+                <button type="button"
+                        @onclick="HandleDeclarativeAction"
+                        data-summit-toast-action
+                        data-testid="declarative-action">
+                    Action
+                </button>
+                <button type="button"
+                        @onclick="() => showDeclarative = false"
+                        class="toast-close"
+                        data-testid="declarative-close"
+                        data-summit-toast-close>
+                    ×
+                </button>
+            </Toast>
+        </div>
+    }
 </div>
 }
 
 @code {
     private string? _lastActionResult;
+    private bool showDeclarative = false;
+    private TestToastContent declarativeContent = new TestToastContent
+    {
+        Title = "Declarative Toast",
+        Description = "This toast is declared in markup"
+    };
+    private QueuedToast<TestToastContent> declarativeToast = new QueuedToast<TestToastContent>
+    {
+        Key = "declarative",
+        Content = new TestToastContent
+        {
+            Title = "Declarative Toast",
+            Description = "This toast is declared in markup"
+        }
+    };
 
     private void ShowSimpleToast()
     {
@@ -79,20 +148,34 @@ else
 
     private void ShowActionToast()
     {
-        Toasts.ShowWithAction(
-            "File Deleted",
-            "The file was moved to trash.",
-            new TestToastAction
+        Toasts.Add(new TestToastContent
+        {
+            Title = "File Deleted",
+            Description = "The file was moved to trash.",
+            Variant = "warning",
+            Action = new TestToastAction
             {
                 Label = "Undo",
                 AltText = "Undo file deletion",
                 OnClick = () => _lastActionResult = "Action clicked!"
-            });
+            }
+        });
     }
 
     private void DismissAllToasts()
     {
         Toasts.CloseAll();
+    }
+
+    private void ToggleDeclarativeToast()
+    {
+        showDeclarative = !showDeclarative;
+    }
+
+    private void HandleDeclarativeAction()
+    {
+        _lastActionResult = "Declarative action clicked!";
+        showDeclarative = false;
     }
 
     private string GetAnnouncementText(TestToastContent content)
@@ -186,5 +269,12 @@ else
             transform: translateX(100%);
             opacity: 0;
         }
+    }
+
+    .declarative-toast-container {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 1001;
     }
 </style>

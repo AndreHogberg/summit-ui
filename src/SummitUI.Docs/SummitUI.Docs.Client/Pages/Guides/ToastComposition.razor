@@ -243,29 +243,39 @@ builder.Services.AddToastQueue<AppToastContent>();";
              Hotkey=""@([""F8""])""
              class=""pointer-events-none fixed inset-0 flex flex-col-reverse items-end gap-2 p-4 sm:p-6 z-[9999] outline-none"">
     <ToastTemplate Context=""toast"">
+        @{
+            var titleId = $""toast-title-{toast.Key}"";
+            var descId = $""toast-desc-{toast.Key}"";
+            var urgency = toast.Content.Variant == ""error"" ? ToastUrgency.Assertive : ToastUrgency.Polite;
+        }
         <Toast TContent=""AppToastContent""
                ToastData=""toast""
                SwipeDirection=""SummitUI.SwipeDirection.Right""
                SwipeThreshold=""50""
+               Urgency=""urgency""
+               AriaLabelledBy=""@(!string.IsNullOrEmpty(toast.Content.Title) ? titleId : null)""
+               AriaDescribedBy=""@(!string.IsNullOrEmpty(toast.Content.Description) ? descId : null)""
                class=""group pointer-events-auto relative flex w-full max-w-[420px] items-center justify-between gap-4 overflow-hidden rounded-md border bg-background p-4 shadow-lg transition-all animate-in slide-in-from-right-full data-[swipe=move]:transition-none data-[swipe=move]:translate-x-[var(--summit-toast-swipe-move-x)] data-[swipe=end]:animate-out data-[swipe=end]:slide-out-to-right-full""
                data-variant=""@toast.Content.Variant"">
 
             <div class=""grid gap-1"">
                 @if (!string.IsNullOrEmpty(toast.Content.Title))
                 {
-                    <div class=""text-sm font-semibold"">@toast.Content.Title</div>
+                    <div id=""@titleId"" data-summit-toast-title class=""text-sm font-semibold"">@toast.Content.Title</div>
                 }
                 @if (!string.IsNullOrEmpty(toast.Content.Description))
                 {
-                    <div class=""text-sm text-muted-foreground"">@toast.Content.Description</div>
+                    <div id=""@descId"" data-summit-toast-description class=""text-sm text-muted-foreground"">@toast.Content.Description</div>
                 }
             </div>
 
             <div class=""flex items-center gap-2"">
                 @if (toast.Content.Action is not null)
                 {
-                    <button 
+                    <button
                         @onclick=""@(() => { toast.Content.Action.OnClick?.Invoke(); Queue.Close(toast.Key); })""
+                        data-summit-toast-action
+                        data-summit-toast-announce-alt=""@toast.Content.Action.AltText""
                         class=""inline-flex h-8 items-center justify-center rounded-md border px-3 text-sm font-medium"">
                         @toast.Content.Action.Label
                     </button>
