@@ -21,14 +21,11 @@
 @code {
     private bool _isSearchOpen;
     private bool _isMac;
-    private bool _initialized;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !_initialized)
+        if (firstRender)
         {
-            _initialized = true;
-            
             // Detect if Mac for keyboard shortcut display
             // This is a simple heuristic - in production you might use JS interop
             _isMac = OperatingSystem.IsMacOS() || OperatingSystem.IsMacCatalyst();

@@ -8,16 +8,20 @@ namespace SummitUI.Docs.Client.Services;
 public sealed class SearchJsInterop : IAsyncDisposable
 {
     private readonly IJSRuntime _jsRuntime;
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
+    private Task<IJSObjectReference>? _moduleTask;
     private DotNetObjectReference<SearchJsInterop>? _dotNetRef;
     private Action? _onSearchShortcut;
+    private bool _isInitialized;
 
     public SearchJsInterop(IJSRuntime jsRuntime)
     {
         _jsRuntime = jsRuntime;
-        _moduleTask = new Lazy<Task<IJSObjectReference>>(() =>
-            jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./search.min.js").AsTask());
+    }
+
+    private Task<IJSObjectReference> GetModuleAsync()
+    {
+        return _moduleTask ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
+            "import", "./search.min.js").AsTask();
     }
 
     /// <summary>
@@ -27,10 +31,15 @@ public sealed class SearchJsInterop : IAsyncDisposable
     public async ValueTask InitAsync(Action onSearchShortcut)
     {
         _onSearchShortcut = onSearchShortcut;
+        
+        if (_isInitialized)
+            return;
+        
         _dotNetRef = DotNetObjectReference.Create(this);
         
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("init", _dotNetRef);
+        _isInitialized = true;
     }
 
     /// <summary>
@@ -44,11 +53,16 @@ public sealed class SearchJsInterop : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
+        if (!_isInitialized)
+            return;
+            
+        _isInitialized = false;
+        
         try
         {
-            if (_moduleTask.IsValueCreated)
+            if (_moduleTask is { IsCompleted: true, IsFaulted: false })
             {
-                var module = await _moduleTask.Value;
+                var module = await _moduleTask;
                 await module.InvokeVoidAsync("dispose");
                 await module.DisposeAsync();
             }
@@ -59,7 +73,9 @@ public sealed class SearchJsInterop : IAsyncDisposable
         }
         finally
         {
+            _moduleTask = null;
             _dotNetRef?.Dispose();
+            _dotNetRef = null;
         }
     }
 }
