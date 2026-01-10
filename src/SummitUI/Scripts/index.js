@@ -7,10 +7,13 @@
 // Core Utilities exports
 export {
     isRtl as utilities_isRtl,
+    isElementRtl as utilities_isElementRtl,
     focusElement as utilities_focusElement,
     focusElementById as utilities_focusElementById,
     initializeCheckbox as utilities_initializeCheckbox,
-    destroyCheckbox as utilities_destroyCheckbox
+    destroyCheckbox as utilities_destroyCheckbox,
+    initializeRadioItem as utilities_initializeRadioItem,
+    destroyRadioItem as utilities_destroyRadioItem
 } from './utilities.js';
 
 // Floating UI wrapper exports (positioning only)

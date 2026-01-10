@@ -44,6 +44,26 @@ public sealed class SummitUtilities : IAsyncDisposable
     }
 
     /// <summary>
+    /// Checks if a specific element's direction is right-to-left (RTL).
+    /// This uses getComputedStyle to check the element's effective direction,
+    /// accounting for inherited dir attributes from parent elements.
+    /// </summary>
+    /// <param name="elementId">The ID of the element to check.</param>
+    /// <returns>True if the element is in RTL mode, false otherwise.</returns>
+    public async ValueTask<bool> IsElementRtlAsync(string elementId)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            return await module.InvokeAsync<bool>("utilities_isElementRtl", elementId);
+        }
+        catch (JSDisconnectedException)
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Clears the cached RTL value, forcing a fresh check on the next call.
     /// Useful when the document direction might change dynamically.
     /// </summary>
@@ -114,6 +134,40 @@ public sealed class SummitUtilities : IAsyncDisposable
         {
             var module = await _moduleTask.Value;
             await module.InvokeVoidAsync("utilities_destroyCheckbox", element);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+    }
+
+    /// <summary>
+    /// Initializes a radio item element to prevent arrow keys from scrolling the page.
+    /// </summary>
+    /// <param name="element">The radio item button element.</param>
+    public async ValueTask InitializeRadioItemAsync(ElementReference element)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("utilities_initializeRadioItem", element);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit disconnected, ignore
+        }
+    }
+
+    /// <summary>
+    /// Cleans up radio item event handlers.
+    /// </summary>
+    /// <param name="element">The radio item button element.</param>
+    public async ValueTask DestroyRadioItemAsync(ElementReference element)
+    {
+        try
+        {
+            var module = await _moduleTask.Value;
+            await module.InvokeVoidAsync("utilities_destroyRadioItem", element);
         }
         catch (JSDisconnectedException)
         {

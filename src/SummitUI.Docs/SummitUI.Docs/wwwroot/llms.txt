@@ -16,6 +16,7 @@ SummitUI is a headless component library for Blazor that provides high-quality, 
 - [FocusTrap](https://www.summitui.com/docs/focustrap/llms.txt)
 - [OTP Input](https://www.summitui.com/docs/otp/llms.txt)
 - [Popover](https://www.summitui.com/docs/popover/llms.txt)
+- [RadioGroup](https://www.summitui.com/docs/radiogroup/llms.txt)
 - [Select](https://www.summitui.com/docs/select/llms.txt)
 - [Switch](https://www.summitui.com/docs/switch/llms.txt)
 - [Tabs](https://www.summitui.com/docs/tabs/llms.txt)

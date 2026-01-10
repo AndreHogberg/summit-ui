@@ -1,0 +1,241 @@
+@page "/tests/radiogroup/disabled"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>RadioGroup Disabled Tests</h1>
+
+    <!-- Disabled Group -->
+    <div class="test-section" data-testid="disabled-group-section">
+        <h2>Disabled Group</h2>
+        <RadioGroupRoot @bind-Value="_disabledGroupValue" Disabled="true" AriaLabel="Disabled group" class="radio-group" data-testid="disabled-radio-group">
+            <RadioGroupItem Value="option1" class="radio-item" data-testid="disabled-group-option1">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Option 1</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="option2" class="radio-item" data-testid="disabled-group-option2">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Option 2</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="option3" class="radio-item" data-testid="disabled-group-option3">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Option 3</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="disabled-group-value">Value: @(_disabledGroupValue ?? "none")</p>
+    </div>
+
+    <!-- Individual Disabled Items -->
+    <div class="test-section" data-testid="disabled-items-section">
+        <h2>Individual Disabled Items</h2>
+        <RadioGroupRoot @bind-Value="_disabledItemValue" AriaLabel="Group with disabled items" class="radio-group" data-testid="disabled-items-radio-group">
+            <RadioGroupItem Value="enabled1" class="radio-item" data-testid="enabled1">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Enabled 1</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="disabled1" Disabled="true" class="radio-item" data-testid="disabled1">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Disabled 1</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="enabled2" class="radio-item" data-testid="enabled2">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Enabled 2</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="disabled2" Disabled="true" class="radio-item" data-testid="disabled2">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Disabled 2</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="enabled3" class="radio-item" data-testid="enabled3">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Enabled 3</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="disabled-items-value">Selected: @(_disabledItemValue ?? "none")</p>
+    </div>
+
+    <!-- First Item Disabled -->
+    <div class="test-section" data-testid="first-disabled-section">
+        <h2>First Item Disabled</h2>
+        <RadioGroupRoot @bind-Value="_firstDisabledValue" AriaLabel="First item disabled" class="radio-group" data-testid="first-disabled-radio-group">
+            <RadioGroupItem Value="first" Disabled="true" class="radio-item" data-testid="first-disabled">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">First (Disabled)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="second" class="radio-item" data-testid="first-disabled-second">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Second</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="third" class="radio-item" data-testid="first-disabled-third">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Third</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="first-disabled-value">Selected: @(_firstDisabledValue ?? "none")</p>
+    </div>
+
+    <!-- Toggleable Group Disabled -->
+    <div class="test-section" data-testid="toggleable-section">
+        <h2>Toggleable Group Disabled</h2>
+        <div class="d-flex flex-column gap-3">
+            <RadioGroupRoot @bind-Value="_toggleableValue" Disabled="_isGroupDisabled" AriaLabel="Toggleable group" class="radio-group" data-testid="toggleable-radio-group">
+                <RadioGroupItem Value="a" class="radio-item" data-testid="toggleable-a">
+                    @context.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Option A</span>
+                </RadioGroupItem>
+                <RadioGroupItem Value="b" class="radio-item" data-testid="toggleable-b">
+                    @context.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Option B</span>
+                </RadioGroupItem>
+                <RadioGroupItem Value="c" class="radio-item" data-testid="toggleable-c">
+                    @context.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Option C</span>
+                </RadioGroupItem>
+            </RadioGroupRoot>
+            <button type="button" class="btn" @onclick="ToggleGroupDisabled" data-testid="toggle-disabled-btn">
+                @(_isGroupDisabled ? "Enable Group" : "Disable Group")
+            </button>
+            <p data-testid="toggleable-value">Selected: @(_toggleableValue ?? "none"), Disabled: @_isGroupDisabled</p>
+        </div>
+    </div>
+</div>
+}
+
+<style>
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .radio-item {
+        all: unset;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .radio-item:hover:not([disabled]) {
+        background-color: #f5f5f5;
+    }
+
+    .radio-item:focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+    }
+
+    .radio-item[data-disabled],
+    .radio-item[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .radio-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4d4d8;
+        border-radius: 50%;
+        transition: border-color 0.15s ease;
+    }
+
+    .radio-item[data-state='checked'] .radio-indicator {
+        border-color: #000;
+    }
+
+    .radio-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border-radius: 50%;
+    }
+
+    .radio-label {
+        font-size: 0.875rem;
+    }
+
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #d4d4d8;
+        border-radius: 4px;
+        background-color: #fff;
+        cursor: pointer;
+        width: fit-content;
+    }
+
+    .btn:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+@code {
+    private string? _disabledGroupValue = "option1";
+    private string? _disabledItemValue;
+    private string? _firstDisabledValue;
+    private string? _toggleableValue = "a";
+    private bool _isGroupDisabled;
+
+    private void ToggleGroupDisabled()
+    {
+        _isGroupDisabled = !_isGroupDisabled;
+    }
+}

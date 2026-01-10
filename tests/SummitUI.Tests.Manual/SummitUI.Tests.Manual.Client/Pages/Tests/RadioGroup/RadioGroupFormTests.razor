@@ -1,0 +1,284 @@
+@page "/tests/radiogroup/form"
+@rendermode InteractiveWebAssembly
+@using System.ComponentModel.DataAnnotations
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>RadioGroup Form Tests</h1>
+
+    <!-- Form Submission -->
+    <div class="test-section" data-testid="form-section">
+        <h2>Form Submission</h2>
+        <form @onsubmit="HandleSubmit" @onsubmit:preventDefault data-testid="radio-form">
+            <RadioGroupRoot @bind-Value="_formValue" Name="plan" AriaLabel="Select a plan" class="radio-group" data-testid="form-radio-group">
+                <RadioGroupItem Value="basic" class="radio-item" data-testid="form-basic" Context="itemContext">
+                    @itemContext.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Basic - $9/month</span>
+                </RadioGroupItem>
+                <RadioGroupItem Value="standard" class="radio-item" data-testid="form-standard" Context="itemContext">
+                    @itemContext.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Standard - $19/month</span>
+                </RadioGroupItem>
+                <RadioGroupItem Value="premium" class="radio-item" data-testid="form-premium" Context="itemContext">
+                    @itemContext.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Premium - $49/month</span>
+                </RadioGroupItem>
+            </RadioGroupRoot>
+            <button type="submit" class="btn btn-primary" data-testid="submit-btn">Submit</button>
+        </form>
+        <p data-testid="form-submitted-value">Submitted value: @_submittedValue</p>
+    </div>
+
+    <!-- Required Field -->
+    <div class="test-section" data-testid="required-section">
+        <h2>Required Field</h2>
+        <form data-testid="required-form">
+            <RadioGroupRoot @bind-Value="_requiredValue" Name="required-field" Required="true" AriaLabel="Required selection" class="radio-group" data-testid="required-radio-group">
+                <RadioGroupItem Value="yes" class="radio-item" data-testid="required-yes" Context="itemContext">
+                    @itemContext.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Yes</span>
+                </RadioGroupItem>
+                <RadioGroupItem Value="no" class="radio-item" data-testid="required-no" Context="itemContext">
+                    @itemContext.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">No</span>
+                </RadioGroupItem>
+            </RadioGroupRoot>
+        </form>
+    </div>
+
+    <!-- With Label Element -->
+    <div class="test-section" data-testid="labelledby-section">
+        <h2>With aria-labelledby</h2>
+        <div id="shipping-label" class="group-label">Shipping Method</div>
+        <RadioGroupRoot @bind-Value="_labelledByValue" AriaLabelledBy="shipping-label" class="radio-group" data-testid="labelledby-radio-group">
+            <RadioGroupItem Value="standard" class="radio-item" data-testid="labelledby-standard" Context="itemContext">
+                @itemContext.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Standard Shipping (5-7 days)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="express" class="radio-item" data-testid="labelledby-express" Context="itemContext">
+                @itemContext.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Express Shipping (2-3 days)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="overnight" class="radio-item" data-testid="labelledby-overnight" Context="itemContext">
+                @itemContext.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Overnight Shipping (next day)</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+    </div>
+
+    <!-- With Description -->
+    <div class="test-section" data-testid="describedby-section">
+        <h2>With aria-describedby</h2>
+        <RadioGroupRoot @bind-Value="_describedByValue" AriaLabel="Notification preference" AriaDescribedBy="notification-description" class="radio-group" data-testid="describedby-radio-group">
+            <RadioGroupItem Value="all" class="radio-item" data-testid="describedby-all" Context="itemContext">
+                @itemContext.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">All notifications</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="important" class="radio-item" data-testid="describedby-important" Context="itemContext">
+                @itemContext.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Important only</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="none" class="radio-item" data-testid="describedby-none" Context="itemContext">
+                @itemContext.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">None</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p id="notification-description" class="description">Choose how you want to receive notifications from our platform.</p>
+    </div>
+
+    <!-- EditForm Integration -->
+    <div class="test-section" data-testid="editform-section">
+        <h2>EditForm Integration</h2>
+        <EditForm Model="_editFormModel" OnValidSubmit="HandleEditFormSubmit" data-testid="edit-form">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label class="group-label">Plan (required)</label>
+                <RadioGroupRoot @bind-Value="_editFormModel.Plan" AriaLabel="Select a plan" class="radio-group" data-testid="editform-radio-group">
+                    <RadioGroupItem Value="starter" class="radio-item" data-testid="editform-starter" Context="itemContext">
+                        <RadioGroupIndicator ForceMount="true" class="radio-indicator">
+                            <span class="radio-dot"></span>
+                        </RadioGroupIndicator>
+                        <span class="radio-label">Starter - $9/month</span>
+                    </RadioGroupItem>
+                    <RadioGroupItem Value="professional" class="radio-item" data-testid="editform-professional" Context="itemContext">
+                        <RadioGroupIndicator ForceMount="true" class="radio-indicator">
+                            <span class="radio-dot"></span>
+                        </RadioGroupIndicator>
+                        <span class="radio-label">Professional - $29/month</span>
+                    </RadioGroupItem>
+                    <RadioGroupItem Value="enterprise" class="radio-item" data-testid="editform-enterprise" Context="itemContext">
+                        <RadioGroupIndicator ForceMount="true" class="radio-indicator">
+                            <span class="radio-dot"></span>
+                        </RadioGroupIndicator>
+                        <span class="radio-label">Enterprise - $99/month</span>
+                    </RadioGroupItem>
+                </RadioGroupRoot>
+                <ValidationMessage For="@(() => _editFormModel.Plan)" data-testid="editform-validation" />
+            </div>
+            <button type="submit" class="btn btn-primary" data-testid="editform-submit-btn">Submit</button>
+        </EditForm>
+        <p data-testid="editform-submitted-value">Submitted: @_editFormSubmittedValue</p>
+    </div>
+</div>
+}
+
+<style>
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .radio-item {
+        all: unset;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .radio-item:hover:not([disabled]) {
+        background-color: #f5f5f5;
+    }
+
+    .radio-item:focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+    }
+
+    .radio-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4d4d8;
+        border-radius: 50%;
+        transition: border-color 0.15s ease;
+    }
+
+    .radio-item[data-state='checked'] .radio-indicator {
+        border-color: #000;
+    }
+
+    .radio-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border-radius: 50%;
+    }
+
+    .radio-label {
+        font-size: 0.875rem;
+    }
+
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #d4d4d8;
+        border-radius: 4px;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #f5f5f5;
+    }
+
+    .btn-primary {
+        background-color: #000;
+        color: #fff;
+        border-color: #000;
+    }
+
+    .btn-primary:hover {
+        background-color: #333;
+    }
+
+    .group-label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .description {
+        color: #666;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+</style>
+
+@code {
+    private string? _formValue = "basic";
+    private string? _submittedValue = "(not submitted)";
+    private string? _requiredValue;
+    private string? _labelledByValue;
+    private string? _describedByValue;
+    
+    // EditForm support
+    private EditFormModel _editFormModel = new();
+    private string? _editFormSubmittedValue = "(not submitted)";
+
+    private void HandleSubmit()
+    {
+        _submittedValue = _formValue ?? "(empty)";
+    }
+
+    private void HandleEditFormSubmit()
+    {
+        _editFormSubmittedValue = _editFormModel.Plan ?? "(empty)";
+    }
+
+    public class EditFormModel
+    {
+        [Required(ErrorMessage = "Please select a plan")]
+        public string? Plan { get; set; }
+    }
+}

@@ -1,0 +1,659 @@
+@page "/docs/radiogroup"
+@rendermode InteractiveWebAssembly
+@layout DocsLayout
+@using SummitUI
+
+<PageTitle>SummitUI - RadioGroup</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            RadioGroup
+            <SuPromptButton ComponentName="RadioGroup" Url="/docs/radiogroup" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A set of checkable buttons where only one can be checked at a time.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-medium text-su-foreground">Select a plan:</span>
+                    <RadioGroupRoot @bind-Value="_selectedPlan" AriaLabel="Select a plan" class="demo-radio-group">
+                        <RadioGroupItem Value="starter" class="demo-radio-item" data-testid="demo-starter">
+                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                                <span class="demo-dot"></span>
+                            </RadioGroupIndicator>
+                            <span class="demo-label">Starter - $9/month</span>
+                        </RadioGroupItem>
+                        <RadioGroupItem Value="pro" class="demo-radio-item" data-testid="demo-pro">
+                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                                <span class="demo-dot"></span>
+                            </RadioGroupIndicator>
+                            <span class="demo-label">Pro - $29/month</span>
+                        </RadioGroupItem>
+                        <RadioGroupItem Value="enterprise" class="demo-radio-item" data-testid="demo-enterprise">
+                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                                <span class="demo-dot"></span>
+                            </RadioGroupIndicator>
+                            <span class="demo-label">Enterprise - $99/month</span>
+                        </RadioGroupItem>
+                    </RadioGroupRoot>
+                    <span class="text-sm text-su-muted-foreground">Selected: @(_selectedPlan ?? "none")</span>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-medium text-su-foreground">Horizontal layout:</span>
+                    <RadioGroupRoot @bind-Value="_selectedAlignment" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="Select alignment" class="demo-radio-group demo-radio-group-horizontal">
+                        <RadioGroupItem Value="left" class="demo-radio-item">
+                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                                <span class="demo-dot"></span>
+                            </RadioGroupIndicator>
+                            <span class="demo-label">Left</span>
+                        </RadioGroupItem>
+                        <RadioGroupItem Value="center" class="demo-radio-item">
+                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                                <span class="demo-dot"></span>
+                            </RadioGroupIndicator>
+                            <span class="demo-label">Center</span>
+                        </RadioGroupItem>
+                        <RadioGroupItem Value="right" class="demo-radio-item">
+                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                                <span class="demo-dot"></span>
+                            </RadioGroupIndicator>
+                            <span class="demo-label">Right</span>
+                        </RadioGroupItem>
+                    </RadioGroupRoot>
+                </div>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation with roving tabindex
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Vertical and horizontal orientation support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                RTL (Right-to-Left) language support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Controlled and uncontrolled modes
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Optional loop navigation (wrap from last to first)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Support for HTML forms (hidden input)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with proper ARIA attributes
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SuCard>
+                <SuCardTitle>RadioGroupRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">Container component with radiogroup role. Manages selection state and provides context to child items.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>RadioGroupItem</SuCardTitle>
+                <SuCardDescription class="mt-1">Individual radio button with role="radio". Handles keyboard navigation and selection.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>RadioGroupIndicator</SuCardTitle>
+                <SuCardDescription class="mt-1">Visual indicator that renders when the item is checked. Supports ForceMount for animations.</SuCardDescription>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "RadioGroupRoot", Props: radioGroupRootProperties), 
+                (Title: "RadioGroupItem", Props: radioGroupItemProperties),
+                (Title: "RadioGroupIndicator", Props: radioGroupIndicatorProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Default Value</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Set an initial selection using DefaultValue for uncontrolled mode.</SuText>
+                <SuCodeBlock Code="@defaultValueExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Controlled Mode</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Control the selection state externally with two-way binding.</SuText>
+                <SuCodeBlock Code="@controlledExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Horizontal Orientation</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use horizontal orientation for inline radio groups. Arrow Left/Right navigate between items.</SuText>
+                <SuCodeBlock Code="@horizontalExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Disabled Items</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Individual items or the entire group can be disabled.</SuText>
+                <SuCodeBlock Code="@disabledExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Form Integration</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use the Name property to include the selection in form submissions.</SuText>
+                <SuCodeBlock Code="@formExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">EditForm Integration</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use with Blazor EditForm for model binding and validation support.</SuText>
+                <SuCodeBlock Code="@editFormExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">role:</span>
+                        <span><code>radiogroup</code> on the root element, <code>radio</code> on each item</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-checked:</span>
+                        <span>Reflects the current selection state on each item (<code>true</code> or <code>false</code>)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-orientation:</span>
+                        <span>Set on root to indicate <code>vertical</code> or <code>horizontal</code> layout</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-label / aria-labelledby:</span>
+                        <span>Provides an accessible name for the group</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-disabled:</span>
+                        <span>Set when an item or the group is disabled</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">aria-required:</span>
+                        <span>Set when a selection is required</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">RTL Support</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    The component automatically detects RTL mode and adjusts horizontal navigation accordingly. In RTL mode, Arrow Right moves to the previous item and Arrow Left moves to the next item.
+                </SuText>
+            </div>
+        </div>
+    </SuSection>
+</div>
+
+<style>
+    /* Demo Radio Group Styles */
+    .demo-radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .demo-radio-group-horizontal {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .demo-radio-item {
+        all: unset;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        cursor: pointer;
+    }
+
+    .demo-radio-item[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .demo-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid rgb(var(--su-border));
+        border-radius: 50%;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .demo-radio-item:hover:not([data-disabled]) .demo-indicator {
+        border-color: rgb(var(--su-primary) / 0.5);
+    }
+
+    .demo-radio-item:focus-visible .demo-indicator {
+        outline: 2px solid rgb(var(--su-primary));
+        outline-offset: 2px;
+    }
+
+    .demo-radio-item[data-state='checked'] .demo-indicator {
+        border-color: rgb(var(--su-primary));
+    }
+
+    .demo-dot {
+        width: 0.625rem;
+        height: 0.625rem;
+        background-color: rgb(var(--su-primary));
+        border-radius: 50%;
+        opacity: 0;
+        transform: scale(0);
+        transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .demo-indicator[data-state='checked'] .demo-dot {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .demo-label {
+        font-size: 0.875rem;
+        color: rgb(var(--su-foreground));
+    }
+</style>
+
+@code {
+    private string? _selectedPlan = "pro";
+    private string? _selectedAlignment = "center";
+
+    private List<SuApiProperty> radioGroupRootProperties = new()
+    {
+        new() { Name = "Value", Type = "string?", Default = "null", Description = "Controlled selected value" },
+        new() { Name = "DefaultValue", Type = "string?", Default = "null", Description = "Default selected value for uncontrolled mode" },
+        new() { Name = "ValueChanged", Type = "EventCallback<string?>", Description = "Callback when selected value changes" },
+        new() { Name = "ValueExpression", Type = "Expression<Func<string?>>?", Default = "null", Description = "Expression for EditForm binding and validation" },
+        new() { Name = "OnValueChange", Type = "EventCallback<string?>", Description = "Additional callback when value changes" },
+        new() { Name = "Orientation", Type = "RadioGroupOrientation", Default = "Vertical", Description = "Layout orientation (Vertical or Horizontal)" },
+        new() { Name = "Loop", Type = "bool", Default = "true", Description = "Whether navigation loops from last to first" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable the entire group" },
+        new() { Name = "Required", Type = "bool", Default = "false", Description = "Whether a selection is required" },
+        new() { Name = "Name", Type = "string?", Default = "null", Description = "Form field name for hidden input" },
+        new() { Name = "AriaLabel", Type = "string?", Default = "null", Description = "Accessible label for the group" },
+        new() { Name = "AriaLabelledBy", Type = "string?", Default = "null", Description = "ID of element that labels the group" },
+        new() { Name = "AriaDescribedBy", Type = "string?", Default = "null", Description = "ID of element that describes the group" }
+    };
+
+    private List<SuApiProperty> radioGroupItemProperties = new()
+    {
+        new() { Name = "Value", Type = "string", Required = true, Description = "Unique value for this radio item" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable this specific item" },
+        new() { Name = "ChildContent", Type = "RenderFragment<RadioGroupItemContext>?", Description = "Content with context providing Checked and Disabled state" }
+    };
+
+    private List<SuApiProperty> radioGroupIndicatorProperties = new()
+    {
+        new() { Name = "ForceMount", Type = "bool", Default = "false", Description = "Always render in DOM (useful for CSS animations)" },
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Content to render when checked" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-summit-radio-group", Type = "Present on root", Description = "Identifies the radio group root element" },
+        new() { Name = "data-summit-radio-group-item", Type = "Present on items", Description = "Identifies radio group item elements" },
+        new() { Name = "data-state", Type = "\"checked\" | \"unchecked\"", Description = "Current selection state of the item" },
+        new() { Name = "data-orientation", Type = "\"vertical\" | \"horizontal\"", Description = "Current orientation of the group/item" },
+        new() { Name = "data-disabled", Type = "Present when disabled", Description = "Indicates disabled state" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "Tab", Type = "", Description = "Moves focus to the selected item, or first item if none selected" },
+        new() { Name = "Space", Type = "", Description = "Selects the focused item" },
+        new() { Name = "ArrowDown", Type = "", Description = "Moves to and selects the next item (vertical orientation)" },
+        new() { Name = "ArrowUp", Type = "", Description = "Moves to and selects the previous item (vertical orientation)" },
+        new() { Name = "ArrowRight", Type = "", Description = "Moves to and selects the next item (horizontal orientation, RTL-aware)" },
+        new() { Name = "ArrowLeft", Type = "", Description = "Moves to and selects the previous item (horizontal orientation, RTL-aware)" }
+    };
+
+    private const string anatomyCode = @"<RadioGroupRoot>
+    <RadioGroupItem Value=""option1"">
+        <RadioGroupIndicator>
+            <span class=""dot""></span>
+        </RadioGroupIndicator>
+        <span>Option 1</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""option2"">
+        <RadioGroupIndicator>
+            <span class=""dot""></span>
+        </RadioGroupIndicator>
+        <span>Option 2</span>
+    </RadioGroupItem>
+</RadioGroupRoot>";
+
+    private const string basicExampleCode = @"<RadioGroupRoot AriaLabel=""Favorite color"">
+    <RadioGroupItem Value=""red"">
+        <RadioGroupIndicator />
+        <span>Red</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""green"">
+        <RadioGroupIndicator />
+        <span>Green</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""blue"">
+        <RadioGroupIndicator />
+        <span>Blue</span>
+    </RadioGroupItem>
+</RadioGroupRoot>";
+
+    private const string defaultValueExampleCode = @"<RadioGroupRoot DefaultValue=""medium"" AriaLabel=""Select size"">
+    <RadioGroupItem Value=""small"">
+        <RadioGroupIndicator />
+        <span>Small</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""medium"">
+        <RadioGroupIndicator />
+        <span>Medium</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""large"">
+        <RadioGroupIndicator />
+        <span>Large</span>
+    </RadioGroupItem>
+</RadioGroupRoot>";
+
+    private const string controlledExampleCode = @"@code {
+    private string? selectedValue = ""option1"";
+}
+
+<RadioGroupRoot @bind-Value=""selectedValue"" AriaLabel=""Select option"">
+    <RadioGroupItem Value=""option1"">
+        <RadioGroupIndicator />
+        <span>Option 1</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""option2"">
+        <RadioGroupIndicator />
+        <span>Option 2</span>
+    </RadioGroupItem>
+</RadioGroupRoot>
+
+<p>Selected: @selectedValue</p>";
+
+    private const string horizontalExampleCode = @"<RadioGroupRoot Orientation=""RadioGroupOrientation.Horizontal"" AriaLabel=""Text alignment"">
+    <RadioGroupItem Value=""left"">
+        <RadioGroupIndicator />
+        <span>Left</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""center"">
+        <RadioGroupIndicator />
+        <span>Center</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value=""right"">
+        <RadioGroupIndicator />
+        <span>Right</span>
+    </RadioGroupItem>
+</RadioGroupRoot>";
+
+    private const string disabledExampleCode = @"@* Disable entire group *@
+<RadioGroupRoot Disabled=""true"" AriaLabel=""Disabled group"">
+    <RadioGroupItem Value=""a""><RadioGroupIndicator /><span>Option A</span></RadioGroupItem>
+    <RadioGroupItem Value=""b""><RadioGroupIndicator /><span>Option B</span></RadioGroupItem>
+</RadioGroupRoot>
+
+@* Disable individual items *@
+<RadioGroupRoot AriaLabel=""Partially disabled"">
+    <RadioGroupItem Value=""available""><RadioGroupIndicator /><span>Available</span></RadioGroupItem>
+    <RadioGroupItem Value=""sold-out"" Disabled=""true""><RadioGroupIndicator /><span>Sold Out</span></RadioGroupItem>
+    <RadioGroupItem Value=""coming-soon"" Disabled=""true""><RadioGroupIndicator /><span>Coming Soon</span></RadioGroupItem>
+</RadioGroupRoot>";
+
+    private const string formExampleCode = @"<form method=""post"">
+    <RadioGroupRoot Name=""subscription"" Required=""true"" AriaLabel=""Subscription plan"">
+        <RadioGroupItem Value=""monthly"">
+            <RadioGroupIndicator />
+            <span>Monthly - $9/month</span>
+        </RadioGroupItem>
+        <RadioGroupItem Value=""yearly"">
+            <RadioGroupIndicator />
+            <span>Yearly - $99/year</span>
+        </RadioGroupItem>
+    </RadioGroupRoot>
+    <button type=""submit"">Subscribe</button>
+</form>";
+
+    private const string editFormExampleCode = @"@using System.ComponentModel.DataAnnotations
+
+<EditForm Model=""model"" OnValidSubmit=""HandleSubmit"">
+    <DataAnnotationsValidator />
+    
+    <div class=""form-group"">
+        <label>Select a subscription plan:</label>
+        <RadioGroupRoot @bind-Value=""model.Plan"" AriaLabel=""Subscription plan"">
+            <RadioGroupItem Value=""starter"" Context=""itemContext"">
+                <RadioGroupIndicator />
+                <span>Starter - $9/month</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value=""pro"" Context=""itemContext"">
+                <RadioGroupIndicator />
+                <span>Pro - $29/month</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value=""enterprise"" Context=""itemContext"">
+                <RadioGroupIndicator />
+                <span>Enterprise - $99/month</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <ValidationMessage For=""@(() => model.Plan)"" />
+    </div>
+    
+    <button type=""submit"">Subscribe</button>
+</EditForm>
+
+@code {
+    private FormModel model = new();
+
+    public class FormModel
+    {
+        [Required(ErrorMessage = ""Please select a subscription plan"")]
+        public string? Plan { get; set; }
+    }
+
+    private void HandleSubmit()
+    {
+        // Handle form submission
+    }
+}";
+
+    private const string cssExampleCode = @"/* Radio group container */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.radio-group[data-orientation=""horizontal""] {
+    flex-direction: row;
+}
+
+/* Radio item */
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+}
+
+.radio-item[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Radio indicator (circle) */
+.radio-indicator {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d4d4d8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease;
+}
+
+/* Hover state on indicator */
+.radio-item:hover:not([data-disabled]) .radio-indicator {
+    border-color: #0066cc80;
+}
+
+/* Focus ring on indicator */
+.radio-item:focus-visible .radio-indicator {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+}
+
+.radio-item[data-state=""checked""] .radio-indicator {
+    border-color: #0066cc;
+}
+
+/* Radio dot */
+.radio-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    background-color: #0066cc;
+    border-radius: 50%;
+}";
+}

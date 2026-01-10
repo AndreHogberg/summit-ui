@@ -1,0 +1,312 @@
+# RadioGroup
+
+> A set of checkable buttons where only one can be checked at a time.
+
+The RadioGroup component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Full keyboard navigation with roving tabindex
+- Vertical and horizontal orientation support
+- RTL (Right-to-Left) language support
+- Controlled and uncontrolled modes
+- Optional loop navigation (wrap from last to first)
+- Support for HTML forms (hidden input)
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<RadioGroupRoot>
+    <RadioGroupItem Value="option1">
+        <RadioGroupIndicator>
+            <span class="dot"></span>
+        </RadioGroupIndicator>
+        <span>Option 1</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="option2">
+        <RadioGroupIndicator>
+            <span class="dot"></span>
+        </RadioGroupIndicator>
+        <span>Option 2</span>
+    </RadioGroupItem>
+</RadioGroupRoot>
+```
+
+## Sub-components
+
+### RadioGroupRoot
+Container component with radiogroup role. Manages selection state and provides context to child items.
+
+### RadioGroupItem
+Individual radio button with role="radio". Handles keyboard navigation and selection.
+
+### RadioGroupIndicator
+Visual indicator that renders when the item is checked. Supports ForceMount for animations.
+
+## API Reference
+
+### RadioGroupRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | string? | null | Controlled selected value |
+| DefaultValue | string? | null | Default selected value for uncontrolled mode |
+| ValueChanged | EventCallback<string?> | - | Callback when selected value changes |
+| OnValueChange | EventCallback<string?> | - | Additional callback when value changes |
+| Orientation | RadioGroupOrientation | Vertical | Layout orientation (Vertical or Horizontal) |
+| Loop | bool | true | Whether navigation loops from last to first |
+| Disabled | bool | false | Disable the entire group |
+| Required | bool | false | Whether a selection is required |
+| Name | string? | null | Form field name for hidden input |
+| AriaLabel | string? | null | Accessible label for the group |
+| AriaLabelledBy | string? | null | ID of element that labels the group |
+| AriaDescribedBy | string? | null | ID of element that describes the group |
+
+### RadioGroupItem
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | string | required | Unique value for this radio item |
+| Disabled | bool | false | Disable this specific item |
+| ChildContent | RenderFragment<RadioGroupItemContext>? | - | Content with context providing Checked and Disabled state |
+
+### RadioGroupIndicator
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| ForceMount | bool | false | Always render in DOM (useful for CSS animations) |
+| ChildContent | RenderFragment? | - | Content to render when checked |
+
+## Examples
+
+### Basic Usage
+
+```razor
+<RadioGroupRoot AriaLabel="Favorite color">
+    <RadioGroupItem Value="red">
+        <RadioGroupIndicator />
+        <span>Red</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="green">
+        <RadioGroupIndicator />
+        <span>Green</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="blue">
+        <RadioGroupIndicator />
+        <span>Blue</span>
+    </RadioGroupItem>
+</RadioGroupRoot>
+```
+
+### With Default Value
+
+Set an initial selection using DefaultValue for uncontrolled mode.
+
+```razor
+<RadioGroupRoot DefaultValue="medium" AriaLabel="Select size">
+    <RadioGroupItem Value="small">
+        <RadioGroupIndicator />
+        <span>Small</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="medium">
+        <RadioGroupIndicator />
+        <span>Medium</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="large">
+        <RadioGroupIndicator />
+        <span>Large</span>
+    </RadioGroupItem>
+</RadioGroupRoot>
+```
+
+### Controlled Mode
+
+Control the selection state externally with two-way binding.
+
+```razor
+@code {
+    private string? selectedValue = "option1";
+}
+
+<RadioGroupRoot @bind-Value="selectedValue" AriaLabel="Select option">
+    <RadioGroupItem Value="option1">
+        <RadioGroupIndicator />
+        <span>Option 1</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="option2">
+        <RadioGroupIndicator />
+        <span>Option 2</span>
+    </RadioGroupItem>
+</RadioGroupRoot>
+
+<p>Selected: @selectedValue</p>
+```
+
+### Horizontal Orientation
+
+Use horizontal orientation for inline radio groups. Arrow Left/Right navigate between items.
+
+```razor
+<RadioGroupRoot Orientation="RadioGroupOrientation.Horizontal" AriaLabel="Text alignment">
+    <RadioGroupItem Value="left">
+        <RadioGroupIndicator />
+        <span>Left</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="center">
+        <RadioGroupIndicator />
+        <span>Center</span>
+    </RadioGroupItem>
+    <RadioGroupItem Value="right">
+        <RadioGroupIndicator />
+        <span>Right</span>
+    </RadioGroupItem>
+</RadioGroupRoot>
+```
+
+### Disabled Items
+
+Individual items or the entire group can be disabled.
+
+```razor
+@* Disable entire group *@
+<RadioGroupRoot Disabled="true" AriaLabel="Disabled group">
+    <RadioGroupItem Value="a"><RadioGroupIndicator /><span>Option A</span></RadioGroupItem>
+    <RadioGroupItem Value="b"><RadioGroupIndicator /><span>Option B</span></RadioGroupItem>
+</RadioGroupRoot>
+
+@* Disable individual items *@
+<RadioGroupRoot AriaLabel="Partially disabled">
+    <RadioGroupItem Value="available"><RadioGroupIndicator /><span>Available</span></RadioGroupItem>
+    <RadioGroupItem Value="sold-out" Disabled="true"><RadioGroupIndicator /><span>Sold Out</span></RadioGroupItem>
+    <RadioGroupItem Value="coming-soon" Disabled="true"><RadioGroupIndicator /><span>Coming Soon</span></RadioGroupItem>
+</RadioGroupRoot>
+```
+
+### Form Integration
+
+Use the Name property to include the selection in form submissions.
+
+```razor
+<form method="post">
+    <RadioGroupRoot Name="subscription" Required="true" AriaLabel="Subscription plan">
+        <RadioGroupItem Value="monthly">
+            <RadioGroupIndicator />
+            <span>Monthly - $9/month</span>
+        </RadioGroupItem>
+        <RadioGroupItem Value="yearly">
+            <RadioGroupIndicator />
+            <span>Yearly - $99/year</span>
+        </RadioGroupItem>
+    </RadioGroupRoot>
+    <button type="submit">Subscribe</button>
+</form>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-summit-radio-group | Present on root | Identifies the radio group root element |
+| data-summit-radio-group-item | Present on items | Identifies radio group item elements |
+| data-state | "checked" \| "unchecked" | Current selection state of the item |
+| data-orientation | "vertical" \| "horizontal" | Current orientation of the group/item |
+| data-disabled | Present when disabled | Indicates disabled state |
+
+### CSS Example
+
+```css
+/* Radio group container */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.radio-group[data-orientation="horizontal"] {
+    flex-direction: row;
+}
+
+/* Radio item */
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+}
+
+.radio-item:hover {
+    background-color: #f5f5f5;
+}
+
+.radio-item:focus-visible {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+}
+
+.radio-item[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Radio indicator (circle) */
+.radio-indicator {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d4d4d8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-item[data-state="checked"] .radio-indicator {
+    border-color: #0066cc;
+}
+
+/* Radio dot */
+.radio-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    background-color: #0066cc;
+    border-radius: 50%;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Tab | Moves focus to the selected item, or first item if none selected |
+| Space | Selects the focused item |
+| ArrowDown | Moves to and selects the next item (vertical orientation) |
+| ArrowUp | Moves to and selects the previous item (vertical orientation) |
+| ArrowRight | Moves to and selects the next item (horizontal orientation, RTL-aware) |
+| ArrowLeft | Moves to and selects the previous item (horizontal orientation, RTL-aware) |
+
+### ARIA Attributes
+
+- **role:** `radiogroup` on the root element, `radio` on each item
+- **aria-checked:** Reflects the current selection state on each item (`true` or `false`)
+- **aria-orientation:** Set on root to indicate `vertical` or `horizontal` layout
+- **aria-label / aria-labelledby:** Provides an accessible name for the group
+- **aria-disabled:** Set when an item or the group is disabled
+- **aria-required:** Set when a selection is required
+
+### RTL Support
+
+The component automatically detects RTL mode and adjusts horizontal navigation accordingly. In RTL mode, Arrow Right moves to the previous item and Arrow Left moves to the next item.

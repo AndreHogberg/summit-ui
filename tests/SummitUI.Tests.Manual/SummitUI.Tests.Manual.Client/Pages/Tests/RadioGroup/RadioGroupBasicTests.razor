@@ -1,0 +1,265 @@
+@page "/tests/radiogroup/basic"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>RadioGroup Basic Tests</h1>
+
+    <!-- Basic RadioGroup for ARIA, selection, keyboard, focus tests -->
+    <div class="test-section" data-testid="basic-section">
+        <h2>Basic RadioGroup</h2>
+        <RadioGroupRoot @bind-Value="_selectedValue" AriaLabel="Select a plan" class="radio-group" data-testid="basic-radio-group">
+            <RadioGroupItem Value="starter" class="radio-item" data-testid="radio-starter">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Starter</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="pro" class="radio-item" data-testid="radio-pro">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Pro</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="enterprise" class="radio-item" data-testid="radio-enterprise">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Enterprise</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="selected-value">Selected: @(_selectedValue ?? "none")</p>
+    </div>
+
+    <!-- Controlled Mode -->
+    <div class="test-section" data-testid="controlled-section">
+        <h2>Controlled Mode</h2>
+        <div class="d-flex flex-column gap-3">
+            <RadioGroupRoot @bind-Value="_controlledValue" AriaLabel="Controlled group" class="radio-group" data-testid="controlled-radio-group">
+                <RadioGroupItem Value="option1" class="radio-item" data-testid="controlled-option1">
+                    @context.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Option 1</span>
+                </RadioGroupItem>
+                <RadioGroupItem Value="option2" class="radio-item" data-testid="controlled-option2">
+                    @context.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Option 2</span>
+                </RadioGroupItem>
+                <RadioGroupItem Value="option3" class="radio-item" data-testid="controlled-option3">
+                    @context.Checked
+                    <RadioGroupIndicator class="radio-indicator">
+                        <span class="radio-dot"></span>
+                    </RadioGroupIndicator>
+                    <span class="radio-label">Option 3</span>
+                </RadioGroupItem>
+            </RadioGroupRoot>
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary" @onclick='() => _controlledValue = "option1"'>
+                    Select Option 1
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick='() => _controlledValue = "option2"'>
+                    Select Option 2
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick='() => _controlledValue = "option3"'>
+                    Select Option 3
+                </button>
+            </div>
+            <p data-testid="controlled-value">Controlled Value: @(_controlledValue ?? "none")</p>
+        </div>
+    </div>
+
+    <!-- Default Value (Uncontrolled) -->
+    <div class="test-section" data-testid="default-value-section">
+        <h2>Default Value</h2>
+        <RadioGroupRoot DefaultValue="medium" AriaLabel="Size selection" class="radio-group" data-testid="default-radio-group">
+            <RadioGroupItem Value="small" class="radio-item" data-testid="default-small">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Small</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="medium" class="radio-item" data-testid="default-medium">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Medium (Default)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="large" class="radio-item" data-testid="default-large">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Large</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+    </div>
+
+    <!-- Horizontal Orientation -->
+    <div class="test-section" data-testid="horizontal-section">
+        <h2>Horizontal Orientation</h2>
+        <RadioGroupRoot @bind-Value="_horizontalValue" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="Horizontal group" class="radio-group radio-group-horizontal" data-testid="horizontal-radio-group">
+            <RadioGroupItem Value="left" class="radio-item" data-testid="horizontal-left">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Left</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="center" class="radio-item" data-testid="horizontal-center">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Center</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="right" class="radio-item" data-testid="horizontal-right">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Right</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="horizontal-value">Selected: @(_horizontalValue ?? "none")</p>
+    </div>
+
+    <!-- No Loop -->
+    <div class="test-section" data-testid="no-loop-section">
+        <h2>No Loop Navigation</h2>
+        <RadioGroupRoot @bind-Value="_noLoopValue" Loop="false" AriaLabel="No loop group" class="radio-group" data-testid="no-loop-radio-group">
+            <RadioGroupItem Value="first" class="radio-item" data-testid="noloop-first">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">First</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="second" class="radio-item" data-testid="noloop-second">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Second</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="third" class="radio-item" data-testid="noloop-third">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Third</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="noloop-value">Selected: @(_noLoopValue ?? "none")</p>
+    </div>
+</div>
+}
+
+<style>
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .radio-group-horizontal {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .radio-item {
+        all: unset;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .radio-item:hover:not([disabled]) {
+        background-color: #f5f5f5;
+    }
+
+    .radio-item:focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+    }
+
+    .radio-item[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .radio-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4d4d8;
+        border-radius: 50%;
+        transition: border-color 0.15s ease;
+    }
+
+    .radio-item[data-state='checked'] .radio-indicator {
+        border-color: #000;
+    }
+
+    .radio-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border-radius: 50%;
+    }
+
+    .radio-label {
+        font-size: 0.875rem;
+    }
+
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #d4d4d8;
+        border-radius: 4px;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+@code {
+    private string? _selectedValue;
+    private string? _controlledValue = "option1";
+    private string? _horizontalValue;
+    private string? _noLoopValue;
+}

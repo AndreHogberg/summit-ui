@@ -1,0 +1,181 @@
+@page "/tests/radiogroup/rtl"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>RadioGroup RTL Tests</h1>
+
+    <!-- RTL Horizontal Navigation -->
+    <div class="test-section" data-testid="rtl-horizontal-section" dir="rtl">
+        <h2>RTL Horizontal (dir="rtl")</h2>
+        <p class="info">In RTL mode, ArrowRight should go to previous item, ArrowLeft should go to next item.</p>
+        <RadioGroupRoot @bind-Value="_rtlHorizontalValue" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="RTL horizontal group" class="radio-group radio-group-horizontal" data-testid="rtl-horizontal-radio-group">
+            <RadioGroupItem Value="first" class="radio-item" data-testid="rtl-h-first">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">ראשון (First)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="second" class="radio-item" data-testid="rtl-h-second">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">שני (Second)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="third" class="radio-item" data-testid="rtl-h-third">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">שלישי (Third)</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="rtl-horizontal-value">Selected: @(_rtlHorizontalValue ?? "none")</p>
+    </div>
+
+    <!-- RTL Vertical Navigation (should be unaffected) -->
+    <div class="test-section" data-testid="rtl-vertical-section" dir="rtl">
+        <h2>RTL Vertical (dir="rtl")</h2>
+        <p class="info">In RTL mode, vertical navigation (ArrowUp/ArrowDown) should work the same as LTR.</p>
+        <RadioGroupRoot @bind-Value="_rtlVerticalValue" Orientation="RadioGroupOrientation.Vertical" AriaLabel="RTL vertical group" class="radio-group" data-testid="rtl-vertical-radio-group">
+            <RadioGroupItem Value="top" class="radio-item" data-testid="rtl-v-top">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">עליון (Top)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="middle" class="radio-item" data-testid="rtl-v-middle">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">אמצעי (Middle)</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="bottom" class="radio-item" data-testid="rtl-v-bottom">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">תחתון (Bottom)</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="rtl-vertical-value">Selected: @(_rtlVerticalValue ?? "none")</p>
+    </div>
+
+    <!-- LTR Horizontal for Comparison -->
+    <div class="test-section" data-testid="ltr-horizontal-section" dir="ltr">
+        <h2>LTR Horizontal (dir="ltr") - For Comparison</h2>
+        <p class="info">In LTR mode, ArrowRight goes to next item, ArrowLeft goes to previous item.</p>
+        <RadioGroupRoot @bind-Value="_ltrHorizontalValue" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="LTR horizontal group" class="radio-group radio-group-horizontal" data-testid="ltr-horizontal-radio-group">
+            <RadioGroupItem Value="first" class="radio-item" data-testid="ltr-h-first">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">First</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="second" class="radio-item" data-testid="ltr-h-second">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Second</span>
+            </RadioGroupItem>
+            <RadioGroupItem Value="third" class="radio-item" data-testid="ltr-h-third">
+                @context.Checked
+                <RadioGroupIndicator class="radio-indicator">
+                    <span class="radio-dot"></span>
+                </RadioGroupIndicator>
+                <span class="radio-label">Third</span>
+            </RadioGroupItem>
+        </RadioGroupRoot>
+        <p data-testid="ltr-horizontal-value">Selected: @(_ltrHorizontalValue ?? "none")</p>
+    </div>
+</div>
+}
+
+<style>
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .radio-group-horizontal {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .radio-item {
+        all: unset;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .radio-item:hover:not([disabled]) {
+        background-color: #f5f5f5;
+    }
+
+    .radio-item:focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+    }
+
+    .radio-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4d4d8;
+        border-radius: 50%;
+        transition: border-color 0.15s ease;
+    }
+
+    .radio-item[data-state='checked'] .radio-indicator {
+        border-color: #000;
+    }
+
+    .radio-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border-radius: 50%;
+    }
+
+    .radio-label {
+        font-size: 0.875rem;
+    }
+
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .info {
+        color: #666;
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
+@code {
+    private string? _rtlHorizontalValue;
+    private string? _rtlVerticalValue;
+    private string? _ltrHorizontalValue;
+}
