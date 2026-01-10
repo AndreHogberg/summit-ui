@@ -25,8 +25,8 @@ public static class SuStyles
     /// var classes2 = SuStyles.Cn("p-4", "m-2", "p-6"); // Returns "m-2 p-6"
     /// </code>
     /// </example>
-    public static string? Cn(params string?[] classNames)
-        => TwMerge.Merge(classNames);
+    public static string Cn(params string?[] classNames)
+        => TwMerge.Merge(classNames) ?? string.Empty;
 
     /// <summary>
     /// Conditionally includes a class based on a boolean condition.

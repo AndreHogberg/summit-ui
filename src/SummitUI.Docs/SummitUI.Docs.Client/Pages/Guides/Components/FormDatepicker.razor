@@ -109,11 +109,11 @@
         return classes;
     }
 
-    protected override bool TryParseValueFromString(string? value, out DateOnly? result, out string? validationErrorMessage)
+    protected override bool TryParseValueFromString(string? value, out DateOnly? result, [System.Diagnostics.CodeAnalysis.NotNullWhen(false)] out string? validationErrorMessage)
     {
         // Not implemented as this component doesn't accept string input directly
         result = null;
-        validationErrorMessage = null;
+        validationErrorMessage = "Not implemented";
         return true;
     }
 

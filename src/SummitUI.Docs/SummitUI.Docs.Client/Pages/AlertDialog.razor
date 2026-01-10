@@ -314,7 +314,7 @@
 </div>
 
 @code {
-    [Inject] private IAlertDialogService AlertDialogService { get; set; }
+    [Inject] private IAlertDialogService AlertDialogService { get; set; } = default!;
 
     private async Task ShowDemoDialog()
     {
