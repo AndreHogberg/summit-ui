@@ -38,6 +38,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<DialogJsInterop>();
         services.AddScoped<CalendarJsInterop>();
         services.AddScoped<ToastJsInterop>();
+        services.AddScoped<OtpJsInterop>();
         // Alert dialog service (singleton so it's shared across components)
         services.AddScoped<IAlertDialogService, AlertDialogService>();
 

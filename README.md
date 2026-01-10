@@ -4,7 +4,7 @@ A headless Blazor component library focused on accessibility and customization. 
 
 > **Note:** This is an alpha release. APIs may change before version 1.0.
 
-Inspired by [bits-ui](https://github.com/huntabyte/bits-ui).
+Inspired by [bits-ui](https://github.com/huntabyte/bits-ui). Huge thanks to [Hunter Johnston](https://github.com/huntabyte) for the inspiration and design patterns.
 
 ## Features
 

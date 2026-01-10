@@ -1,0 +1,649 @@
+@page "/docs/otp"
+@rendermode InteractiveWebAssembly
+@layout DocsLayout
+@using SummitUI
+@using SummitUI.Components.Otp
+
+<PageTitle>SummitUI - OTP Input</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            OTP Input
+            <SuPromptButton ComponentName="OTP" Url="/docs/otp" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A one-time password input component using a single hidden input with visual slots. Provides excellent accessibility, native browser autofill, and mobile keyboard support.
+        </SuText>
+        <SuText Size="SuTextSize.Small" Muted="true">
+            Based on <a href="https://github.com/guilhermerodz/input-otp" target="_blank" rel="noopener noreferrer" class="text-su-primary hover:underline">input-otp</a> by Guilherme Rodz.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-su-muted-foreground">Enter verification code</label>
+                    <OtpRoot @bind-Value="otpValue" MaxLength="6" class="demo-otp">
+                        @foreach (var slot in context.Slots)
+                        {
+                            <OtpSlot Slot="slot" class="demo-otp-slot">
+                                <OtpCaret class="demo-otp-caret" />
+                            </OtpSlot>
+                        }
+                    </OtpRoot>
+                    <span class="text-xs text-su-muted-foreground">Current value: "@otpValue"</span>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-su-muted-foreground">With placeholder</label>
+                    <OtpRoot @bind-Value="otpPlaceholder" MaxLength="6" Placeholder="------" class="demo-otp">
+                        @foreach (var slot in context.Slots)
+                        {
+                            <OtpSlot Slot="slot" class="demo-otp-slot">
+                                <OtpCaret class="demo-otp-caret" />
+                            </OtpSlot>
+                        }
+                    </OtpRoot>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-su-muted-foreground">With separator (123-456 style)</label>
+                    <OtpRoot @bind-Value="otpSeparator" MaxLength="6" class="demo-otp">
+                        @foreach (var slot in context.Slots.Take(3))
+                        {
+                            <OtpSlot Slot="slot" class="demo-otp-slot">
+                                <OtpCaret class="demo-otp-caret" />
+                            </OtpSlot>
+                        }
+                        <span class="demo-separator">-</span>
+                        @foreach (var slot in context.Slots.Skip(3))
+                        {
+                            <OtpSlot Slot="slot" class="demo-otp-slot">
+                                <OtpCaret class="demo-otp-caret" />
+                            </OtpSlot>
+                        }
+                    </OtpRoot>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-su-muted-foreground opacity-50">Disabled</label>
+                    <OtpRoot Value="123456" MaxLength="6" Disabled="true" class="demo-otp" />
+                </div>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Single hidden input architecture for better screen reader support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Native browser paste and autofill support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Mobile keyboard optimized (numeric inputmode)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Pattern validation (digits only, alphanumeric, etc.)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Animated fake caret for active slot
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                OnComplete callback when all slots are filled
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Placeholder character support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Password manager badge detection
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                EditContext/Form validation integration
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SuCard>
+                <SuCardTitle>OtpRoot</SuCardTitle>
+                <SuCardDescription class="mt-1">The root container with a hidden input that manages state and provides render context.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>OtpSlot</SuCardTitle>
+                <SuCardDescription class="mt-1">Visual slot component displaying a single character with active state.</SuCardDescription>
+            </SuCard>
+            <SuCard>
+                <SuCardTitle>OtpCaret</SuCardTitle>
+                <SuCardDescription class="mt-1">Animated blinking caret shown in active empty slots.</SuCardDescription>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "OtpRoot", Props: otpRootProperties), 
+                (Title: "OtpSlot", Props: otpSlotProperties),
+                (Title: "OtpCaret", Props: otpCaretProperties)
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
+        </div>
+    </SuSection>
+
+    @* Render Context *@
+    <SuSection Title="Render Context">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            The <code>OtpRoot</code> component provides a render context with the following properties:
+        </SuText>
+        <SuTable>
+            <SuTableHeader>
+                <SuTableRow>
+                    <SuTableHead>Property</SuTableHead>
+                    <SuTableHead>Type</SuTableHead>
+                    <SuTableHead>Description</SuTableHead>
+                </SuTableRow>
+            </SuTableHeader>
+            <SuTableBody>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Slots</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">IReadOnlyList&lt;OtpSlotState&gt;</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">List of slot states for rendering</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">IsFocused</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">bool</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Whether the input is currently focused</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">IsHovering</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">bool</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Whether the mouse is hovering over the input</SuTableCell>
+                </SuTableRow>
+            </SuTableBody>
+        </SuTable>
+        
+        <SuHeading Level="SuHeadingLevel.H4" class="mt-6 mb-2">OtpSlotState Properties</SuHeading>
+        <SuTable>
+            <SuTableHeader>
+                <SuTableRow>
+                    <SuTableHead>Property</SuTableHead>
+                    <SuTableHead>Type</SuTableHead>
+                    <SuTableHead>Description</SuTableHead>
+                </SuTableRow>
+            </SuTableHeader>
+            <SuTableBody>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Index</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">int</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Zero-based index of this slot</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Char</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">char?</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">The character in this slot, or null if empty</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">PlaceholderChar</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">char?</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">The placeholder character for this slot</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">IsActive</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">bool</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Whether this slot is currently selected/active</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">HasFakeCaret</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">bool</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Whether to show a fake caret (IsActive and no character)</SuTableCell>
+                </SuTableRow>
+            </SuTableBody>
+        </SuTable>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Fake Caret</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Add a blinking caret animation for active empty slots.</SuText>
+                <SuCodeBlock Code="@caretExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Separator</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Add visual separators between slot groups (e.g., 123-456).</SuText>
+                <SuCodeBlock Code="@separatorExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Pattern Validation</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Restrict input to specific characters using regex.</SuText>
+                <SuCodeBlock Code="@patternExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">OnComplete Callback</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Execute code when all slots are filled.</SuText>
+                <SuCodeBlock Code="@completeExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Form Integration</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use with EditForm for validation.</SuText>
+                <SuCodeBlock Code="@formExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Element</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Screen Reader Support</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Unlike multi-input OTP implementations, this component uses a single hidden input element. 
+                    This means screen readers see one text field instead of multiple, providing a much better 
+                    user experience for assistive technology users.
+                </SuText>
+            </div>
+            
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var nav in keyboardNavigation)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-medium text-su-foreground">@nav.Name</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@nav.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">HTML Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">autocomplete:</span>
+                        <span>Set to <code>one-time-code</code> by default for browser/SMS autofill support</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">inputmode:</span>
+                        <span>Set to <code>numeric</code> by default to show numeric keyboard on mobile</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">maxlength:</span>
+                        <span>Set to <code>MaxLength</code> parameter value</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+</div>
+
+<style>
+    /* Demo OTP Styles */
+    .demo-otp {
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .demo-otp-slot {
+        width: 2.5rem;
+        height: 3rem;
+        border: 2px solid rgb(var(--su-border));
+        border-radius: 0.5rem;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: rgb(var(--su-foreground));
+        transition: all 0.15s;
+    }
+    
+    .demo-otp-slot[data-active] {
+        border-color: rgb(var(--su-primary));
+        box-shadow: 0 0 0 2px rgb(var(--su-primary) / 0.2);
+    }
+    
+    .demo-otp-slot [data-otp-placeholder] {
+        color: rgb(var(--su-muted-foreground));
+        opacity: 0.5;
+    }
+    
+    [data-disabled] .demo-otp-slot {
+        opacity: 0.5;
+    }
+    
+    .demo-otp-caret {
+        width: 2px;
+        height: 1.5rem;
+        background: rgb(var(--su-foreground));
+        animation: caret-blink 1s ease-out infinite;
+    }
+    
+    .demo-separator {
+        color: rgb(var(--su-muted-foreground));
+        font-size: 1.5rem;
+        font-weight: 300;
+    }
+    
+    @@keyframes caret-blink {
+        0%, 70%, 100% { opacity: 1; }
+        20%, 50% { opacity: 0; }
+    }
+</style>
+
+@code {
+    private string otpValue = "";
+    private string otpPlaceholder = "";
+    private string otpSeparator = "";
+
+    private List<SuApiProperty> otpRootProperties = new()
+    {
+        new() { Name = "MaxLength", Type = "int", Required = true, Description = "Number of slots for the OTP code" },
+        new() { Name = "Value", Type = "string?", Default = "null", Description = "Current OTP value" },
+        new() { Name = "ValueChanged", Type = "EventCallback<string?>", Description = "Callback when value changes" },
+        new() { Name = "ValueExpression", Type = "Expression<Func<string?>>?", Description = "Expression for form field identification" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Prevents interaction with the input" },
+        new() { Name = "Pattern", Type = "string?", Default = "null", Description = "Regex pattern to validate input (e.g., \"[0-9]*\")" },
+        new() { Name = "Placeholder", Type = "string?", Default = "null", Description = "Placeholder characters for empty slots" },
+        new() { Name = "TextAlign", Type = "OtpTextAlign", Default = "Left", Description = "Text alignment (Left, Center, Right)" },
+        new() { Name = "InputMode", Type = "string", Default = "\"numeric\"", Description = "Mobile keyboard type" },
+        new() { Name = "AutoComplete", Type = "string", Default = "\"one-time-code\"", Description = "Autofill hint for browsers" },
+        new() { Name = "Name", Type = "string?", Default = "null", Description = "Form field name" },
+        new() { Name = "OnComplete", Type = "EventCallback<string>", Description = "Callback when all slots are filled" },
+        new() { Name = "PasteTransformer", Type = "Func<string, string>?", Description = "Transform pasted text (e.g., remove dashes)" },
+        new() { Name = "ChildContent", Type = "RenderFragment<OtpRenderContext>?", Description = "Custom slot rendering template" }
+    };
+
+    private List<SuApiProperty> otpSlotProperties = new()
+    {
+        new() { Name = "Slot", Type = "OtpSlotState", Required = true, Description = "Slot state from render context" },
+        new() { Name = "ChildContent", Type = "RenderFragment?", Description = "Content for active empty slot (e.g., OtpCaret)" }
+    };
+
+    private List<SuApiProperty> otpCaretProperties = new()
+    {
+        new() { Name = "Class", Type = "string?", Description = "CSS class for the caret element" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-otp-root", Type = "OtpRoot", Description = "Root container element" },
+        new() { Name = "data-otp-slot", Type = "OtpSlot", Description = "Visual slot element" },
+        new() { Name = "data-otp-caret", Type = "OtpCaret", Description = "Fake caret element" },
+        new() { Name = "data-otp-input", Type = "OtpRoot", Description = "Hidden input element" },
+        new() { Name = "data-active", Type = "OtpSlot", Description = "Present when slot is selected" },
+        new() { Name = "data-focused", Type = "OtpRoot", Description = "Present when input is focused" },
+        new() { Name = "data-disabled", Type = "OtpRoot", Description = "Present when input is disabled" },
+        new() { Name = "data-placeholder-shown", Type = "OtpRoot", Description = "Present when no value is entered" }
+    };
+
+    private List<SuApiProperty> keyboardNavigation = new()
+    {
+        new() { Name = "0-9 / a-z", Description = "Enter character at current position", Type = "" },
+        new() { Name = "Backspace", Description = "Delete character before cursor", Type = "" },
+        new() { Name = "Delete", Description = "Delete character after cursor", Type = "" },
+        new() { Name = "ArrowLeft / ArrowRight", Description = "Move cursor position", Type = "" },
+        new() { Name = "Ctrl/Cmd + V", Description = "Paste from clipboard", Type = "" },
+        new() { Name = "Ctrl/Cmd + A", Description = "Select all", Type = "" },
+    };
+
+    private const string anatomyCode = @"<OtpRoot @bind-Value=""otpValue"" MaxLength=""6"">
+    @foreach (var slot in context.Slots)
+    {
+        <OtpSlot Slot=""slot"">
+            <OtpCaret />
+        </OtpSlot>
+    }
+</OtpRoot>";
+
+    private const string basicExampleCode = @"<OtpRoot @bind-Value=""code"" MaxLength=""6"" />";
+
+    private const string caretExampleCode = @"<OtpRoot @bind-Value=""code"" MaxLength=""6"" class=""otp-container"">
+    @foreach (var slot in context.Slots)
+    {
+        <OtpSlot Slot=""slot"" class=""otp-slot"">
+            <OtpCaret class=""otp-caret"" />
+        </OtpSlot>
+    }
+</OtpRoot>
+
+<style>
+    .otp-caret {
+        width: 2px;
+        height: 1.5rem;
+        background: currentColor;
+        animation: caret-blink 1s ease-out infinite;
+    }
+    
+    @@keyframes caret-blink {
+        0%, 70%, 100% { opacity: 1; }
+        20%, 50% { opacity: 0; }
+    }
+</style>";
+
+    private const string separatorExampleCode = @"<OtpRoot @bind-Value=""code"" MaxLength=""6"" class=""otp-container"">
+    @foreach (var slot in context.Slots.Take(3))
+    {
+        <OtpSlot Slot=""slot"" class=""otp-slot"" />
+    }
+    <span class=""separator"">-</span>
+    @foreach (var slot in context.Slots.Skip(3))
+    {
+        <OtpSlot Slot=""slot"" class=""otp-slot"" />
+    }
+</OtpRoot>";
+
+    private const string patternExampleCode = @"@* Digits only *@
+<OtpRoot @bind-Value=""code"" MaxLength=""6"" Pattern=""[0-9]*"" />
+
+@* Alphanumeric *@
+<OtpRoot @bind-Value=""code"" MaxLength=""6"" Pattern=""[A-Za-z0-9]*"" />";
+
+    private const string completeExampleCode = @"@code {
+    private string code = """";
+    
+    private async Task HandleComplete(string value)
+    {
+        // Auto-submit or verify the code
+        await VerifyOtpAsync(value);
+    }
+}
+
+<OtpRoot @bind-Value=""code"" MaxLength=""6"" OnComplete=""HandleComplete"" />";
+
+    private const string formExampleCode = @"@code {
+    private VerificationModel model = new();
+    
+    private async Task HandleSubmit()
+    {
+        await VerifyCodeAsync(model.Code);
+    }
+    
+    public class VerificationModel
+    {
+        [Required]
+        [StringLength(6, MinimumLength = 6)]
+        public string Code { get; set; } = """";
+    }
+}
+
+<EditForm Model=""model"" OnValidSubmit=""HandleSubmit"">
+    <DataAnnotationsValidator />
+    
+    <OtpRoot @bind-Value=""model.Code"" MaxLength=""6"" Name=""verificationCode"">
+        @foreach (var slot in context.Slots)
+        {
+            <OtpSlot Slot=""slot"" class=""otp-slot"" />
+        }
+    </OtpRoot>
+    
+    <ValidationMessage For=""() => model.Code"" />
+    
+    <button type=""submit"">Verify</button>
+</EditForm>";
+
+    private const string cssExampleCode = @"/* Container */
+.otp-container {
+    display: inline-flex;
+    gap: 0.5rem;
+}
+
+/* Individual slot */
+.otp-slot {
+    width: 2.5rem;
+    height: 3rem;
+    border: 2px solid #ccc;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Active slot */
+.otp-slot[data-active] {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+/* Placeholder text */
+.otp-slot [data-otp-placeholder] {
+    color: #999;
+}
+
+/* Disabled state */
+[data-disabled] .otp-slot {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Fake caret */
+.otp-caret {
+    width: 2px;
+    height: 1.5rem;
+    background: currentColor;
+    animation: caret-blink 1s ease-out infinite;
+}
+
+@@keyframes caret-blink {
+    0%, 70%, 100% { opacity: 1; }
+    20%, 50% { opacity: 0; }
+}";
+}

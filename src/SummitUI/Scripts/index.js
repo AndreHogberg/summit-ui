@@ -128,3 +128,15 @@ export {
     unregisterSwipe as toast_unregisterSwipe,
     focusViewport as toast_focusViewport
 } from './toast.js';
+
+// OTP exports
+export {
+    initialize as otp_initialize,
+    destroy as otp_destroy,
+    focus as otp_focus,
+    setSelection as otp_setSelection,
+    // Legacy exports (deprecated)
+    focusElement as otp_focusElement,
+    selectContent as otp_selectContent,
+    registerInput as otp_registerInput
+} from './otp.js';

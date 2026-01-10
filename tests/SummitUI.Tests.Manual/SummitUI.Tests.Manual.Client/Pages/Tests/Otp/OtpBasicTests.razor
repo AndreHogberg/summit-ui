@@ -1,0 +1,106 @@
+@page "/tests/otp/basic"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Minimal test page for OTP accessibility and basic tests.
+    Contains a single OTP component with all necessary elements for testing.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <div class="space-y-4">
+        <div class="space-y-2">
+            <label>Controlled OTP</label>
+            <OtpRoot @bind-Value="otpValue" MaxLength="6" data-testid="otp-input" class="otp-container">
+                @foreach (var slot in context.Slots)
+                {
+                    <OtpSlot Slot="slot" class="otp-slot">
+                        <OtpCaret class="otp-caret" />
+                    </OtpSlot>
+                }
+            </OtpRoot>
+            <div data-testid="otp-value">Value: @otpValue</div>
+        </div>
+
+        <div class="space-y-2">
+            <label>Disabled OTP</label>
+            <OtpRoot Value="123" MaxLength="4" Disabled="true" data-testid="otp-disabled" class="otp-container" />
+        </div>
+
+        <div class="space-y-2">
+            <label>OTP with Pattern (digits only)</label>
+            <OtpRoot MaxLength="4" Pattern="[0-9]*" data-testid="otp-pattern" class="otp-container" />
+        </div>
+        
+        <div class="space-y-2">
+            <label>OTP with Placeholder</label>
+            <OtpRoot MaxLength="6" Placeholder="------" data-testid="otp-placeholder" class="otp-container" />
+        </div>
+    </div>
+</div>
+}
+
+@code {
+    private string? otpValue = "";
+}
+
+<style>
+    .space-y-4 > * + * {
+        margin-top: 1rem;
+    }
+    
+    .space-y-2 > * + * {
+        margin-top: 0.5rem;
+    }
+    
+    .otp-container {
+        display: inline-flex;
+        gap: 0.5rem;
+        padding: 0.25rem;
+    }
+    
+    .otp-slot {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        background: white;
+    }
+    
+    .otp-slot[data-active] {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+        border-color: #0d6efd;
+    }
+    
+    [data-otp-placeholder] {
+        color: #999;
+    }
+    
+    .otp-caret {
+        width: 2px;
+        height: 1.5rem;
+        background: currentColor;
+        animation: caret-blink 1s ease-out infinite;
+    }
+    
+    @@keyframes caret-blink {
+        0%, 70%, 100% { opacity: 1; }
+        20%, 50% { opacity: 0; }
+    }
+    
+    [data-disabled] .otp-slot {
+        background: #f0f0f0;
+        color: #999;
+    }
+</style>
