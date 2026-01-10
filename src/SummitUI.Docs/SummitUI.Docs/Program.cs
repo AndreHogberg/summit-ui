@@ -1,5 +1,6 @@
 using SummitUI.Docs.Client;
 using SummitUI.Docs.Client.Services;
+using SummitUI.Docs.Client.Services.Search;
 using SummitUI.Docs.Components;
 using SummitUI.Extensions;
 
@@ -10,6 +11,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 builder.Services.AddSummitUI();
 builder.Services.AddScoped<ThemeJsInterop>();
+builder.Services.AddScoped<SearchJsInterop>();
+builder.Services.AddSingleton<SearchService>();
 builder.Services.AddToastQueue<DocsToastContent>();
 
 var app = builder.Build();

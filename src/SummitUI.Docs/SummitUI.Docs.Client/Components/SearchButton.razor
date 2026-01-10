@@ -1,0 +1,70 @@
+@using SummitUI.Docs.Client.Services
+@inject SearchJsInterop SearchJsInterop
+@implements IAsyncDisposable
+
+<button 
+    type="button"
+    class="flex items-center gap-2 w-full h-9 px-3 text-sm text-su-muted-foreground bg-su-background border border-su-border rounded-md hover:bg-su-accent hover:text-su-accent-foreground transition-colors"
+    @onclick="OpenSearch">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3"/>
+    </svg>
+    <span class="flex-1 text-left truncate">Search docs...</span>
+    <kbd class="hidden md:inline-flex h-5 items-center gap-0.5 rounded border border-su-border bg-su-muted px-1.5 text-[10px] font-medium text-su-muted-foreground">
+        <span class="text-xs">@(_isMac ? "⌘" : "Ctrl")</span>K
+    </kbd>
+</button>
+
+<SearchDialog @bind-IsOpen="_isSearchOpen" />
+
+@code {
+    private bool _isSearchOpen;
+    private bool _isMac;
+    private bool _initialized;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_initialized)
+        {
+            _initialized = true;
+            
+            // Detect if Mac for keyboard shortcut display
+            // This is a simple heuristic - in production you might use JS interop
+            _isMac = OperatingSystem.IsMacOS() || OperatingSystem.IsMacCatalyst();
+            
+            try
+            {
+                await SearchJsInterop.InitAsync(OnSearchShortcut);
+                StateHasChanged();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Ignore - component disposed during init
+            }
+        }
+    }
+
+    private void OpenSearch()
+    {
+        _isSearchOpen = true;
+    }
+
+    private void OnSearchShortcut()
+    {
+        _isSearchOpen = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await SearchJsInterop.DisposeAsync();
+        }
+        catch
+        {
+            // Ignore disposal errors
+        }
+    }
+}

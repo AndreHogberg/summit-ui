@@ -1,0 +1,221 @@
+@using SummitUI
+@using SummitUI.Docs.Client.Services.Search
+@inject SearchService SearchService
+@inject NavigationManager NavigationManager
+
+<DialogRoot Open="@IsOpen" OpenChanged="@HandleOpenChanged">
+    <DialogPortal>
+        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out duration-200" />
+        <DialogContent 
+            class="fixed left-1/2 top-[15%] -translate-x-1/2 z-50 w-full max-w-lg mx-4 bg-su-background border border-su-border rounded-lg shadow-2xl overflow-hidden data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-95 duration-200"
+            TrapFocus="true"
+            PreventScroll="true">
+            
+            @* Search Input *@
+            <div class="flex items-center gap-3 border-b border-su-border px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground shrink-0">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.3-4.3"/>
+                </svg>
+                <input 
+                    @ref="_inputRef"
+                    type="text"
+                    placeholder="Search documentation..."
+                    class="flex-1 bg-transparent py-4 text-sm text-su-foreground placeholder:text-su-muted-foreground outline-none"
+                    @bind="_query"
+                    @bind:event="oninput"
+                    @bind:after="OnQueryChanged"
+                    @onkeydown="HandleKeyDown"
+                    @onkeydown:preventDefault="_preventKeyDefault"
+                    autocomplete="off"
+                    spellcheck="false" />
+                <kbd class="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-su-border bg-su-muted px-1.5 text-[10px] font-medium text-su-muted-foreground">
+                    ESC
+                </kbd>
+            </div>
+            
+            @* Results *@
+            <div class="max-h-[60vh] overflow-y-auto p-2">
+                @if (string.IsNullOrWhiteSpace(_query))
+                {
+                    <div class="px-3 py-8 text-center text-sm text-su-muted-foreground">
+                        Start typing to search...
+                    </div>
+                }
+                else if (_displayResults.Count == 0)
+                {
+                    <div class="px-3 py-8 text-center text-sm text-su-muted-foreground">
+                        No results found for "<span class="font-medium text-su-foreground">@_query</span>"
+                    </div>
+                }
+                else
+                {
+                    @* Group results by category *@
+                    var currentIndex = 0;
+                    @foreach (var group in _displayResults.GroupBy(r => r.Document.Category))
+                    {
+                        <div class="mb-2">
+                            <div class="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-su-muted-foreground">
+                                @group.Key
+                            </div>
+                            @foreach (var result in group)
+                            {
+                                var index = currentIndex;
+                                <button 
+                                    type="button"
+                                    class="@GetResultClass(index)"
+                                    @onclick="() => NavigateToResult(result)"
+                                    @onmouseenter="() => _selectedIndex = index">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="font-medium text-su-foreground truncate">
+                                            @result.Document.Title
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(result.Document.Description))
+                                        {
+                                            <div class="text-xs text-su-muted-foreground truncate mt-0.5">
+                                                @result.Document.Description
+                                            </div>
+                                        }
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-muted-foreground shrink-0">
+                                        <polyline points="9 18 15 12 9 6"/>
+                                    </svg>
+                                </button>
+                                currentIndex++;
+                            }
+                        </div>
+                    }
+                }
+            </div>
+            
+            @* Footer *@
+            <div class="flex items-center justify-between border-t border-su-border px-4 py-2 text-xs text-su-muted-foreground">
+                <div class="flex items-center gap-3">
+                    <span class="flex items-center gap-1">
+                        <kbd class="inline-flex h-5 items-center rounded border border-su-border bg-su-muted px-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m18 15-6-6-6 6"/>
+                            </svg>
+                        </kbd>
+                        <kbd class="inline-flex h-5 items-center rounded border border-su-border bg-su-muted px-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </kbd>
+                        to navigate
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <kbd class="inline-flex h-5 items-center rounded border border-su-border bg-su-muted px-1.5 font-mono text-[10px]">
+                            Enter
+                        </kbd>
+                        to select
+                    </span>
+                </div>
+            </div>
+        </DialogContent>
+    </DialogPortal>
+</DialogRoot>
+
+@code {
+    private string _query = "";
+    private List<SearchResult> _displayResults = [];
+    private int _selectedIndex;
+    private ElementReference _inputRef;
+    private bool _preventKeyDefault;
+
+    /// <summary>
+    /// Gets or sets whether the search dialog is open.
+    /// </summary>
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsOpenChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // Ensure search index is built
+        SearchIndexBuilder.BuildIndex(SearchService);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (IsOpen)
+        {
+            try
+            {
+                await _inputRef.FocusAsync();
+            }
+            catch
+            {
+                // Ignore focus errors
+            }
+        }
+    }
+
+    private async Task HandleOpenChanged(bool isOpen)
+    {
+        if (!isOpen)
+        {
+            // Reset state when closing
+            _query = "";
+            _displayResults = [];
+            _selectedIndex = 0;
+        }
+        
+        await IsOpenChanged.InvokeAsync(isOpen);
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        // Prevent default for navigation keys to stop cursor movement in input
+        _preventKeyDefault = e.Key is "ArrowDown" or "ArrowUp" or "Enter";
+        
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                if (_displayResults.Count > 0)
+                {
+                    _selectedIndex = (_selectedIndex + 1) % _displayResults.Count;
+                }
+                break;
+            case "ArrowUp":
+                if (_displayResults.Count > 0)
+                {
+                    _selectedIndex = (_selectedIndex - 1 + _displayResults.Count) % _displayResults.Count;
+                }
+                break;
+            case "Enter":
+                if (_displayResults.Count > 0 && _selectedIndex < _displayResults.Count)
+                {
+                    await NavigateToResult(_displayResults[_selectedIndex]);
+                }
+                break;
+        }
+    }
+
+    private void OnQueryChanged()
+    {
+        _selectedIndex = 0;
+        // Get results and sort by category to match visual display order
+        var results = SearchService.Search(_query, 15);
+        _displayResults = results
+            .OrderBy(r => r.Document.Category)
+            .ThenByDescending(r => r.Score)
+            .ToList();
+    }
+
+    private async Task NavigateToResult(SearchResult result)
+    {
+        await IsOpenChanged.InvokeAsync(false);
+        NavigationManager.NavigateTo(result.Document.Url);
+    }
+
+    private string GetResultClass(int index)
+    {
+        var baseClass = "w-full flex items-center gap-3 px-3 py-2 rounded-md text-left text-sm transition-colors";
+        return index == _selectedIndex
+            ? $"{baseClass} bg-su-accent text-su-accent-foreground"
+            : $"{baseClass} hover:bg-su-accent/50";
+    }
+}
