@@ -81,6 +81,10 @@
             </li>
             <li class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Blazor EditForm integration with validation
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                 Grouping capabilities via CheckboxGroup
             </li>
             <li class="flex items-center gap-2">
@@ -196,6 +200,18 @@
                 <SuHeading Level="SuHeadingLevel.H3">Checkbox Group</SuHeading>
                 <SuText Size="SuTextSize.Small" Muted="true">Manage multiple checkboxes as a group.</SuText>
                 <SuCodeBlock Code="@groupExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">EditForm Integration (Single Checkbox)</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use with Blazor EditForm for model binding and validation support.</SuText>
+                <SuCodeBlock Code="@editFormSingleExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">EditForm Integration (Checkbox Group)</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use CheckboxGroup with EditForm for multi-select validation.</SuText>
+                <SuCodeBlock Code="@editFormGroupExampleCode" Language="razor" />
             </div>
         </div>
     </SuSection>
@@ -333,6 +349,7 @@
         new() { Name = "Checked", Type = "bool?", Default = "null", Description = "Controlled checked state" },
         new() { Name = "DefaultChecked", Type = "bool", Default = "false", Description = "Default checked state for uncontrolled mode" },
         new() { Name = "CheckedChanged", Type = "EventCallback<bool>", Description = "Callback when checked state changes" },
+        new() { Name = "CheckedExpression", Type = "Expression<Func<bool>>?", Default = "null", Description = "Expression for EditForm binding and validation" },
         new() { Name = "Indeterminate", Type = "bool", Default = "false", Description = "Controlled indeterminate state" },
         new() { Name = "IndeterminateChanged", Type = "EventCallback<bool>", Description = "Callback when indeterminate state changes" },
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Prevents interaction with the checkbox" },
@@ -353,6 +370,7 @@
         new() { Name = "Values", Type = "IReadOnlyList<string>?", Default = "null", Description = "Controlled values of checked items" },
         new() { Name = "DefaultValues", Type = "IReadOnlyList<string>?", Default = "null", Description = "Default values for uncontrolled mode" },
         new() { Name = "ValuesChanged", Type = "EventCallback<IReadOnlyList<string>>", Description = "Callback when values change" },
+        new() { Name = "ValuesExpression", Type = "Expression<Func<IReadOnlyList<string>?>>?", Default = "null", Description = "Expression for EditForm binding and validation" },
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable entire group" },
         new() { Name = "Name", Type = "string?", Default = "null", Description = "Form name for hidden inputs" }
     };
@@ -442,6 +460,81 @@
         Banana
     </label>
 </CheckboxGroup>";
+
+    private const string editFormSingleExampleCode = @"@using System.ComponentModel.DataAnnotations
+
+<EditForm Model=""model"" OnValidSubmit=""HandleSubmit"">
+    <DataAnnotationsValidator />
+    
+    <label style=""display: flex; gap: 0.5rem; align-items: center;"">
+        <CheckboxRoot @bind-Checked=""model.AcceptTerms"">
+            <CheckboxIndicator>✓</CheckboxIndicator>
+        </CheckboxRoot>
+        Accept Terms and Conditions
+    </label>
+    <ValidationMessage For=""@(() => model.AcceptTerms)"" />
+    
+    <button type=""submit"">Submit</button>
+</EditForm>
+
+@code {
+    private FormModel model = new();
+
+    public class FormModel
+    {
+        [Range(typeof(bool), ""true"", ""true"", 
+            ErrorMessage = ""You must accept the terms"")]
+        public bool AcceptTerms { get; set; }
+    }
+
+    private void HandleSubmit() { /* handle submission */ }
+}";
+
+    private const string editFormGroupExampleCode = @"@using System.ComponentModel.DataAnnotations
+
+<EditForm Model=""model"" OnValidSubmit=""HandleSubmit"">
+    <DataAnnotationsValidator />
+    
+    <CheckboxGroup @bind-Values=""model.Interests"">
+        <CheckboxGroupLabel>Select your interests</CheckboxGroupLabel>
+        
+        <label>
+            <CheckboxRoot Value=""technology"">
+                <CheckboxIndicator>✓</CheckboxIndicator>
+            </CheckboxRoot>
+            Technology
+        </label>
+        
+        <label>
+            <CheckboxRoot Value=""sports"">
+                <CheckboxIndicator>✓</CheckboxIndicator>
+            </CheckboxRoot>
+            Sports
+        </label>
+        
+        <label>
+            <CheckboxRoot Value=""music"">
+                <CheckboxIndicator>✓</CheckboxIndicator>
+            </CheckboxRoot>
+            Music
+        </label>
+    </CheckboxGroup>
+    <ValidationMessage For=""@(() => model.Interests)"" />
+    
+    <button type=""submit"">Submit</button>
+</EditForm>
+
+@code {
+    private FormModel model = new();
+
+    public class FormModel
+    {
+        [MinLength(1, ErrorMessage = ""Select at least one interest"")]
+        public IReadOnlyList<string>? Interests { get; set; } = [];
+    }
+
+    private void HandleSubmit() { /* handle submission */ }
+}";
 
     private const string cssExampleCode = @"/* Checkbox styles */
 .checkbox {

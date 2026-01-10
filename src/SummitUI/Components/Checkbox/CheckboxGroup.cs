@@ -1,4 +1,7 @@
+using System.Linq.Expressions;
+
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
 namespace SummitUI;
@@ -27,6 +30,18 @@ public class CheckboxGroup : ComponentBase
     /// </summary>
     [Parameter]
     public EventCallback<IReadOnlyList<string>> ValuesChanged { get; set; }
+
+    /// <summary>
+    /// Expression for the values, used for EditForm binding and validation.
+    /// </summary>
+    [Parameter]
+    public Expression<Func<IReadOnlyList<string>?>>? ValuesExpression { get; set; }
+
+    /// <summary>
+    /// Cascading EditContext from an EditForm parent.
+    /// </summary>
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
 
     /// <summary>
     /// Default values for uncontrolled mode.
@@ -62,6 +77,7 @@ public class CheckboxGroup : ComponentBase
     private readonly CheckboxGroupContext _context = new();
     private HashSet<string> _internalValues = [];
     private string _labelId = "";
+    private FieldIdentifier? _fieldIdentifier;
 
     /// <summary>
     /// Whether we're in controlled mode.
@@ -91,6 +107,12 @@ public class CheckboxGroup : ComponentBase
 
     protected override void OnParametersSet()
     {
+        // Set up EditContext field identifier for validation (needs to happen after cascading parameters are set)
+        if (!_fieldIdentifier.HasValue && EditContext is not null && ValuesExpression is not null)
+        {
+            _fieldIdentifier = FieldIdentifier.Create(ValuesExpression);
+        }
+
         SyncContext();
     }
 
@@ -155,6 +177,12 @@ public class CheckboxGroup : ComponentBase
 
         await ValuesChanged.InvokeAsync([.. newValues]);
         await OnValueChange.InvokeAsync([.. newValues]);
+
+        // Notify EditContext of field change for validation
+        if (EditContext is not null && _fieldIdentifier.HasValue)
+        {
+            EditContext.NotifyFieldChanged(_fieldIdentifier.Value);
+        }
 
         StateHasChanged();
         _context.RaiseStateChanged();

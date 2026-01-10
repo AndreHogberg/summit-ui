@@ -1,4 +1,7 @@
+using System.Linq.Expressions;
+
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -41,6 +44,18 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     /// </summary>
     [Parameter]
     public EventCallback<bool> CheckedChanged { get; set; }
+
+    /// <summary>
+    /// Expression for the checked value, used for EditForm binding and validation.
+    /// </summary>
+    [Parameter]
+    public Expression<Func<bool>>? CheckedExpression { get; set; }
+
+    /// <summary>
+    /// Cascading EditContext from an EditForm parent.
+    /// </summary>
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
 
     /// <summary>
     /// The default checked state for uncontrolled mode.
@@ -110,6 +125,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     private bool _internalChecked;
     private bool _jsInitialized;
     private bool _isSubscribedToGroup;
+    private FieldIdentifier? _fieldIdentifier;
 
     /// <summary>
     /// Whether we're operating in controlled mode.
@@ -209,6 +225,15 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         {
             GroupContext!.OnStateChanged += HandleGroupStateChanged;
             _isSubscribedToGroup = true;
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        // Set up EditContext field identifier for validation (needs to happen after cascading parameters are set)
+        if (!_fieldIdentifier.HasValue && EditContext is not null && CheckedExpression is not null)
+        {
+            _fieldIdentifier = FieldIdentifier.Create(CheckedExpression);
         }
     }
 
@@ -316,6 +341,12 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         }
 
         await CheckedChanged.InvokeAsync(newChecked);
+
+        // Notify EditContext of field change for validation
+        if (EditContext is not null && _fieldIdentifier.HasValue)
+        {
+            EditContext.NotifyFieldChanged(_fieldIdentifier.Value);
+        }
 
         var newState = newChecked ? CheckedState.Checked : CheckedState.Unchecked;
         await OnCheckedChange.InvokeAsync(newState);

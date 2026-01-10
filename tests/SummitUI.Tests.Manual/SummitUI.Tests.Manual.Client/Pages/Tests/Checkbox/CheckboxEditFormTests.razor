@@ -12,7 +12,131 @@ else
 <div data-testid="page-ready">
     <h1>Checkbox EditForm Tests</h1>
 
-    <section data-testid="editform-section">
+    <section data-testid="single-checkbox-section">
+        <h2>Single Checkbox with EditForm</h2>
+        <EditForm Model="@singleCheckboxModel" OnValidSubmit="HandleSingleCheckboxSubmit">
+            <DataAnnotationsValidator />
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label class="checkbox-label">
+                    <CheckboxRoot @bind-Checked="singleCheckboxModel.AcceptTerms"
+                                  Name="acceptTerms"
+                                  Required="true"
+                                  data-testid="single-terms-checkbox"
+                                  class="checkbox-root">
+                        <CheckboxIndicator>
+                            <span>✓</span>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    Accept Terms and Conditions (Required)
+                </label>
+                <ValidationMessage For="@(() => singleCheckboxModel.AcceptTerms)" data-testid="single-terms-validation" class="validation-error" />
+
+                <label class="checkbox-label">
+                    <CheckboxRoot @bind-Checked="singleCheckboxModel.SubscribeNewsletter"
+                                  Name="subscribeNewsletter"
+                                  data-testid="single-newsletter-checkbox"
+                                  class="checkbox-root">
+                        <CheckboxIndicator>
+                            <span>✓</span>
+                        </CheckboxIndicator>
+                    </CheckboxRoot>
+                    Subscribe to Newsletter (Optional)
+                </label>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <button type="submit" class="btn" data-testid="single-submit">Submit</button>
+            </div>
+
+            <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #666;">
+                <p>Accept Terms: <span data-testid="single-terms-value">@singleCheckboxModel.AcceptTerms</span></p>
+                <p>Subscribe Newsletter: <span data-testid="single-newsletter-value">@singleCheckboxModel.SubscribeNewsletter</span></p>
+            </div>
+
+            @if (singleCheckboxSubmitted)
+            {
+                <p style="margin-top: 0.5rem; color: green;" data-testid="single-success-message">Form submitted successfully!</p>
+            }
+        </EditForm>
+    </section>
+
+    <section data-testid="group-checkbox-section" style="margin-top: 2rem;">
+        <h2>CheckboxGroup with EditForm</h2>
+        <EditForm Model="@groupCheckboxModel" OnValidSubmit="HandleGroupCheckboxSubmit">
+            <DataAnnotationsValidator />
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <span>Select your interests (at least one required):</span>
+                <CheckboxGroup @bind-Values="groupCheckboxModel.Interests" 
+                               Name="interests"
+                               data-testid="group-interests">
+                    <CheckboxGroupLabel data-testid="group-label">Interests</CheckboxGroupLabel>
+                    
+                    <label class="checkbox-label">
+                        <CheckboxRoot Value="technology" 
+                                      data-testid="group-technology-checkbox"
+                                      class="checkbox-root">
+                            <CheckboxIndicator>
+                                <span>✓</span>
+                            </CheckboxIndicator>
+                        </CheckboxRoot>
+                        Technology
+                    </label>
+                    
+                    <label class="checkbox-label">
+                        <CheckboxRoot Value="sports" 
+                                      data-testid="group-sports-checkbox"
+                                      class="checkbox-root">
+                            <CheckboxIndicator>
+                                <span>✓</span>
+                            </CheckboxIndicator>
+                        </CheckboxRoot>
+                        Sports
+                    </label>
+                    
+                    <label class="checkbox-label">
+                        <CheckboxRoot Value="music" 
+                                      data-testid="group-music-checkbox"
+                                      class="checkbox-root">
+                            <CheckboxIndicator>
+                                <span>✓</span>
+                            </CheckboxIndicator>
+                        </CheckboxRoot>
+                        Music
+                    </label>
+                    
+                    <label class="checkbox-label">
+                        <CheckboxRoot Value="travel" 
+                                      data-testid="group-travel-checkbox"
+                                      class="checkbox-root">
+                            <CheckboxIndicator>
+                                <span>✓</span>
+                            </CheckboxIndicator>
+                        </CheckboxRoot>
+                        Travel
+                    </label>
+                </CheckboxGroup>
+                <ValidationMessage For="@(() => groupCheckboxModel.Interests)" data-testid="group-interests-validation" class="validation-error" />
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <button type="submit" class="btn" data-testid="group-submit">Submit</button>
+            </div>
+
+            <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #666;">
+                <p>Selected Interests: <span data-testid="group-interests-value">@string.Join(", ", groupCheckboxModel.Interests ?? [])</span></p>
+            </div>
+
+            @if (groupCheckboxSubmitted)
+            {
+                <p style="margin-top: 0.5rem; color: green;" data-testid="group-success-message">Form submitted successfully!</p>
+            }
+        </EditForm>
+    </section>
+
+    <section data-testid="editform-section" style="margin-top: 2rem;">
+        <h2>Legacy Test (manual binding)</h2>
         <EditForm Model="@editFormModel" OnValidSubmit="HandleEditFormSubmit">
             <DataAnnotationsValidator />
 
@@ -79,6 +203,39 @@ else
 }
 
 @code {
+    // Single checkbox model
+    private SingleCheckboxFormModel singleCheckboxModel = new();
+    private bool singleCheckboxSubmitted = false;
+
+    private class SingleCheckboxFormModel
+    {
+        [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms and conditions")]
+        public bool AcceptTerms { get; set; }
+
+        public bool SubscribeNewsletter { get; set; }
+    }
+
+    private void HandleSingleCheckboxSubmit()
+    {
+        singleCheckboxSubmitted = true;
+    }
+
+    // Group checkbox model
+    private GroupCheckboxFormModel groupCheckboxModel = new();
+    private bool groupCheckboxSubmitted = false;
+
+    private class GroupCheckboxFormModel
+    {
+        [MinLength(1, ErrorMessage = "Please select at least one interest")]
+        public IReadOnlyList<string>? Interests { get; set; } = [];
+    }
+
+    private void HandleGroupCheckboxSubmit()
+    {
+        groupCheckboxSubmitted = true;
+    }
+
+    // Legacy model (existing tests)
     private CheckboxFormModel editFormModel = new();
     private bool editFormSubmitted = false;
 

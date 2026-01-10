@@ -8,7 +8,188 @@ public class CheckboxEditFormTests : SummitTestBase
 {
     protected override string TestPagePath => "tests/checkbox/editform";
 
-    #region Model Binding
+    #region Single Checkbox with @bind-Checked
+
+    [Test]
+    public async Task SingleCheckbox_ShouldBindCheckedValue_ToModel()
+    {
+        var section = Page.GetByTestId("single-checkbox-section");
+        var checkbox = section.Locator("[data-testid='single-terms-checkbox']");
+
+        // Initially unchecked
+        var termsValue = section.Locator("[data-testid='single-terms-value']");
+        await Expect(termsValue).ToHaveTextAsync("False");
+
+        // Click to check
+        await checkbox.ClickAsync();
+
+        // Verify the value is bound to the model
+        await Expect(termsValue).ToHaveTextAsync("True");
+    }
+
+    [Test]
+    public async Task SingleCheckbox_ShouldShowValidationError_WhenRequiredFieldNotChecked()
+    {
+        var section = Page.GetByTestId("single-checkbox-section");
+
+        // Submit form without checking required field
+        var submitButton = section.Locator("[data-testid='single-submit']");
+        await submitButton.ClickAsync();
+
+        // Verify validation error appears
+        var validationError = section.Locator("[data-testid='single-terms-validation']");
+        await Expect(validationError).ToBeVisibleAsync();
+        await Expect(validationError).ToContainTextAsync("You must accept the terms");
+    }
+
+    [Test]
+    public async Task SingleCheckbox_ShouldSubmitSuccessfully_WhenRequiredFieldChecked()
+    {
+        var section = Page.GetByTestId("single-checkbox-section");
+
+        // Check required terms checkbox
+        var termsCheckbox = section.Locator("[data-testid='single-terms-checkbox']");
+        await termsCheckbox.ClickAsync();
+
+        // Submit form
+        var submitButton = section.Locator("[data-testid='single-submit']");
+        await submitButton.ClickAsync();
+
+        // Verify success message appears
+        var successMessage = section.Locator("[data-testid='single-success-message']");
+        await Expect(successMessage).ToBeVisibleAsync();
+        await Expect(successMessage).ToHaveTextAsync("Form submitted successfully!");
+    }
+
+    [Test]
+    public async Task SingleCheckbox_ValidationShouldClear_OnResubmit()
+    {
+        var section = Page.GetByTestId("single-checkbox-section");
+
+        // Submit form without checking required field to trigger validation
+        var submitButton = section.Locator("[data-testid='single-submit']");
+        await submitButton.ClickAsync();
+
+        // Verify validation error appears
+        var validationError = section.Locator("[data-testid='single-terms-validation']");
+        await Expect(validationError).ToBeVisibleAsync();
+
+        // Now check the required field
+        var termsCheckbox = section.Locator("[data-testid='single-terms-checkbox']");
+        await termsCheckbox.ClickAsync();
+
+        // Submit again
+        await submitButton.ClickAsync();
+
+        // Success message should appear
+        var successMessage = section.Locator("[data-testid='single-success-message']");
+        await Expect(successMessage).ToBeVisibleAsync();
+    }
+
+    #endregion
+
+    #region CheckboxGroup with @bind-Values
+
+    [Test]
+    public async Task CheckboxGroup_ShouldBindValues_ToModel()
+    {
+        var section = Page.GetByTestId("group-checkbox-section");
+        var technologyCheckbox = section.Locator("[data-testid='group-technology-checkbox']");
+        var sportsCheckbox = section.Locator("[data-testid='group-sports-checkbox']");
+
+        // Click to check technology
+        await technologyCheckbox.ClickAsync();
+
+        // Verify the value is bound to the model
+        var interestsValue = section.Locator("[data-testid='group-interests-value']");
+        await Expect(interestsValue).ToContainTextAsync("technology");
+
+        // Click to check sports
+        await sportsCheckbox.ClickAsync();
+
+        // Verify both values are bound
+        await Expect(interestsValue).ToContainTextAsync("technology");
+        await Expect(interestsValue).ToContainTextAsync("sports");
+    }
+
+    [Test]
+    public async Task CheckboxGroup_ShouldShowValidationError_WhenNoItemsSelected()
+    {
+        var section = Page.GetByTestId("group-checkbox-section");
+
+        // Submit form without selecting any items
+        var submitButton = section.Locator("[data-testid='group-submit']");
+        await submitButton.ClickAsync();
+
+        // Verify validation error appears
+        var validationError = section.Locator("[data-testid='group-interests-validation']");
+        await Expect(validationError).ToBeVisibleAsync();
+        await Expect(validationError).ToContainTextAsync("Please select at least one interest");
+    }
+
+    [Test]
+    public async Task CheckboxGroup_ShouldSubmitSuccessfully_WhenItemsSelected()
+    {
+        var section = Page.GetByTestId("group-checkbox-section");
+
+        // Select an interest
+        var technologyCheckbox = section.Locator("[data-testid='group-technology-checkbox']");
+        await technologyCheckbox.ClickAsync();
+
+        // Submit form
+        var submitButton = section.Locator("[data-testid='group-submit']");
+        await submitButton.ClickAsync();
+
+        // Verify success message appears
+        var successMessage = section.Locator("[data-testid='group-success-message']");
+        await Expect(successMessage).ToBeVisibleAsync();
+        await Expect(successMessage).ToHaveTextAsync("Form submitted successfully!");
+    }
+
+    [Test]
+    public async Task CheckboxGroup_ValidationShouldClear_OnResubmit()
+    {
+        var section = Page.GetByTestId("group-checkbox-section");
+
+        // Submit form without selecting any items to trigger validation
+        var submitButton = section.Locator("[data-testid='group-submit']");
+        await submitButton.ClickAsync();
+
+        // Verify validation error appears
+        var validationError = section.Locator("[data-testid='group-interests-validation']");
+        await Expect(validationError).ToBeVisibleAsync();
+
+        // Now select an interest
+        var musicCheckbox = section.Locator("[data-testid='group-music-checkbox']");
+        await musicCheckbox.ClickAsync();
+
+        // Submit again
+        await submitButton.ClickAsync();
+
+        // Success message should appear
+        var successMessage = section.Locator("[data-testid='group-success-message']");
+        await Expect(successMessage).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task CheckboxGroup_ShouldRemoveValueFromModel_WhenUnchecked()
+    {
+        var section = Page.GetByTestId("group-checkbox-section");
+        var technologyCheckbox = section.Locator("[data-testid='group-technology-checkbox']");
+        var interestsValue = section.Locator("[data-testid='group-interests-value']");
+
+        // Check and verify
+        await technologyCheckbox.ClickAsync();
+        await Expect(interestsValue).ToContainTextAsync("technology");
+
+        // Uncheck and verify
+        await technologyCheckbox.ClickAsync();
+        await Expect(interestsValue).Not.ToContainTextAsync("technology");
+    }
+
+    #endregion
+
+    #region Legacy Tests (manual binding)
 
     [Test]
     public async Task EditForm_ShouldBindCheckedValue_ToModel()
