@@ -31,7 +31,8 @@ export {
     registerEscapeKey as floating_registerEscapeKey,
     unregisterEscapeKey as floating_unregisterEscapeKey,
     waitForAnimationsComplete as floating_waitForAnimationsComplete,
-    cancelAnimationWatcher as floating_cancelAnimationWatcher
+    cancelAnimationWatcher as floating_cancelAnimationWatcher,
+    getMenuItemsInDomOrder as floating_getMenuItemsInDomOrder
 } from './floating.js';
 
 // Accordion exports
@@ -90,7 +91,10 @@ export {
     createPortal as dropdownMenu_createPortal,
     destroyPortal as dropdownMenu_destroyPortal,
     initializeTrigger as dropdownMenu_initializeTrigger,
-    destroyTrigger as dropdownMenu_destroyTrigger
+    destroyTrigger as dropdownMenu_destroyTrigger,
+    initializeSubTrigger as dropdownMenu_initializeSubTrigger,
+    destroySubTrigger as dropdownMenu_destroySubTrigger,
+    cancelSubTriggerClose as dropdownMenu_cancelSubTriggerClose
 } from './dropdown-menu.js';
 
 // Dialog exports (scroll lock and portal management)

@@ -257,6 +257,21 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         await module.InvokeVoidAsync("floating_focusElementById", elementId);
     }
 
+    /// <summary>
+    /// Get menu item IDs in DOM order within a container.
+    /// Used for keyboard navigation to ensure items are navigated in visual order.
+    /// </summary>
+    /// <param name="container">The menu content container element.</param>
+    /// <param name="registeredIds">Array of IDs that have been registered.</param>
+    /// <returns>Array of IDs sorted by DOM position.</returns>
+    public async ValueTask<string[]> GetMenuItemsInDomOrderAsync(ElementReference container, string[] registeredIds)
+    {
+        if (registeredIds.Length == 0) return registeredIds;
+
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<string[]>("floating_getMenuItemsInDomOrder", container, registeredIds);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)

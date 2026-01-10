@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace SummitUI.Interop;
 
 /// <summary>
-/// JavaScript interop service for dropdown menu trigger and portal functionality.
+/// JavaScript interop service for dropdown menu trigger, portal, and submenu functionality.
 /// All other functionality (positioning, keyboard nav, etc.) is handled by Blazor + FloatingJsInterop.
 /// </summary>
 public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
@@ -54,12 +54,56 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : IAsyncDisposab
         await module.InvokeVoidAsync("dropdownMenu_destroyTrigger", triggerElement);
     }
 
+    /// <summary>
+    /// Initialize sub trigger for hover intent.
+    /// </summary>
+    /// <param name="triggerElement">Reference to the sub trigger element.</param>
+    /// <param name="dotNetRef">DotNet object reference for callbacks.</param>
+    /// <param name="openDelay">Delay before opening in milliseconds.</param>
+    /// <param name="closeDelay">Delay before closing in milliseconds.</param>
+    public async ValueTask InitializeSubTriggerAsync(
+        ElementReference triggerElement,
+        DotNetObjectReference<DropdownMenuSubTrigger> dotNetRef,
+        int openDelay,
+        int closeDelay)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("dropdownMenu_initializeSubTrigger", triggerElement, dotNetRef, openDelay, closeDelay);
+    }
+
+    /// <summary>
+    /// Cleanup sub trigger event listeners and state.
+    /// </summary>
+    /// <param name="triggerElement">Reference to the sub trigger element.</param>
+    public async ValueTask DestroySubTriggerAsync(ElementReference triggerElement)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("dropdownMenu_destroySubTrigger", triggerElement);
+    }
+
+    /// <summary>
+    /// Cancel the close timer for a sub trigger.
+    /// </summary>
+    /// <param name="triggerElement">Reference to the sub trigger element.</param>
+    public async ValueTask CancelSubTriggerCloseAsync(ElementReference triggerElement)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("dropdownMenu_cancelSubTriggerClose", triggerElement);
+    }
+
     public async ValueTask DisposeAsync()
     {
-        if (_moduleTask.IsValueCreated)
+        try
         {
-            var module = await _moduleTask.Value;
-            await module.DisposeAsync();
+            if (_moduleTask.IsValueCreated)
+            {
+                var module = await _moduleTask.Value;
+                await module.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException)
+        {
+            // Safe to ignore, JS resources are cleaned up by the browser
         }
     }
 }

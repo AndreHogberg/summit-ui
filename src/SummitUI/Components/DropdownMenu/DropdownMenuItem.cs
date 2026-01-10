@@ -7,11 +7,15 @@ namespace SummitUI;
 /// <summary>
 /// A single menu item within the dropdown menu.
 /// Implements menuitem role with full ARIA support.
+/// Works in both root menu and submenus.
 /// </summary>
 public class DropdownMenuItem : ComponentBase, IDisposable
 {
     [CascadingParameter]
     private DropdownMenuContext Context { get; set; } = default!;
+
+    [CascadingParameter]
+    private DropdownMenuSubContext? SubContext { get; set; }
 
     /// <summary>
     /// Whether this item is disabled.
@@ -55,20 +59,40 @@ public class DropdownMenuItem : ComponentBase, IDisposable
     private string? _registeredTextValue;
 
     /// <summary>
+    /// Whether this item is inside a submenu.
+    /// </summary>
+    private bool IsInSubmenu => SubContext != null;
+
+    /// <summary>
     /// Whether this item is currently highlighted.
     /// </summary>
-    private bool IsHighlighted => Context.HighlightedItemId == _itemId;
+    private bool IsHighlighted => IsInSubmenu 
+        ? SubContext!.HighlightedItemId == _itemId 
+        : Context.HighlightedItemId == _itemId;
 
     protected override void OnInitialized()
     {
-        _itemId = $"{Context.MenuId}-item-{Guid.NewGuid():N}";
+        _itemId = IsInSubmenu 
+            ? $"{SubContext!.SubMenuId}-item-{Guid.NewGuid():N}"
+            : $"{Context.MenuId}-item-{Guid.NewGuid():N}";
 
         if (!Disabled)
         {
-            Context.RegisterItem(_itemId);
+            if (IsInSubmenu)
+            {
+                SubContext!.RegisterItem(_itemId);
+            }
+            else
+            {
+                Context.RegisterItem(_itemId);
+            }
         }
 
         Context.OnStateChanged += HandleStateChanged;
+        if (IsInSubmenu)
+        {
+            SubContext!.OnStateChanged += HandleStateChanged;
+        }
         _isSubscribed = true;
     }
 
@@ -79,12 +103,26 @@ public class DropdownMenuItem : ComponentBase, IDisposable
         {
             if (_registeredTextValue != null)
             {
-                Context.UnregisterItemLabel(_itemId);
+                if (IsInSubmenu)
+                {
+                    SubContext!.UnregisterItemLabel(_itemId);
+                }
+                else
+                {
+                    Context.UnregisterItemLabel(_itemId);
+                }
             }
 
             if (!string.IsNullOrEmpty(TextValue))
             {
-                Context.RegisterItemLabel(_itemId, TextValue);
+                if (IsInSubmenu)
+                {
+                    SubContext!.RegisterItemLabel(_itemId, TextValue);
+                }
+                else
+                {
+                    Context.RegisterItemLabel(_itemId, TextValue);
+                }
             }
 
             _registeredTextValue = TextValue;
@@ -116,7 +154,7 @@ public class DropdownMenuItem : ComponentBase, IDisposable
             builder.AddAttribute(7, "data-highlighted", "");
         }
         builder.AddAttribute(8, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddAttribute(9, "onmouseenter", EventCallback.Factory.Create<MouseEventArgs>(this, HandleMouseEnterAsync));
+        builder.AddAttribute(9, "onpointerenter", EventCallback.Factory.Create<PointerEventArgs>(this, HandlePointerEnterAsync));
         builder.AddAttribute(10, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
         builder.AddEventPreventDefaultAttribute(11, "onkeydown", true);
         builder.AddEventStopPropagationAttribute(12, "onkeydown", true);
@@ -131,22 +169,47 @@ public class DropdownMenuItem : ComponentBase, IDisposable
 
         await OnClick.InvokeAsync(args);
         await OnSelect.InvokeAsync();
-        await Context.SelectItemAsync();
+        
+        // Close entire menu tree (including parent menus)
+        await Context.CloseAsync();
     }
 
-    private async Task HandleMouseEnterAsync()
+    private async Task HandlePointerEnterAsync(PointerEventArgs args)
     {
         if (Disabled) return;
 
-        await Context.SetHighlightedItemAsync(_itemId);
+        // When hovering over a regular item, close any open submenus at this level
+        if (IsInSubmenu)
+        {
+            // Close any nested submenu that might be open
+            if (SubContext!.ActiveNestedSubContext != null)
+            {
+                await SubContext.ActiveNestedSubContext.CloseAllAsync();
+                SubContext.ActiveNestedSubContext = null;
+            }
+            await SubContext.SetHighlightedItemAsync(_itemId);
+        }
+        else
+        {
+            // Close any submenu that might be open at root level
+            await Context.CloseAllSubMenusAsync();
+            await Context.SetHighlightedItemAsync(_itemId);
+        }
     }
 
     private async Task HandleKeyDownAsync(KeyboardEventArgs args)
     {
         if (Disabled) return;
 
-        // Delegate keyboard handling to the content via context
-        await Context.HandleKeyDownAsync(args.Key);
+        // Delegate keyboard handling to the appropriate context
+        if (IsInSubmenu)
+        {
+            await SubContext!.HandleKeyDownAsync(args.Key);
+        }
+        else
+        {
+            await Context.HandleKeyDownAsync(args.Key);
+        }
     }
 
     public void Dispose()
@@ -154,16 +217,34 @@ public class DropdownMenuItem : ComponentBase, IDisposable
         if (_isSubscribed)
         {
             Context.OnStateChanged -= HandleStateChanged;
+            if (IsInSubmenu)
+            {
+                SubContext!.OnStateChanged -= HandleStateChanged;
+            }
         }
 
         if (!Disabled)
         {
-            Context.UnregisterItem(_itemId);
+            if (IsInSubmenu)
+            {
+                SubContext!.UnregisterItem(_itemId);
+            }
+            else
+            {
+                Context.UnregisterItem(_itemId);
+            }
         }
 
         if (_registeredTextValue != null)
         {
-            Context.UnregisterItemLabel(_itemId);
+            if (IsInSubmenu)
+            {
+                SubContext!.UnregisterItemLabel(_itemId);
+            }
+            else
+            {
+                Context.UnregisterItemLabel(_itemId);
+            }
         }
     }
 }

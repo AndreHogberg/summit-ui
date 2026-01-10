@@ -74,6 +74,7 @@ public class DropdownMenuRoot : ComponentBase, IAsyncDisposable
     {
         _internalOpen = DefaultOpen;
         _context.IsOpen = IsOpen;
+        _context.Dir = Dir;
         _context.ToggleAsync = ToggleAsync;
         _context.OpenAsync = OpenAsync;
         _context.CloseAsync = CloseAsync;
@@ -88,8 +89,9 @@ public class DropdownMenuRoot : ComponentBase, IAsyncDisposable
 
     protected override void OnParametersSet()
     {
-        // Sync context with current open state
+        // Sync context with current open state and Dir
         _context.IsOpen = IsOpen;
+        _context.Dir = Dir;
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -128,6 +130,9 @@ public class DropdownMenuRoot : ComponentBase, IAsyncDisposable
     private async Task CloseAsync()
     {
         if (!IsOpen) return;
+
+        // Close all submenus first
+        await _context.CloseAllSubMenusAsync();
 
         // Focus trigger BEFORE closing, as content may be unmounted after close
         await _context.FocusTriggerAsync();

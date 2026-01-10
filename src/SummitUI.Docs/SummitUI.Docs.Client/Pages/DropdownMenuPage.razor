@@ -114,7 +114,10 @@
             @foreach (var table in new[] { 
                 (Title: "DropdownMenuRoot", Props: rootProps), 
                 (Title: "DropdownMenuContent", Props: contentProps),
-                (Title: "DropdownMenuItem", Props: itemProps)
+                (Title: "DropdownMenuItem", Props: itemProps),
+                (Title: "DropdownMenuSub", Props: subProps),
+                (Title: "DropdownMenuSubTrigger", Props: subTriggerProps),
+                (Title: "DropdownMenuSubContent", Props: subContentProps)
             })
             {
                 <div class="flex flex-col gap-3">
@@ -175,6 +178,84 @@
                 <SuHeading Level="SuHeadingLevel.H3">Grouped Items</SuHeading>
                 <SuText Size="SuTextSize.Small" Muted="true">Organize items into labeled groups.</SuText>
                 <SuCodeBlock Code="@groupedExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Submenu</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Nested menus that open on hover or keyboard navigation.</SuText>
+                <SuCard>
+                    <DropdownMenuRoot>
+                        <DropdownMenuTrigger class="demo-dropdown-trigger">
+                            <span>File</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuContent class="demo-dropdown-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
+                                <DropdownMenuItem TextValue="New File" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "New File")">
+                                    New File
+                                </DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Open File" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Open File")">
+                                    Open File
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator Decorative class="demo-dropdown-separator" />
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger class="demo-dropdown-item demo-dropdown-subtrigger">
+                                        <span>Share</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-auto">
+                                            <path d="m9 18 6-6-6-6"/>
+                                        </svg>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuPortal>
+                                        <DropdownMenuSubContent class="demo-dropdown-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
+                                            <DropdownMenuItem TextValue="Email" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Share via Email")">
+                                                Email
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem TextValue="Messages" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Share via Messages")">
+                                                Messages
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator Decorative class="demo-dropdown-separator" />
+                                            <DropdownMenuItem TextValue="Copy Link" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Copy Link")">
+                                                Copy Link
+                                            </DropdownMenuItem>
+                                        </DropdownMenuSubContent>
+                                    </DropdownMenuPortal>
+                                </DropdownMenuSub>
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger class="demo-dropdown-item demo-dropdown-subtrigger">
+                                        <span>Export As</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-auto">
+                                            <path d="m9 18 6-6-6-6"/>
+                                        </svg>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuPortal>
+                                        <DropdownMenuSubContent class="demo-dropdown-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
+                                            <DropdownMenuItem TextValue="PDF" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Export as PDF")">
+                                                PDF
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem TextValue="PNG" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Export as PNG")">
+                                                PNG
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem TextValue="SVG" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Export as SVG")">
+                                                SVG
+                                            </DropdownMenuItem>
+                                        </DropdownMenuSubContent>
+                                    </DropdownMenuPortal>
+                                </DropdownMenuSub>
+                                <DropdownMenuSeparator Decorative class="demo-dropdown-separator" />
+                                <DropdownMenuItem TextValue="Close" class="demo-dropdown-item" OnSelect="@(() => submenuAction = "Close")">
+                                    Close
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuRoot>
+                    @if (!string.IsNullOrEmpty(submenuAction))
+                    {
+                        <SuText Size="SuTextSize.Small" Muted="true" class="mt-4">Last action: @submenuAction</SuText>
+                    }
+                </SuCard>
+                <SuCodeBlock Code="@submenuExampleCode" Language="razor" />
             </div>
         </div>
     </SuSection>
@@ -322,10 +403,15 @@
         background: rgb(var(--su-border));
         margin: 0.25rem 0;
     }
+    
+    .demo-dropdown-subtrigger {
+        justify-content: space-between;
+    }
 </style>
 
 @code {
     private string? selectedAction;
+    private string? submenuAction;
 
     private record SubComponent(string Name, string Description);
 
@@ -339,7 +425,10 @@
         new("DropdownMenuCheckboxItem", "Toggle-able checkbox menu item."),
         new("DropdownMenuRadioGroup", "Container for radio items."),
         new("DropdownMenuRadioItem", "Radio option within a group."),
-        new("DropdownMenuSeparator", "Visual separator between items.")
+        new("DropdownMenuSeparator", "Visual separator between items."),
+        new("DropdownMenuSub", "Container for nested submenu."),
+        new("DropdownMenuSubTrigger", "Menu item that opens a submenu."),
+        new("DropdownMenuSubContent", "Floating content panel for submenu.")
     };
 
     private readonly List<SuApiProperty> rootProps = new()
@@ -367,6 +456,27 @@
         new() { Name = "OnSelect", Type = "EventCallback", Description = "Selection callback" }
     };
 
+    private readonly List<SuApiProperty> subProps = new()
+    {
+        new() { Name = "Open", Type = "bool?", Default = "null", Description = "Controlled open state" },
+        new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state (uncontrolled)" },
+        new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Callback when open state changes" }
+    };
+
+    private readonly List<SuApiProperty> subTriggerProps = new()
+    {
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable trigger" },
+        new() { Name = "TextValue", Type = "string?", Description = "Text for typeahead search" }
+    };
+
+    private readonly List<SuApiProperty> subContentProps = new()
+    {
+        new() { Name = "SideOffset", Type = "int", Default = "0", Description = "Offset from trigger (px)" },
+        new() { Name = "AlignOffset", Type = "int", Default = "0", Description = "Alignment offset (px)" },
+        new() { Name = "AvoidCollisions", Type = "bool", Default = "true", Description = "Avoid viewport boundaries" },
+        new() { Name = "Loop", Type = "bool", Default = "true", Description = "Loop keyboard navigation" }
+    };
+
     private readonly List<SuApiProperty> dataAttributes = new()
     {
         new() { Name = "data-state", Type = "\"open\" | \"closed\"", Description = "Menu open state" },
@@ -379,9 +489,11 @@
         new() { Name = "Enter / Space", Description = "Open menu or select item", Type = "" },
         new() { Name = "ArrowDown", Description = "Move focus to next item", Type = "" },
         new() { Name = "ArrowUp", Description = "Move focus to previous item", Type = "" },
+        new() { Name = "ArrowRight", Description = "Open submenu (LTR)", Type = "" },
+        new() { Name = "ArrowLeft", Description = "Close submenu (LTR)", Type = "" },
         new() { Name = "Home", Description = "Move focus to first item", Type = "" },
         new() { Name = "End", Description = "Move focus to last item", Type = "" },
-        new() { Name = "Escape", Description = "Close menu", Type = "" }
+        new() { Name = "Escape", Description = "Close menu or submenu", Type = "" }
     };
 
     private const string anatomyCode = @"<DropdownMenuRoot>
@@ -477,6 +589,56 @@
         </DropdownMenuContent>
     </DropdownMenuPortal>
 </DropdownMenuRoot>";
+
+    private const string submenuExampleCode = @"<DropdownMenuRoot>
+    <DropdownMenuTrigger class=""su-dropdown-trigger"">File</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent class=""su-dropdown-content"">
+            <DropdownMenuItem class=""su-dropdown-item"">New File</DropdownMenuItem>
+            <DropdownMenuItem class=""su-dropdown-item"">Open File</DropdownMenuItem>
+            <DropdownMenuSeparator class=""su-dropdown-separator"" />
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger class=""su-dropdown-item su-dropdown-subtrigger"">
+                    <span>Share</span>
+                    <span class=""chevron"">›</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                    <DropdownMenuSubContent class=""su-dropdown-content"">
+                        <DropdownMenuItem class=""su-dropdown-item"">Email</DropdownMenuItem>
+                        <DropdownMenuItem class=""su-dropdown-item"">Messages</DropdownMenuItem>
+                        <DropdownMenuSeparator class=""su-dropdown-separator"" />
+                        <DropdownMenuItem class=""su-dropdown-item"">Copy Link</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+            </DropdownMenuSub>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger class=""su-dropdown-item su-dropdown-subtrigger"">
+                    <span>Export As</span>
+                    <span class=""chevron"">›</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                    <DropdownMenuSubContent class=""su-dropdown-content"">
+                        <DropdownMenuItem class=""su-dropdown-item"">PDF</DropdownMenuItem>
+                        <DropdownMenuItem class=""su-dropdown-item"">PNG</DropdownMenuItem>
+                        <DropdownMenuItem class=""su-dropdown-item"">SVG</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+            </DropdownMenuSub>
+            <DropdownMenuSeparator class=""su-dropdown-separator"" />
+            <DropdownMenuItem class=""su-dropdown-item"">Close</DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>
+
+@* CSS for subtrigger *@
+<style>
+.su-dropdown-subtrigger {
+    justify-content: space-between;
+}
+.su-dropdown-subtrigger .chevron {
+    margin-left: auto;
+}
+</style>";
 
     private const string cssExampleCode = @"/* Trigger */
 .su-dropdown-trigger {

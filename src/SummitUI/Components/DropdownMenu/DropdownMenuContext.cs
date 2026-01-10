@@ -14,6 +14,13 @@ public sealed class DropdownMenuContext
     public string MenuId { get; }
 
     /// <summary>
+    /// Reading direction. Used for submenu arrow key navigation.
+    /// "ltr" = ArrowRight opens submenu, ArrowLeft closes.
+    /// "rtl" = ArrowLeft opens submenu, ArrowRight closes.
+    /// </summary>
+    public string Dir { get; internal set; } = "ltr";
+
+    /// <summary>
     /// Current open state of the dropdown menu.
     /// </summary>
     public bool IsOpen { get; internal set; }
@@ -99,6 +106,21 @@ public sealed class DropdownMenuContext
     public Action<string> UnregisterItemLabel { get; internal set; } = _ => { };
 
     /// <summary>
+    /// Currently open submenu context at this level.
+    /// </summary>
+    public DropdownMenuSubContext? ActiveSubContext { get; internal set; }
+
+    /// <summary>
+    /// Callback to notify when a submenu is opening (to close siblings).
+    /// </summary>
+    public Func<DropdownMenuSubContext, Task> NotifySubMenuOpeningAsync { get; internal set; } = _ => Task.CompletedTask;
+
+    /// <summary>
+    /// Callback to close all open submenus.
+    /// </summary>
+    public Func<Task> CloseAllSubMenusAsync { get; internal set; } = () => Task.CompletedTask;
+
+    /// <summary>
     /// Callback to focus the trigger element. Set by the content component.
     /// </summary>
     public Func<Task> FocusTriggerAsync { get; internal set; } = () => Task.CompletedTask;
@@ -131,6 +153,52 @@ public sealed class DropdownMenuContext
     /// Gets the unique ID for a menu item based on its value.
     /// </summary>
     public string GetItemId(string value) => $"{MenuId}-item-{value}";
+
+    /// <summary>
+    /// Registry of all submenu contexts, keyed by SubMenuId.
+    /// Used to reliably establish parent-child relationships for nested submenus.
+    /// </summary>
+    private readonly Dictionary<string, DropdownMenuSubContext> _subContextRegistry = new();
+
+    /// <summary>
+    /// Registers a submenu context with this menu, establishing the parent-child relationship.
+    /// </summary>
+    /// <param name="context">The submenu context to register.</param>
+    /// <param name="parentSubMenuId">The SubMenuId of the parent submenu, or null if direct child of root.</param>
+    public void RegisterSubContext(DropdownMenuSubContext context, string? parentSubMenuId)
+    {
+        _subContextRegistry[context.SubMenuId] = context;
+
+        // Set up parent relationship from the registry
+        if (parentSubMenuId != null && _subContextRegistry.TryGetValue(parentSubMenuId, out var parent))
+        {
+            context.ParentSubContext = parent;
+            context.Depth = parent.Depth + 1;
+        }
+        else
+        {
+            context.ParentSubContext = null;
+            context.Depth = 1;
+        }
+    }
+
+    /// <summary>
+    /// Unregisters a submenu context from this menu.
+    /// </summary>
+    /// <param name="subMenuId">The SubMenuId to unregister.</param>
+    public void UnregisterSubContext(string subMenuId)
+    {
+        _subContextRegistry.Remove(subMenuId);
+    }
+
+    /// <summary>
+    /// Gets a submenu context by its ID.
+    /// </summary>
+    public DropdownMenuSubContext? GetSubContext(string subMenuId)
+    {
+        _subContextRegistry.TryGetValue(subMenuId, out var context);
+        return context;
+    }
 
     public DropdownMenuContext()
     {

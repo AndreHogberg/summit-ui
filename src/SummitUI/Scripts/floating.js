@@ -541,3 +541,32 @@ export function cancelAnimationWatcher(element) {
         animationWatchers.delete(element);
     }
 }
+
+/**
+ * Get menu item IDs in DOM order within a container.
+ * Used for keyboard navigation to ensure items are navigated in visual order.
+ * @param {HTMLElement} container - The menu content container
+ * @param {string[]} registeredIds - Array of IDs that have been registered
+ * @returns {string[]} Array of IDs in DOM order
+ */
+export function getMenuItemsInDomOrder(container, registeredIds) {
+    if (!container || !registeredIds || registeredIds.length === 0) {
+        return registeredIds || [];
+    }
+    
+    // Create a Set for O(1) lookup
+    const registeredSet = new Set(registeredIds);
+    
+    // Query all menu items in DOM order
+    const allMenuItems = container.querySelectorAll('[role="menuitem"]');
+    
+    // Filter to only include registered items, maintaining DOM order
+    const orderedIds = [];
+    for (const item of allMenuItems) {
+        if (item.id && registeredSet.has(item.id)) {
+            orderedIds.push(item.id);
+        }
+    }
+    
+    return orderedIds;
+}

@@ -1,11 +1,14 @@
 /**
  * SummitUI Dropdown Menu JavaScript Module
- * Minimal module for portal and trigger functionality only.
+ * Minimal module for portal, trigger, and submenu hover functionality.
  * All other functionality (positioning, keyboard nav, etc.) is handled by Blazor + FloatingJsInterop.
  */
 
 // Store portal containers
 const portalContainers = new Map();
+
+// Store sub trigger state
+const subTriggerState = new Map();
 
 /**
  * Create a portal container at the specified location
@@ -74,5 +77,56 @@ export function destroyTrigger(triggerEl) {
     if (triggerEl?._summitCleanup) {
         triggerEl._summitCleanup();
         delete triggerEl._summitCleanup;
+    }
+}
+
+/**
+ * Initialize sub trigger for hover intent
+ * @param {HTMLElement} triggerEl - Sub trigger element
+ * @param {object} dotNetRef - .NET object reference for callbacks
+ * @param {number} openDelay - Delay before opening in ms
+ * @param {number} closeDelay - Delay before closing in ms
+ */
+export function initializeSubTrigger(triggerEl, dotNetRef, openDelay, closeDelay) {
+    if (!triggerEl || !dotNetRef) return;
+
+    const state = {
+        openTimer: null,
+        closeTimer: null,
+        dotNetRef,
+        openDelay,
+        closeDelay
+    };
+
+    subTriggerState.set(triggerEl, state);
+
+    // Store cleanup function on element
+    triggerEl._summitSubTriggerCleanup = () => {
+        clearTimeout(state.openTimer);
+        clearTimeout(state.closeTimer);
+        subTriggerState.delete(triggerEl);
+    };
+}
+
+/**
+ * Cleanup sub trigger event listeners and state
+ * @param {HTMLElement} triggerEl - Sub trigger element
+ */
+export function destroySubTrigger(triggerEl) {
+    if (triggerEl?._summitSubTriggerCleanup) {
+        triggerEl._summitSubTriggerCleanup();
+        delete triggerEl._summitSubTriggerCleanup;
+    }
+}
+
+/**
+ * Cancel the close timer for a sub trigger (called when entering content)
+ * @param {HTMLElement} triggerEl - Sub trigger element
+ */
+export function cancelSubTriggerClose(triggerEl) {
+    const state = subTriggerState.get(triggerEl);
+    if (state) {
+        clearTimeout(state.closeTimer);
+        state.closeTimer = null;
     }
 }

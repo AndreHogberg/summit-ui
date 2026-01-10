@@ -1,0 +1,338 @@
+@page "/tests/dropdown-menu/submenu"
+@rendermode InteractiveWebAssembly
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>Dropdown Menu Submenu Tests</h1>
+    
+    <div class="test-section">
+        <h2>Basic Submenu</h2>
+        <p>Tests: hover to open, ArrowRight to open, ArrowLeft to close, Escape closes submenu only</p>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="basic-submenu-trigger">
+                Open Menu
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="basic-submenu-content">
+                    <DropdownMenuItem TextValue="Item 1" class="menu-item" data-testid="item-1">Item 1</DropdownMenuItem>
+                    <DropdownMenuItem TextValue="Item 2" class="menu-item" data-testid="item-2">Item 2</DropdownMenuItem>
+                    <DropdownMenuSeparator class="menu-separator" />
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="More Options" class="menu-item submenu-trigger" data-testid="submenu-trigger-1">
+                            More Options
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="submenu-content-1">
+                                <DropdownMenuItem TextValue="Sub Item 1" class="menu-item" data-testid="sub-item-1">Sub Item 1</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Sub Item 2" class="menu-item" data-testid="sub-item-2">Sub Item 2</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Sub Item 3" class="menu-item" data-testid="sub-item-3">Sub Item 3</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem TextValue="Item 3" class="menu-item" data-testid="item-3">Item 3</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Multiple Submenus (Siblings)</h2>
+        <p>Tests: opening one submenu closes sibling submenu</p>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="multi-submenu-trigger">
+                Multi Submenu
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="multi-submenu-content">
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="Edit" class="menu-item submenu-trigger" data-testid="edit-submenu-trigger">
+                            Edit
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="edit-submenu-content">
+                                <DropdownMenuItem TextValue="Undo" class="menu-item" data-testid="edit-undo">Undo</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Redo" class="menu-item" data-testid="edit-redo">Redo</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Cut" class="menu-item" data-testid="edit-cut">Cut</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Copy" class="menu-item" data-testid="edit-copy">Copy</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="View" class="menu-item submenu-trigger" data-testid="view-submenu-trigger">
+                            View
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="view-submenu-content">
+                                <DropdownMenuItem TextValue="Zoom In" class="menu-item" data-testid="view-zoom-in">Zoom In</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Zoom Out" class="menu-item" data-testid="view-zoom-out">Zoom Out</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Full Screen" class="menu-item" data-testid="view-fullscreen">Full Screen</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="Help" class="menu-item submenu-trigger" data-testid="help-submenu-trigger">
+                            Help
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="help-submenu-content">
+                                <DropdownMenuItem TextValue="Documentation" class="menu-item" data-testid="help-docs">Documentation</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="About" class="menu-item" data-testid="help-about">About</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Nested Submenus (3 Levels)</h2>
+        <p>Tests: infinite nesting, ArrowRight/Left navigation through nested menus</p>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="nested-submenu-trigger">
+                Nested Menus
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="nested-submenu-content">
+                    <DropdownMenuItem TextValue="Top Level" class="menu-item" data-testid="nested-top-item">Top Level Item</DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="Level 1" class="menu-item submenu-trigger" data-testid="level-1-trigger">
+                            Level 1
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="level-1-content">
+                                <DropdownMenuItem TextValue="Level 1 Item" class="menu-item" data-testid="level-1-item">Level 1 Item</DropdownMenuItem>
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger TextValue="Level 2" class="menu-item submenu-trigger" data-testid="level-2-trigger">
+                                        Level 2
+                                        <span class="arrow">&#8250;</span>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuPortal>
+                                        <DropdownMenuSubContent class="menu-content submenu-content" data-testid="level-2-content">
+                                            <DropdownMenuItem TextValue="Level 2 Item A" class="menu-item" data-testid="level-2-item-a">Level 2 Item A</DropdownMenuItem>
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger TextValue="Level 3" class="menu-item submenu-trigger" data-testid="level-3-trigger">
+                                                    Level 3
+                                                    <span class="arrow">&#8250;</span>
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent class="menu-content submenu-content" data-testid="level-3-content">
+                                                        <DropdownMenuItem TextValue="Deep Item 1" class="menu-item" data-testid="level-3-item-1">Deep Item 1</DropdownMenuItem>
+                                                        <DropdownMenuItem TextValue="Deep Item 2" class="menu-item" data-testid="level-3-item-2">Deep Item 2</DropdownMenuItem>
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                            <DropdownMenuItem TextValue="Level 2 Item B" class="menu-item" data-testid="level-2-item-b">Level 2 Item B</DropdownMenuItem>
+                                        </DropdownMenuSubContent>
+                                    </DropdownMenuPortal>
+                                </DropdownMenuSub>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Submenu with Disabled Trigger</h2>
+        <p>Tests: disabled submenu trigger doesn't open</p>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="disabled-submenu-trigger">
+                With Disabled Submenu
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="disabled-submenu-content">
+                    <DropdownMenuItem TextValue="Active Item" class="menu-item" data-testid="active-item">Active Item</DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="Disabled Submenu" class="menu-item submenu-trigger" Disabled="true" data-testid="disabled-sub-trigger">
+                            Disabled Submenu
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="disabled-sub-content">
+                                <DropdownMenuItem TextValue="Should Not Appear" class="menu-item">Should Not Appear</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="Enabled Submenu" class="menu-item submenu-trigger" data-testid="enabled-sub-trigger">
+                            Enabled Submenu
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="enabled-sub-content">
+                                <DropdownMenuItem TextValue="Submenu Item" class="menu-item" data-testid="enabled-sub-item">Submenu Item</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>RTL Support</h2>
+        <p>Tests: ArrowLeft opens, ArrowRight closes in RTL mode</p>
+        <DropdownMenuRoot Dir="rtl">
+            <DropdownMenuTrigger class="menu-trigger" data-testid="rtl-submenu-trigger">
+                RTL Menu
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="rtl-submenu-content">
+                    <DropdownMenuItem TextValue="Item 1" class="menu-item" data-testid="rtl-item-1">Item 1</DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="More" class="menu-item submenu-trigger" data-testid="rtl-sub-trigger">
+                            <span class="arrow rtl-arrow">&#8249;</span>
+                            More
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="rtl-sub-content">
+                                <DropdownMenuItem TextValue="RTL Sub Item 1" class="menu-item" data-testid="rtl-sub-item-1">RTL Sub Item 1</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="RTL Sub Item 2" class="menu-item" data-testid="rtl-sub-item-2">RTL Sub Item 2</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+
+    <div class="test-section">
+        <h2>Selection Event</h2>
+        <p>Tests: clicking submenu item closes menu tree and fires OnSelect</p>
+        <p>Last Selected: <span data-testid="selection-output">@_lastSelected</span></p>
+        <DropdownMenuRoot>
+            <DropdownMenuTrigger class="menu-trigger" data-testid="selection-submenu-trigger">
+                Test Selection
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+                <DropdownMenuContent class="menu-content" data-testid="selection-submenu-content">
+                    <DropdownMenuItem TextValue="Main Item" class="menu-item" OnSelect="@(() => _lastSelected = "Main Item")" data-testid="selection-main-item">Main Item</DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger TextValue="More" class="menu-item submenu-trigger" data-testid="selection-sub-trigger">
+                            More
+                            <span class="arrow">&#8250;</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent class="menu-content submenu-content" data-testid="selection-sub-content">
+                                <DropdownMenuItem TextValue="Sub Option A" class="menu-item" OnSelect="@(() => _lastSelected = "Sub Option A")" data-testid="selection-sub-a">Sub Option A</DropdownMenuItem>
+                                <DropdownMenuItem TextValue="Sub Option B" class="menu-item" OnSelect="@(() => _lastSelected = "Sub Option B")" data-testid="selection-sub-b">Sub Option B</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuContent>
+            </DropdownMenuPortal>
+        </DropdownMenuRoot>
+    </div>
+</div>
+}
+
+<style>
+    .menu-trigger {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    
+    .menu-trigger:hover {
+        background: #e0e0e0;
+    }
+    
+    .menu-content {
+        padding: 4px;
+        border: 1px solid #ccc;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        min-width: 180px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .submenu-content {
+        min-width: 160px;
+    }
+
+    .menu-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        outline: none;
+        border-radius: 2px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu-item:focus,
+    .menu-item[data-highlighted] {
+        background: #0078d4;
+        color: white;
+    }
+
+    .menu-item[data-disabled] {
+        color: #999;
+        cursor: not-allowed;
+    }
+
+    .menu-item[data-disabled]:focus,
+    .menu-item[data-disabled][data-highlighted] {
+        background: transparent;
+        color: #999;
+    }
+
+    .submenu-trigger[data-state="open"] {
+        background: #0078d4;
+        color: white;
+    }
+
+    .arrow {
+        margin-left: 8px;
+        font-size: 12px;
+    }
+
+    .rtl-arrow {
+        margin-left: 0;
+        margin-right: 8px;
+    }
+
+    .menu-separator {
+        height: 1px;
+        background: #eee;
+        margin: 4px 0;
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 4px;
+    }
+
+    .test-section h2 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .test-section p {
+        margin: 0.25rem 0 1rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+</style>
+
+@code {
+    private string _lastSelected = "(none)";
+}
