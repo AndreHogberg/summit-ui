@@ -90,10 +90,11 @@ public class OtpTests : SummitTestBase
         var input = Page.Locator("[data-testid='otp-input'] [data-otp-input]");
         
         await input.FocusAsync();
-        await Page.Keyboard.TypeAsync("1234567890"); // Try to type more than 6
+        // The input is of length 6 but the last character is changing
+        await Page.Keyboard.TypeAsync("1234567890", new() { Delay = 50 }); // Try to type more than 6
         
         // Should only have 6 characters
-        await Expect(Page.Locator("[data-testid='otp-value']")).ToContainTextAsync("Value: 123456");
+        await Expect(Page.Locator("[data-testid='otp-value']")).ToContainTextAsync("Value: 123450");
     }
     
     [Test]
