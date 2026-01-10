@@ -1,0 +1,311 @@
+# OTP Input
+
+> A one-time password input component using a single hidden input with visual slots.
+
+The OTP Input component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components. It provides excellent accessibility, native browser autofill, and mobile keyboard support.
+
+## Features
+
+- Single hidden input architecture for better screen reader support
+- Native browser paste and autofill support
+- Mobile keyboard optimized (numeric inputmode)
+- Pattern validation (digits only, alphanumeric, etc.)
+- Animated fake caret for active slot
+- OnComplete callback when all slots are filled
+- Placeholder character support
+- Password manager badge detection
+- EditContext/Form validation integration
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<OtpRoot @bind-Value="otpValue" MaxLength="6">
+    @foreach (var slot in context.Slots)
+    {
+        <OtpSlot Slot="slot">
+            <OtpCaret />
+        </OtpSlot>
+    }
+</OtpRoot>
+```
+
+## Sub-components
+
+- **OtpRoot:** The root container with a hidden input that manages state and provides render context.
+- **OtpSlot:** Visual slot component displaying a single character with active state.
+- **OtpCaret:** Animated blinking caret shown in active empty slots.
+
+## API Reference
+
+### OtpRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| MaxLength | int | (required) | Number of slots for the OTP code |
+| Value | string? | null | Current OTP value |
+| ValueChanged | EventCallback<string?> | - | Callback when value changes |
+| ValueExpression | Expression<Func<string?>>? | null | Expression for form field identification |
+| Disabled | bool | false | Prevents interaction with the input |
+| Pattern | string? | null | Regex pattern to validate input (e.g., "[0-9]*") |
+| Placeholder | string? | null | Placeholder characters for empty slots |
+| TextAlign | OtpTextAlign | Left | Text alignment (Left, Center, Right) |
+| InputMode | string | "numeric" | Mobile keyboard type |
+| AutoComplete | string | "one-time-code" | Autofill hint for browsers |
+| Name | string? | null | Form field name |
+| OnComplete | EventCallback<string> | - | Callback when all slots are filled |
+| PasteTransformer | Func<string, string>? | null | Transform pasted text (e.g., remove dashes) |
+| ChildContent | RenderFragment<OtpRenderContext>? | null | Custom slot rendering template |
+
+### OtpSlot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Slot | OtpSlotState | (required) | Slot state from render context |
+| ChildContent | RenderFragment? | null | Content for active empty slot (e.g., OtpCaret) |
+
+### OtpCaret
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Class | string? | null | CSS class for the caret element |
+
+## Render Context
+
+The `OtpRoot` component provides a render context (`OtpRenderContext`) with the following properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Slots | IReadOnlyList<OtpSlotState> | List of slot states for rendering |
+| IsFocused | bool | Whether the input is currently focused |
+| IsHovering | bool | Whether the mouse is hovering over the input |
+
+### OtpSlotState Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Index | int | Zero-based index of this slot |
+| Char | char? | The character in this slot, or null if empty |
+| PlaceholderChar | char? | The placeholder character for this slot |
+| IsActive | bool | Whether this slot is currently selected/active |
+| HasFakeCaret | bool | Whether to show a fake caret (IsActive and no character) |
+
+## Examples
+
+### Basic Usage
+
+```razor
+<OtpRoot @bind-Value="code" MaxLength="6" />
+```
+
+### With Fake Caret
+
+Add a blinking caret animation for active empty slots.
+
+```razor
+<OtpRoot @bind-Value="code" MaxLength="6" class="otp-container">
+    @foreach (var slot in context.Slots)
+    {
+        <OtpSlot Slot="slot" class="otp-slot">
+            <OtpCaret class="otp-caret" />
+        </OtpSlot>
+    }
+</OtpRoot>
+
+<style>
+    .otp-caret {
+        width: 2px;
+        height: 1.5rem;
+        background: currentColor;
+        animation: caret-blink 1s ease-out infinite;
+    }
+    
+    @@keyframes caret-blink {
+        0%, 70%, 100% { opacity: 1; }
+        20%, 50% { opacity: 0; }
+    }
+</style>
+```
+
+### With Separator
+
+Add visual separators between slot groups (e.g., 123-456).
+
+```razor
+<OtpRoot @bind-Value="code" MaxLength="6" class="otp-container">
+    @foreach (var slot in context.Slots.Take(3))
+    {
+        <OtpSlot Slot="slot" class="otp-slot" />
+    }
+    <span class="separator">-</span>
+    @foreach (var slot in context.Slots.Skip(3))
+    {
+        <OtpSlot Slot="slot" class="otp-slot" />
+    }
+</OtpRoot>
+```
+
+### With Pattern Validation
+
+Restrict input to specific characters using regex.
+
+```razor
+@* Digits only *@
+<OtpRoot @bind-Value="code" MaxLength="6" Pattern="[0-9]*" />
+
+@* Alphanumeric *@
+<OtpRoot @bind-Value="code" MaxLength="6" Pattern="[A-Za-z0-9]*" />
+```
+
+### OnComplete Callback
+
+Execute code when all slots are filled.
+
+```razor
+@code {
+    private string code = "";
+    
+    private async Task HandleComplete(string value)
+    {
+        // Auto-submit or verify the code
+        await VerifyOtpAsync(value);
+    }
+}
+
+<OtpRoot @bind-Value="code" MaxLength="6" OnComplete="HandleComplete" />
+```
+
+### Form Integration
+
+Use with EditForm for validation.
+
+```razor
+@code {
+    private VerificationModel model = new();
+    
+    private async Task HandleSubmit()
+    {
+        await VerifyCodeAsync(model.Code);
+    }
+    
+    public class VerificationModel
+    {
+        [Required]
+        [StringLength(6, MinimumLength = 6)]
+        public string Code { get; set; } = "";
+    }
+}
+
+<EditForm Model="model" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    
+    <OtpRoot @bind-Value="model.Code" MaxLength="6" Name="verificationCode">
+        @foreach (var slot in context.Slots)
+        {
+            <OtpSlot Slot="slot" class="otp-slot" />
+        }
+    </OtpRoot>
+    
+    <ValidationMessage For="() => model.Code" />
+    
+    <button type="submit">Verify</button>
+</EditForm>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| data-otp-root | OtpRoot | Root container element |
+| data-otp-slot | OtpSlot | Visual slot element |
+| data-otp-caret | OtpCaret | Fake caret element |
+| data-otp-input | OtpRoot | Hidden input element |
+| data-active | OtpSlot | Present when slot is selected |
+| data-focused | OtpRoot | Present when input is focused |
+| data-disabled | OtpRoot | Present when input is disabled |
+| data-placeholder-shown | OtpRoot | Present when no value is entered |
+
+### CSS Example
+
+```css
+/* Container */
+.otp-container {
+    display: inline-flex;
+    gap: 0.5rem;
+}
+
+/* Individual slot */
+.otp-slot {
+    width: 2.5rem;
+    height: 3rem;
+    border: 2px solid #ccc;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Active slot */
+.otp-slot[data-active] {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+/* Placeholder text */
+.otp-slot [data-otp-placeholder] {
+    color: #999;
+}
+
+/* Disabled state */
+[data-disabled] .otp-slot {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Fake caret */
+.otp-caret {
+    width: 2px;
+    height: 1.5rem;
+    background: currentColor;
+    animation: caret-blink 1s ease-out infinite;
+}
+
+@keyframes caret-blink {
+    0%, 70%, 100% { opacity: 1; }
+    20%, 50% { opacity: 0; }
+}
+```
+
+## Accessibility
+
+### Screen Reader Support
+
+Unlike multi-input OTP implementations, this component uses a single hidden input element. This means screen readers see one text field instead of multiple, providing a much better user experience for assistive technology users.
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| 0-9 / a-z | Enter character at current position |
+| Backspace | Delete character before cursor |
+| Delete | Delete character after cursor |
+| ArrowLeft / ArrowRight | Move cursor position |
+| Ctrl/Cmd + V | Paste from clipboard |
+| Ctrl/Cmd + A | Select all |
+
+### HTML Attributes
+
+- **autocomplete:** Set to `one-time-code` by default for browser/SMS autofill support
+- **inputmode:** Set to `numeric` by default to show numeric keyboard on mobile
+- **maxlength:** Set to `MaxLength` parameter value
