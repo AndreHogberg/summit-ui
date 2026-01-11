@@ -113,10 +113,7 @@ public sealed class AccordionContext
     public void UpdateTriggerDisabled(string value, bool isDisabled)
     {
         var trigger = _triggers.FirstOrDefault(t => t.Value == value);
-        if (trigger is not null)
-        {
-            trigger.IsDisabled = isDisabled;
-        }
+        trigger?.IsDisabled = isDisabled;
     }
 
     /// <summary>
@@ -139,11 +136,11 @@ public sealed class AccordionContext
         if (enabledTriggers.Count == 0)
             return null;
 
-        var currentIndex = enabledTriggers.ToList().IndexOf(currentValue);
+        int currentIndex = enabledTriggers.ToList().IndexOf(currentValue);
         if (currentIndex == -1)
             return null;
 
-        var newIndex = currentIndex + direction;
+        int newIndex = currentIndex + direction;
 
         if (newIndex < 0)
         {
