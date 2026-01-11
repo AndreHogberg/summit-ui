@@ -1,5 +1,6 @@
 @page "/tests/switch/form"
 @rendermode InteractiveWebAssembly
+@using System.ComponentModel.DataAnnotations
 
 @if (!RendererInfo.IsInteractive)
 {
@@ -10,10 +11,10 @@ else
 <div data-testid="page-ready">
     <h1>Switch Form Tests</h1>
     
-    <!-- Form Integration -->
+    <!-- Form Integration (Hidden Input Tests) -->
     <div class="test-section" data-testid="form-section">
-        <h2>Form Submission</h2>
-        <form @onsubmit="HandleSubmit" class="d-flex flex-column gap-3" style="max-width: 300px;">
+        <h2>Form Submission (Hidden Inputs)</h2>
+        <form @onsubmit="HandleSubmit" @onsubmit:preventDefault class="d-flex flex-column gap-3" style="max-width: 300px;">
             <div class="d-flex align-items-center justify-content-between">
                 <label for="notifications">Notifications</label>
                 <SwitchRoot Name="notifications" @bind-Checked="_notifications" id="notifications" class="switch-root" data-testid="notifications-switch">
@@ -39,7 +40,7 @@ else
         }
     </div>
     
-    <!-- Required Switch -->
+    <!-- Required Switch (Hidden Input with Required) -->
     <div class="test-section" data-testid="required-section">
         <h2>Required Switch</h2>
         <form class="d-flex flex-column gap-3" style="max-width: 300px;">
@@ -50,6 +51,53 @@ else
                 </SwitchRoot>
             </div>
         </form>
+    </div>
+    
+    <!-- EditForm Integration -->
+    <div class="test-section" data-testid="editform-section">
+        <h2>EditForm Integration (with Validation)</h2>
+        <EditForm Model="_model" OnValidSubmit="HandleValidSubmit" FormName="switch-editform">
+            <DataAnnotationsValidator />
+            
+            <div class="form-field">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="editform-notifications">Notifications</label>
+                    <SwitchRoot @bind-Checked="_model.Notifications" id="editform-notifications" class="switch-root" data-testid="editform-notifications-switch">
+                        <SwitchThumb class="switch-thumb" />
+                    </SwitchRoot>
+                </div>
+            </div>
+            
+            <div class="form-field">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="editform-marketing">Marketing Emails</label>
+                    <SwitchRoot @bind-Checked="_model.Marketing" id="editform-marketing" class="switch-root" data-testid="editform-marketing-switch">
+                        <SwitchThumb class="switch-thumb" />
+                    </SwitchRoot>
+                </div>
+            </div>
+            
+            <div class="form-field">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="editform-terms">Accept Terms (Required)</label>
+                    <SwitchRoot @bind-Checked="_model.AcceptTerms" id="editform-terms" class="switch-root" data-testid="editform-terms-switch">
+                        <SwitchThumb class="switch-thumb" />
+                    </SwitchRoot>
+                </div>
+                <ValidationMessage For="@(() => _model.AcceptTerms)" class="validation-message" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" data-testid="editform-submit-button">Submit EditForm</button>
+            
+            <ValidationSummary class="validation-summary" />
+        </EditForm>
+        
+        @if (_editFormResult != null)
+        {
+            <div class="mt-3 alert alert-success" data-testid="editform-result">
+                @_editFormResult
+            </div>
+        }
     </div>
 </div>
 }
@@ -99,16 +147,51 @@ else
         border: 1px solid #e0e0e0;
         border-radius: 4px;
     }
+    
+    .form-field {
+        margin-bottom: 1rem;
+    }
+    
+    .validation-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    .validation-summary {
+        color: #dc3545;
+        margin-top: 1rem;
+    }
 </style>
 
 @code {
+    // Standard form fields (with hidden inputs)
     private bool _notifications;
     private bool _marketing;
     private bool _required;
     private string? _lastSubmitData;
+    
+    // EditForm model
+    private FormModel _model = new();
+    private string? _editFormResult;
 
     private void HandleSubmit()
     {
         _lastSubmitData = $"Notifications: {_notifications}, Marketing: {_marketing}";
+    }
+
+    private void HandleValidSubmit()
+    {
+        _editFormResult = $"EditForm submitted! Notifications: {_model.Notifications}, Marketing: {_model.Marketing}, Terms: {_model.AcceptTerms}";
+    }
+
+    public class FormModel
+    {
+        public bool Notifications { get; set; }
+        
+        public bool Marketing { get; set; }
+        
+        [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms and conditions.")]
+        public bool AcceptTerms { get; set; }
     }
 }
