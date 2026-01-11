@@ -1,0 +1,749 @@
+@page "/docs/scroll-area"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+@using SummitUI.Docs.Design
+<PageTitle>SummitUI - Scroll Area</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Scroll Area
+            <SuPromptButton ComponentName="ScrollArea" Url="/docs/scroll-area" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            Augments native scroll functionality for custom, cross-browser styling.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-row gap-8 items-start">
+                @* Vertical scroll demo *@
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm text-su-muted-foreground">Vertical</span>
+                    <ScrollAreaRoot Type="ScrollAreaType.Hover" class="demo-scroll-area">
+                        <ScrollAreaViewport class="demo-viewport">
+                            <div class="p-4">
+                                <h4 class="text-sm font-medium mb-4">Tags</h4>
+                                @for (var i = 50; i > 0; i--)
+                                {
+                                    <div class="demo-tag">v1.2.0-beta.@i</div>
+                                }
+                            </div>
+                        </ScrollAreaViewport>
+                        <ScrollAreaScrollbar Orientation="ScrollAreaOrientation.Vertical" ForceMount="true" class="demo-scrollbar-vertical">
+                            <ScrollAreaThumb class="demo-thumb" />
+                        </ScrollAreaScrollbar>
+                    </ScrollAreaRoot>
+                </div>
+
+                @* Horizontal scroll demo *@
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm text-su-muted-foreground">Horizontal</span>
+                    <ScrollAreaRoot Type="ScrollAreaType.Hover" class="demo-scroll-area-horizontal">
+                        <ScrollAreaViewport class="demo-viewport-horizontal">
+                            <div class="demo-horizontal-content">
+                                @for (var i = 1; i <= 20; i++)
+                                {
+                                    <div class="demo-card">Card @i</div>
+                                }
+                            </div>
+                        </ScrollAreaViewport>
+                        <ScrollAreaScrollbar Orientation="ScrollAreaOrientation.Horizontal" ForceMount="true" class="demo-scrollbar-horizontal">
+                            <ScrollAreaThumb class="demo-thumb" />
+                        </ScrollAreaScrollbar>
+                    </ScrollAreaRoot>
+                </div>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Scrollbar sits on top of the scrollable content, taking up no space
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Native scrolling - no CSS transformation tricks
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Four visibility types: Hover, Scroll, Auto, Always
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Click on track to jump to position
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                RTL (right-to-left) direction support
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Keyboard scrolling works automatically (native behavior)
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SuCard>
+                <SuCardHeader>
+                    <SuCardTitle>ScrollAreaRoot</SuCardTitle>
+                </SuCardHeader>
+                <SuCardContent>
+                    <SuCardDescription>
+                        Contains all scroll area parts. Manages state and coordinates initialization.
+                    </SuCardDescription>
+                </SuCardContent>
+            </SuCard>
+            <SuCard>
+                <SuCardHeader>
+                    <SuCardTitle>ScrollAreaViewport</SuCardTitle>
+                </SuCardHeader>
+                <SuCardContent>
+                    <SuCardDescription>
+                        The scrollable viewport that wraps your content. Native scrollbars are hidden.
+                    </SuCardDescription>
+                </SuCardContent>
+            </SuCard>
+            <SuCard>
+                <SuCardHeader>
+                    <SuCardTitle>ScrollAreaScrollbar</SuCardTitle>
+                </SuCardHeader>
+                <SuCardContent>
+                    <SuCardDescription>
+                        The scrollbar track. Use the Orientation parameter for vertical or horizontal.
+                    </SuCardDescription>
+                </SuCardContent>
+            </SuCard>
+            <SuCard>
+                <SuCardHeader>
+                    <SuCardTitle>ScrollAreaThumb</SuCardTitle>
+                </SuCardHeader>
+                <SuCardContent>
+                    <SuCardDescription>
+                        The draggable thumb. Size and position are calculated automatically.
+                    </SuCardDescription>
+                </SuCardContent>
+            </SuCard>
+            <SuCard>
+                <SuCardHeader>
+                    <SuCardTitle>ScrollAreaCorner</SuCardTitle>
+                </SuCardHeader>
+                <SuCardContent>
+                    <SuCardDescription>
+                        The corner between vertical and horizontal scrollbars when both are present.
+                    </SuCardDescription>
+                </SuCardContent>
+            </SuCard>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @* ScrollAreaRoot *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ScrollAreaRoot</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var prop in rootProperties)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@prop.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            @* ScrollAreaViewport *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ScrollAreaViewport</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var prop in viewportProperties)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@prop.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            @* ScrollAreaScrollbar *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ScrollAreaScrollbar</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var prop in scrollbarProperties)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@prop.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            @* ScrollAreaThumb *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ScrollAreaThumb</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var prop in thumbProperties)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@prop.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            @* ScrollAreaCorner *@
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ScrollAreaCorner</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Property</SuTableHead>
+                            <SuTableHead>Type</SuTableHead>
+                            <SuTableHead>Default</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var prop in cornerProperties)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@prop.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+        </div>
+    </SuSection>
+
+    @* Scroll Area Types *@
+    <SuSection Title="Scroll Area Types" Description="The Type parameter controls when scrollbars are visible.">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Hover</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Show scrollbars when hovering over the scroll area, hide after a delay. This is the default.</SuText>
+                <SuCodeBlock Code="@hoverTypeCode" Language="razor" />
+            </div>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Scroll</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Show scrollbars when actively scrolling, hide after a delay. Similar to macOS behavior.</SuText>
+                <SuCodeBlock Code="@scrollTypeCode" Language="razor" />
+            </div>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Auto</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Show scrollbars when content overflows. Scrollbars remain visible while overflow exists.</SuText>
+                <SuCodeBlock Code="@autoTypeCode" Language="razor" />
+            </div>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Always</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Always show scrollbars regardless of content overflow.</SuText>
+                <SuCodeBlock Code="@alwaysTypeCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Vertical Scroll</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Horizontal Scroll</SuHeading>
+                <SuCodeBlock Code="@horizontalExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Both Scrollbars</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Add both vertical and horizontal scrollbars with a corner element.</SuText>
+                <SuCodeBlock Code="@bothScrollbarsCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Custom Hide Delay</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Customize how long scrollbars remain visible after interaction.</SuText>
+                <SuCodeBlock Code="@customDelayCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var attr in dataAttributes)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@attr.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@attr.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@attr.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">The component is headless - you need to provide your own styles.</SuText>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">RTL Support</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Scrollbar positioning adapts to text direction automatically.</SuText>
+                <SuCodeBlock Code="@rtlCssCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-4">
+            <SuText Size="SuTextSize.Small" Muted="true">
+                The Scroll Area uses native scrolling, which means keyboard navigation works automatically. Users can scroll using:
+            </SuText>
+            <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+            <SuTable>
+                <SuTableHeader>
+                    <SuTableRow>
+                        <SuTableHead>Key</SuTableHead>
+                        <SuTableHead>Action</SuTableHead>
+                    </SuTableRow>
+                </SuTableHeader>
+                <SuTableBody>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">Arrow Keys</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">Scroll in the arrow direction</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">Page Up/Down</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">Scroll by page</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">Home/End</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">Scroll to start/end</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">Space</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">Scroll down by page (when focused)</SuTableCell>
+                    </SuTableRow>
+                </SuTableBody>
+            </SuTable>
+        </div>
+    </SuSection>
+</div>
+
+<style>
+    /* Demo styles */
+    .demo-scroll-area {
+        height: 225px;
+        width: 200px;
+        border-radius: 0.5rem;
+        border: 1px solid rgb(var(--su-border));
+        background-color: rgb(var(--su-card));
+    }
+    
+    .demo-viewport {
+        height: 100%;
+        width: 100%;
+    }
+    
+    .demo-tag {
+        padding: 0.25rem 0.5rem;
+        margin-top: 0.5rem;
+        border-radius: 0.25rem;
+        background-color: rgb(var(--su-accent));
+        font-size: 0.875rem;
+    }
+    
+    .demo-scrollbar-vertical {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        bottom: 4px;
+        width: 8px;
+        padding: 0;
+        background-color: transparent;
+        border-radius: 9999px;
+        transition: background-color 150ms;
+    }
+    
+    .demo-scrollbar-vertical:hover {
+        background-color: rgb(var(--su-accent));
+    }
+    
+    .demo-scrollbar-horizontal {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        height: 8px;
+        padding: 0;
+        background-color: transparent;
+        border-radius: 9999px;
+        transition: background-color 150ms;
+    }
+    
+    .demo-scrollbar-horizontal:hover {
+        background-color: rgb(var(--su-accent));
+    }
+    
+    .demo-thumb {
+        width: 100%;
+        background-color: rgb(var(--su-muted-foreground) / 0.5);
+        border-radius: 9999px;
+        transition: background-color 150ms;
+    }
+    
+    /* Horizontal thumb needs height: 100% instead of width */
+    .demo-scrollbar-horizontal .demo-thumb {
+        width: auto;
+        height: 100%;
+    }
+    
+    .demo-thumb:hover {
+        background-color: rgb(var(--su-muted-foreground) / 0.7);
+    }
+    
+    /* Visibility animation */
+    [data-summit-scroll-area-scrollbar][data-state="hidden"] {
+        opacity: 0;
+        transition: opacity 200ms ease-out;
+    }
+    
+    [data-summit-scroll-area-scrollbar][data-state="visible"] {
+        opacity: 1;
+        transition: opacity 200ms ease-in;
+    }
+    
+    /* Horizontal demo */
+    .demo-scroll-area-horizontal {
+        height: 120px;
+        width: 300px;
+        border-radius: 0.5rem;
+        border: 1px solid rgb(var(--su-border));
+        background-color: rgb(var(--su-card));
+    }
+    
+    .demo-viewport-horizontal {
+        height: 100%;
+        width: 100%;
+    }
+    
+    .demo-horizontal-content {
+        display: flex;
+        gap: 0.75rem;
+        padding: 1rem;
+        width: max-content;
+    }
+    
+    .demo-card {
+        flex-shrink: 0;
+        width: 100px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        background-color: rgb(var(--su-accent));
+        font-size: 0.875rem;
+    }
+</style>
+
+@code {
+    private List<SuApiProperty> rootProperties = new()
+    {
+        new() { Name = "Type", Type = "ScrollAreaType", Default = "Hover", Description = "Visibility behavior: Hover, Scroll, Auto, or Always" },
+        new() { Name = "ScrollHideDelay", Type = "int", Default = "600", Description = "Delay in ms before hiding scrollbars (for Hover and Scroll types)" },
+        new() { Name = "Dir", Type = "string?", Default = "null", Description = "Text direction (ltr/rtl). Auto-detected if not set" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" }
+    };
+
+    private List<SuApiProperty> viewportProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" }
+    };
+
+    private List<SuApiProperty> scrollbarProperties = new()
+    {
+        new() { Name = "Orientation", Type = "ScrollAreaOrientation", Default = "Vertical", Description = "Scrollbar direction: Vertical or Horizontal" },
+        new() { Name = "ForceMount", Type = "bool", Default = "false", Description = "Keep mounted regardless of visibility (useful for CSS animations)" },
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" }
+    };
+
+    private List<SuApiProperty> thumbProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" }
+    };
+
+    private List<SuApiProperty> cornerProperties = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" }
+    };
+
+    private List<SuApiProperty> dataAttributes = new()
+    {
+        new() { Name = "data-summit-scroll-area-root", Type = "present", Description = "Present on the root element" },
+        new() { Name = "data-summit-scroll-area-viewport", Type = "present", Description = "Present on the viewport element" },
+        new() { Name = "data-summit-scroll-area-scrollbar", Type = "present", Description = "Present on scrollbar elements" },
+        new() { Name = "data-summit-scroll-area-thumb", Type = "present", Description = "Present on thumb elements" },
+        new() { Name = "data-summit-scroll-area-corner", Type = "present", Description = "Present on the corner element" },
+        new() { Name = "data-orientation", Type = "\"vertical\" | \"horizontal\"", Description = "Scrollbar orientation" },
+        new() { Name = "data-state", Type = "\"visible\" | \"hidden\"", Description = "Current visibility state of scrollbar/thumb" }
+    };
+
+    private const string anatomyCode = @"<ScrollAreaRoot>
+    <ScrollAreaViewport>
+        <!-- Your scrollable content -->
+    </ScrollAreaViewport>
+    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"">
+        <ScrollAreaThumb />
+    </ScrollAreaScrollbar>
+    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"">
+        <ScrollAreaThumb />
+    </ScrollAreaScrollbar>
+    <ScrollAreaCorner />
+</ScrollAreaRoot>";
+
+    private const string hoverTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Hover"">
+    <!-- Scrollbars appear on hover, hide after delay -->
+</ScrollAreaRoot>";
+
+    private const string scrollTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Scroll"">
+    <!-- Scrollbars appear when scrolling, hide after delay -->
+</ScrollAreaRoot>";
+
+    private const string autoTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Auto"">
+    <!-- Scrollbars appear when content overflows -->
+</ScrollAreaRoot>";
+
+    private const string alwaysTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Always"">
+    <!-- Scrollbars always visible -->
+</ScrollAreaRoot>";
+
+    private const string basicExampleCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Hover"" class=""h-72 w-48 rounded-lg border"">
+    <ScrollAreaViewport class=""h-full w-full p-4"">
+        <h4 class=""mb-4 text-sm font-medium"">Tags</h4>
+        @for (var i = 50; i > 0; i--)
+        {
+            <div class=""mt-2 rounded bg-accent px-2 py-1 text-sm"">
+                v1.2.0-beta.@i
+            </div>
+        }
+    </ScrollAreaViewport>
+    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"" class=""scrollbar"">
+        <ScrollAreaThumb class=""thumb"" />
+    </ScrollAreaScrollbar>
+</ScrollAreaRoot>";
+
+    private const string horizontalExampleCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Hover"" class=""w-96 rounded-lg border"">
+    <ScrollAreaViewport class=""h-full w-full"">
+        <div class=""flex gap-4 p-4"" style=""width: max-content;"">
+            @for (var i = 1; i <= 20; i++)
+            {
+                <div class=""h-20 w-24 shrink-0 rounded bg-accent flex items-center justify-center"">
+                    Card @i
+                </div>
+            }
+        </div>
+    </ScrollAreaViewport>
+    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"" class=""scrollbar-h"">
+        <ScrollAreaThumb class=""thumb"" />
+    </ScrollAreaScrollbar>
+</ScrollAreaRoot>";
+
+    private const string bothScrollbarsCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Auto"" class=""h-64 w-64 rounded-lg border"">
+    <ScrollAreaViewport class=""h-full w-full"">
+        <div style=""width: 500px; height: 500px; padding: 1rem;"">
+            Large content that overflows both directions...
+        </div>
+    </ScrollAreaViewport>
+    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"" class=""scrollbar-v"">
+        <ScrollAreaThumb class=""thumb"" />
+    </ScrollAreaScrollbar>
+    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"" class=""scrollbar-h"">
+        <ScrollAreaThumb class=""thumb"" />
+    </ScrollAreaScrollbar>
+    <ScrollAreaCorner class=""corner"" />
+</ScrollAreaRoot>";
+
+    private const string customDelayCode = @"@* Scrollbars hide after 100ms instead of default 600ms *@
+<ScrollAreaRoot Type=""ScrollAreaType.Hover"" ScrollHideDelay=""100"">
+    ...
+</ScrollAreaRoot>
+
+@* Scrollbars stay visible longer (2 seconds) *@
+<ScrollAreaRoot Type=""ScrollAreaType.Scroll"" ScrollHideDelay=""2000"">
+    ...
+</ScrollAreaRoot>";
+
+    private const string cssExampleCode = @"/* Root container */
+.scroll-area {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Viewport - scrollable area */
+.scroll-area [data-summit-scroll-area-viewport] {
+    height: 100%;
+    width: 100%;
+}
+
+/* Vertical scrollbar track */
+.scrollbar-v {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    bottom: 4px;
+    width: 8px;
+    border-radius: 9999px;
+}
+
+/* Horizontal scrollbar track */
+.scrollbar-h {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    height: 8px;
+    border-radius: 9999px;
+}
+
+/* Thumb */
+.thumb {
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 9999px;
+}
+
+.thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Visibility animation */
+[data-summit-scroll-area-scrollbar][data-state=""hidden""] {
+    opacity: 0;
+    transition: opacity 200ms;
+}
+
+[data-summit-scroll-area-scrollbar][data-state=""visible""] {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+
+/* Corner between scrollbars */
+.corner {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+}";
+
+    private const string rtlCssCode = @"/* RTL support - vertical scrollbar on left side */
+[dir=""rtl""] .scrollbar-v {
+    right: auto;
+    left: 4px;
+}
+
+[dir=""rtl""] .corner {
+    right: auto;
+    left: 0;
+}";
+}

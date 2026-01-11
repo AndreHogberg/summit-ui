@@ -147,3 +147,14 @@ export {
     selectContent as otp_selectContent,
     registerInput as otp_registerInput
 } from './otp.js';
+
+// Scroll Area exports
+export {
+    initialize as scrollArea_initialize,
+    registerScrollbar as scrollArea_registerScrollbar,
+    unregisterScrollbar as scrollArea_unregisterScrollbar,
+    updateThumb as scrollArea_updateThumb,
+    scrollToPosition as scrollArea_scrollToPosition,
+    getScrollInfo as scrollArea_getScrollInfo,
+    destroy as scrollArea_destroy
+} from './scroll-area.js';
