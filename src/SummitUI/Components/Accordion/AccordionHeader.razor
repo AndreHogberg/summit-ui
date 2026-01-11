@@ -1,0 +1,44 @@
+@namespace SummitUI
+
+<Primitive As="@HtmlElement"
+           data-orientation="@Orientation"
+           data-summit-accordion-header
+           @attributes="AdditionalAttributes">
+    @ChildContent
+</Primitive>
+
+@code {
+    [CascadingParameter] private AccordionContext Context { get; set; } = default!;
+
+    /// <summary>
+    ///     Child content (typically AccordionTrigger).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    ///     ARIA heading level (1-6). Defaults to 3.
+    /// </summary>
+    [Parameter]
+    public int Level { get; set; } = 3;
+
+    /// <summary>
+    ///     Additional HTML attributes to apply.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string Orientation => Context.Orientation.ToString().ToLowerInvariant();
+
+    private string HtmlElement => Level switch
+    {
+        1 => "h1",
+        2 => "h2",
+        3 => "h3",
+        4 => "h4",
+        5 => "h5",
+        6 => "h6",
+        _ => "h3"
+    };
+
+}

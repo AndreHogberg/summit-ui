@@ -1,0 +1,16 @@
+@namespace SummitUI
+
+@if (ShouldRenderNow)
+{
+    <div role="region"
+         id="@ContentId"
+         aria-labelledby="@TriggerId"
+         data-state="@DataState"
+         data-orientation="@Orientation"
+         data-summit-accordion-content
+         hidden="@(ShouldBeHidden ? true : null)"
+         @ref="_elementRef"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}

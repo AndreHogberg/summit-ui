@@ -36,22 +36,12 @@ public class AccordionAriaTests : SummitTestBase
     #region ARIA Attributes on AccordionHeader
 
     [Test]
-    public async Task Header_ShouldHave_RoleHeading()
+    public async Task Header_ShouldBe_SemanticHeadingElement()
     {
         var header = Page.Locator("[data-summit-accordion-header]").First;
-        await Expect(header).ToHaveAttributeAsync("role", "heading");
-    }
-
-    [Test]
-    public async Task Header_ShouldHave_AriaLevel()
-    {
-        var header = Page.Locator("[data-summit-accordion-header]").First;
-        var ariaLevel = await header.GetAttributeAsync("aria-level");
-        await Assert.That(ariaLevel).IsNotNull();
-        // Default level should be a valid heading level (1-6)
-        var level = int.Parse(ariaLevel!);
-        await Assert.That(level).IsGreaterThanOrEqualTo(1);
-        await Assert.That(level).IsLessThanOrEqualTo(6);
+        var tagName = await header.EvaluateAsync<string>("el => el.tagName.toLowerCase()");
+        // Should be a semantic heading element (h1-h6), default is h3
+        await Assert.That(tagName).IsEqualTo("h3");
     }
 
     [Test]

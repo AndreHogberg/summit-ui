@@ -1,125 +1,116 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-
 using SummitUI.Utilities;
 
 namespace SummitUI;
 
 /// <summary>
-/// Root component that manages the state of the accordion.
-/// Provides cascading context to child components.
+///     Root component that manages the state of the accordion.
+///     Provides cascading context to child components.
 /// </summary>
-public class AccordionRoot : ComponentBase
+public partial class AccordionRoot : ComponentBase
 {
-    [Inject]
-    private SummitUtilities SummitUtilities { get; set; } = default!;
+    private readonly AccordionContext _context = new();
+    private HashSet<string> _internalValues = [];
+
+    [Inject] private SummitUtilities SummitUtilities { get; set; } = default!;
 
     /// <summary>
-    /// Child content containing AccordionItem components.
+    ///     Child content containing AccordionItem components.
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
-    /// Type of accordion expansion (single or multiple).
+    ///     Type of accordion expansion (single or multiple).
     /// </summary>
     [Parameter]
     public AccordionType Type { get; set; } = AccordionType.Single;
 
     /// <summary>
-    /// Controlled expanded value for single mode. When provided, component operates in controlled mode.
+    ///     Controlled expanded value for single mode. When provided, component operates in controlled mode.
     /// </summary>
     [Parameter]
     public string? Value { get; set; }
 
     /// <summary>
-    /// Controlled expanded values for multiple mode. When provided, component operates in controlled mode.
+    ///     Controlled expanded values for multiple mode. When provided, component operates in controlled mode.
     /// </summary>
     [Parameter]
     public IReadOnlyList<string>? Values { get; set; }
 
     /// <summary>
-    /// Default expanded value for single mode (uncontrolled).
+    ///     Default expanded value for single mode (uncontrolled).
     /// </summary>
     [Parameter]
     public string? DefaultValue { get; set; }
 
     /// <summary>
-    /// Default expanded values for multiple mode (uncontrolled).
+    ///     Default expanded values for multiple mode (uncontrolled).
     /// </summary>
     [Parameter]
     public IReadOnlyList<string>? DefaultValues { get; set; }
 
     /// <summary>
-    /// Callback when expanded value changes (single mode).
+    ///     Callback when expanded value changes (single mode).
     /// </summary>
     [Parameter]
     public EventCallback<string?> ValueChanged { get; set; }
 
     /// <summary>
-    /// Callback when expanded values change (multiple mode).
+    ///     Callback when expanded values change (multiple mode).
     /// </summary>
     [Parameter]
     public EventCallback<IReadOnlyList<string>> ValuesChanged { get; set; }
 
     /// <summary>
-    /// Callback invoked when an item's expansion state changes.
+    ///     Callback invoked when an item's expansion state changes.
     /// </summary>
     [Parameter]
     public EventCallback<string?> OnValueChange { get; set; }
 
     /// <summary>
-    /// Orientation of the accordion (affects keyboard navigation).
+    ///     Orientation of the accordion (affects keyboard navigation).
     /// </summary>
     [Parameter]
     public AccordionOrientation Orientation { get; set; } = AccordionOrientation.Vertical;
 
     /// <summary>
-    /// Whether keyboard navigation loops from last to first and vice versa.
+    ///     Whether keyboard navigation loops from last to first and vice versa.
     /// </summary>
     [Parameter]
     public bool Loop { get; set; } = true;
 
     /// <summary>
-    /// Whether the entire accordion is disabled.
+    ///     Whether the entire accordion is disabled.
     /// </summary>
     [Parameter]
     public bool Disabled { get; set; }
 
     /// <summary>
-    /// Whether items can be collapsed in single mode (allows closing the last open item).
-    /// Defaults to true.
+    ///     Whether items can be collapsed in single mode (allows closing the last open item).
+    ///     Defaults to true.
     /// </summary>
     [Parameter]
     public bool Collapsible { get; set; } = true;
 
     /// <summary>
-    /// HTML element to render. Defaults to "div".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "div";
-
-    /// <summary>
-    /// Additional HTML attributes to apply.
+    ///     Additional HTML attributes to apply.
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private readonly AccordionContext _context = new();
-    private HashSet<string> _internalValues = [];
-
     /// <summary>
-    /// Determines if we're in controlled mode for single-expansion.
+    ///     Determines if we're in controlled mode for single-expansion.
     /// </summary>
     private bool IsControlledSingle => Type == AccordionType.Single && Value is not null;
 
     /// <summary>
-    /// Determines if we're in controlled mode for multiple-expansion.
+    ///     Determines if we're in controlled mode for multiple-expansion.
     /// </summary>
     private bool IsControlledMultiple => Type == AccordionType.Multiple && Values is not null;
 
     /// <summary>
-    /// Effective expanded values (controlled or uncontrolled).
+    ///     Effective expanded values (controlled or uncontrolled).
     /// </summary>
     private HashSet<string> ActiveValues
     {
@@ -127,7 +118,7 @@ public class AccordionRoot : ComponentBase
         {
             if (Type == AccordionType.Single)
             {
-                var value = Value ?? (_internalValues.Count > 0 ? _internalValues.First() : null);
+                string? value = Value ?? (_internalValues.Count > 0 ? _internalValues.First() : null);
                 return value is not null ? [value] : [];
             }
 
@@ -149,52 +140,33 @@ public class AccordionRoot : ComponentBase
 
         SyncContext();
         _context.ToggleItemAsync = ToggleItemAsync;
-        _context.NotifyStateChanged = () => StateHasChanged();
         _context.FocusTriggerAsync = FocusTriggerAsync;
     }
 
-    protected override void OnParametersSet()
-    {
-        SyncContext();
-    }
+    protected override void OnParametersSet() => SyncContext();
 
     private void SyncContext()
     {
-        _context.Type = Type;
         _context.ExpandedValues = ActiveValues;
         _context.Orientation = Orientation;
         _context.Loop = Loop;
         _context.Disabled = Disabled;
-        _context.Collapsible = Collapsible;
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, As);
-        builder.AddMultipleAttributes(1, AdditionalAttributes);
-        builder.AddAttribute(2, "data-summit-accordion-root", true);
-        builder.AddAttribute(3, "data-orientation", Orientation.ToString().ToLowerInvariant());
-
-        builder.OpenComponent<CascadingValue<AccordionContext>>(4);
-        builder.AddComponentParameter(5, "Value", _context);
-        builder.AddComponentParameter(6, "IsFixed", false);
-        builder.AddComponentParameter(7, "ChildContent", ChildContent);
-        builder.CloseComponent();
-
-        builder.CloseElement();
     }
 
     private async Task FocusTriggerAsync(string value)
     {
-        var triggerId = _context.GetTriggerId(value);
+        string triggerId = _context.GetTriggerId(value);
         await SummitUtilities.FocusElementByIdAsync(triggerId);
     }
 
     private async Task ToggleItemAsync(string value)
     {
-        if (Disabled) return;
+        if (Disabled)
+        {
+            return;
+        }
 
-        var isCurrentlyExpanded = ActiveValues.Contains(value);
+        bool isCurrentlyExpanded = ActiveValues.Contains(value);
 
         if (Type == AccordionType.Single)
         {
@@ -213,7 +185,11 @@ public class AccordionRoot : ComponentBase
         if (isCurrentlyExpanded)
         {
             // Collapsing - only allowed if Collapsible is true
-            if (!Collapsible) return;
+            if (!Collapsible)
+            {
+                return;
+            }
+
             newValue = null;
         }
         else

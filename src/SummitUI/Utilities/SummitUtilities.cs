@@ -7,19 +7,12 @@ namespace SummitUI.Utilities;
 /// Core utility service for SummitUI components.
 /// Provides minimal JavaScript interop for operations that cannot be done in pure Blazor.
 /// </summary>
-public sealed class SummitUtilities : IAsyncDisposable
+public sealed class SummitUtilities(IJSRuntime jsRuntime) : IAsyncDisposable
 {
-    private readonly IJSRuntime _jsRuntime;
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
+    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
+        jsRuntime.InvokeAsync<IJSObjectReference>(
+            "import", "./_content/SummitUI/summitui.js").AsTask());
     private bool? _cachedIsRtl;
-
-    public SummitUtilities(IJSRuntime jsRuntime)
-    {
-        _jsRuntime = jsRuntime;
-        _moduleTask = new Lazy<Task<IJSObjectReference>>(() =>
-            jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/SummitUI/summitui.js").AsTask());
-    }
 
     /// <summary>
     /// Checks if the document direction is right-to-left (RTL).
@@ -61,15 +54,6 @@ public sealed class SummitUtilities : IAsyncDisposable
         {
             return false;
         }
-    }
-
-    /// <summary>
-    /// Clears the cached RTL value, forcing a fresh check on the next call.
-    /// Useful when the document direction might change dynamically.
-    /// </summary>
-    public void ClearRtlCache()
-    {
-        _cachedIsRtl = null;
     }
 
     /// <summary>

@@ -1,0 +1,9 @@
+@namespace SummitUI
+
+<div data-summit-accordion-root
+     data-orientation="@Orientation.ToString().ToLowerInvariant()"
+     @attributes="AdditionalAttributes">
+    <CascadingValue Value="_context" IsFixed="false">
+        @ChildContent
+    </CascadingValue>
+</div>

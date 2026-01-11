@@ -1,14 +1,16 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
+@namespace SummitUI
 
-namespace SummitUI;
+<div data-state="@DataState"
+     data-orientation="@Orientation"
+     data-summit-accordion-item
+     data-disabled="@(IsDisabled ? true : null)"
+     @attributes="AdditionalAttributes">
+    <CascadingValue Value="_itemContext" IsFixed="false">
+        @ChildContent
+    </CascadingValue>
+</div>
 
-/// <summary>
-/// Individual accordion item container.
-/// Contains AccordionHeader, AccordionTrigger, and AccordionContent.
-/// </summary>
-public class AccordionItem : ComponentBase
-{
+@code {
     [CascadingParameter]
     private AccordionContext Context { get; set; } = default!;
 
@@ -41,6 +43,7 @@ public class AccordionItem : ComponentBase
     private bool IsExpanded => Context.IsExpanded(Value);
     private bool IsDisabled => Disabled || Context.Disabled;
     private string DataState => IsExpanded ? "open" : "closed";
+    private string Orientation => Context.Orientation.ToString().ToLowerInvariant();
 
     protected override void OnInitialized()
     {
@@ -56,29 +59,5 @@ public class AccordionItem : ComponentBase
         {
             _itemContext.Disabled = IsDisabled;
         }
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "data-state", DataState);
-        builder.AddAttribute(2, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(3, "data-summit-accordion-item", true);
-
-        if (IsDisabled)
-        {
-            builder.AddAttribute(4, "data-disabled", true);
-        }
-
-        builder.AddMultipleAttributes(5, AdditionalAttributes);
-
-        // Cascade item context to children
-        builder.OpenComponent<CascadingValue<AccordionItemContext>>(6);
-        builder.AddComponentParameter(7, "Value", _itemContext);
-        builder.AddComponentParameter(8, "IsFixed", false);
-        builder.AddComponentParameter(9, "ChildContent", ChildContent);
-        builder.CloseComponent();
-
-        builder.CloseElement();
     }
 }

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
@@ -12,7 +11,7 @@ namespace SummitUI;
 /// Accordion trigger button that toggles the associated content panel.
 /// Handles keyboard navigation including arrow keys, Home, and End.
 /// </summary>
-public class AccordionTrigger : ComponentBase, IAsyncDisposable
+public partial class AccordionTrigger : ComponentBase, IAsyncDisposable
 {
     [CascadingParameter]
     private AccordionContext Context { get; set; } = default!;
@@ -47,6 +46,9 @@ public class AccordionTrigger : ComponentBase, IAsyncDisposable
     private bool IsExpanded => Context.IsExpanded(ItemContext.Value);
     private bool IsDisabled => ItemContext.Disabled || Context.Disabled;
     private string DataState => IsExpanded ? "open" : "closed";
+    private string Orientation => Context.Orientation.ToString().ToLowerInvariant();
+    private string TriggerId => Context.GetTriggerId(ItemContext.Value);
+    private string ContentId => Context.GetContentId(ItemContext.Value);
 
     protected override void OnInitialized()
     {
@@ -71,31 +73,6 @@ public class AccordionTrigger : ComponentBase, IAsyncDisposable
         {
             Context.UpdateTriggerDisabled(ItemContext.Value, IsDisabled);
         }
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, "button");
-        builder.AddAttribute(1, "type", "button");
-        builder.AddAttribute(2, "id", Context.GetTriggerId(ItemContext.Value));
-        builder.AddAttribute(3, "aria-expanded", IsExpanded.ToString().ToLowerInvariant());
-        builder.AddAttribute(4, "aria-controls", Context.GetContentId(ItemContext.Value));
-        builder.AddAttribute(5, "data-state", DataState);
-        builder.AddAttribute(6, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(7, "data-summit-accordion-trigger", true);
-
-        if (IsDisabled)
-        {
-            builder.AddAttribute(8, "disabled", true);
-            builder.AddAttribute(9, "data-disabled", true);
-        }
-
-        builder.AddMultipleAttributes(10, AdditionalAttributes);
-        builder.AddAttribute(11, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddAttribute(12, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddElementReferenceCapture(13, elementRef => _elementRef = elementRef);
-        builder.AddContent(14, ChildContent);
-        builder.CloseElement();
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)
