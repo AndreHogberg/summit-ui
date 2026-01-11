@@ -86,7 +86,7 @@ public class ComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TValu
         builder.AddAttribute(5, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
         builder.AddAttribute(6, "aria-controls", Context.ContentId);
         builder.AddAttribute(7, "aria-autocomplete", "list");
-        
+
         if (!string.IsNullOrEmpty(HighlightedItemId))
         {
             builder.AddAttribute(8, "aria-activedescendant", HighlightedItemId);
@@ -112,16 +112,16 @@ public class ComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TValu
             builder.AddAttribute(13, "aria-disabled", "true");
             builder.AddAttribute(14, "disabled", true);
         }
-        
+
         if (!string.IsNullOrEmpty(Placeholder))
         {
             builder.AddAttribute(15, "placeholder", Placeholder);
         }
-        
+
         builder.AddAttribute(16, "value", _inputValue);
         builder.AddAttribute(17, "data-state", DataState);
         builder.AddAttribute(18, "data-summit-combobox-input", "");
-        
+
         if (Context.Disabled)
         {
             builder.AddAttribute(19, "data-disabled", "");
@@ -130,13 +130,13 @@ public class ComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TValu
         {
             builder.AddAttribute(20, "data-invalid", "");
         }
-        
+
         builder.AddMultipleAttributes(21, AdditionalAttributes);
         builder.AddAttribute(22, "oninput", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleInputAsync));
-        builder.AddAttribute(23, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddAttribute(24, "onfocus", EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusAsync));
-        builder.AddAttribute(25, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddElementReferenceCapture(26, (elementRef) => { _elementRef = elementRef; });
+        builder.AddAttribute(23, "onkeydown",
+            EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
+        builder.AddAttribute(24, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
+        builder.AddElementReferenceCapture(25, (elementRef) => { _elementRef = elementRef; });
         builder.CloseElement();
     }
 
@@ -247,12 +247,6 @@ public class ComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TValu
                 }
                 break;
         }
-    }
-
-    private async Task HandleFocusAsync(FocusEventArgs args)
-    {
-        // Optionally open on focus - disabled by default for less intrusive behavior
-        // await Context.OpenAsync();
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)
@@ -375,14 +369,16 @@ public class ComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TValu
             ? Context.GetItemId(Context.HighlightedKey)
             : null;
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        if (_isDisposed) return;
+        if (_isDisposed) return ValueTask.CompletedTask;
         _isDisposed = true;
 
         if (_isSubscribed)
         {
             Context.OnStateChanged -= HandleStateChanged;
         }
+
+        return ValueTask.CompletedTask;
     }
 }
