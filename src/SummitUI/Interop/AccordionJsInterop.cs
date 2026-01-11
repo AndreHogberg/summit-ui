@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
@@ -8,12 +10,8 @@ namespace SummitUI.Interop;
 /// Handles DOM measurement, scroll prevention, and animation-aware presence management.
 /// All other functionality (state management, keyboard nav logic, etc.) is handled by Blazor.
 /// </summary>
-public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Set CSS variables for content height and width (for animations).
     /// This requires DOM measurement which cannot be done in pure Blazor.
@@ -23,7 +21,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("accordion_setContentHeight", contentElement);
         }
         catch (JSDisconnectedException)
@@ -40,7 +38,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("accordion_registerTrigger", triggerElement);
         }
         catch (JSDisconnectedException)
@@ -57,7 +55,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("accordion_unregisterTrigger", triggerElement);
         }
         catch (JSDisconnectedException)
@@ -81,7 +79,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("accordion_waitForAnimationsComplete", element, callbackTarget, methodName);
         }
         catch (JSDisconnectedException)
@@ -99,7 +97,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("accordion_cancelAnimationWatcher", element);
         }
         catch (JSDisconnectedException)
@@ -116,7 +114,7 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("accordion_setHidden", element);
         }
         catch (JSDisconnectedException)
@@ -133,28 +131,12 @@ public sealed class AccordionJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("accordion_removeHidden", element);
         }
         catch (JSDisconnectedException)
         {
             // Circuit disconnected, ignore
-        }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
-        {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit already disconnected
-            }
         }
     }
 }

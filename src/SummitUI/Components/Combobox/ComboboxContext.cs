@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 
+using SummitUI.Base;
+
 namespace SummitUI;
 
 /// <summary>
@@ -7,7 +9,7 @@ namespace SummitUI;
 /// Provides state and callbacks for coordinating trigger, input, content, items, and selected values.
 /// </summary>
 /// <typeparam name="TValue">The type of the combobox value.</typeparam>
-public sealed class ComboboxContext<TValue> where TValue : notnull
+public sealed class ComboboxContext<TValue> : IPortalContext where TValue : notnull
 {
     /// <summary>
     /// Unique identifier for this combobox instance, used for ARIA relationships.
@@ -310,6 +312,11 @@ public sealed class ComboboxContext<TValue> where TValue : notnull
     /// Generates a unique group label ID for ARIA relationships.
     /// </summary>
     public string GetGroupLabelId(string groupId) => $"{ComboboxId}-group-label-{groupId}";
+
+    /// <summary>
+    /// Gets the portal ID for this combobox instance.
+    /// </summary>
+    public string PortalId => $"{ComboboxId}-portal";
 
     public ComboboxContext()
     {

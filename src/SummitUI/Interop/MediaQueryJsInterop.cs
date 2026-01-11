@@ -1,17 +1,15 @@
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
 /// JavaScript interop service for media query functionality.
 /// Provides reactive media query matching using the browser's matchMedia API.
 /// </summary>
-public sealed class MediaQueryJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class MediaQueryJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Register a media query listener that will invoke a callback when the match state changes.
     /// </summary>
@@ -22,7 +20,7 @@ public sealed class MediaQueryJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     public async ValueTask<bool> RegisterAsync<T>(string listenerId, string query, DotNetObjectReference<T> dotNetRef)
         where T : class
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<bool>("mediaQuery_register", listenerId, query, dotNetRef);
     }
 
@@ -34,7 +32,7 @@ public sealed class MediaQueryJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("mediaQuery_unregister", listenerId);
         }
         catch (JSDisconnectedException)
@@ -50,23 +48,7 @@ public sealed class MediaQueryJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <returns>Whether the media query currently matches.</returns>
     public async ValueTask<bool> EvaluateAsync(string query)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<bool>("mediaQuery_evaluate", query);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
-        {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit disconnected, JS resources cleaned up by browser
-            }
-        }
     }
 }

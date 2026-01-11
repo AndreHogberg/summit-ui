@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Components;
 
+using SummitUI.Base;
+
 namespace SummitUI;
 
 /// <summary>
 /// Cascading context shared between dropdown menu sub-components.
 /// Provides state and callbacks for coordinating trigger, content, and items.
 /// </summary>
-public sealed class DropdownMenuContext
+public sealed class DropdownMenuContext : IPortalContext
 {
     /// <summary>
     /// Unique identifier for this dropdown menu instance, used for ARIA relationships.
@@ -204,6 +206,11 @@ public sealed class DropdownMenuContext
     {
         MenuId = $"summit-dropdown-menu-{Guid.NewGuid():N}";
     }
+
+    /// <summary>
+    /// Gets the portal ID for this dropdown menu instance.
+    /// </summary>
+    public string PortalId => $"{MenuId}-portal";
 }
 
 /// <summary>

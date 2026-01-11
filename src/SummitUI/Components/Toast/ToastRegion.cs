@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
+using SummitUI.Interop;
+
 namespace SummitUI;
 
 /// <summary>

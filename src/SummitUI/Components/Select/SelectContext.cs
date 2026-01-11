@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 
+using SummitUI.Base;
+
 namespace SummitUI;
 
 /// <summary>
@@ -7,7 +9,7 @@ namespace SummitUI;
 /// Provides state and callbacks for coordinating trigger, content, items, and other parts.
 /// </summary>
 /// <typeparam name="TValue">The type of the select value.</typeparam>
-public sealed class SelectContext<TValue> where TValue : notnull
+public sealed class SelectContext<TValue> : IPortalContext where TValue : notnull
 {
     /// <summary>
     /// Unique identifier for this select instance, used for ARIA relationships.
@@ -228,6 +230,11 @@ public sealed class SelectContext<TValue> where TValue : notnull
     /// Generates a unique group label ID for ARIA relationships.
     /// </summary>
     public string GetGroupLabelId(string groupId) => $"{SelectId}-group-label-{groupId}";
+
+    /// <summary>
+    /// Gets the portal ID for this select instance.
+    /// </summary>
+    public string PortalId => $"{SelectId}-portal";
 
     public SelectContext()
     {

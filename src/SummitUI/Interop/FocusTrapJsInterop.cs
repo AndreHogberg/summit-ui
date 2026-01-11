@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
 /// JavaScript interop service for focus trap functionality.
 /// Reusable for modals, dialogs, popovers, and other overlay components.
 /// </summary>
-public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Activate a focus trap on a container element.
     /// </summary>
@@ -23,7 +21,7 @@ public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         ElementReference containerElement,
         FocusTrapOptions? options = null)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<string?>("focusTrap_activate", containerElement, options ?? new FocusTrapOptions());
     }
 
@@ -35,7 +33,7 @@ public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(trapId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("focusTrap_deactivate", trapId);
     }
 
@@ -45,7 +43,7 @@ public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="containerElement">The container element.</param>
     public async ValueTask DeactivateByContainerAsync(ElementReference containerElement)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("focusTrap_deactivateByContainer", containerElement);
     }
 
@@ -55,7 +53,7 @@ public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="containerElement">The container element.</param>
     public async ValueTask FocusFirstAsync(ElementReference containerElement)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("focusTrap_focusFirst", containerElement);
     }
 
@@ -65,7 +63,7 @@ public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="containerElement">The container element.</param>
     public async ValueTask FocusLastAsync(ElementReference containerElement)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("focusTrap_focusLast", containerElement);
     }
 
@@ -75,7 +73,7 @@ public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="element">The element to focus.</param>
     public async ValueTask FocusElementAsync(ElementReference element)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("focusTrap_focusElement", element);
     }
 
@@ -86,17 +84,8 @@ public sealed class FocusTrapJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <returns>The number of focusable elements.</returns>
     public async ValueTask<int> GetFocusableCountAsync(ElementReference containerElement)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<int>("focusTrap_getFocusableCount", containerElement);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
-        {
-            var module = await _moduleTask.Value;
-            await module.DisposeAsync();
-        }
     }
 }
 

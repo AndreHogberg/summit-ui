@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
@@ -8,12 +10,8 @@ namespace SummitUI.Interop;
 /// This is a thin wrapper that only handles positioning calculations.
 /// All event handling (keyboard, focus, outside click) is managed by Blazor.
 /// </summary>
-public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Initialize floating positioning for an element.
     /// </summary>
@@ -28,7 +26,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         ElementReference? arrowElement,
         FloatingPositionOptions options)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<string?>(
             "floating_initializeFloating",
             referenceElement,
@@ -45,7 +43,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(instanceId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_destroyFloating", instanceId);
     }
 
@@ -57,7 +55,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(instanceId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_updatePosition", instanceId);
     }
 
@@ -67,7 +65,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="element">Element to focus.</param>
     public async ValueTask FocusElementAsync(ElementReference element)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_focusElement", element);
     }
 
@@ -77,7 +75,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="containerElement">Container element.</param>
     public async ValueTask FocusFirstElementAsync(ElementReference containerElement)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_focusFirstElement", containerElement);
     }
 
@@ -87,7 +85,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="containerElement">Container element.</param>
     public async ValueTask FocusLastElementAsync(ElementReference containerElement)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_focusLastElement", containerElement);
     }
 
@@ -98,7 +96,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="container">Scrollable container (optional).</param>
     public async ValueTask ScrollIntoViewAsync(ElementReference element, ElementReference? container = null)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_scrollIntoView", element, container);
     }
 
@@ -109,9 +107,10 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="itemValue">The data-value attribute value of the item to scroll to.</param>
     public async ValueTask ScrollItemIntoViewAsync(ElementReference container, string itemValue)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_scrollItemIntoView", container, itemValue);
     }
+
     /// <summary>
     /// Register an outside click listener.
     /// </summary>
@@ -127,7 +126,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         DotNetObjectReference<T> dotNetRef,
         string methodName = "HandleOutsideClick") where T : class
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<string?>(
             "floating_registerOutsideClick",
             referenceElement,
@@ -144,7 +143,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(listenerId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_unregisterOutsideClick", listenerId);
     }
 
@@ -159,7 +158,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         DotNetObjectReference<T> dotNetRef,
         string methodName = "HandleEscapeKey") where T : class
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<string?>(
             "floating_registerEscapeKey",
             dotNetRef,
@@ -174,7 +173,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(listenerId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_unregisterEscapeKey", listenerId);
     }
 
@@ -194,7 +193,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("floating_waitForAnimationsComplete", element, callbackTarget, methodName);
         }
         catch (JSDisconnectedException)
@@ -212,7 +211,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("floating_cancelAnimationWatcher", element);
         }
         catch (JSDisconnectedException)
@@ -229,7 +228,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(elementId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_clickElementById", elementId);
     }
 
@@ -241,7 +240,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(elementId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_scrollElementIntoViewById", elementId);
     }
 
@@ -253,7 +252,7 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (string.IsNullOrEmpty(elementId)) return;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("floating_focusElementById", elementId);
     }
 
@@ -268,24 +267,8 @@ public sealed class FloatingJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         if (registeredIds.Length == 0) return registeredIds;
 
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<string[]>("floating_getMenuItemsInDomOrder", container, registeredIds);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
-        {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit is already disconnected, no need to dispose JS resources
-            }
-        }
     }
 }
 

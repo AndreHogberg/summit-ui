@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
 /// JavaScript interop for OTP component.
 /// Handles selection tracking, focus management, and password manager detection.
 /// </summary>
-public sealed class OtpJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class OtpJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Initializes the OTP input with event listeners for selection tracking.
     /// </summary>
@@ -28,7 +26,7 @@ public sealed class OtpJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("otp_initialize", inputElement, containerElement, dotNetRef, maxLength);
         }
         catch (JSDisconnectedException)
@@ -45,7 +43,7 @@ public sealed class OtpJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("otp_destroy", element);
         }
         catch (JSDisconnectedException)
@@ -63,7 +61,7 @@ public sealed class OtpJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("otp_focus", element, maxLength);
         }
         catch (JSDisconnectedException)
@@ -82,28 +80,12 @@ public sealed class OtpJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("otp_setSelection", element, start, end);
         }
         catch (JSDisconnectedException)
         {
             // Ignored
-        }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
-        {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Ignored - browser cleaned up resources
-            }
         }
     }
 }

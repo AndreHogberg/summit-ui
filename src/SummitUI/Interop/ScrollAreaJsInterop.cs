@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
 /// JavaScript interop service for scroll area functionality.
 /// Handles scroll tracking, thumb sizing/positioning, and visibility management.
 /// </summary>
-public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Initialize a scroll area instance.
     /// </summary>
@@ -27,7 +25,7 @@ public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             return await module.InvokeAsync<string?>(
                 "scrollArea_initialize",
                 viewportElement,
@@ -55,7 +53,7 @@ public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync(
                 "scrollArea_registerScrollbar",
                 instanceId,
@@ -78,7 +76,7 @@ public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("scrollArea_unregisterScrollbar", instanceId, orientation);
         }
         catch (JSDisconnectedException)
@@ -96,7 +94,7 @@ public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("scrollArea_updateThumb", instanceId, orientation);
         }
         catch (JSDisconnectedException)
@@ -115,7 +113,7 @@ public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("scrollArea_scrollToPosition", instanceId, orientation, ratio);
         }
         catch (JSDisconnectedException)
@@ -133,7 +131,7 @@ public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     {
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             return await module.InvokeAsync<ScrollAreaInfo?>("scrollArea_getScrollInfo", instanceId);
         }
         catch (JSDisconnectedException)
@@ -152,28 +150,12 @@ public sealed class ScrollAreaJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
 
         try
         {
-            var module = await _moduleTask.Value;
+            var module = await GetModuleAsync();
             await module.InvokeVoidAsync("scrollArea_destroy", instanceId);
         }
         catch (JSDisconnectedException)
         {
             // Circuit disconnected, ignore
-        }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
-        {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Circuit already disconnected
-            }
         }
     }
 }

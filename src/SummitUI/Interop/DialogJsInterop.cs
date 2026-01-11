@@ -1,16 +1,14 @@
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
 /// JavaScript interop service for dialog functionality including scroll locking and portal management.
 /// </summary>
-public sealed class DialogJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class DialogJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Locks body scroll to prevent background scrolling when a modal dialog is open.
     /// Supports nested locks - multiple dialogs can call this, and scroll
@@ -18,7 +16,7 @@ public sealed class DialogJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// </summary>
     public async ValueTask LockScrollAsync()
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("dialog_lockScroll");
     }
 
@@ -27,7 +25,7 @@ public sealed class DialogJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// </summary>
     public async ValueTask UnlockScrollAsync()
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("dialog_unlockScroll");
     }
 
@@ -36,7 +34,7 @@ public sealed class DialogJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// </summary>
     public async ValueTask ForceUnlockScrollAsync()
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("dialog_forceUnlockScroll");
     }
 
@@ -46,7 +44,7 @@ public sealed class DialogJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="id">Unique ID for the portal element.</param>
     public async ValueTask CreatePortalAsync(string id)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("dialog_createPortal", id);
     }
 
@@ -56,7 +54,7 @@ public sealed class DialogJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="id">ID of the portal element to destroy.</param>
     public async ValueTask DestroyPortalAsync(string id)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("dialog_destroyPortal", id);
     }
 
@@ -66,23 +64,7 @@ public sealed class DialogJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <returns>The number of active scroll locks.</returns>
     public async ValueTask<int> GetScrollLockCountAsync()
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         return await module.InvokeAsync<int>("dialog_getScrollLockCount");
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        try
-        {
-            if (_moduleTask.IsValueCreated)
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-        }
-        catch (JSDisconnectedException)
-        {
-            // Safe to ignore, JS resources are cleaned up by the browser
-        }
     }
 }

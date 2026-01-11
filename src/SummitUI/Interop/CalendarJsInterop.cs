@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
@@ -11,19 +13,15 @@ namespace SummitUI.Interop;
 /// Date conversion and locale formatting have been moved to <see cref="Services.CalendarProvider"/> 
 /// and <see cref="Services.CalendarFormatter"/> which use .NET's System.Globalization.
 /// </remarks>
-public sealed class CalendarJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public sealed class CalendarJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Initializes keyboard navigation support for the calendar grid.
     /// This sets up event handlers that prevent default browser behavior for navigation keys.
     /// </summary>
     public async ValueTask InitializeCalendarAsync(ElementReference element)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("calendar_initializeCalendar", element);
     }
 
@@ -32,21 +30,18 @@ public sealed class CalendarJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// </summary>
     public async ValueTask FocusDateAsync(ElementReference element)
     {
-        if (_moduleTask.IsValueCreated)
+        try
         {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.InvokeVoidAsync("calendar_focusDate", element);
-            }
-            catch (JSDisconnectedException)
-            {
-                // Ignored - Blazor Server circuit disconnected
-            }
-            catch (ObjectDisposedException)
-            {
-                // Ignored - JS object reference already disposed (WebAssembly)
-            }
+            var module = await GetModuleAsync();
+            await module.InvokeVoidAsync("calendar_focusDate", element);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Ignored - Blazor Server circuit disconnected
+        }
+        catch (ObjectDisposedException)
+        {
+            // Ignored - JS object reference already disposed (WebAssembly)
         }
     }
 
@@ -55,41 +50,18 @@ public sealed class CalendarJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// </summary>
     public async ValueTask DestroyCalendarAsync(ElementReference element)
     {
-        if (_moduleTask.IsValueCreated)
+        try
         {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.InvokeVoidAsync("calendar_destroyCalendar", element);
-            }
-            catch (JSDisconnectedException)
-            {
-                // Ignored - Blazor Server circuit disconnected
-            }
-            catch (ObjectDisposedException)
-            {
-                // Ignored - JS object reference already disposed (WebAssembly)
-            }
+            var module = await GetModuleAsync();
+            await module.InvokeVoidAsync("calendar_destroyCalendar", element);
         }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
+        catch (JSDisconnectedException)
         {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Ignored - Blazor Server circuit disconnected
-            }
-            catch (ObjectDisposedException)
-            {
-                // Ignored - JS object reference already disposed (WebAssembly)
-            }
+            // Ignored - Blazor Server circuit disconnected
+        }
+        catch (ObjectDisposedException)
+        {
+            // Ignored - JS object reference already disposed (WebAssembly)
         }
     }
 }

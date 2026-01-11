@@ -1,29 +1,33 @@
 using Microsoft.AspNetCore.Components;
 
+using SummitUI.Base;
+
 namespace SummitUI;
 
 /// <summary>
 /// Context that provides shared state and communication between Dialog sub-components.
 /// Supports nested dialogs with depth tracking and CSS custom property support.
 /// </summary>
-public sealed class DialogContext
+public sealed class DialogContext : OpenCloseContextBase
 {
+    /// <summary>
+    /// Creates a new dialog context with a unique ID.
+    /// </summary>
+    public DialogContext() : base("dialog")
+    {
+    }
+
     /// <summary>
     /// Unique identifier for the dialog, used for ARIA relationships.
     /// </summary>
-    public string DialogId { get; }
-
-    /// <summary>
-    /// Whether the dialog is currently open.
-    /// </summary>
-    public bool IsOpen { get; internal set; }
+    public string DialogId => ComponentId;
 
     /// <summary>
     /// Whether the dialog is currently animating closed.
     /// Used to keep content in DOM during close animations.
     /// True if either content or overlay is still animating.
     /// </summary>
-    public bool IsAnimatingClosed => IsContentAnimatingClosed || IsOverlayAnimatingClosed;
+    public new bool IsAnimatingClosed => IsContentAnimatingClosed || IsOverlayAnimatingClosed;
 
     /// <summary>
     /// Whether the dialog content is currently animating closed.
@@ -75,26 +79,6 @@ public sealed class DialogContext
     public ElementReference ContentElement { get; internal set; }
 
     /// <summary>
-    /// Opens the dialog.
-    /// </summary>
-    public Func<Task> OpenAsync { get; internal set; } = () => Task.CompletedTask;
-
-    /// <summary>
-    /// Closes the dialog.
-    /// </summary>
-    public Func<Task> CloseAsync { get; internal set; } = () => Task.CompletedTask;
-
-    /// <summary>
-    /// Toggles the dialog open/closed state.
-    /// </summary>
-    public Func<Task> ToggleAsync { get; internal set; } = () => Task.CompletedTask;
-
-    /// <summary>
-    /// Notifies the root component that state has changed and a re-render is needed.
-    /// </summary>
-    public Action NotifyStateChanged { get; internal set; } = () => { };
-
-    /// <summary>
     /// Registers the trigger element reference.
     /// </summary>
     public Action<ElementReference> RegisterTrigger { get; internal set; } = _ => { };
@@ -115,35 +99,12 @@ public sealed class DialogContext
     internal Action DecrementNestedCount { get; set; } = () => { };
 
     /// <summary>
-    /// Event raised when the dialog state changes.
-    /// </summary>
-    public event Action? OnStateChanged;
-
-    /// <summary>
-    /// Raises the state changed event.
-    /// </summary>
-    internal void RaiseStateChanged() => OnStateChanged?.Invoke();
-
-    /// <summary>
-    /// Creates a new dialog context with a unique ID.
-    /// </summary>
-    public DialogContext()
-    {
-        DialogId = $"summit-dialog-{Guid.NewGuid():N}";
-    }
-
-    /// <summary>
     /// Gets the ID for the dialog title element (used for aria-labelledby).
     /// </summary>
-    public string TitleId => $"{DialogId}-title";
+    public string TitleId => GetElementId("title");
 
     /// <summary>
-    /// Gets the ID for the dialog description element (used for aria-describedby).
+    /// ID for the description element (used for aria-describedby).
     /// </summary>
-    public string DescriptionId => $"{DialogId}-description";
-
-    /// <summary>
-    /// Gets the ID for the portal element.
-    /// </summary>
-    public string PortalId => $"{DialogId}-portal";
+    public string DescriptionId => GetElementId("description");
 }

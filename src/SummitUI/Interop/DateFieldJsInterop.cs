@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using SummitUI.Base;
+
 namespace SummitUI.Interop;
 
 /// <summary>
@@ -11,18 +13,14 @@ namespace SummitUI.Interop;
 /// Date conversion and locale formatting have been moved to <see cref="Services.CalendarProvider"/> 
 /// and <see cref="Services.CalendarFormatter"/> which use .NET's System.Globalization.
 /// </remarks>
-public class DateFieldJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public class DateFieldJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask = new(() =>
-        jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Initializes keyboard handling for a date field segment.
     /// </summary>
     public async ValueTask InitializeSegmentAsync(ElementReference element, DotNetObjectReference<DateFieldSegment> dotNetHelper)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("dateField_initializeSegment", element, dotNetHelper);
     }
 
@@ -31,41 +29,18 @@ public class DateFieldJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// </summary>
     public async ValueTask DestroySegmentAsync(ElementReference element)
     {
-        if (_moduleTask.IsValueCreated)
+        try
         {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.InvokeVoidAsync("dateField_destroySegment", element);
-            }
-            catch (JSDisconnectedException)
-            {
-                // Ignored - Blazor Server circuit disconnected
-            }
-            catch (ObjectDisposedException)
-            {
-                // Ignored - JS object reference already disposed (WebAssembly)
-            }
+            var module = await GetModuleAsync();
+            await module.InvokeVoidAsync("dateField_destroySegment", element);
         }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_moduleTask.IsValueCreated)
+        catch (JSDisconnectedException)
         {
-            try
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // Ignored - Blazor Server circuit disconnected
-            }
-            catch (ObjectDisposedException)
-            {
-                // Ignored - JS object reference already disposed (WebAssembly)
-            }
+            // Ignored - Blazor Server circuit disconnected
+        }
+        catch (ObjectDisposedException)
+        {
+            // Ignored - JS object reference already disposed (WebAssembly)
         }
     }
 }

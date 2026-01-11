@@ -1,24 +1,22 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace SummitUI;
+using SummitUI.Base;
+
+namespace SummitUI.Interop;
 
 /// <summary>
 /// JavaScript interop for toast functionality including portal, hotkey, and swipe support.
 /// </summary>
-public class ToastJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
+public class ToastJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask =
-        new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/SummitUI/summitui.js").AsTask());
-
     /// <summary>
     /// Creates a portal container for toasts at the end of body.
     /// </summary>
     /// <param name="containerId">Unique ID for the container.</param>
     public async ValueTask CreatePortalAsync(string containerId)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("toast_createPortal", containerId);
     }
 
@@ -28,7 +26,7 @@ public class ToastJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="containerId">ID of the container to remove.</param>
     public async ValueTask DestroyPortalAsync(string containerId)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("toast_destroyPortal", containerId);
     }
 
@@ -45,7 +43,7 @@ public class ToastJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         DotNetObjectReference<object> dotNetRef,
         string methodName)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("toast_registerHotkey", element, hotkey, dotNetRef, methodName);
     }
 
@@ -55,7 +53,7 @@ public class ToastJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="element">The element to unregister.</param>
     public async ValueTask UnregisterHotkeyAsync(ElementReference element)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("toast_unregisterHotkey", element);
     }
 
@@ -73,7 +71,7 @@ public class ToastJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
         int threshold,
         DotNetObjectReference<T> dotNetRef) where T : class
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("toast_registerSwipe", element, direction, threshold, dotNetRef);
     }
 
@@ -83,24 +81,7 @@ public class ToastJsInterop(IJSRuntime jsRuntime) : IAsyncDisposable
     /// <param name="element">The toast element.</param>
     public async ValueTask UnregisterSwipeAsync(ElementReference element)
     {
-        var module = await _moduleTask.Value;
+        var module = await GetModuleAsync();
         await module.InvokeVoidAsync("toast_unregisterSwipe", element);
-    }
-
-    /// <inheritdoc />
-    public async ValueTask DisposeAsync()
-    {
-        try
-        {
-            if (_moduleTask.IsValueCreated)
-            {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
-            }
-        }
-        catch (JSDisconnectedException)
-        {
-            // Safe to ignore, JS resources are cleaned up by the browser
-        }
     }
 }
