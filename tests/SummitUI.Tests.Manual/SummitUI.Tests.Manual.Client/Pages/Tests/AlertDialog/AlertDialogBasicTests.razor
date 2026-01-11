@@ -1,0 +1,130 @@
+@page "/tests/alertdialog/basic"
+@rendermode InteractiveWebAssembly
+@inject IAlertDialogService AlertDialogService
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <h1>AlertDialog Basic Tests</h1>
+    
+    <div class="test-section">
+        <h2>Basic AlertDialog</h2>
+        <button type="button" 
+                class="trigger-button" 
+                data-testid="basic-trigger" 
+                @onclick="ShowBasicAlert">
+            Show Alert
+        </button>
+        <div data-testid="basic-result">@_basicResult</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Custom Text AlertDialog</h2>
+        <button type="button" 
+                class="trigger-button" 
+                data-testid="custom-trigger" 
+                @onclick="ShowCustomAlert">
+            Show Custom Alert
+        </button>
+        <div data-testid="custom-result">@_customResult</div>
+    </div>
+
+</div>
+}
+
+<style>
+    .trigger-button {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;
+        cursor: pointer;
+        margin-right: 8px;
+    }
+    
+    .alert-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 24px;
+        border: 1px solid #ccc;
+        background: white;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        min-width: 300px;
+        z-index: 100;
+    }
+
+    .alert-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 90;
+    }
+    
+    .alert-title {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    
+    .alert-description {
+        margin: 0 0 16px;
+        color: #666;
+    }
+    
+    .alert-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+    
+    .btn-cancel, .btn-confirm {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .btn-confirm {
+        background: #0066cc;
+        color: white;
+        border-color: #0066cc;
+    }
+    
+    .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #eee;
+    }
+</style>
+
+@code {
+    private string _basicResult = "Not triggered";
+    private string _customResult = "Not triggered";
+
+    private async Task ShowBasicAlert()
+    {
+        var result = await AlertDialogService.ConfirmAsync(
+            "Are you sure you want to continue?",
+            new AlertDialogOptions { Title = "Confirm Action" });
+        _basicResult = result ? "Confirmed" : "Cancelled";
+    }
+
+    private async Task ShowCustomAlert()
+    {
+        var result = await AlertDialogService.ConfirmAsync(
+            "This will save your changes to the server.",
+            new AlertDialogOptions
+            {
+                Title = "Save Changes",
+                ConfirmText = "Save",
+                CancelText = "Discard"
+            });
+        _customResult = result ? "Saved" : "Discarded";
+    }
+}

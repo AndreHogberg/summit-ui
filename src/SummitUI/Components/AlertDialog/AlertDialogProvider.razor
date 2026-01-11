@@ -1,0 +1,12 @@
+@namespace SummitUI
+
+<CascadingValue Value="_context">
+    @if (ChildContent is null)
+    {
+        throw new InvalidOperationException(
+            "AlertDialogProvider requires ChildContent to define the dialog structure. " +
+            "Use AlertDialogPortal, AlertDialogOverlay, AlertDialogContent, AlertDialogTitle, " +
+            "AlertDialogDescription, AlertDialogConfirm, and AlertDialogCancel components.");
+    }
+    @ChildContent(_context)
+</CascadingValue>

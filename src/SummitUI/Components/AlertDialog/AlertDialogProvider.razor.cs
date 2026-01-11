@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-
 namespace SummitUI;
+
+using Microsoft.AspNetCore.Components;
 
 /// <summary>
 /// Provider component that enables alert dialogs triggered by <see cref="IAlertDialogService"/>.
 /// Place this component once at the root of your application (e.g., in MainLayout or App.razor).
-/// 
+///
 /// This component requires explicit child content defining the dialog structure.
 /// Use AlertDialogPortal, AlertDialogOverlay, AlertDialogContent, AlertDialogTitle,
 /// AlertDialogDescription, AlertDialogConfirm, and AlertDialogCancel to build the UI.
@@ -28,7 +27,7 @@ namespace SummitUI;
 /// &lt;/AlertDialogProvider&gt;
 /// </code>
 /// </example>
-public class AlertDialogProvider : ComponentBase, IDisposable
+public partial class AlertDialogProvider : IDisposable
 {
     [Inject]
     private IAlertDialogService AlertDialogService { get; set; } = default!;
@@ -51,10 +50,8 @@ public class AlertDialogProvider : ComponentBase, IDisposable
             service.OnShow += HandleShow;
         }
 
-        // Wire up context callbacks
         _context.Complete = HandleComplete;
         _context.NotifyStateChanged = () => InvokeAsync(StateHasChanged);
-        _context.RegisterContent = el => _context.ContentElement = el;
     }
 
     private void HandleShow(AlertDialogRequest request)
@@ -73,26 +70,9 @@ public class AlertDialogProvider : ComponentBase, IDisposable
 
         _currentRequest.CompletionSource.TrySetResult(result);
         _context.IsOpen = false;
-        _context.IsAnimatingClosed = true; // Allow animations to complete
+        _context.IsAnimatingClosed = true;
         _currentRequest = null;
         StateHasChanged();
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        if (ChildContent is null)
-        {
-            throw new InvalidOperationException(
-                "AlertDialogProvider requires ChildContent to define the dialog structure. " +
-                "Use AlertDialogPortal, AlertDialogOverlay, AlertDialogContent, AlertDialogTitle, " +
-                "AlertDialogDescription, AlertDialogConfirm, and AlertDialogCancel components.");
-        }
-
-        // Always render CascadingValue so child components can access context
-        builder.OpenComponent<CascadingValue<AlertDialogContext>>(0);
-        builder.AddComponentParameter(1, "Value", _context);
-        builder.AddComponentParameter(2, "ChildContent", ChildContent.Invoke(_context));
-        builder.CloseComponent();
     }
 
     public void Dispose()
@@ -105,7 +85,6 @@ public class AlertDialogProvider : ComponentBase, IDisposable
             service.OnShow -= HandleShow;
         }
 
-        // Complete any pending request with false (cancelled)
         _currentRequest?.CompletionSource.TrySetResult(false);
     }
 }

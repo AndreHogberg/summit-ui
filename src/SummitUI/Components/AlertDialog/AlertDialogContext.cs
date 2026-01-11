@@ -38,16 +38,6 @@ public sealed class AlertDialogContext : OpenCloseContextBase
     public Action<bool> Complete { get; internal set; } = _ => { };
 
     /// <summary>
-    /// Reference to the content element (for focus management).
-    /// </summary>
-    public ElementReference ContentElement { get; internal set; }
-
-    /// <summary>
-    /// Registers the content element reference.
-    /// </summary>
-    public Action<ElementReference> RegisterContent { get; internal set; } = _ => { };
-
-    /// <summary>
     /// ID for the title element (used for aria-labelledby).
     /// </summary>
     public string TitleId => GetElementId("title");

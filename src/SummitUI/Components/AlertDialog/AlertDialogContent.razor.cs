@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 
 using SummitUI.Interop;
@@ -9,11 +8,11 @@ namespace SummitUI;
 /// <summary>
 /// The main content panel of the alert dialog with focus trapping, scroll locking,
 /// and keyboard event handling.
-/// 
+///
 /// When <see cref="AlertDialogOptions.IsDestructive"/> is true, the cancel button
 /// (marked with data-summit-alertdialog-cancel) will receive initial focus.
 /// </summary>
-public class AlertDialogContent : ComponentBase, IAsyncDisposable
+public partial class AlertDialogContent : IAsyncDisposable
 {
     [Inject]
     private DialogJsInterop DialogInterop { get; set; } = default!;
@@ -29,12 +28,6 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>
-    /// HTML element to render. Defaults to "div".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "div";
 
     /// <summary>
     /// Whether to trap focus within the dialog content. Defaults to true.
@@ -76,7 +69,7 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
     private DotNetObjectReference<AlertDialogContent>? _dotNetRef;
     private string? _escapeKeyListenerId;
     private bool _isInitialized;
-    private bool _isInitializing; // Guard against concurrent OnAfterRenderAsync calls
+    private bool _isInitializing;
     private bool _isDisposed;
     private bool _wasOpen;
     private bool _animationWatcherRegistered;
@@ -84,64 +77,16 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
 
     private string DataState => Context.IsOpen ? "open" : "closed";
 
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        // Only render when open or during close animation
-        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
-
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "id", Context.DialogId);
-        builder.AddAttribute(2, "role", "alertdialog");
-        builder.AddAttribute(3, "aria-modal", TrapFocus.ToString().ToLowerInvariant());
-        builder.AddAttribute(4, "aria-labelledby", Context.TitleId);
-        builder.AddAttribute(5, "aria-describedby", Context.DescriptionId);
-        builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-summit-alertdialog-content", true);
-        builder.AddAttribute(8, "tabindex", "-1");
-
-        if (Context.Options.IsDestructive)
-        {
-            builder.AddAttribute(9, "data-destructive", "");
-        }
-
-        builder.AddMultipleAttributes(10, AdditionalAttributes);
-        builder.AddElementReferenceCapture(11, elementRef => _elementRef = elementRef);
-
-        // Wrap content in FocusTrap if enabled
-        if (TrapFocus)
-        {
-            builder.OpenComponent<FocusTrap>(12);
-            builder.AddComponentParameter(13, "IsActive", Context.IsOpen);
-            builder.AddComponentParameter(14, "AutoFocus", true);
-            builder.AddComponentParameter(15, "ReturnFocus", true);
-            // For destructive dialogs, focus the cancel button first
-            if (Context.Options.IsDestructive)
-            {
-                builder.AddComponentParameter(16, "InitialFocusSelector", "[data-summit-alertdialog-cancel]");
-            }
-            builder.AddComponentParameter(17, "ChildContent", (RenderFragment)(childBuilder => childBuilder.AddContent(0, ChildContent)));
-            builder.CloseComponent();
-        }
-        else
-        {
-            builder.AddContent(12, ChildContent);
-        }
-
-        builder.CloseElement();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!RendererInfo.IsInteractive) return;
 
         if (Context.IsOpen && !_isInitialized && !_isInitializing)
         {
-            // Set guard flag immediately to prevent concurrent initialization
             _isInitializing = true;
 
             try
             {
-                // Cancel any pending animation watcher if reopening
                 if (Context.IsAnimatingClosed)
                 {
                     await FloatingInterop.CancelAnimationWatcherAsync(_elementRef);
@@ -149,17 +94,14 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
                 }
                 _animationWatcherRegistered = false;
 
-                Context.RegisterContent(_elementRef);
                 _dotNetRef ??= DotNetObjectReference.Create(this);
 
-                // Lock scroll if enabled
                 if (PreventScroll && !_scrollLocked)
                 {
                     await DialogInterop.LockScrollAsync();
                     _scrollLocked = true;
                 }
 
-                // Register Escape key handler if allowed
                 if (Context.Options.AllowEscapeClose || OnEscapeKeyDown.HasDelegate)
                 {
                     _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
@@ -169,7 +111,6 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
 
                 _isInitialized = true;
 
-                // Focus is handled by FocusTrap if enabled
                 if (!TrapFocus)
                 {
                     await FloatingInterop.FocusFirstElementAsync(_elementRef);
@@ -184,15 +125,12 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
         }
         else if (!Context.IsOpen && _wasOpen && !_animationWatcherRegistered)
         {
-            // Immediately unregister escape key so parent dialogs can receive escape events
-            // This must happen before animations complete to avoid blocking the escape key stack
             if (!string.IsNullOrEmpty(_escapeKeyListenerId))
             {
                 await FloatingInterop.UnregisterEscapeKeyAsync(_escapeKeyListenerId);
                 _escapeKeyListenerId = null;
             }
 
-            // Start waiting for close animations to complete
             _animationWatcherRegistered = true;
             _dotNetRef ??= DotNetObjectReference.Create(this);
             await FloatingInterop.WaitForAnimationsCompleteAsync(
@@ -212,14 +150,12 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
 
         try
         {
-            // Cleanup Escape key listener
             if (!string.IsNullOrEmpty(_escapeKeyListenerId))
             {
                 await FloatingInterop.UnregisterEscapeKeyAsync(_escapeKeyListenerId);
                 _escapeKeyListenerId = null;
             }
 
-            // Unlock scroll if we locked it
             if (_scrollLocked)
             {
                 await DialogInterop.UnlockScrollAsync();
@@ -244,8 +180,6 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
     {
         if (_isDisposed || !Context.IsOpen) return;
 
-        // Immediately unregister escape key BEFORE closing so parent dialogs 
-        // can receive the next escape event without waiting for re-render
         if (!string.IsNullOrEmpty(_escapeKeyListenerId))
         {
             await FloatingInterop.UnregisterEscapeKeyAsync(_escapeKeyListenerId);
@@ -270,7 +204,6 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
 
         Context.IsAnimatingClosed = false;
 
-        // Only cleanup if still in closed state
         if (!Context.IsOpen)
         {
             await CleanupAsync();
@@ -286,7 +219,6 @@ public class AlertDialogContent : ComponentBase, IAsyncDisposable
         if (_isDisposed) return;
         _isDisposed = true;
 
-        // Cancel any pending animation watcher
         if (Context.IsAnimatingClosed)
         {
             try

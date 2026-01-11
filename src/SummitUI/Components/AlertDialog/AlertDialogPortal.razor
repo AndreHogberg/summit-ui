@@ -1,0 +1,32 @@
+@namespace SummitUI
+
+@if (Context.IsOpen || Context.IsAnimatingClosed)
+{
+    <div
+        id="@Context.PortalId"
+        data-summit-alertdialog-portal
+        data-state="@DataState"
+        data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    private AlertDialogContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// Child content of the portal.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string DataState => Context.IsOpen ? "open" : "closed";
+}

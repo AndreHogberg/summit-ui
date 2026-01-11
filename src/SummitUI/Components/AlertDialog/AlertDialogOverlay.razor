@@ -1,0 +1,32 @@
+@namespace SummitUI
+
+@if (Context.IsOpen || Context.IsAnimatingClosed)
+{
+    <div
+        data-summit-alertdialog-overlay
+        data-state="@DataState"
+        data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+        @onclick="HandleClick"
+        @attributes="AdditionalAttributes" ></div>
+}
+
+@code {
+    [CascadingParameter]
+    private AlertDialogContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string DataState => Context.IsOpen ? "open" : "closed";
+
+    private void HandleClick()
+    {
+        if (Context.Options.AllowOverlayClose)
+        {
+            Context.Complete(false);
+        }
+    }
+}
