@@ -1,0 +1,148 @@
+@page "/tests/combobox/basic"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Basic test page for Combobox ARIA and accessibility tests.
+    Contains a combobox with input for filtering (editable mode).
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <ComboboxRoot TValue="string" @bind-Values="selectedValues">
+        <ComboboxTrigger TValue="string" data-testid="trigger">
+            <ComboboxSelectedValues TValue="string" Context="items">
+                @foreach (var item in items)
+                {
+                    <span class="badge" data-testid="badge-@item.Value">
+                        @item.Label
+                        <button type="button" @onclick="item.DeselectAsync" data-testid="remove-@item.Value">×</button>
+                    </span>
+                }
+            </ComboboxSelectedValues>
+            <ComboboxInput TValue="string" Placeholder="Search fruits..." data-testid="input" />
+        </ComboboxTrigger>
+        <ComboboxPortal TValue="string">
+            <ComboboxContent TValue="string" data-testid="content" SideOffset="4">
+                <ComboboxViewport TValue="string">
+                    <ComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                        Apple
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                        Banana
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                        Orange
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("grape")" Label="Grape" data-testid="item-grape">
+                        Grape
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
+                        Mango
+                    </ComboboxItem>
+                </ComboboxViewport>
+                <ComboboxEmpty TValue="string" data-testid="empty">
+                    No results found
+                </ComboboxEmpty>
+            </ComboboxContent>
+        </ComboboxPortal>
+    </ComboboxRoot>
+    
+    <div data-testid="selection-count">@selectedValues.Count selected</div>
+</div>
+}
+
+@code {
+    private IReadOnlyCollection<string> selectedValues = Array.Empty<string>();
+}
+
+<style>
+    [data-testid="trigger"] {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem;
+        min-width: 280px;
+        padding: 0.5rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: text;
+    }
+    
+    [data-testid="trigger"]:focus-within {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-testid="input"] {
+        flex: 1;
+        min-width: 100px;
+        border: none;
+        outline: none;
+        font-size: inherit;
+    }
+    
+    [data-testid="content"] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 280px;
+        padding: 0.25rem;
+    }
+    
+    [data-summit-combobox-item] {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-combobox-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-combobox-item][data-selected] {
+        background: #e7f1ff;
+    }
+    
+    [data-summit-combobox-item][data-highlighted][data-selected] {
+        background: #cce5ff;
+    }
+    
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.375rem;
+        background: #e7f1ff;
+        border-radius: 4px;
+        font-size: 0.875rem;
+    }
+    
+    .badge button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0 0.125rem;
+        font-size: 1rem;
+        line-height: 1;
+        opacity: 0.7;
+    }
+    
+    .badge button:hover {
+        opacity: 1;
+    }
+    
+    [data-summit-combobox-empty] {
+        padding: 0.5rem 0.75rem;
+        color: #666;
+        font-style: italic;
+    }
+</style>

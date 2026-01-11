@@ -1,0 +1,133 @@
+@page "/tests/combobox/keyboard"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Test page for Combobox keyboard navigation.
+    Tests arrow keys, Enter, Escape, Tab, Home, End, Backspace.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <ComboboxRoot TValue="string" @bind-Values="selectedValues">
+        <ComboboxTrigger TValue="string" data-testid="trigger">
+            <ComboboxSelectedValues TValue="string" Context="items">
+                @foreach (var item in items)
+                {
+                    <span class="badge" data-testid="badge-@item.Value">
+                        @item.Label
+                        <button type="button" @onclick="item.DeselectAsync" data-testid="remove-@item.Value">×</button>
+                    </span>
+                }
+            </ComboboxSelectedValues>
+            <ComboboxInput TValue="string" Placeholder="Type to filter..." data-testid="input" />
+        </ComboboxTrigger>
+        <ComboboxPortal TValue="string">
+            <ComboboxContent TValue="string" data-testid="content" SideOffset="4">
+                <ComboboxViewport TValue="string">
+                    <ComboboxItem TValue="string" Value="@("first")" Label="First Item" data-testid="item-first">
+                        First Item
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("second")" Label="Second Item" data-testid="item-second">
+                        Second Item
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("third")" Label="Third Item" data-testid="item-third">
+                        Third Item
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("fourth")" Label="Fourth Item" data-testid="item-fourth">
+                        Fourth Item
+                    </ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("last")" Label="Last Item" data-testid="item-last">
+                        Last Item
+                    </ComboboxItem>
+                </ComboboxViewport>
+                <ComboboxEmpty TValue="string" data-testid="empty">
+                    No results found
+                </ComboboxEmpty>
+            </ComboboxContent>
+        </ComboboxPortal>
+    </ComboboxRoot>
+</div>
+}
+
+@code {
+    private IReadOnlyCollection<string> selectedValues = Array.Empty<string>();
+}
+
+<style>
+    [data-testid="trigger"] {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem;
+        min-width: 280px;
+        padding: 0.5rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: text;
+    }
+    
+    [data-testid="trigger"]:focus-within {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-testid="input"] {
+        flex: 1;
+        min-width: 100px;
+        border: none;
+        outline: none;
+        font-size: inherit;
+    }
+    
+    [data-testid="content"] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 280px;
+        padding: 0.25rem;
+    }
+    
+    [data-summit-combobox-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-combobox-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-combobox-item][data-selected] {
+        background: #e7f1ff;
+    }
+    
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.375rem;
+        background: #e7f1ff;
+        border-radius: 4px;
+        font-size: 0.875rem;
+    }
+    
+    .badge button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0 0.125rem;
+    }
+    
+    [data-summit-combobox-empty] {
+        padding: 0.5rem 0.75rem;
+        color: #666;
+        font-style: italic;
+    }
+</style>

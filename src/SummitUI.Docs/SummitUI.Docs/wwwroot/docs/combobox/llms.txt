@@ -1,0 +1,275 @@
+# Combobox
+
+> A multi-select combobox with optional input filtering. Displays selected values as badges with deselect capability.
+
+The Combobox component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Multi-select with badge display
+- Optional input for filtering (list autocomplete)
+- Two modes: editable (with input) or select-only (trigger-based)
+- Deselect via badges with DeselectAsync delegate
+- Full keyboard navigation
+- Grouped items with labels
+- WCAG compliant with aria-multiselectable="true"
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<ComboboxRoot TValue="string" @bind-Values="selectedValues">
+    <ComboboxTrigger TValue="string">
+        <ComboboxSelectedValues TValue="string" Context="items">
+            @foreach (var item in items)
+            {
+                <span class="badge">
+                    @item.Label
+                    <button @onclick="item.DeselectAsync">x</button>
+                </span>
+            }
+        </ComboboxSelectedValues>
+        <ComboboxInput TValue="string" Placeholder="Search..." />
+    </ComboboxTrigger>
+    <ComboboxPortal TValue="string">
+        <ComboboxContent TValue="string">
+            <ComboboxViewport TValue="string">
+                <ComboboxItem TValue="string" Value="@("option-1")" Label="Option 1">
+                    Option 1
+                </ComboboxItem>
+            </ComboboxViewport>
+            <ComboboxEmpty TValue="string">No results found</ComboboxEmpty>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>
+```
+
+## Sub-components
+
+- **ComboboxRoot<TValue>:** Generic root container managing multi-select state.
+- **ComboboxTrigger<TValue>:** Container for badges and input. Has combobox role in select-only mode.
+- **ComboboxInput<TValue>:** Text input for filtering with combobox role and aria-autocomplete.
+- **ComboboxSelectedValues<TValue>:** Exposes selected items with DeselectAsync delegate for badge rendering.
+- **ComboboxPortal<TValue>:** Renders content in fixed-position container.
+- **ComboboxContent<TValue>:** Floating listbox with multi-select support.
+- **ComboboxViewport<TValue>:** Scrollable container for items.
+- **ComboboxItem<TValue>:** Selectable option with toggle behavior.
+- **ComboboxEmpty<TValue>:** Shown when no items match filter.
+- **ComboboxClear<TValue>:** Button to clear all selections.
+- **ComboboxGroup<TValue>:** Groups related items together.
+- **ComboboxGroupLabel:** Label for a group of items.
+
+## ComboboxSelectedItem Model
+
+Each selected item is exposed via the ComboboxSelectedValues component:
+
+```csharp
+public sealed class ComboboxSelectedItem<TValue> where TValue : notnull
+{
+    public TValue Value { get; }          // The actual value
+    public string Label { get; }          // Display label
+    public Func<Task> DeselectAsync { get; } // Delegate to remove from selection
+}
+```
+
+## API Reference
+
+### ComboboxRoot<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Values | IReadOnlyCollection<TValue> | [] | Controlled selected values |
+| DefaultValues | IReadOnlyCollection<TValue>? | null | Default values (uncontrolled) |
+| ValuesChanged | EventCallback<IReadOnlyCollection<TValue>> | - | Values change callback |
+| Open | bool? | null | Controlled open state |
+| DefaultOpen | bool | false | Default open state |
+| OpenChanged | EventCallback<bool> | - | Open state change callback |
+| Disabled | bool | false | Disable entire combobox |
+| Required | bool | false | For form validation |
+| Invalid | bool | false | For error styling |
+
+### ComboboxTrigger<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "div" | HTML element to render |
+| AriaLabel | string? | null | Direct aria-label |
+| AriaLabelledBy | string? | null | ID of external label |
+
+### ComboboxInput<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Placeholder | string? | null | Placeholder text |
+| AriaLabel | string? | null | Direct aria-label |
+| AriaLabelledBy | string? | null | ID of external label |
+
+### ComboboxSelectedValues<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| ChildContent | RenderFragment<IReadOnlyList<ComboboxSelectedItem<TValue>>> | **required** | Template for rendering selected items |
+
+### ComboboxContent<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "div" | HTML element to render |
+| Side | Side | Bottom | Placement side |
+| SideOffset | int | 4 | Offset from trigger (px) |
+| Align | Align | Start | Alignment along side axis |
+| AlignOffset | int | 0 | Alignment offset (px) |
+| AvoidCollisions | bool | true | Avoid viewport boundaries |
+| CollisionPadding | int | 8 | Viewport padding (px) |
+| EscapeKeyBehavior | EscapeKeyBehavior | Close | Escape key behavior |
+| OutsideClickBehavior | OutsideClickBehavior | Close | Outside click behavior |
+
+### ComboboxItem<TValue>
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Value | TValue | **required** | Value of this item |
+| Key | string? | null | Optional string key for identification |
+| Label | string? | null | Label for filtering and display |
+| Disabled | bool | false | Disable item |
+| OnSelectionChange | EventCallback<bool> | - | Selection change callback |
+
+## Examples
+
+### Basic Multi-Select with Badges
+
+```razor
+@code {
+    private IReadOnlyCollection<string> selectedFruits = Array.Empty<string>();
+}
+
+<ComboboxRoot TValue="string" @bind-Values="selectedFruits">
+    <ComboboxTrigger TValue="string" class="combobox-trigger">
+        <ComboboxSelectedValues TValue="string" Context="items">
+            @foreach (var item in items)
+            {
+                <span class="badge">
+                    @item.Label
+                    <button type="button" @onclick="item.DeselectAsync">x</button>
+                </span>
+            }
+        </ComboboxSelectedValues>
+        <ComboboxInput TValue="string" Placeholder="Search fruits..." />
+    </ComboboxTrigger>
+    <ComboboxPortal TValue="string">
+        <ComboboxContent TValue="string" class="combobox-content">
+            <ComboboxViewport TValue="string">
+                <ComboboxItem TValue="string" Value="@("apple")" Label="Apple">Apple</ComboboxItem>
+                <ComboboxItem TValue="string" Value="@("banana")" Label="Banana">Banana</ComboboxItem>
+                <ComboboxItem TValue="string" Value="@("cherry")" Label="Cherry">Cherry</ComboboxItem>
+            </ComboboxViewport>
+            <ComboboxEmpty TValue="string">No fruits found</ComboboxEmpty>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>
+```
+
+### Select-Only Mode (No Input)
+
+When no ComboboxInput is present, the trigger gets the combobox role:
+
+```razor
+<ComboboxRoot TValue="string" @bind-Values="selectedTags">
+    <ComboboxTrigger TValue="string" class="combobox-trigger-button">
+        <ComboboxSelectedValues TValue="string" Context="items">
+            @if (items.Count == 0)
+            {
+                <span class="placeholder">Select tags...</span>
+            }
+            else
+            {
+                <span>@items.Count selected</span>
+            }
+        </ComboboxSelectedValues>
+        <span class="chevron">▼</span>
+    </ComboboxTrigger>
+    <ComboboxPortal TValue="string">
+        <ComboboxContent TValue="string" class="combobox-content">
+            <ComboboxViewport TValue="string">
+                <ComboboxItem TValue="string" Value="@("important")" Label="Important">Important</ComboboxItem>
+                <ComboboxItem TValue="string" Value="@("urgent")" Label="Urgent">Urgent</ComboboxItem>
+            </ComboboxViewport>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>
+```
+
+### Grouped Items
+
+```razor
+<ComboboxRoot TValue="string" @bind-Values="selectedFood">
+    <ComboboxTrigger TValue="string" class="combobox-trigger">
+        <ComboboxSelectedValues TValue="string" Context="items">
+            @foreach (var item in items)
+            {
+                <span class="badge">@item.Label</span>
+            }
+        </ComboboxSelectedValues>
+        <ComboboxInput TValue="string" Placeholder="Search food..." />
+    </ComboboxTrigger>
+    <ComboboxPortal TValue="string">
+        <ComboboxContent TValue="string" class="combobox-content">
+            <ComboboxViewport TValue="string">
+                <ComboboxGroup TValue="string">
+                    <ComboboxGroupLabel class="group-label">Fruits</ComboboxGroupLabel>
+                    <ComboboxItem TValue="string" Value="@("apple")" Label="Apple">Apple</ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("banana")" Label="Banana">Banana</ComboboxItem>
+                </ComboboxGroup>
+                <ComboboxGroup TValue="string">
+                    <ComboboxGroupLabel class="group-label">Vegetables</ComboboxGroupLabel>
+                    <ComboboxItem TValue="string" Value="@("carrot")" Label="Carrot">Carrot</ComboboxItem>
+                    <ComboboxItem TValue="string" Value="@("broccoli")" Label="Broccoli">Broccoli</ComboboxItem>
+                </ComboboxGroup>
+            </ComboboxViewport>
+            <ComboboxEmpty TValue="string">No food found</ComboboxEmpty>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Dropdown open state |
+| data-state | "checked" \| "unchecked" | Item selection state |
+| data-highlighted | Present when focused | Item is keyboard-focused |
+| data-selected | Present when selected | Item is in the selection set |
+| data-disabled | Present when disabled | Item or combobox is disabled |
+| data-placeholder | Present when no values | No items selected yet |
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Enter | Toggle highlighted item selection (dropdown stays open) |
+| Space | Toggle item (select-only mode) or type space (input mode) |
+| ArrowDown | Open dropdown or move to next item |
+| ArrowUp | Open dropdown or move to previous item |
+| Ctrl+Home | Move to first item (input mode) |
+| Ctrl+End | Move to last item (input mode) |
+| Escape | Close dropdown |
+| Backspace | Remove last selected value (when input is empty) |
+
+### ARIA Attributes
+
+- **ComboboxInput:** Has `role="combobox"`, `aria-autocomplete="list"`, and `aria-expanded`
+- **ComboboxTrigger (select-only):** Has `role="combobox"` when no input is present
+- **ComboboxContent:** Has `role="listbox"` with `aria-multiselectable="true"`
+- **ComboboxItem:** Has `role="option"` with `aria-selected`

@@ -1,0 +1,807 @@
+@page "/docs/combobox"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+<PageTitle>SummitUI - Combobox</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Component</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            Combobox
+            <SuPromptButton ComponentName="Combobox" Url="/docs/combobox" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A multi-select combobox with optional input filtering. Displays selected values as badges with deselect capability.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <ComboboxRoot TValue="string" @bind-Values="selectedFruits">
+                    <ComboboxTrigger TValue="string" class="demo-combobox-trigger">
+                        <ComboboxSelectedValues TValue="string" Context="items">
+                            @foreach (var item in items)
+                            {
+                                <span class="demo-badge">
+                                    @item.Label
+                                    <button type="button" class="demo-badge-remove" @onclick="item.DeselectAsync">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                                    </button>
+                                </span>
+                            }
+                        </ComboboxSelectedValues>
+                        <ComboboxInput TValue="string" Placeholder="Search fruits..." class="demo-combobox-input" />
+                    </ComboboxTrigger>
+                    <ComboboxPortal TValue="string">
+                        <ComboboxContent TValue="string" class="demo-combobox-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
+                            <ComboboxViewport TValue="string" class="demo-combobox-viewport">
+                                <ComboboxItem TValue="string" Value="@("apple")" Label="Apple" class="demo-combobox-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    Apple
+                                </ComboboxItem>
+                                <ComboboxItem TValue="string" Value="@("banana")" Label="Banana" class="demo-combobox-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    Banana
+                                </ComboboxItem>
+                                <ComboboxItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-combobox-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    Cherry
+                                </ComboboxItem>
+                                <ComboboxItem TValue="string" Value="@("orange")" Label="Orange" class="demo-combobox-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    Orange
+                                </ComboboxItem>
+                                <ComboboxItem TValue="string" Value="@("grape")" Label="Grape" class="demo-combobox-item">
+                                    <span class="demo-item-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    Grape
+                                </ComboboxItem>
+                            </ComboboxViewport>
+                            <ComboboxEmpty TValue="string" class="demo-combobox-empty">
+                                No fruits found
+                            </ComboboxEmpty>
+                        </ComboboxContent>
+                    </ComboboxPortal>
+                </ComboboxRoot>
+                <SuText Size="SuTextSize.Small" Muted="true">Selected: @(selectedFruits.Count > 0 ? string.Join(", ", selectedFruits) : "None")</SuText>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Multi-select with badge display
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Optional input for filtering (list autocomplete)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Two modes: editable (with input) or select-only (trigger-based)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Deselect via badges with DeselectAsync delegate
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Full keyboard navigation
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Grouped items with labels
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                WCAG compliant with aria-multiselectable="true"
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Code="dotnet add package SummitUI" Language="bash" />
+    </SuSection>
+
+    @* Anatomy *@
+    <SuSection Title="Anatomy" Description="Import the components and structure them as follows:">
+        <SuCodeBlock Code="@anatomyCode" Language="razor" />
+    </SuSection>
+
+    @* Sub-components *@
+    <SuSection Title="Sub-components">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach (var sub in subComponents)
+            {
+                <SuCard>
+                    <SuCardTitle>@sub.Name</SuCardTitle>
+                    <SuCardDescription class="mt-1">@sub.Description</SuCardDescription>
+                </SuCard>
+            }
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            @foreach (var table in new[] { 
+                (Title: "ComboboxRoot<TValue>", Props: rootProps, Desc: "The root component that manages multi-select state and provides cascading context."), 
+                (Title: "ComboboxTrigger<TValue>", Props: triggerProps, Desc: "Container that holds badges and input. Has combobox role in select-only mode."),
+                (Title: "ComboboxInput<TValue>", Props: inputProps, Desc: "Text input for filtering with combobox role and aria-autocomplete."),
+                (Title: "ComboboxSelectedValues<TValue>", Props: selectedValuesProps, Desc: "Exposes selected items with DeselectAsync delegate for badge rendering."),
+                (Title: "ComboboxContent<TValue>", Props: contentProps, Desc: "Floating listbox panel with multi-select support."),
+                (Title: "ComboboxItem<TValue>", Props: itemProps, Desc: "Selectable option that can be toggled on/off.")
+            })
+            {
+                <div class="flex flex-col gap-3">
+                    <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuText Size="SuTextSize.Small" Muted="true">@table.Desc</SuText>
+                    <SuTable>
+                        <SuTableHeader>
+                            <SuTableRow>
+                                <SuTableHead>Property</SuTableHead>
+                                <SuTableHead>Type</SuTableHead>
+                                <SuTableHead>Default</SuTableHead>
+                                <SuTableHead>Description</SuTableHead>
+                            </SuTableRow>
+                        </SuTableHeader>
+                        <SuTableBody>
+                            @foreach (var prop in table.Props)
+                            {
+                                <SuTableRow>
+                                    <SuTableCell class="font-mono text-su-primary font-medium">
+                                        @prop.Name
+                                        @if (prop.Required)
+                                        {
+                                            <SuBadge Variant="SuBadgeVariant.Destructive" Size="SuSize.Small" class="ml-2">required</SuBadge>
+                                        }
+                                    </SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@prop.Type</SuTableCell>
+                                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">@(prop.Default ?? "-")</SuTableCell>
+                                    <SuTableCell class="text-su-muted-foreground">@(prop.Description ?? "-")</SuTableCell>
+                                </SuTableRow>
+                            }
+                        </SuTableBody>
+                    </SuTable>
+                </div>
+            }
+        </div>
+    </SuSection>
+
+    @* ComboboxSelectedItem Model *@
+    <SuSection Title="ComboboxSelectedItem Model">
+        <div class="flex flex-col gap-4">
+            <SuText Size="SuTextSize.Small" Muted="true">
+                Each selected item is exposed via the ComboboxSelectedValues component with the following properties:
+            </SuText>
+            <SuCodeBlock Code="@selectedItemModelCode" Language="csharp" />
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Multi-Select with Badges</SuHeading>
+                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Select-Only Mode (No Input)</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">When no ComboboxInput is present, the trigger gets the combobox role.</SuText>
+                <SuCodeBlock Code="@selectOnlyExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Grouped Items</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Organize items into logical groups.</SuText>
+                <SuCodeBlock Code="@groupedExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">With Clear Button</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use ComboboxClear to add a button that clears all selections.</SuText>
+                <SuCodeBlock Code="@clearButtonExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Disabled State</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Disable entire combobox or individual items.</SuText>
+                <SuCodeBlock Code="@disabledExampleCode" Language="razor" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Styling *@
+    <SuSection Title="Styling">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Attribute</SuTableHead>
+                            <SuTableHead>Values</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-state</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">"open" | "closed"</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Dropdown open state (on trigger/content/input)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-state</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">"checked" | "unchecked"</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Item selection state</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-highlighted</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when focused</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Item is keyboard-focused</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-selected</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when selected</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Item is in the selection set</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-disabled</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when disabled</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Item or combobox is disabled</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">data-placeholder</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">Present when no values</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">No items selected yet</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
+                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Keyboard Navigation</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Key</SuTableHead>
+                            <SuTableHead>Action</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Enter</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Toggle highlighted item selection (dropdown stays open)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Space</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Toggle item (select-only mode) or type space (input mode)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">ArrowDown</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Open dropdown or move to next item</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">ArrowUp</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Open dropdown or move to previous item</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Ctrl+Home</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Move to first item (input mode)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Ctrl+End</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Move to last item (input mode)</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Escape</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Close dropdown</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-medium text-su-foreground">Backspace</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Remove last selected value (when input is empty)</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">ARIA Attributes</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">ComboboxInput:</span>
+                        <span>Has <code>role="combobox"</code>, <code>aria-autocomplete="list"</code>, and <code>aria-expanded</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">ComboboxTrigger (select-only):</span>
+                        <span>Has <code>role="combobox"</code> when no input is present</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">ComboboxContent:</span>
+                        <span>Has <code>role="listbox"</code> with <code>aria-multiselectable="true"</code></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">ComboboxItem:</span>
+                        <span>Has <code>role="option"</code> with <code>aria-selected</code></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+</div>
+
+<style>
+    .demo-combobox-trigger {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem;
+        width: 220px;
+        padding: 0.375rem 0.5rem;
+        background: rgb(var(--su-card));
+        border: 1px solid rgb(var(--su-border));
+        border-radius: 0.5rem;
+        cursor: text;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    
+    .demo-combobox-trigger:focus-within {
+        border-color: rgb(var(--su-primary));
+        box-shadow: 0 0 0 2px rgb(var(--su-primary) / 0.2);
+    }
+    
+    .demo-combobox-trigger[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-combobox-input {
+        flex: 1;
+        min-width: 60px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 0.875rem;
+        color: rgb(var(--su-foreground));
+    }
+    
+    .demo-combobox-input::placeholder {
+        color: rgb(var(--su-muted-foreground));
+    }
+    
+    .demo-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.375rem;
+        background: rgb(var(--su-primary) / 0.1);
+        color: rgb(var(--su-primary));
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .demo-badge-remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        opacity: 0.7;
+        transition: opacity 0.15s;
+    }
+    
+    .demo-badge-remove:hover {
+        opacity: 1;
+    }
+    
+    .demo-combobox-content {
+        background: rgb(var(--su-card));
+        border: 1px solid rgb(var(--su-border));
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgb(var(--su-foreground) / 0.1);
+        overflow: hidden;
+        width: 220px;
+    }
+    
+    .demo-combobox-viewport {
+        padding: 0.25rem;
+        height: 200px;
+        overflow-y: auto;
+    }
+    
+    .demo-combobox-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        color: rgb(var(--su-foreground));
+        transition: background-color 0.1s;
+    }
+    
+    .demo-combobox-item:hover,
+    .demo-combobox-item[data-highlighted] {
+        background: rgb(var(--su-accent));
+        color: rgb(var(--su-accent-foreground));
+    }
+    
+    .demo-combobox-item[data-selected] {
+        background: rgb(var(--su-primary) / 0.1);
+    }
+    
+    .demo-combobox-item[data-highlighted][data-selected] {
+        background: rgb(var(--su-primary) / 0.15);
+    }
+    
+    .demo-combobox-item[data-disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .demo-item-check {
+        visibility: hidden;
+        color: rgb(var(--su-primary));
+        display: flex;
+        align-items: center;
+    }
+    
+    .demo-combobox-item[data-selected] .demo-item-check {
+        visibility: visible;
+    }
+    
+    .demo-combobox-empty {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        color: rgb(var(--su-muted-foreground));
+        font-style: italic;
+    }
+</style>
+
+@code {
+    private IReadOnlyCollection<string> selectedFruits = Array.Empty<string>();
+
+    private record SubComponent(string Name, string Description);
+
+    private readonly List<SubComponent> subComponents = new()
+    {
+        new("ComboboxRoot<TValue>", "Generic root container managing multi-select state."),
+        new("ComboboxTrigger<TValue>", "Container for badges and input."),
+        new("ComboboxInput<TValue>", "Text input for filtering with combobox role."),
+        new("ComboboxSelectedValues<TValue>", "Exposes selected items for badge rendering."),
+        new("ComboboxPortal<TValue>", "Renders content in fixed-position container."),
+        new("ComboboxContent<TValue>", "Floating listbox with multi-select support."),
+        new("ComboboxViewport<TValue>", "Scrollable container for items."),
+        new("ComboboxItem<TValue>", "Selectable option with toggle behavior."),
+        new("ComboboxEmpty<TValue>", "Shown when no items match filter."),
+        new("ComboboxClear<TValue>", "Button to clear all selections."),
+        new("ComboboxGroup<TValue>", "Groups related items together."),
+        new("ComboboxGroupLabel", "Label for a group of items.")
+    };
+
+    private readonly List<SuApiProperty> rootProps = new()
+    {
+        new() { Name = "Values", Type = "IReadOnlyCollection<TValue>", Default = "[]", Description = "Controlled selected values" },
+        new() { Name = "DefaultValues", Type = "IReadOnlyCollection<TValue>?", Default = "null", Description = "Default values (uncontrolled)" },
+        new() { Name = "ValuesChanged", Type = "EventCallback<IReadOnlyCollection<TValue>>", Description = "Values change callback" },
+        new() { Name = "Open", Type = "bool?", Default = "null", Description = "Controlled open state" },
+        new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state" },
+        new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Open state change callback" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable entire combobox" },
+        new() { Name = "Required", Type = "bool", Default = "false", Description = "For form validation" },
+        new() { Name = "Invalid", Type = "bool", Default = "false", Description = "For error styling" }
+    };
+
+    private readonly List<SuApiProperty> triggerProps = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" },
+        new() { Name = "AriaLabel", Type = "string?", Default = "null", Description = "Direct aria-label" },
+        new() { Name = "AriaLabelledBy", Type = "string?", Default = "null", Description = "ID of external label" }
+    };
+
+    private readonly List<SuApiProperty> inputProps = new()
+    {
+        new() { Name = "Placeholder", Type = "string?", Default = "null", Description = "Placeholder text" },
+        new() { Name = "AriaLabel", Type = "string?", Default = "null", Description = "Direct aria-label" },
+        new() { Name = "AriaLabelledBy", Type = "string?", Default = "null", Description = "ID of external label" }
+    };
+
+    private readonly List<SuApiProperty> selectedValuesProps = new()
+    {
+        new() { Name = "ChildContent", Type = "RenderFragment<IReadOnlyList<ComboboxSelectedItem<TValue>>>", Description = "Template for rendering selected items", Required = true }
+    };
+
+    private readonly List<SuApiProperty> contentProps = new()
+    {
+        new() { Name = "As", Type = "string", Default = "\"div\"", Description = "HTML element to render" },
+        new() { Name = "Side", Type = "Side", Default = "Bottom", Description = "Placement side" },
+        new() { Name = "SideOffset", Type = "int", Default = "4", Description = "Offset from trigger (px)" },
+        new() { Name = "Align", Type = "Align", Default = "Start", Description = "Alignment along side axis" },
+        new() { Name = "AlignOffset", Type = "int", Default = "0", Description = "Alignment offset (px)" },
+        new() { Name = "AvoidCollisions", Type = "bool", Default = "true", Description = "Avoid viewport boundaries" },
+        new() { Name = "CollisionPadding", Type = "int", Default = "8", Description = "Viewport padding (px)" },
+        new() { Name = "EscapeKeyBehavior", Type = "EscapeKeyBehavior", Default = "Close", Description = "Escape key behavior" },
+        new() { Name = "OutsideClickBehavior", Type = "OutsideClickBehavior", Default = "Close", Description = "Outside click behavior" }
+    };
+
+    private readonly List<SuApiProperty> itemProps = new()
+    {
+        new() { Name = "Value", Type = "TValue", Description = "Value of this item", Required = true },
+        new() { Name = "Key", Type = "string?", Default = "null", Description = "Optional string key for identification" },
+        new() { Name = "Label", Type = "string?", Default = "null", Description = "Label for filtering and display" },
+        new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable item" },
+        new() { Name = "OnSelectionChange", Type = "EventCallback<bool>", Description = "Selection change callback" }
+    };
+
+    private const string anatomyCode = @"<ComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
+    <ComboboxTrigger TValue=""string"">
+        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+            @foreach (var item in items)
+            {
+                <span class=""badge"">
+                    @item.Label
+                    <button @onclick=""item.DeselectAsync"">x</button>
+                </span>
+            }
+        </ComboboxSelectedValues>
+        <ComboboxInput TValue=""string"" Placeholder=""Search..."" />
+    </ComboboxTrigger>
+    <ComboboxPortal TValue=""string"">
+        <ComboboxContent TValue=""string"">
+            <ComboboxViewport TValue=""string"">
+                <ComboboxItem TValue=""string"" Value=""@(""option-1"")"" Label=""Option 1"">
+                    Option 1
+                </ComboboxItem>
+            </ComboboxViewport>
+            <ComboboxEmpty TValue=""string"">No results found</ComboboxEmpty>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>";
+
+    private const string selectedItemModelCode = @"public sealed class ComboboxSelectedItem<TValue> where TValue : notnull
+{
+    public TValue Value { get; }          // The actual value
+    public string Label { get; }          // Display label
+    public Func<Task> DeselectAsync { get; } // Delegate to remove from selection
+}";
+
+    private const string basicExampleCode = @"@code {
+    private IReadOnlyCollection<string> selectedFruits = Array.Empty<string>();
+}
+
+<ComboboxRoot TValue=""string"" @bind-Values=""selectedFruits"">
+    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+            @foreach (var item in items)
+            {
+                <span class=""badge"">
+                    @item.Label
+                    <button type=""button"" @onclick=""item.DeselectAsync"">x</button>
+                </span>
+            }
+        </ComboboxSelectedValues>
+        <ComboboxInput TValue=""string"" Placeholder=""Search fruits..."" />
+    </ComboboxTrigger>
+    <ComboboxPortal TValue=""string"">
+        <ComboboxContent TValue=""string"" class=""combobox-content"">
+            <ComboboxViewport TValue=""string"">
+                <ComboboxItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">Apple</ComboboxItem>
+                <ComboboxItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">Banana</ComboboxItem>
+                <ComboboxItem TValue=""string"" Value=""@(""cherry"")"" Label=""Cherry"">Cherry</ComboboxItem>
+            </ComboboxViewport>
+            <ComboboxEmpty TValue=""string"">No fruits found</ComboboxEmpty>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>
+
+<p>Selected: @string.Join("", "", selectedFruits)</p>";
+
+    private const string selectOnlyExampleCode = @"@* Select-only mode: no ComboboxInput, trigger gets combobox role *@
+<ComboboxRoot TValue=""string"" @bind-Values=""selectedTags"">
+    <ComboboxTrigger TValue=""string"" class=""combobox-trigger-button"">
+        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+            @if (items.Count == 0)
+            {
+                <span class=""placeholder"">Select tags...</span>
+            }
+            else
+            {
+                <span>@items.Count selected</span>
+            }
+        </ComboboxSelectedValues>
+        <span class=""chevron"">▼</span>
+    </ComboboxTrigger>
+    <ComboboxPortal TValue=""string"">
+        <ComboboxContent TValue=""string"" class=""combobox-content"">
+            <ComboboxViewport TValue=""string"">
+                <ComboboxItem TValue=""string"" Value=""@(""important"")"" Label=""Important"">
+                    <span class=""checkbox"">☐</span> Important
+                </ComboboxItem>
+                <ComboboxItem TValue=""string"" Value=""@(""urgent"")"" Label=""Urgent"">
+                    <span class=""checkbox"">☐</span> Urgent
+                </ComboboxItem>
+            </ComboboxViewport>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>";
+
+    private const string groupedExampleCode = @"<ComboboxRoot TValue=""string"" @bind-Values=""selectedFood"">
+    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+            @foreach (var item in items)
+            {
+                <span class=""badge"">@item.Label</span>
+            }
+        </ComboboxSelectedValues>
+        <ComboboxInput TValue=""string"" Placeholder=""Search food..."" />
+    </ComboboxTrigger>
+    <ComboboxPortal TValue=""string"">
+        <ComboboxContent TValue=""string"" class=""combobox-content"">
+            <ComboboxViewport TValue=""string"">
+                <ComboboxGroup TValue=""string"">
+                    <ComboboxGroupLabel class=""group-label"">Fruits</ComboboxGroupLabel>
+                    <ComboboxItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">Apple</ComboboxItem>
+                    <ComboboxItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">Banana</ComboboxItem>
+                </ComboboxGroup>
+                <ComboboxGroup TValue=""string"">
+                    <ComboboxGroupLabel class=""group-label"">Vegetables</ComboboxGroupLabel>
+                    <ComboboxItem TValue=""string"" Value=""@(""carrot"")"" Label=""Carrot"">Carrot</ComboboxItem>
+                    <ComboboxItem TValue=""string"" Value=""@(""broccoli"")"" Label=""Broccoli"">Broccoli</ComboboxItem>
+                </ComboboxGroup>
+            </ComboboxViewport>
+            <ComboboxEmpty TValue=""string"">No food found</ComboboxEmpty>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>";
+
+    private const string clearButtonExampleCode = @"<ComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
+    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+            @foreach (var item in items)
+            {
+                <span class=""badge"">@item.Label</span>
+            }
+        </ComboboxSelectedValues>
+        <ComboboxInput TValue=""string"" Placeholder=""Search..."" />
+        <ComboboxClear TValue=""string"" class=""clear-button"">
+            <svg>...</svg> @* Clear icon *@
+        </ComboboxClear>
+    </ComboboxTrigger>
+    ...
+</ComboboxRoot>";
+
+    private const string disabledExampleCode = @"@* Disabled entire combobox *@
+<ComboboxRoot TValue=""string"" Disabled=""true"">
+    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <ComboboxInput TValue=""string"" Placeholder=""Disabled..."" />
+    </ComboboxTrigger>
+    ...
+</ComboboxRoot>
+
+@* Disabled individual items *@
+<ComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
+    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <ComboboxInput TValue=""string"" Placeholder=""Select..."" />
+    </ComboboxTrigger>
+    <ComboboxPortal TValue=""string"">
+        <ComboboxContent TValue=""string"" class=""combobox-content"">
+            <ComboboxViewport TValue=""string"">
+                <ComboboxItem TValue=""string"" Value=""@(""option1"")"" Label=""Option 1"">Option 1</ComboboxItem>
+                <ComboboxItem TValue=""string"" Value=""@(""option2"")"" Label=""Option 2"" Disabled=""true"">
+                    Option 2 (Disabled)
+                </ComboboxItem>
+                <ComboboxItem TValue=""string"" Value=""@(""option3"")"" Label=""Option 3"">Option 3</ComboboxItem>
+            </ComboboxViewport>
+        </ComboboxContent>
+    </ComboboxPortal>
+</ComboboxRoot>";
+
+    private const string cssExampleCode = @".combobox-trigger {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    min-width: 280px;
+    padding: 6px 8px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: text;
+}
+
+.combobox-trigger:focus-within {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+.combobox-trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+[data-summit-combobox-input] {
+    flex: 1;
+    min-width: 100px;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: #e6f0ff;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.combobox-content {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+[data-summit-combobox-item] {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+[data-summit-combobox-item][data-highlighted] {
+    background: #f5f5f5;
+}
+
+[data-summit-combobox-item][data-selected] {
+    background: #e6f0ff;
+}
+
+[data-summit-combobox-item][data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+[data-summit-combobox-empty] {
+    padding: 8px 12px;
+    color: #666;
+    font-style: italic;
+}";
+}

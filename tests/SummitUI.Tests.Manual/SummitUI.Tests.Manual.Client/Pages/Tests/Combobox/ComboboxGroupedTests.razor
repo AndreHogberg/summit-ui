@@ -1,0 +1,159 @@
+@page "/tests/combobox/grouped"
+@rendermode InteractiveWebAssembly
+
+@* 
+    Test page for Combobox with grouped items.
+    Tests grouping functionality and group labels.
+*@
+
+@if (!RendererInfo.IsInteractive)
+{
+    <div data-testid="page-loading">Loading...</div>
+}
+else
+{
+<div data-testid="page-ready">
+    <ComboboxRoot TValue="string" @bind-Values="selectedValues">
+        <ComboboxTrigger TValue="string" data-testid="trigger">
+            <ComboboxSelectedValues TValue="string" Context="items">
+                @foreach (var item in items)
+                {
+                    <span class="badge" data-testid="badge-@item.Value">
+                        @item.Label
+                        <button type="button" @onclick="item.DeselectAsync">×</button>
+                    </span>
+                }
+            </ComboboxSelectedValues>
+            <ComboboxInput TValue="string" Placeholder="Search..." data-testid="input" />
+        </ComboboxTrigger>
+        <ComboboxPortal TValue="string">
+            <ComboboxContent TValue="string" data-testid="content" SideOffset="4">
+                <ComboboxViewport TValue="string">
+                    <ComboboxGroup TValue="string" GroupId="fruits" data-testid="group-fruits">
+                        <ComboboxGroupLabel TValue="string" data-testid="group-label-fruits">
+                            Fruits
+                        </ComboboxGroupLabel>
+                        <ComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                            Apple
+                        </ComboboxItem>
+                        <ComboboxItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                            Banana
+                        </ComboboxItem>
+                        <ComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                            Orange
+                        </ComboboxItem>
+                    </ComboboxGroup>
+                    
+                    <ComboboxGroup TValue="string" GroupId="vegetables" data-testid="group-vegetables">
+                        <ComboboxGroupLabel TValue="string" data-testid="group-label-vegetables">
+                            Vegetables
+                        </ComboboxGroupLabel>
+                        <ComboboxItem TValue="string" Value="@("carrot")" Label="Carrot" data-testid="item-carrot">
+                            Carrot
+                        </ComboboxItem>
+                        <ComboboxItem TValue="string" Value="@("broccoli")" Label="Broccoli" data-testid="item-broccoli">
+                            Broccoli
+                        </ComboboxItem>
+                        <ComboboxItem TValue="string" Value="@("spinach")" Label="Spinach" data-testid="item-spinach">
+                            Spinach
+                        </ComboboxItem>
+                    </ComboboxGroup>
+                </ComboboxViewport>
+                <ComboboxEmpty TValue="string" data-testid="empty">
+                    No results found
+                </ComboboxEmpty>
+            </ComboboxContent>
+        </ComboboxPortal>
+    </ComboboxRoot>
+</div>
+}
+
+@code {
+    private IReadOnlyCollection<string> selectedValues = Array.Empty<string>();
+}
+
+<style>
+    [data-summit-combobox-trigger] {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem;
+        min-width: 280px;
+        padding: 0.5rem;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: text;
+    }
+    
+    [data-summit-combobox-trigger]:focus-within {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+    
+    [data-summit-combobox-input] {
+        flex: 1;
+        min-width: 100px;
+        border: none;
+        outline: none;
+        font-size: inherit;
+    }
+    
+    [data-summit-combobox-content] {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 280px;
+        padding: 0.25rem;
+    }
+    
+    [data-summit-combobox-group] {
+        padding: 0.25rem 0;
+    }
+    
+    [data-summit-combobox-group-label] {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #666;
+    }
+    
+    [data-summit-combobox-item] {
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    [data-summit-combobox-item][data-highlighted] {
+        background: #f0f0f0;
+    }
+    
+    [data-summit-combobox-item][data-selected] {
+        background: #e7f1ff;
+    }
+    
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.125rem 0.375rem;
+        background: #e7f1ff;
+        border-radius: 4px;
+        font-size: 0.875rem;
+    }
+    
+    .badge button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0 0.125rem;
+    }
+    
+    [data-summit-combobox-empty] {
+        padding: 0.5rem 0.75rem;
+        color: #666;
+        font-style: italic;
+    }
+</style>
