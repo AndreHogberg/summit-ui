@@ -1,0 +1,30 @@
+@namespace SummitUI
+
+<button type="button"
+        role="checkbox"
+        id="@_checkboxId"
+        aria-checked="@AriaChecked"
+        aria-disabled="@(IsDisabled ? "true" : null)"
+        aria-label="@AriaLabel"
+        data-state="@DataState"
+        data-summit-checkbox=""
+        disabled="@IsDisabled"
+        data-disabled="@(IsDisabled ? true : null)"
+        @onclick="HandleClickAsync"
+        @onclick:stopPropagation="true"
+        @onclick:preventDefault="true"
+        @ref="_elementRef"
+        @attributes="AdditionalAttributes">
+    <CascadingValue Value="CurrentContext" IsFixed="false">
+        @ChildContent
+    </CascadingValue>
+</button>
+
+@if (!string.IsNullOrEmpty(EffectiveName))
+{
+    <input type="hidden"
+           name="@EffectiveName"
+           value="@HiddenInputValue"
+           disabled="@IsDisabled"
+           required="@Required" />
+}

@@ -2,8 +2,6 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.Web;
 
 using SummitUI.Utilities;
 
@@ -13,7 +11,7 @@ namespace SummitUI;
 /// A fully accessible checkbox component with three states: unchecked, indeterminate, and checked.
 /// Follows WAI-ARIA patterns for checkbox accessibility.
 /// </summary>
-public class CheckboxRoot : ComponentBase, IAsyncDisposable
+public partial class CheckboxRoot : IAsyncDisposable
 {
     [Inject]
     private SummitUtilities SummitUtilities { get; set; } = default!;
@@ -24,6 +22,12 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     /// </summary>
     [CascadingParameter]
     private CheckboxGroupContext? GroupContext { get; set; }
+
+    /// <summary>
+    /// Cascading EditContext from an EditForm parent.
+    /// </summary>
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
 
     /// <summary>
     /// Child content containing the checkbox indicator.
@@ -50,12 +54,6 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     /// </summary>
     [Parameter]
     public Expression<Func<bool>>? CheckedExpression { get; set; }
-
-    /// <summary>
-    /// Cascading EditContext from an EditForm parent.
-    /// </summary>
-    [CascadingParameter]
-    private EditContext? EditContext { get; set; }
 
     /// <summary>
     /// The default checked state for uncontrolled mode.
@@ -194,17 +192,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
     /// <summary>
     /// The value for the hidden form input.
     /// </summary>
-    private string HiddenInputValue
-    {
-        get
-        {
-            if (CurrentState == CheckedState.Checked)
-            {
-                return Value ?? "on";
-            }
-            return "";
-        }
-    }
+    private string HiddenInputValue => CurrentState == CheckedState.Checked ? (Value ?? "on") : "";
 
     /// <summary>
     /// The context passed to child content.
@@ -251,63 +239,7 @@ public class CheckboxRoot : ComponentBase, IAsyncDisposable
         }
     }
 
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, "button");
-        builder.AddAttribute(1, "type", "button");
-        builder.AddAttribute(2, "role", "checkbox");
-        builder.AddAttribute(3, "id", _checkboxId);
-        builder.AddAttribute(4, "aria-checked", AriaChecked);
-        builder.AddAttribute(5, "aria-disabled", IsDisabled ? "true" : null);
-
-        if (!string.IsNullOrEmpty(AriaLabel))
-        {
-            builder.AddAttribute(6, "aria-label", AriaLabel);
-        }
-
-        builder.AddAttribute(7, "data-state", DataState);
-        builder.AddAttribute(8, "data-summit-checkbox", "");
-
-        if (IsDisabled)
-        {
-            builder.AddAttribute(9, "disabled", true);
-            builder.AddAttribute(10, "data-disabled", true);
-        }
-
-        builder.AddAttribute(11, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddEventStopPropagationAttribute(12, "onclick", true);
-        builder.AddEventPreventDefaultAttribute(13, "onclick", true);
-        builder.AddMultipleAttributes(14, AdditionalAttributes);
-        builder.AddElementReferenceCapture(15, elemRef => _elementRef = elemRef);
-
-        // Cascade checkbox context to child content
-        builder.OpenComponent<CascadingValue<CheckboxContext>>(16);
-        builder.AddComponentParameter(17, "Value", CurrentContext);
-        builder.AddComponentParameter(18, "IsFixed", false);
-        builder.AddComponentParameter(19, "ChildContent", ChildContent);
-        builder.CloseComponent();
-
-        builder.CloseElement();
-
-        // Render hidden input for form submission when Name is provided
-        if (!string.IsNullOrEmpty(EffectiveName))
-        {
-            builder.OpenElement(20, "input");
-            builder.AddAttribute(21, "type", "hidden");
-            builder.AddAttribute(22, "name", EffectiveName);
-            builder.AddAttribute(23, "value", HiddenInputValue);
-            builder.AddAttribute(24, "disabled", IsDisabled);
-
-            if (Required)
-            {
-                builder.AddAttribute(25, "required", true);
-            }
-
-            builder.CloseElement();
-        }
-    }
-
-    private async Task HandleClickAsync(MouseEventArgs args)
+    private async Task HandleClickAsync()
     {
         if (IsDisabled) return;
 

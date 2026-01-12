@@ -1,15 +1,15 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
+@namespace SummitUI
 
-namespace SummitUI;
-
-/// <summary>
-/// A visual indicator for the checkbox state.
-/// Only renders when the checkbox is checked or indeterminate (unless ForceMount is true).
-/// Use this to render custom check marks or indeterminate icons.
-/// </summary>
-public class CheckboxIndicator : ComponentBase
+@if (ShouldDisplay)
 {
+    <span data-summit-checkbox-indicator=""
+          data-state="@DataState"
+          @attributes="AdditionalAttributes">
+        @ChildContent
+    </span>
+}
+
+@code {
     /// <summary>
     /// The checkbox context from the parent CheckboxRoot via cascading parameter.
     /// </summary>
@@ -60,21 +60,4 @@ public class CheckboxIndicator : ComponentBase
         CheckedState.Indeterminate => "indeterminate",
         _ => "unchecked"
     };
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        if (!ShouldDisplay) return;
-
-        builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "data-summit-checkbox-indicator", "");
-        builder.AddAttribute(2, "data-state", DataState);
-        builder.AddMultipleAttributes(3, AdditionalAttributes);
-
-        if (ChildContent is not null)
-        {
-            builder.AddContent(4, ChildContent);
-        }
-
-        builder.CloseElement();
-    }
 }

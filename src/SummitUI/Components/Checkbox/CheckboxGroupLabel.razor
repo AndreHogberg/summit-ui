@@ -1,14 +1,16 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
+@namespace SummitUI
 
-namespace SummitUI;
+@* An accessible label for a CheckboxGroup. Automatically associates with the group via aria-labelledby. *@
 
-/// <summary>
-/// An accessible label for a CheckboxGroup.
-/// Automatically associates with the group via aria-labelledby.
-/// </summary>
-public class CheckboxGroupLabel : ComponentBase
-{
+<Primitive
+    As="@As"
+    id="@_labelId"
+    data-summit-checkbox-group-label="true"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</Primitive>
+
+@code {
     /// <summary>
     /// The parent checkbox group context.
     /// </summary>
@@ -41,20 +43,5 @@ public class CheckboxGroupLabel : ComponentBase
         _labelId = GroupContext is not null
             ? $"{GroupContext.GroupId}-label"
             : $"summit-checkbox-group-label-{Guid.NewGuid():N}";
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "id", _labelId);
-        builder.AddAttribute(2, "data-summit-checkbox-group-label", true);
-        builder.AddMultipleAttributes(3, AdditionalAttributes);
-
-        if (ChildContent is not null)
-        {
-            builder.AddContent(4, ChildContent);
-        }
-
-        builder.CloseElement();
     }
 }

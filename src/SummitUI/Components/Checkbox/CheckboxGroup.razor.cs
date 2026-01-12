@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace SummitUI;
 
@@ -10,8 +9,14 @@ namespace SummitUI;
 /// A container for a group of related checkboxes.
 /// Manages collective state and can render hidden inputs for form submission.
 /// </summary>
-public class CheckboxGroup : ComponentBase
+public partial class CheckboxGroup
 {
+    /// <summary>
+    /// Cascading EditContext from an EditForm parent.
+    /// </summary>
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
+
     /// <summary>
     /// Child content containing CheckboxRoot components and optionally a CheckboxGroupLabel.
     /// </summary>
@@ -36,12 +41,6 @@ public class CheckboxGroup : ComponentBase
     /// </summary>
     [Parameter]
     public Expression<Func<IReadOnlyList<string>?>>? ValuesExpression { get; set; }
-
-    /// <summary>
-    /// Cascading EditContext from an EditForm parent.
-    /// </summary>
-    [CascadingParameter]
-    private EditContext? EditContext { get; set; }
 
     /// <summary>
     /// Default values for uncontrolled mode.
@@ -127,27 +126,6 @@ public class CheckboxGroup : ComponentBase
     /// Gets the label ID for ARIA relationship.
     /// </summary>
     internal string GetLabelId() => _labelId;
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenComponent<CascadingValue<CheckboxGroupContext>>(0);
-        builder.AddComponentParameter(1, "Value", _context);
-        builder.AddComponentParameter(2, "IsFixed", false);
-        builder.AddComponentParameter(3, "ChildContent", (RenderFragment)(childBuilder =>
-        {
-            childBuilder.OpenElement(0, "div");
-            childBuilder.AddAttribute(1, "role", "group");
-            childBuilder.AddAttribute(2, "id", _context.GroupId);
-            childBuilder.AddAttribute(3, "aria-labelledby", _labelId);
-            childBuilder.AddAttribute(4, "aria-disabled", Disabled ? "true" : null);
-            childBuilder.AddAttribute(5, "data-summit-checkbox-group", "");
-            childBuilder.AddAttribute(6, "data-disabled", Disabled ? "" : null);
-            childBuilder.AddMultipleAttributes(7, AdditionalAttributes);
-            childBuilder.AddContent(8, ChildContent);
-            childBuilder.CloseElement();
-        }));
-        builder.CloseComponent();
-    }
 
     private async Task ToggleValueAsync(string value)
     {
