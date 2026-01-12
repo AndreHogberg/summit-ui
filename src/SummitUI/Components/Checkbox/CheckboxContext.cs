@@ -25,9 +25,4 @@ public sealed class CheckboxContext
     /// Whether the checkbox is unchecked (convenience property).
     /// </summary>
     public bool IsUnchecked => State == CheckedState.Unchecked;
-
-    /// <summary>
-    /// Whether the checkbox is disabled.
-    /// </summary>
-    public bool IsDisabled { get; init; }
 }

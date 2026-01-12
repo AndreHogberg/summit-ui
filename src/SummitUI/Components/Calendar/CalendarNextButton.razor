@@ -1,0 +1,55 @@
+@namespace SummitUI
+
+@* Button to navigate to the next month. *@
+
+<button
+    type="button"
+    data-summit-calendar-next-button="true"
+    aria-label="@(AriaLabel ?? "Next month")"
+    @onclick="HandleClick"
+    disabled="@(IsDisabled ? true : null)"
+    aria-disabled="@(IsDisabled ? "true" : null)"
+    @attributes="AdditionalAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <text>›</text>
+    }
+</button>
+
+@code {
+    [CascadingParameter]
+    private CalendarContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// The child content (button label).
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Accessible label for the button.
+    /// </summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <summary>
+    /// Additional attributes to apply to the button element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool IsDisabled => Context.Disabled || !Context.CanNavigateNext;
+
+    protected override void OnInitialized()
+    {
+        Context.OnStateChanged += StateHasChanged;
+    }
+
+    private void HandleClick()
+    {
+        if (Context.Disabled || !Context.CanNavigateNext) return;
+        Context.NextMonth();
+    }
+}

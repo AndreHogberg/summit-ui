@@ -1,0 +1,55 @@
+@namespace SummitUI
+
+@* Button to navigate to the previous month. *@
+
+<button
+    type="button"
+    data-summit-calendar-prev-button="true"
+    aria-label="@(AriaLabel ?? "Previous month")"
+    @onclick="HandleClick"
+    disabled="@(IsDisabled ? true : null)"
+    aria-disabled="@(IsDisabled ? "true" : null)"
+    @attributes="AdditionalAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <text>‹</text>
+    }
+</button>
+
+@code {
+    [CascadingParameter]
+    private CalendarContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// The child content (button label).
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Accessible label for the button.
+    /// </summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <summary>
+    /// Additional attributes to apply to the button element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool IsDisabled => Context.Disabled || !Context.CanNavigatePrevious;
+
+    protected override void OnInitialized()
+    {
+        Context.OnStateChanged += StateHasChanged;
+    }
+
+    private void HandleClick()
+    {
+        if (Context.Disabled || !Context.CanNavigatePrevious) return;
+        Context.PreviousMonth();
+    }
+}

@@ -1,0 +1,31 @@
+@namespace SummitUI
+@using Microsoft.AspNetCore.Components.Rendering
+
+@* The calendar grid table. Implements role="grid" for accessibility. *@
+
+@{
+    RenderGrid(__builder);
+}
+
+@code {
+    private void RenderGrid(RenderTreeBuilder builder)
+    {
+        builder.OpenElement(0, "table");
+        builder.AddAttribute(1, "id", Context.GridId);
+        // Use role="application" to ensure screen readers pass through all keyboard events
+        builder.AddAttribute(2, "role", "application");
+        builder.AddAttribute(3, "aria-roledescription", "calendar grid");
+        builder.AddAttribute(4, "aria-labelledby", Context.HeadingId);
+        builder.AddAttribute(5, "aria-description", "Use arrow keys to navigate dates, Enter or Space to select");
+        builder.AddAttribute(6, "data-summit-calendar-grid", true);
+        builder.AddMultipleAttributes(7, AdditionalAttributes);
+        builder.AddElementReferenceCapture(8, elementRef => _elementRef = elementRef);
+
+        if (ChildContent is not null)
+        {
+            builder.AddContent(9, ChildContent);
+        }
+
+        builder.CloseElement();
+    }
+}

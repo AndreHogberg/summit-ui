@@ -1,7 +1,6 @@
 using System.Globalization;
 
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 
 using SummitUI.Interop;
 using SummitUI.Services;
@@ -11,12 +10,12 @@ namespace SummitUI;
 /// <summary>
 /// The root component for the Calendar. Provides context and manages state.
 /// </summary>
-public class CalendarRoot : ComponentBase, IAsyncDisposable
+public partial class CalendarRoot : IAsyncDisposable
 {
     private readonly CalendarContext _context = new();
     private CultureInfo _effectiveCulture = CultureInfo.CurrentCulture;
     private DayOfWeek _effectiveWeekStart = DayOfWeek.Sunday;
-    
+
     // Track previous values to detect changes that require re-computation
     private CultureInfo? _previousCulture;
     private DateOnly _previousDisplayedMonth;
@@ -153,7 +152,7 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
         if (cultureChanged || monthChanged || _previousCulture == null)
         {
             UpdateMonthName();
-            
+
             _previousCulture = _effectiveCulture;
             _previousDisplayedMonth = _context.DisplayedMonth;
         }
@@ -166,51 +165,6 @@ public class CalendarRoot : ComponentBase, IAsyncDisposable
             _context.DisplayedMonth
         );
         _context.SetMonthName(heading);
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        // Use fixed sequence numbers for stable render tree diffing
-        // Root div
-        builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "data-summit-calendar-root", true);
-        builder.AddAttribute(2, "data-disabled", Disabled ? "true" : null);
-        builder.AddAttribute(3, "data-readonly", ReadOnly ? "true" : null);
-
-        builder.AddMultipleAttributes(4, AdditionalAttributes);
-
-        // Visually hidden live region for screen reader announcements
-        // This is needed because role="application" on the grid means screen readers
-        // won't automatically announce focus changes - we must announce explicitly
-        builder.OpenElement(5, "div");
-        builder.AddAttribute(6, "aria-live", "assertive");
-        builder.AddAttribute(7, "aria-atomic", "true");
-        builder.AddAttribute(8, "style", "position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;");
-        builder.AddContent(9, _context.FocusAnnouncement);
-        builder.CloseElement();
-
-        // Cascading CalendarRoot for Grid to access
-        builder.OpenComponent<CascadingValue<CalendarRoot>>(10);
-        builder.AddComponentParameter(11, "Value", this);
-        builder.AddComponentParameter(12, "IsFixed", true);
-        builder.AddComponentParameter(13, "ChildContent", (RenderFragment)(cascadeBuilder =>
-        {
-            // Cascading context - NOT IsFixed to allow re-renders to propagate
-            cascadeBuilder.OpenComponent<CascadingValue<CalendarContext>>(0);
-            cascadeBuilder.AddComponentParameter(1, "Value", _context);
-            cascadeBuilder.AddComponentParameter(2, "IsFixed", false);
-            cascadeBuilder.AddComponentParameter(3, "ChildContent", (RenderFragment)(childBuilder =>
-            {
-                if (ChildContent != null)
-                {
-                    childBuilder.AddContent(0, ChildContent(_context.GetChildContext()));
-                }
-            }));
-            cascadeBuilder.CloseComponent();
-        }));
-        builder.CloseComponent();
-
-        builder.CloseElement();
     }
 
     #region Internal Methods for Context

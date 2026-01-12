@@ -164,7 +164,7 @@ public partial class CheckboxRoot : IAsyncDisposable
             }
 
             // Otherwise use controlled or internal state
-            var isChecked = IsControlled ? Checked!.Value : _internalChecked;
+            bool isChecked = IsControlled ? Checked!.Value : _internalChecked;
             return isChecked ? CheckedState.Checked : CheckedState.Unchecked;
         }
     }
@@ -200,7 +200,6 @@ public partial class CheckboxRoot : IAsyncDisposable
     private CheckboxContext CurrentContext => new()
     {
         State = CurrentState,
-        IsDisabled = IsDisabled
     };
 
     protected override void OnInitialized()

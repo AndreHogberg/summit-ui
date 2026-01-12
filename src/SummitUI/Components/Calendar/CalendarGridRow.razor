@@ -1,0 +1,23 @@
+@namespace SummitUI
+
+@* A row in the calendar grid (either header row or week row). *@
+
+<tr data-summit-calendar-grid-row="true" @attributes="AdditionalAttributes">
+    @ChildContent
+</tr>
+
+@code {
+    [CascadingParameter]
+    private CalendarContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// The child content.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Additional attributes to apply to the tr element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

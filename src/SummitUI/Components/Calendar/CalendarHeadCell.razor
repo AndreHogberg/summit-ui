@@ -1,0 +1,32 @@
+@namespace SummitUI
+
+@* A weekday header cell in the calendar grid. Uses abbr attribute to provide full day name for screen readers. *@
+
+<th
+    scope="col"
+    data-summit-calendar-head-cell="true"
+    abbr="@(string.IsNullOrEmpty(Abbreviation) ? null : Abbreviation)"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</th>
+
+@code {
+    [CascadingParameter]
+    private CalendarContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// The abbreviated weekday name to display.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// The full weekday name for the abbr attribute (screen reader accessibility).
+    /// </summary>
+    [Parameter] public string? Abbreviation { get; set; }
+
+    /// <summary>
+    /// Additional attributes to apply to the th element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

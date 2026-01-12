@@ -1,0 +1,23 @@
+@namespace SummitUI
+
+@* Container for the calendar grid header (weekday names). *@
+
+<thead data-summit-calendar-grid-head="true" aria-hidden="true" @attributes="AdditionalAttributes">
+    @ChildContent
+</thead>
+
+@code {
+    [CascadingParameter]
+    private CalendarContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// The child content.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Additional attributes to apply to the thead element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

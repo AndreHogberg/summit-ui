@@ -1,0 +1,23 @@
+@namespace SummitUI
+
+@* Container for the calendar grid body (weeks and days). *@
+
+<tbody data-summit-calendar-grid-body="true" @attributes="AdditionalAttributes">
+    @ChildContent
+</tbody>
+
+@code {
+    [CascadingParameter]
+    private CalendarContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// The child content.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Additional attributes to apply to the tbody element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}
