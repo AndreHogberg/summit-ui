@@ -198,6 +198,44 @@ else
             </SmCalendarGrid>
         </SmCalendarRoot>
     </div>
+
+    <div class="test-section" data-testid="announcement-section">
+        <h2>Selection Announcement Test</h2>
+        <SmCalendarRoot @bind-Value="_selectedDate6" data-testid="calendar-announcement" Context="ctx">
+            <SmCalendarHeader class="calendar-header">
+                <SmCalendarPrevButton class="calendar-nav-button" />
+                <SmCalendarHeading class="calendar-heading" />
+                <SmCalendarNextButton class="calendar-nav-button" />
+            </SmCalendarHeader>
+            <SmCalendarGrid class="calendar-grid">
+                <SmCalendarGridHead>
+                    <SmCalendarGridRow>
+                        @for (int i = 0; i < ctx.Weekdays.Length; i++)
+                        {
+                            var idx = i;
+                            <SmCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                                @ctx.Weekdays[idx]
+                            </SmCalendarHeadCell>
+                        }
+                    </SmCalendarGridRow>
+                </SmCalendarGridHead>
+                <SmCalendarGridBody>
+                    @foreach (var week in ctx.CurrentMonth.Weeks)
+                    {
+                        <SmCalendarGridRow>
+                            @foreach (var date in week)
+                            {
+                                <SmCalendarCell Date="@date">
+                                    <SmCalendarDay class="calendar-day" />
+                                </SmCalendarCell>
+                            }
+                        </SmCalendarGridRow>
+                    }
+                </SmCalendarGridBody>
+            </SmCalendarGrid>
+        </SmCalendarRoot>
+        <p data-testid="announcement-value">Selected: @(_selectedDate6?.ToString("yyyy-MM-dd") ?? "None")</p>
+    </div>
 </div>
 }
 
@@ -299,6 +337,7 @@ else
     private DateOnly? _selectedDate3 = new DateOnly(2025, 1, 15);
     private DateOnly? _selectedDate4 = null;
     private DateOnly? _selectedDate5 = null;
+    private DateOnly? _selectedDate6 = null;
     
     private DateOnly _minDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
     private DateOnly _maxDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30));

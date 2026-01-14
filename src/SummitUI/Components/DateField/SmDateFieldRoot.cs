@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
+using SummitUI.Services;
+
 namespace SummitUI;
 
 /// <summary>
@@ -12,6 +14,8 @@ namespace SummitUI;
 /// </summary>
 public class SmDateFieldRoot : ComponentBase
 {
+    [Inject] private ILiveAnnouncer? Announcer { get; set; }
+    
     // DateOnly binding
     [Parameter] public DateOnly? Value { get; set; }
     [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
@@ -80,11 +84,24 @@ public class SmDateFieldRoot : ComponentBase
     [Parameter]
     public System.Linq.Expressions.Expression<Func<DateTime?>>? DateTimeValueExpression { get; set; }
 
+    /// <summary>
+    /// Function to generate the announcement for screen readers when the date changes.
+    /// Receives the formatted date string.
+    /// If null, no announcement is made (aria-describedby on segments typically suffices).
+    /// </summary>
+    /// <example>
+    /// GetDateAnnouncement="@(date => $"Date set to {date}")"
+    /// </example>
+    [Parameter]
+    public Func<string, string>? GetDateAnnouncement { get; set; }
+
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private readonly DateFieldContext _context = new();
     private FieldIdentifier? _fieldIdentifier;
+    private DateOnly? _previousDateValue;
+    private DateTime? _previousDateTimeValue;
 
     /// <summary>
     /// Determines if we're in DateTime mode based on which binding is provided.
@@ -134,10 +151,54 @@ public class SmDateFieldRoot : ComponentBase
         {
             EditContext.NotifyFieldChanged(_fieldIdentifier.Value);
         }
+        
+        // Announce date changes to screen readers
+        AnnounceValueChange();
+    }
+    
+    private void AnnounceValueChange()
+    {
+        if (GetDateAnnouncement is null || Announcer is null)
+        {
+            return;
+        }
+        
+        if (IsDateTimeMode)
+        {
+            // Only announce when we have a complete value and it changed
+            if (DateTimeValue.HasValue && DateTimeValue != _previousDateTimeValue)
+            {
+                var culture = Culture ?? CultureInfo.CurrentCulture;
+                var formatted = DateTimeValue.Value.ToString("f", culture); // Full date/time format
+                Announcer.Announce(GetDateAnnouncement(formatted));
+                _previousDateTimeValue = DateTimeValue;
+            }
+        }
+        else
+        {
+            // Only announce when we have a complete value and it changed  
+            if (Value.HasValue && Value != _previousDateValue)
+            {
+                var culture = Culture ?? CultureInfo.CurrentCulture;
+                var formatted = Value.Value.ToString("D", culture); // Long date format
+                Announcer.Announce(GetDateAnnouncement(formatted));
+                _previousDateValue = Value;
+            }
+        }
     }
 
     protected override void OnParametersSet()
     {
+        // Track previous values for announcement detection
+        if (_previousDateValue is null && Value.HasValue)
+        {
+            _previousDateValue = Value;
+        }
+        if (_previousDateTimeValue is null && DateTimeValue.HasValue)
+        {
+            _previousDateTimeValue = DateTimeValue;
+        }
+        
         // Determine validation state
         var isInvalid = Invalid || IsOutOfRange();
 

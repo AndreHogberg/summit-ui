@@ -2,6 +2,8 @@ using System.Globalization;
 
 using Microsoft.AspNetCore.Components;
 
+using SummitUI.Services;
+
 namespace SummitUI;
 
 /// <summary>
@@ -84,15 +86,16 @@ public class CalendarContext
     private string[] _weekdaysLong = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     private string _monthName = "";
 
-    // Screen reader announcement for focus changes (used with aria-live region)
-    private string _focusAnnouncement = "";
-
     // Focus management: Only set browser focus when user is actively navigating this calendar
     private bool _shouldFocus;
 
     // Callbacks
     private EventCallback<DateOnly?> _valueChanged;
     private EventCallback<DateOnly?> _onValueChange;
+
+    // Announcer for screen reader announcements
+    private ILiveAnnouncer? _announcer;
+    private Func<string, string?>? _getSelectionAnnouncement;
 
     // Events
     public event Action? OnStateChanged;
@@ -127,12 +130,6 @@ public class CalendarContext
     /// Gets the localized name of the currently displayed month.
     /// </summary>
     public string MonthName => _monthName;
-
-    /// <summary>
-    /// Gets the current focus announcement for screen readers.
-    /// This is updated when keyboard navigation changes focus.
-    /// </summary>
-    public string FocusAnnouncement => _focusAnnouncement;
 
     /// <summary>
     /// Gets whether this calendar should programmatically set browser focus.
@@ -186,7 +183,9 @@ public class CalendarContext
         bool readOnly,
         Func<DateOnly, bool>? isDateDisabled,
         EventCallback<DateOnly?> valueChanged,
-        EventCallback<DateOnly?> onValueChange)
+        EventCallback<DateOnly?> onValueChange,
+        ILiveAnnouncer? announcer,
+        Func<string, string?>? getSelectionAnnouncement)
     {
         _value = value;
         _defaultValue = defaultValue;
@@ -201,6 +200,8 @@ public class CalendarContext
         IsDateDisabled = isDateDisabled;
         _valueChanged = valueChanged;
         _onValueChange = onValueChange;
+        _announcer = announcer;
+        _getSelectionAnnouncement = getSelectionAnnouncement;
 
         // Initialize focused date and displayed month
         var effectiveValue = Value ?? placeholder ?? Today;
@@ -262,10 +263,33 @@ public class CalendarContext
         _value = date;
         _focusedDate = date;
 
+        // Announce selection to screen readers
+        AnnounceSelection(date);
+
         await _valueChanged.InvokeAsync(date);
         await _onValueChange.InvokeAsync(date);
 
         NotifyStateChanged();
+    }
+
+    /// <summary>
+    /// Announces the date selection to screen readers.
+    /// </summary>
+    private void AnnounceSelection(DateOnly date)
+    {
+        if (_announcer is null) return;
+
+        var formattedDate = GetLocalizedDateString(date);
+
+        // Use custom announcement if provided, otherwise use default
+        var announcement = _getSelectionAnnouncement is not null
+            ? _getSelectionAnnouncement(formattedDate)
+            : $"{formattedDate} selected";
+
+        if (!string.IsNullOrEmpty(announcement))
+        {
+            _announcer.Announce(announcement);
+        }
     }
 
     /// <summary>
@@ -364,32 +388,7 @@ public class CalendarContext
         // Mark that this calendar should receive browser focus
         _shouldFocus = true;
 
-        // Generate announcement for screen readers
-        UpdateFocusAnnouncement(date);
-
         NotifyStateChanged();
-    }
-
-    /// <summary>
-    /// Updates the focus announcement for screen readers.
-    /// </summary>
-    private void UpdateFocusAnnouncement(DateOnly date)
-    {
-        // Build the same label as used in CalendarDay aria-label
-        var label = date.ToString("D", Culture);
-        if (IsToday(date)) label += " (today)";
-        if (IsSelected(date)) label += " (selected)";
-        if (IsDateUnavailable(date)) label += " (unavailable)";
-
-        _focusAnnouncement = label;
-    }
-
-    /// <summary>
-    /// Clears the focus announcement (call after screen reader has read it).
-    /// </summary>
-    public void ClearFocusAnnouncement()
-    {
-        _focusAnnouncement = "";
     }
 
     /// <summary>

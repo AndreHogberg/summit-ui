@@ -23,6 +23,13 @@ public partial class SmCalendarRoot : IAsyncDisposable
     [Inject] private CalendarJsInterop JsInterop { get; set; } = default!;
     [Inject] private CalendarFormatter CalendarFormatter { get; set; } = default!;
 
+    /// <summary>
+    /// Optional live announcer for screen reader announcements.
+    /// If registered, date selection will be announced automatically.
+    /// </summary>
+    [Inject]
+    private ILiveAnnouncer? Announcer { get; set; }
+
     #region Parameters
 
     /// <summary>
@@ -101,6 +108,35 @@ public partial class SmCalendarRoot : IAsyncDisposable
     [Parameter] public RenderFragment<CalendarChildContext>? ChildContent { get; set; }
 
     /// <summary>
+    /// Optional function to generate a screen reader announcement when a date is selected.
+    /// Receives the formatted date string and should return the text to announce.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// By default, selection is announced as "{date} selected" (e.g., "Wednesday, January 15, 2026 selected").
+    /// This follows the React Aria pattern of automatically announcing selection changes.
+    /// </para>
+    /// <para>
+    /// Set this parameter to customize the announcement text for localization or different phrasing.
+    /// Return null or empty string to suppress the announcement entirely.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Custom announcement
+    /// GetSelectionAnnouncement="@(date => $"You selected {date}")"
+    /// 
+    /// // Localized announcement
+    /// GetSelectionAnnouncement="@(date => string.Format(Localizer["DateSelected"], date))"
+    /// 
+    /// // Suppress announcement
+    /// GetSelectionAnnouncement="@(_ => null)"
+    /// </code>
+    /// </example>
+    [Parameter]
+    public Func<string, string?>? GetSelectionAnnouncement { get; set; }
+
+    /// <summary>
     /// Additional attributes to apply to the root element.
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
@@ -142,7 +178,9 @@ public partial class SmCalendarRoot : IAsyncDisposable
             readOnly: ReadOnly,
             isDateDisabled: IsDateDisabled,
             valueChanged: ValueChanged,
-            onValueChange: OnValueChange
+            onValueChange: OnValueChange,
+            announcer: Announcer,
+            getSelectionAnnouncement: GetSelectionAnnouncement
         );
 
         // Update month name if culture or month changed

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
+using SummitUI.Services;
+
 namespace SummitUI;
 
 /// <summary>
@@ -13,6 +15,13 @@ namespace SummitUI;
 /// <typeparam name="TValue">The type of the combobox values.</typeparam>
 public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
+    /// <summary>
+    /// Optional live announcer for screen reader announcements.
+    /// If registered, selection changes will be announced automatically.
+    /// </summary>
+    [Inject]
+    private ILiveAnnouncer? Announcer { get; set; }
+
     /// <summary>
     /// Child content containing ComboboxTrigger, ComboboxContent, etc.
     /// </summary>
@@ -97,6 +106,116 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     /// </summary>
     [Parameter]
     public bool CloseOnSelect { get; set; } = false;
+
+    /// <summary>
+    /// Optional function to generate a screen reader announcement when an item is selected.
+    /// Receives the selected label and should return the localized text to announce.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// By default, no announcement is made because the native <c>aria-selected</c> attribute
+    /// on list items already communicates selection state to screen readers. This follows
+    /// the Radix UI pattern of relying on semantic ARIA attributes rather than live region announcements.
+    /// </para>
+    /// <para>
+    /// Set this parameter if you want to provide additional auditory feedback beyond
+    /// what ARIA attributes provide. The function receives the item's display label
+    /// and should return a localized announcement string.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Simple announcement
+    /// GetSelectionAnnouncement="@(label => $"{label} selected")"
+    /// 
+    /// // Localized announcement using IStringLocalizer
+    /// GetSelectionAnnouncement="@(label => string.Format(Localizer["SelectionAnnouncement"], label))"
+    /// </code>
+    /// </example>
+    [Parameter]
+    public Func<string, string>? GetSelectionAnnouncement { get; set; }
+
+    /// <summary>
+    /// Optional function to generate a screen reader announcement when an item is deselected.
+    /// Receives the deselected label and should return the localized text to announce.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// By default, no announcement is made because the native <c>aria-selected</c> attribute
+    /// on list items already communicates selection state to screen readers. This follows
+    /// the Radix UI pattern of relying on semantic ARIA attributes rather than live region announcements.
+    /// </para>
+    /// <para>
+    /// Set this parameter if you want to provide additional auditory feedback beyond
+    /// what ARIA attributes provide. The function receives the item's display label
+    /// and should return a localized announcement string.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Simple announcement
+    /// GetDeselectionAnnouncement="@(label => $"{label} removed")"
+    /// 
+    /// // Localized announcement using IStringLocalizer
+    /// GetDeselectionAnnouncement="@(label => string.Format(Localizer["DeselectionAnnouncement"], label))"
+    /// </code>
+    /// </example>
+    [Parameter]
+    public Func<string, string>? GetDeselectionAnnouncement { get; set; }
+
+    /// <summary>
+    /// Optional text to announce when all selections are cleared.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// By default, no announcement is made. The UI state change (empty selection)
+    /// is typically visible, but screen reader users may benefit from explicit
+    /// confirmation that selections were cleared.
+    /// </para>
+    /// <para>
+    /// Set this parameter if you want to provide additional auditory feedback
+    /// when selections are cleared. The value should be a localized string.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Simple announcement
+    /// ClearAnnouncement="Selection cleared"
+    /// 
+    /// // Localized announcement using IStringLocalizer
+    /// ClearAnnouncement="@Localizer["SelectionCleared"]"
+    /// </code>
+    /// </example>
+    [Parameter]
+    public string? ClearAnnouncement { get; set; }
+
+    /// <summary>
+    /// Optional function to generate a screen reader announcement when filter results change.
+    /// Receives the count of matching items and should return the localized text to announce.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// By default, no announcement is made. Unlike selection state, there is no native
+    /// ARIA attribute that communicates result counts, so this is a case where live
+    /// region announcements provide genuine additional value for screen reader users.
+    /// </para>
+    /// <para>
+    /// Set this parameter if you want to announce the number of matching items as the
+    /// user types. The function receives the count of visible items and should return
+    /// a localized announcement string.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Simple announcement
+    /// GetFilterResultsAnnouncement="@(count => count == 0 ? "No items match" : $"{count} items available")"
+    /// 
+    /// // Localized announcement using IStringLocalizer
+    /// GetFilterResultsAnnouncement="@(count => string.Format(Localizer["FilterResults"], count))"
+    /// </code>
+    /// </example>
+    [Parameter]
+    public Func<int, string>? GetFilterResultsAnnouncement { get; set; }
 
     /// <summary>
     /// Cascading EditContext for form integration.
@@ -271,13 +390,14 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     {
         if (_context.ItemRegistry.TryGetValue(key, out var value))
         {
+            var label = _context.LabelRegistry.GetValueOrDefault(key);
             if (_context.SelectedValues.Contains(value))
             {
-                await DeselectValueInternalAsync(value);
+                await DeselectValueInternalAsync(value, label);
             }
             else
             {
-                await SelectValueInternalAsync(value);
+                await SelectValueInternalAsync(value, label);
             }
         }
     }
@@ -286,7 +406,8 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     {
         if (_context.ItemRegistry.TryGetValue(key, out var value))
         {
-            await SelectValueInternalAsync(value);
+            var label = _context.LabelRegistry.GetValueOrDefault(key);
+            await SelectValueInternalAsync(value, label);
         }
     }
 
@@ -294,16 +415,19 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     {
         if (_context.ItemRegistry.TryGetValue(key, out var value))
         {
-            await DeselectValueInternalAsync(value);
+            var label = _context.LabelRegistry.GetValueOrDefault(key);
+            await DeselectValueInternalAsync(value, label);
         }
     }
 
     private Task DeselectValueAsync(TValue value)
     {
-        return DeselectValueInternalAsync(value);
+        // Look up label from value
+        var label = _context.ValueToLabelRegistry.GetValueOrDefault(value);
+        return DeselectValueInternalAsync(value, label);
     }
 
-    private async Task SelectValueInternalAsync(TValue value)
+    private async Task SelectValueInternalAsync(TValue value, string? label = null)
     {
         if (Disabled) return;
         if (_context.SelectedValues.Contains(value)) return;
@@ -315,6 +439,16 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         }
 
         _context.SelectedValues.Add(value);
+
+        // Announce the selection to screen readers
+        if (Announcer is not null && GetSelectionAnnouncement is not null && !string.IsNullOrEmpty(label))
+        {
+            var announcement = GetSelectionAnnouncement(label);
+            if (!string.IsNullOrEmpty(announcement))
+            {
+                Announcer.Announce(announcement);
+            }
+        }
 
         await NotifyValuesChangedAsync();
 
@@ -341,7 +475,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         }
     }
 
-    private async Task DeselectValueInternalAsync(TValue value)
+    private async Task DeselectValueInternalAsync(TValue value, string? label = null)
     {
         if (Disabled) return;
         if (!_context.SelectedValues.Contains(value)) return;
@@ -353,6 +487,16 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         }
 
         _context.SelectedValues.Remove(value);
+
+        // Announce the deselection to screen readers
+        if (Announcer is not null && GetDeselectionAnnouncement is not null && !string.IsNullOrEmpty(label))
+        {
+            var announcement = GetDeselectionAnnouncement(label);
+            if (!string.IsNullOrEmpty(announcement))
+            {
+                Announcer.Announce(announcement);
+            }
+        }
 
         await NotifyValuesChangedAsync();
 
@@ -384,6 +528,12 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         }
 
         _context.SelectedValues.Clear();
+
+        // Announce the clear action to screen readers
+        if (Announcer is not null && !string.IsNullOrEmpty(ClearAnnouncement))
+        {
+            Announcer.Announce(ClearAnnouncement);
+        }
 
         await NotifyValuesChangedAsync();
         StateHasChanged();
@@ -421,10 +571,37 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
             
             // Auto-highlight first visible item when filter changes
             HighlightFirstVisibleItem();
+
+            // Announce filter results to screen readers
+            if (Announcer is not null && GetFilterResultsAnnouncement is not null && _context.IsOpen)
+            {
+                var matchingCount = CountMatchingItems();
+                var announcement = GetFilterResultsAnnouncement(matchingCount);
+                if (!string.IsNullOrEmpty(announcement))
+                {
+                    Announcer.Announce(announcement);
+                }
+            }
             
             _context.RaiseStateChanged();
         }
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Counts the number of items matching the current filter.
+    /// </summary>
+    private int CountMatchingItems()
+    {
+        var count = 0;
+        foreach (var key in _context.ItemRegistry.Keys)
+        {
+            if (_context.MatchesFilter(key))
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     /// <summary>

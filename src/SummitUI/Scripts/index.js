@@ -158,3 +158,12 @@ export {
     getScrollInfo as scrollArea_getScrollInfo,
     destroy as scrollArea_destroy
 } from './scroll-area.js';
+
+// Live Announcer exports (screen reader announcements)
+export {
+    initialize as liveAnnouncer_initialize,
+    destroy as liveAnnouncer_destroy,
+    announce as liveAnnouncer_announce,
+    clear as liveAnnouncer_clear,
+    clearAll as liveAnnouncer_clearAll
+} from './live-announcer.js';

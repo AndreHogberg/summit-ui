@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using SummitUI.Services;
 using SummitUI.Utilities;
 
 namespace SummitUI;
@@ -11,6 +12,13 @@ public partial class SmAccordionRoot : ComponentBase
 {
     private readonly AccordionContext _context = new();
     private HashSet<string> _internalValues = [];
+
+    /// <summary>
+    /// Optional live announcer for screen reader announcements.
+    /// If registered, expansion changes can be announced automatically.
+    /// </summary>
+    [Inject]
+    private ILiveAnnouncer? Announcer { get; set; }
 
     [Inject] private SummitUtilities SummitUtilities { get; set; } = default!;
 
@@ -92,6 +100,25 @@ public partial class SmAccordionRoot : ComponentBase
     /// </summary>
     [Parameter]
     public bool Collapsible { get; set; } = true;
+
+    /// <summary>
+    /// Function to generate the announcement text when an item is expanded or collapsed.
+    /// Receives the item value and a boolean indicating whether it's expanded.
+    /// If not provided, no announcements are made (aria-expanded handles screen reader updates).
+    /// </summary>
+    /// <remarks>
+    /// Screen readers already announce expand/collapse state changes via aria-expanded.
+    /// Only provide this if you want additional context-specific announcements.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Custom announcement with item titles
+    /// GetStateChangeAnnouncement="@((value, expanded) => 
+    ///     expanded ? $"{GetTitle(value)} section expanded" : $"{GetTitle(value)} section collapsed")"
+    /// </code>
+    /// </example>
+    [Parameter]
+    public Func<string, bool, string>? GetStateChangeAnnouncement { get; set; }
 
     /// <summary>
     ///     Additional HTML attributes to apply.
@@ -181,6 +208,7 @@ public partial class SmAccordionRoot : ComponentBase
     private async Task ToggleSingleAsync(string value, bool isCurrentlyExpanded)
     {
         string? newValue;
+        bool willBeExpanded;
 
         if (isCurrentlyExpanded)
         {
@@ -191,11 +219,13 @@ public partial class SmAccordionRoot : ComponentBase
             }
 
             newValue = null;
+            willBeExpanded = false;
         }
         else
         {
             // Expanding
             newValue = value;
+            willBeExpanded = true;
         }
 
         // Update internal state for uncontrolled mode
@@ -205,6 +235,10 @@ public partial class SmAccordionRoot : ComponentBase
         }
 
         _context.ExpandedValues = newValue is not null ? [newValue] : [];
+
+        // Announce the state change if configured
+        AnnounceStateChange(value, willBeExpanded);
+
         await ValueChanged.InvokeAsync(newValue);
         await OnValueChange.InvokeAsync(newValue);
         StateHasChanged();
@@ -213,15 +247,18 @@ public partial class SmAccordionRoot : ComponentBase
     private async Task ToggleMultipleAsync(string value, bool isCurrentlyExpanded)
     {
         HashSet<string> newValues;
+        bool willBeExpanded;
 
         if (isCurrentlyExpanded)
         {
             newValues = [.. ActiveValues];
             newValues.Remove(value);
+            willBeExpanded = false;
         }
         else
         {
             newValues = [.. ActiveValues, value];
+            willBeExpanded = true;
         }
 
         // Update internal state for uncontrolled mode
@@ -231,8 +268,26 @@ public partial class SmAccordionRoot : ComponentBase
         }
 
         _context.ExpandedValues = newValues;
+
+        // Announce the state change if configured
+        AnnounceStateChange(value, willBeExpanded);
+
         await ValuesChanged.InvokeAsync([.. newValues]);
         await OnValueChange.InvokeAsync(value);
         StateHasChanged();
+    }
+
+    private void AnnounceStateChange(string value, bool isExpanded)
+    {
+        if (Announcer is null || GetStateChangeAnnouncement is null)
+        {
+            return;
+        }
+
+        var announcement = GetStateChangeAnnouncement(value, isExpanded);
+        if (!string.IsNullOrEmpty(announcement))
+        {
+            Announcer.Announce(announcement);
+        }
     }
 }

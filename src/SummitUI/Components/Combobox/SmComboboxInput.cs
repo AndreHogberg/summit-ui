@@ -27,6 +27,20 @@ public class SmComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TVa
     public string? Placeholder { get; set; }
 
     /// <summary>
+    /// The id attribute for the input element.
+    /// When provided, this allows association with a <c>&lt;label for="..."&gt;</c> element.
+    /// If not provided, an auto-generated id from the combobox context is used.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// &lt;label for="country-combobox"&gt;Select a country&lt;/label&gt;
+    /// &lt;SmComboboxInput Id="country-combobox" /&gt;
+    /// </code>
+    /// </example>
+    [Parameter]
+    public string? Id { get; set; }
+
+    /// <summary>
     /// Direct aria-label for the input.
     /// </summary>
     [Parameter]
@@ -80,7 +94,7 @@ public class SmComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TVa
     {
         builder.OpenElement(0, "input");
         builder.AddAttribute(1, "type", "text");
-        builder.AddAttribute(2, "id", Context.InputId);
+        builder.AddAttribute(2, "id", Id ?? Context.InputId);
         builder.AddAttribute(3, "role", "combobox");
         builder.AddAttribute(4, "aria-haspopup", "listbox");
         builder.AddAttribute(5, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using SummitUI.Components.Otp;
 using SummitUI.Interop;
+using SummitUI.Services;
 
 namespace SummitUI;
 
@@ -17,6 +18,7 @@ namespace SummitUI;
 public class SmOtpRoot : ComponentBase, IAsyncDisposable
 {
     [Inject] private OtpJsInterop JsInterop { get; set; } = default!;
+    [Inject] private ILiveAnnouncer? Announcer { get; set; }
 
     /// <summary>
     /// The number of OTP digits (required).
@@ -85,10 +87,56 @@ public class SmOtpRoot : ComponentBase, IAsyncDisposable
     public string? Name { get; set; }
 
     /// <summary>
+    /// The id attribute for the input element. Required for label association using the 'for' attribute.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// &lt;label for="verification-code"&gt;Enter code&lt;/label&gt;
+    /// &lt;SmOtpRoot Id="verification-code" MaxLength="6" /&gt;
+    /// </code>
+    /// </example>
+    [Parameter]
+    public string? Id { get; set; }
+
+    /// <summary>
+    /// Accessible label for the input. Use when a visible label is not present.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// &lt;SmOtpRoot AriaLabel="Enter 6-digit verification code" MaxLength="6" /&gt;
+    /// </code>
+    /// </example>
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
+    /// <summary>
+    /// ID of the element that labels this input. Use with visible labels that cannot use the 'for' attribute.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// &lt;span id="otp-label"&gt;Verification code&lt;/span&gt;
+    /// &lt;SmOtpRoot AriaLabelledBy="otp-label" MaxLength="6" /&gt;
+    /// </code>
+    /// </example>
+    [Parameter]
+    public string? AriaLabelledBy { get; set; }
+
+    /// <summary>
     /// Callback when all slots are filled.
     /// </summary>
     [Parameter]
     public EventCallback<string> OnComplete { get; set; }
+
+    /// <summary>
+    /// Function to generate the completion announcement for screen readers.
+    /// Receives the completed code value.
+    /// If null, no announcement is made.
+    /// </summary>
+    /// <example>
+    /// GetCompletionAnnouncement="@(code => $"Verification code {code} entered")"
+    /// </example>
+    [Parameter]
+    public Func<string, string>? GetCompletionAnnouncement { get; set; }
 
     /// <summary>
     /// Function to transform pasted text (e.g., to remove dashes).
@@ -220,6 +268,12 @@ public class SmOtpRoot : ComponentBase, IAsyncDisposable
             newValue.Length == MaxLength)
         {
             await OnComplete.InvokeAsync(newValue);
+            
+            // Announce completion to screen readers
+            if (GetCompletionAnnouncement is not null)
+            {
+                Announcer?.Announce(GetCompletionAnnouncement(newValue));
+            }
         }
 
         _previousValue = newValue;
@@ -347,6 +401,18 @@ public class SmOtpRoot : ComponentBase, IAsyncDisposable
         if (!string.IsNullOrEmpty(Name))
         {
             builder.AddAttribute(30, "name", Name);
+        }
+        if (!string.IsNullOrEmpty(Id))
+        {
+            builder.AddAttribute(36, "id", Id);
+        }
+        if (!string.IsNullOrEmpty(AriaLabel))
+        {
+            builder.AddAttribute(37, "aria-label", AriaLabel);
+        }
+        if (!string.IsNullOrEmpty(AriaLabelledBy))
+        {
+            builder.AddAttribute(38, "aria-labelledby", AriaLabelledBy);
         }
         if (!string.IsNullOrEmpty(Pattern))
         {

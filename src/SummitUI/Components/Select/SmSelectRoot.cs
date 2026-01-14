@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
+using SummitUI.Services;
+
 namespace SummitUI;
 
 /// <summary>
@@ -13,6 +15,13 @@ namespace SummitUI;
 /// <typeparam name="TValue">The type of the select value.</typeparam>
 public class SmSelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
+    /// <summary>
+    /// Optional live announcer for screen reader announcements.
+    /// If registered, selection changes will be announced automatically.
+    /// </summary>
+    [Inject]
+    private ILiveAnnouncer? Announcer { get; set; }
+
     /// <summary>
     /// Child content containing SelectTrigger, SelectContent, etc.
     /// </summary>
@@ -90,6 +99,34 @@ public class SmSelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue
     /// </summary>
     [Parameter]
     public string? Name { get; set; }
+
+    /// <summary>
+    /// Optional function to generate a screen reader announcement when an item is selected.
+    /// Receives the selected label and should return the localized text to announce.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// By default, no announcement is made because the native <c>aria-selected</c> attribute
+    /// on list items already communicates selection state to screen readers. This follows
+    /// the Radix UI pattern of relying on semantic ARIA attributes rather than live region announcements.
+    /// </para>
+    /// <para>
+    /// Set this parameter if you want to provide additional auditory feedback beyond
+    /// what ARIA attributes provide. The function receives the item's display label
+    /// and should return a localized announcement string.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// // Simple announcement
+    /// GetSelectionAnnouncement="@(label => $"{label} selected")"
+    /// 
+    /// // Localized announcement using IStringLocalizer
+    /// GetSelectionAnnouncement="@(label => string.Format(Localizer["SelectionAnnouncement"], label))"
+    /// </code>
+    /// </example>
+    [Parameter]
+    public Func<string, string>? GetSelectionAnnouncement { get; set; }
 
     /// <summary>
     /// Cascading EditContext for form integration.
@@ -275,6 +312,16 @@ public class SmSelectRoot<TValue> : ComponentBase, IAsyncDisposable where TValue
 
         _context.Value = value;
         _context.SelectedLabel = label;
+
+        // Announce the selection to screen readers
+        if (Announcer is not null && GetSelectionAnnouncement is not null && !string.IsNullOrEmpty(label))
+        {
+            var announcement = GetSelectionAnnouncement(label);
+            if (!string.IsNullOrEmpty(announcement))
+            {
+                Announcer.Announce(announcement);
+            }
+        }
 
         // IMPORTANT: Close BEFORE firing value changed events
         // This ensures _internalOpen is false when parent re-renders (due to ValueChanged)

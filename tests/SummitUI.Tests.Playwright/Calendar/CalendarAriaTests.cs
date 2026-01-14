@@ -172,4 +172,46 @@ public class CalendarAriaTests : SummitTestBase
     }
 
     #endregion
+
+    #region Selection Announcements
+
+    [Test]
+    public async Task Selection_ShouldAnnounce_ToScreenReader()
+    {
+        // Find the live announcer's polite log region (uses role="log" with aria-relevant="additions")
+        var liveRegion = Page.Locator("[data-summit-live-announcer] [role='log'][aria-live='polite']");
+
+        // Get a day button to select
+        var section = Page.GetByTestId("announcement-section");
+        var dayButton = section.Locator("[data-summit-calendar-day]:not([data-unavailable]):not([data-outside-month])").First;
+
+        // Click to select the date
+        await dayButton.ClickAsync();
+
+        // Verify the live region contains the announcement text with "selected"
+        await Expect(liveRegion).ToContainTextAsync("selected");
+    }
+
+    [Test]
+    public async Task Selection_ShouldAnnounce_FormattedDate()
+    {
+        // Find the live announcer's polite log region (uses role="log" with aria-relevant="additions")
+        var liveRegion = Page.Locator("[data-summit-live-announcer] [role='log'][aria-live='polite']");
+
+        // Get a day button to select and capture its aria-label (which contains the formatted date)
+        var section = Page.GetByTestId("announcement-section");
+        var dayButton = section.Locator("[data-summit-calendar-day]:not([data-unavailable]):not([data-outside-month])").First;
+        var ariaLabel = await dayButton.GetAttributeAsync("aria-label");
+
+        // The aria-label might have "(today)" or "(selected)" suffix, extract just the date part
+        var datePart = ariaLabel!.Split(" (")[0];
+
+        // Click to select the date
+        await dayButton.ClickAsync();
+
+        // Verify the live region contains the formatted date
+        await Expect(liveRegion).ToContainTextAsync(datePart);
+    }
+
+    #endregion
 }

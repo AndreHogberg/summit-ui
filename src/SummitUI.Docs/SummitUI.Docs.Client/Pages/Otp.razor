@@ -29,8 +29,8 @@
         <SuCard>
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm text-su-muted-foreground">Enter verification code</label>
-                    <SmOtpRoot @bind-Value="otpValue" MaxLength="6" class="demo-otp">
+                    <label for="otp-demo-1" class="text-sm text-su-muted-foreground">Enter verification code</label>
+                    <SmOtpRoot Id="otp-demo-1" @bind-Value="otpValue" MaxLength="6" class="demo-otp">
                         @foreach (var slot in context.Slots)
                         {
                             <SmOtpSlot Slot="slot" class="demo-otp-slot">
@@ -42,8 +42,8 @@
                 </div>
                 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm text-su-muted-foreground">With placeholder</label>
-                    <SmOtpRoot @bind-Value="otpPlaceholder" MaxLength="6" Placeholder="------" class="demo-otp">
+                    <label for="otp-demo-2" class="text-sm text-su-muted-foreground">With placeholder</label>
+                    <SmOtpRoot Id="otp-demo-2" @bind-Value="otpPlaceholder" MaxLength="6" Placeholder="------" class="demo-otp">
                         @foreach (var slot in context.Slots)
                         {
                             <SmOtpSlot Slot="slot" class="demo-otp-slot">
@@ -54,8 +54,8 @@
                 </div>
                 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm text-su-muted-foreground">With separator (123-456 style)</label>
-                    <SmOtpRoot @bind-Value="otpSeparator" MaxLength="6" class="demo-otp">
+                    <label for="otp-demo-3" class="text-sm text-su-muted-foreground">With separator (123-456 style)</label>
+                    <SmOtpRoot Id="otp-demo-3" @bind-Value="otpSeparator" MaxLength="6" class="demo-otp">
                         @foreach (var slot in context.Slots.Take(3))
                         {
                             <SmOtpSlot Slot="slot" class="demo-otp-slot">
@@ -73,8 +73,8 @@
                 </div>
                 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm text-su-muted-foreground opacity-50">Disabled</label>
-                    <SmOtpRoot Value="123456" MaxLength="6" Disabled="true" class="demo-otp" />
+                    <label for="otp-demo-4" class="text-sm text-su-muted-foreground opacity-50">Disabled</label>
+                    <SmOtpRoot Id="otp-demo-4" Value="123456" MaxLength="6" Disabled="true" class="demo-otp" />
                 </div>
             </div>
         </SuCard>
@@ -371,6 +371,14 @@
             </div>
 
             <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Label Association</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    For proper screen reader support, always associate a label with the OTP input using one of these patterns:
+                </SuText>
+                <SuCodeBlock Code="@labelExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">HTML Attributes</SuHeading>
                 <ul class="grid gap-2 text-sm text-su-muted-foreground">
                     <li class="flex items-start gap-2">
@@ -465,6 +473,9 @@
         new() { Name = "InputMode", Type = "string", Default = "\"numeric\"", Description = "Mobile keyboard type" },
         new() { Name = "AutoComplete", Type = "string", Default = "\"one-time-code\"", Description = "Autofill hint for browsers" },
         new() { Name = "Name", Type = "string?", Default = "null", Description = "Form field name" },
+        new() { Name = "Id", Type = "string?", Default = "null", Description = "ID for label association using 'for' attribute" },
+        new() { Name = "AriaLabel", Type = "string?", Default = "null", Description = "Accessible label when no visible label exists" },
+        new() { Name = "AriaLabelledBy", Type = "string?", Default = "null", Description = "ID of element that labels this input" },
         new() { Name = "OnComplete", Type = "EventCallback<string>", Description = "Callback when all slots are filled" },
         new() { Name = "PasteTransformer", Type = "Func<string, string>?", Description = "Transform pasted text (e.g., remove dashes)" },
         new() { Name = "ChildContent", Type = "RenderFragment<OtpRenderContext>?", Description = "Custom slot rendering template" }
@@ -646,4 +657,15 @@
     0%, 70%, 100% { opacity: 1; }
     20%, 50% { opacity: 0; }
 }";
+
+    private const string labelExampleCode = @"@* Recommended: Use for+id for clickable labels *@
+<label for=""verification-code"">Enter verification code</label>
+<SmOtpRoot Id=""verification-code"" MaxLength=""6"" />
+
+@* Alternative: Use aria-labelledby for non-clickable labels *@
+<span id=""otp-label"">Enter verification code</span>
+<SmOtpRoot AriaLabelledBy=""otp-label"" MaxLength=""6"" />
+
+@* For hidden labels (icon-only UI) *@
+<SmOtpRoot AriaLabel=""Enter 6-digit verification code"" MaxLength=""6"" />";
 }

@@ -101,6 +101,22 @@ public partial class SmCheckboxRoot : IAsyncDisposable
     public bool Disabled { get; set; }
 
     /// <summary>
+    /// The id attribute for the checkbox element.
+    /// When provided, this allows association with a <c>&lt;label for="..."&gt;</c> element.
+    /// If not provided, an auto-generated id is used internally.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// &lt;label for="terms-checkbox"&gt;I agree to the terms&lt;/label&gt;
+    /// &lt;SmCheckboxRoot Id="terms-checkbox"&gt;
+    ///     &lt;SmCheckboxIndicator /&gt;
+    /// &lt;/SmCheckboxRoot&gt;
+    /// </code>
+    /// </example>
+    [Parameter]
+    public string? Id { get; set; }
+
+    /// <summary>
     /// Accessible label for the checkbox. Required when the checkbox is not wrapped in a label element.
     /// </summary>
     [Parameter]
@@ -118,7 +134,12 @@ public partial class SmCheckboxRoot : IAsyncDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private readonly string _checkboxId = $"summit-checkbox-{Guid.NewGuid():N}";
+    private readonly string _internalCheckboxId = $"summit-checkbox-{Guid.NewGuid():N}";
+
+    /// <summary>
+    /// The effective id used for the checkbox element.
+    /// </summary>
+    private string EffectiveId => Id ?? _internalCheckboxId;
     private ElementReference _elementRef;
     private bool _internalChecked;
     private bool _jsInitialized;
