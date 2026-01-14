@@ -6,12 +6,12 @@
     </div>
             
     <div class="p-6">
-        <TabsRoot DefaultValue="account">
-            <TabsList class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground w-full grid grid-cols-2">
-                <TabsTrigger Value="account" class="inline-flex w-full items-center justify-center white-space-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Account</TabsTrigger>
-                <TabsTrigger Value="password" class="inline-flex w-full items-center justify-center white-space-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Password</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="account" class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <SmTabsRoot DefaultValue="account">
+            <SmTabsList class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground w-full grid grid-cols-2">
+                <SmTabsTrigger Value="account" class="inline-flex w-full items-center justify-center white-space-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Account</SmTabsTrigger>
+                <SmTabsTrigger Value="password" class="inline-flex w-full items-center justify-center white-space-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Password</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="account" class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                 <p class="text-sm text-muted-foreground mb-4">
                     Make changes to your account here. Click save when you're done.
                 </p>
@@ -20,8 +20,8 @@
                     <input id="username" type="text" value="hogberg" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
                 </div>
                 <button class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground shadow transition-colors hover:bg-su-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 w-full">Save changes</button>
-            </TabsContent>
-            <TabsContent Value="password" class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            </SmTabsContent>
+            <SmTabsContent Value="password" class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                 <p class="text-sm text-muted-foreground mb-4">
                     Change your password here. After saving, you'll be logged out.
                 </p>
@@ -36,8 +36,8 @@
                     </div>
                 </div>
                 <button class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground shadow transition-colors hover:bg-su-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 w-full">Change password</button>
-            </TabsContent>
-        </TabsRoot>
+            </SmTabsContent>
+        </SmTabsRoot>
     </div>
 </div>
 

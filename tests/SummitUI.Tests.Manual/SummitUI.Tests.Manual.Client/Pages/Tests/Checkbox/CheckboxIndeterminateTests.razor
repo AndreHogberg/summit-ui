@@ -13,13 +13,13 @@ else
     <!-- Select All pattern -->
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
         <label class="checkbox-label">
-            <CheckboxRoot Checked="@allSelected"
+            <SmCheckboxRoot Checked="@allSelected"
                           CheckedChanged="HandleSelectAllChanged"
                           Indeterminate="@isIndeterminate"
                           IndeterminateChanged="@(v => isIndeterminate = v)"
                           class="checkbox-root"
                           data-testid="select-all-checkbox">
-                <CheckboxIndicator ForceMount="true">
+                <SmCheckboxIndicator ForceMount="true">
                     @if (isIndeterminate)
                     {
                         <span>−</span>
@@ -28,36 +28,36 @@ else
                     {
                         <span>✓</span>
                     }
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Select All
         </label>
 
         <div style="margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
             <label class="checkbox-label">
-                <CheckboxRoot Checked="@item1Checked" CheckedChanged="HandleItem1Change" class="checkbox-root" data-testid="item1-checkbox">
-                    <CheckboxIndicator>
+                <SmCheckboxRoot Checked="@item1Checked" CheckedChanged="HandleItem1Change" class="checkbox-root" data-testid="item1-checkbox">
+                    <SmCheckboxIndicator>
                         <span>✓</span>
-                    </CheckboxIndicator>
-                </CheckboxRoot>
+                    </SmCheckboxIndicator>
+                </SmCheckboxRoot>
                 Item 1
             </label>
 
             <label class="checkbox-label">
-                <CheckboxRoot Checked="@item2Checked" CheckedChanged="HandleItem2Change" class="checkbox-root" data-testid="item2-checkbox">
-                    <CheckboxIndicator>
+                <SmCheckboxRoot Checked="@item2Checked" CheckedChanged="HandleItem2Change" class="checkbox-root" data-testid="item2-checkbox">
+                    <SmCheckboxIndicator>
                         <span>✓</span>
-                    </CheckboxIndicator>
-                </CheckboxRoot>
+                    </SmCheckboxIndicator>
+                </SmCheckboxRoot>
                 Item 2
             </label>
 
             <label class="checkbox-label">
-                <CheckboxRoot Checked="@item3Checked" CheckedChanged="HandleItem3Change" class="checkbox-root" data-testid="item3-checkbox">
-                    <CheckboxIndicator>
+                <SmCheckboxRoot Checked="@item3Checked" CheckedChanged="HandleItem3Change" class="checkbox-root" data-testid="item3-checkbox">
+                    <SmCheckboxIndicator>
                         <span>✓</span>
-                    </CheckboxIndicator>
-                </CheckboxRoot>
+                    </SmCheckboxIndicator>
+                </SmCheckboxRoot>
                 Item 3
             </label>
         </div>

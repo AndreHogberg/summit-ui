@@ -34,33 +34,33 @@
 
         <SuCard class="mb-6">
             <div class="p-6 flex justify-center border-b border-su-border bg-su-background/50">
-                <DialogRoot @bind-Open="_leftOpen">
-                    <DialogTrigger class="inline-flex h-10 items-center justify-center rounded-md border border-su-border bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent transition-colors">
+                <SmDialogRoot @bind-Open="_leftOpen">
+                    <SmDialogTrigger class="inline-flex h-10 items-center justify-center rounded-md border border-su-border bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent transition-colors">
                         Open Left Drawer
-                    </DialogTrigger>
-                    <DialogPortal>
-                        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
-                        <DialogContent class="fixed top-0 left-0 z-50 h-screen w-80 bg-su-background border-r border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300">
+                    </SmDialogTrigger>
+                    <SmDialogPortal>
+                        <SmDialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+                        <SmDialogContent class="fixed top-0 left-0 z-50 h-screen w-80 bg-su-background border-r border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300">
                             <div class="flex items-center justify-between mb-4">
-                                <DialogTitle class="text-lg font-semibold">Left Drawer</DialogTitle>
-                                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                                <SmDialogTitle class="text-lg font-semibold">Left Drawer</SmDialogTitle>
+                                <SmDialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                                         <line x1="18" y1="6" x2="6" y2="18"></line>
                                         <line x1="6" y1="6" x2="18" y2="18"></line>
                                     </svg>
-                                </DialogClose>
+                                </SmDialogClose>
                             </div>
-                            <DialogDescription class="text-sm text-su-muted-foreground mb-6">
+                            <SmDialogDescription class="text-sm text-su-muted-foreground mb-6">
                                 This drawer is positioned on the left side of the screen.
-                            </DialogDescription>
+                            </SmDialogDescription>
                             <div class="space-y-4">
                                 <div class="h-4 w-full bg-su-muted rounded" />
                                 <div class="h-4 w-3/4 bg-su-muted rounded" />
                                 <div class="h-4 w-5/6 bg-su-muted rounded" />
                             </div>
-                        </DialogContent>
-                    </DialogPortal>
-                </DialogRoot>
+                        </SmDialogContent>
+                    </SmDialogPortal>
+                </SmDialogRoot>
             </div>
             <div class="bg-su-muted/30">
                 <SuCodeBlock Code="@leftDrawerCode" Language="razor" />
@@ -121,50 +121,50 @@
 </div>
 
 @* Hidden Dialogs for direction examples *@
-<DialogRoot @bind-Open="_rightOpen">
-    <DialogPortal>
-        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
-        <DialogContent class="fixed top-0 right-0 z-50 h-screen w-80 bg-su-background border-l border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right duration-300">
+<SmDialogRoot @bind-Open="_rightOpen">
+    <SmDialogPortal>
+        <SmDialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+        <SmDialogContent class="fixed top-0 right-0 z-50 h-screen w-80 bg-su-background border-l border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right duration-300">
             <div class="flex items-center justify-between mb-4">
-                <DialogTitle class="text-lg font-semibold">Right Drawer</DialogTitle>
-                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                <SmDialogTitle class="text-lg font-semibold">Right Drawer</SmDialogTitle>
+                <SmDialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </DialogClose>
+                </SmDialogClose>
             </div>
             <SuText>This drawer slides in from the right.</SuText>
-        </DialogContent>
-    </DialogPortal>
-</DialogRoot>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
 
-<DialogRoot @bind-Open="_topOpen">
-    <DialogPortal>
-        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
-        <DialogContent class="fixed top-0 left-0 z-50 w-full h-80 bg-su-background border-b border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-top data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top duration-300">
+<SmDialogRoot @bind-Open="_topOpen">
+    <SmDialogPortal>
+        <SmDialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+        <SmDialogContent class="fixed top-0 left-0 z-50 w-full h-80 bg-su-background border-b border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-top data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top duration-300">
             <div class="flex items-center justify-between mb-4">
-                <DialogTitle class="text-lg font-semibold">Top Drawer</DialogTitle>
-                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                <SmDialogTitle class="text-lg font-semibold">Top Drawer</SmDialogTitle>
+                <SmDialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </DialogClose>
+                </SmDialogClose>
             </div>
             <SuText>This drawer slides down from the top.</SuText>
-        </DialogContent>
-    </DialogPortal>
-</DialogRoot>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
 
-<DialogRoot @bind-Open="_bottomOpen">
-    <DialogPortal>
-        <DialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
-        <DialogContent class="fixed bottom-0 left-0 z-50 w-full h-80 bg-su-background border-t border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom duration-300">
+<SmDialogRoot @bind-Open="_bottomOpen">
+    <SmDialogPortal>
+        <SmDialogOverlay class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300" />
+        <SmDialogContent class="fixed bottom-0 left-0 z-50 w-full h-80 bg-su-background border-t border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom duration-300">
             <div class="flex items-center justify-between mb-4">
-                <DialogTitle class="text-lg font-semibold">Bottom Drawer</DialogTitle>
-                <DialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                <SmDialogTitle class="text-lg font-semibold">Bottom Drawer</SmDialogTitle>
+                <SmDialogClose class="rounded-sm opacity-70 hover:opacity-100 transition-opacity">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </DialogClose>
+                </SmDialogClose>
             </div>
             <SuText>This drawer slides up from the bottom.</SuText>
-        </DialogContent>
-    </DialogPortal>
-</DialogRoot>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
 
 @code {
     private bool _leftOpen;
@@ -172,36 +172,36 @@
     private bool _topOpen;
     private bool _bottomOpen;
 
-    private string leftDrawerCode = @"<DialogRoot>
-    <DialogTrigger class=""..."">Open Left Drawer</DialogTrigger>
-    <DialogPortal>
-        <DialogOverlay class=""fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300"" />
-        <DialogContent class=""fixed top-0 left-0 z-50 h-screen w-80 bg-su-background border-r border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300"">
-            <DialogTitle>Left Drawer</DialogTitle>
+    private string leftDrawerCode = @"<SmDialogRoot>
+    <SmDialogTrigger class=""..."">Open Left Drawer</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class=""fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=fade-in] data-[state=closed]:animate-out data-[state=fade-out] duration-300"" />
+        <SmDialogContent class=""fixed top-0 left-0 z-50 h-screen w-80 bg-su-background border-r border-su-border p-6 shadow-lg outline-none data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300"">
+            <SmDialogTitle>Left Drawer</SmDialogTitle>
             <!-- Content -->
-        </DialogContent>
-    </DialogPortal>
-</DialogRoot>";
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>";
 
     private string directionsCode = @"<!-- Right Drawer -->
-<DialogContent class=""fixed top-0 right-0 h-screen w-80 ... data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right"" />
+<SmDialogContent class=""fixed top-0 right-0 h-screen w-80 ... data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right"" />
 
 <!-- Top Drawer -->
-<DialogContent class=""fixed top-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-top data-[state=closed]:slide-out-to-top"" />
+<SmDialogContent class=""fixed top-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-top data-[state=closed]:slide-out-to-top"" />
 
 <!-- Bottom Drawer -->
-<DialogContent class=""fixed bottom-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom"" />";
+<SmDialogContent class=""fixed bottom-0 left-0 w-full h-80 ... data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom"" />";
 
     private string reusableComponentCode = @"// MyDrawer.razor
-<DialogRoot @bind-Open=""Open"">
-    <DialogPortal>
-        <DialogOverlay class=""fixed inset-0 z-50 bg-black/60 backdrop-blur-sm ..."" />
-        <DialogContent class=""@GetContentClass()"">
-            <DialogTitle class=""sr-only"">@Title</DialogTitle>
+<SmDialogRoot @bind-Open=""Open"">
+    <SmDialogPortal>
+        <SmDialogOverlay class=""fixed inset-0 z-50 bg-black/60 backdrop-blur-sm ..."" />
+        <SmDialogContent class=""@GetContentClass()"">
+            <SmDialogTitle class=""sr-only"">@Title</SmDialogTitle>
             @ChildContent
-        </DialogContent>
-    </DialogPortal>
-</DialogRoot>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
 
 @code {
     [Parameter] public bool Open { get; set; }

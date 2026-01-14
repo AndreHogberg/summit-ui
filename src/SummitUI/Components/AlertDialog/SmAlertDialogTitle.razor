@@ -1,0 +1,41 @@
+@namespace SummitUI
+
+<SmPrimitive
+    As="@As"
+    id="@Context.TitleId"
+    data-summit-alertdialog-title
+    data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+    @attributes="AdditionalAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @Context.Options.Title
+    }
+</SmPrimitive>
+
+@code {
+    [CascadingParameter]
+    private AlertDialogContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// Child content that completely replaces the default title text.
+    /// If provided, <see cref="AlertDialogOptions.Title"/> is ignored.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// HTML element to render. Defaults to "h2".
+    /// </summary>
+    [Parameter]
+    public string As { get; set; } = "h2";
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

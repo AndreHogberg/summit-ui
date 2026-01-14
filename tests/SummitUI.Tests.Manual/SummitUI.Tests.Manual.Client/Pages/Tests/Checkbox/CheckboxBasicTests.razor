@@ -13,50 +13,50 @@ else
     <div style="display: flex; flex-direction: column; gap: 1rem;">
         <!-- Unchecked checkbox -->
         <label class="checkbox-label">
-            <CheckboxRoot DefaultChecked="false" class="checkbox-root" data-testid="checkbox-unchecked">
-                <CheckboxIndicator>
+            <SmCheckboxRoot DefaultChecked="false" class="checkbox-root" data-testid="checkbox-unchecked">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Unchecked checkbox
         </label>
 
         <!-- Checked checkbox -->
         <label class="checkbox-label">
-            <CheckboxRoot DefaultChecked="true" class="checkbox-root" data-testid="checkbox-checked">
-                <CheckboxIndicator>
+            <SmCheckboxRoot DefaultChecked="true" class="checkbox-root" data-testid="checkbox-checked">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Checked checkbox
         </label>
 
         <!-- Another checkbox for unique ID testing -->
         <label class="checkbox-label">
-            <CheckboxRoot DefaultChecked="false" class="checkbox-root" data-testid="checkbox-third">
-                <CheckboxIndicator>
+            <SmCheckboxRoot DefaultChecked="false" class="checkbox-root" data-testid="checkbox-third">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Third checkbox
         </label>
 
         <!-- Custom styled checkboxes for indicator tests -->
         <label class="checkbox-label">
-            <CheckboxRoot DefaultChecked="false" class="checkbox-root" data-testid="custom-unchecked">
-                <CheckboxIndicator>
+            <SmCheckboxRoot DefaultChecked="false" class="checkbox-root" data-testid="custom-unchecked">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Custom unchecked
         </label>
 
         <label class="checkbox-label">
-            <CheckboxRoot DefaultChecked="true" class="checkbox-root" data-testid="custom-checked">
-                <CheckboxIndicator>
+            <SmCheckboxRoot DefaultChecked="true" class="checkbox-root" data-testid="custom-checked">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Custom checked
         </label>
     </div>
@@ -69,11 +69,11 @@ else
         </button>
 
         <label class="checkbox-label" style="margin-top: 0.5rem;">
-            <CheckboxRoot Checked="@isControlledChecked" CheckedChanged="@(v => isControlledChecked = v)" class="checkbox-root" data-testid="controlled-checkbox">
-                <CheckboxIndicator>
+            <SmCheckboxRoot Checked="@isControlledChecked" CheckedChanged="@(v => isControlledChecked = v)" class="checkbox-root" data-testid="controlled-checkbox">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Controlled checkbox
         </label>
     </div>

@@ -13,26 +13,26 @@
 else
 {
 <div data-testid="page-ready">
-    <SelectRoot TValue="string" @bind-Value="selectedValue">
-        <SelectTrigger TValue="string" data-testid="trigger">
-            <SelectValue TValue="string" Placeholder="Select with animation..." />
-        </SelectTrigger>
-        <SelectPortal TValue="string">
-            <SelectContent TValue="string" data-testid="content" class="animated-content" SideOffset="4">
-                <SelectViewport TValue="string">
-                    <SelectItem TValue="string" Value="@("first")" Label="First" data-testid="item-first">
-                        <SelectItemText>First Option</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue="string" Value="@("second")" Label="Second" data-testid="item-second">
-                        <SelectItemText>Second Option</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue="string" Value="@("third")" Label="Third" data-testid="item-third">
-                        <SelectItemText>Third Option</SelectItemText>
-                    </SelectItem>
-                </SelectViewport>
-            </SelectContent>
-        </SelectPortal>
-    </SelectRoot>
+    <SmSelectRoot TValue="string" @bind-Value="selectedValue">
+        <SmSelectTrigger TValue="string" data-testid="trigger">
+            <SmSelectValue TValue="string" Placeholder="Select with animation..." />
+        </SmSelectTrigger>
+        <SmSelectPortal TValue="string">
+            <SmSelectContent TValue="string" data-testid="content" class="animated-content" SideOffset="4">
+                <SmSelectViewport TValue="string">
+                    <SmSelectItem TValue="string" Value="@("first")" Label="First" data-testid="item-first">
+                        <SmSelectItemText>First Option</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue="string" Value="@("second")" Label="Second" data-testid="item-second">
+                        <SmSelectItemText>Second Option</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue="string" Value="@("third")" Label="Third" data-testid="item-third">
+                        <SmSelectItemText>Third Option</SmSelectItemText>
+                    </SmSelectItem>
+                </SmSelectViewport>
+            </SmSelectContent>
+        </SmSelectPortal>
+    </SmSelectRoot>
     
     <p data-testid="selected-value" style="margin-top: 1rem;">
         Selected: <strong>@(selectedValue ?? "None")</strong>

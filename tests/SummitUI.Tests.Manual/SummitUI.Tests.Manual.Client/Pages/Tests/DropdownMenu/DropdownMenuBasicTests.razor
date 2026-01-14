@@ -12,50 +12,50 @@ else
     
     <div class="test-section">
         <h2>Uncontrolled Menu</h2>
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="menu-trigger" data-testid="basic-trigger">
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="menu-trigger" data-testid="basic-trigger">
                 Open Menu
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="menu-content" data-testid="basic-content">
-                    <DropdownMenuItem class="menu-item" data-testid="item-1">Item 1</DropdownMenuItem>
-                    <DropdownMenuItem class="menu-item" data-testid="item-2">Item 2</DropdownMenuItem>
-                    <DropdownMenuSeparator class="menu-separator" data-testid="basic-separator" />
-                    <DropdownMenuItem class="menu-item" data-testid="item-3">Item 3</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+            </SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="menu-content" data-testid="basic-content">
+                    <SmDropdownMenuItem class="menu-item" data-testid="item-1">Item 1</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="menu-item" data-testid="item-2">Item 2</SmDropdownMenuItem>
+                    <SmDropdownMenuSeparator class="menu-separator" data-testid="basic-separator" />
+                    <SmDropdownMenuItem class="menu-item" data-testid="item-3">Item 3</SmDropdownMenuItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
     </div>
 
     <div class="test-section">
         <h2>With Disabled Items</h2>
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="menu-trigger" data-testid="disabled-trigger">
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="menu-trigger" data-testid="disabled-trigger">
                 With Disabled
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="menu-content" data-testid="disabled-content">
-                    <DropdownMenuItem class="menu-item" data-testid="enabled-item-1">Available Action</DropdownMenuItem>
-                    <DropdownMenuItem class="menu-item" Disabled="true" data-testid="disabled-item-1">Disabled Action</DropdownMenuItem>
-                    <DropdownMenuItem class="menu-item" data-testid="enabled-item-2">Another Available</DropdownMenuItem>
-                    <DropdownMenuItem class="menu-item" Disabled="true" data-testid="disabled-item-2">Disabled Action 2</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+            </SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="menu-content" data-testid="disabled-content">
+                    <SmDropdownMenuItem class="menu-item" data-testid="enabled-item-1">Available Action</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="menu-item" Disabled="true" data-testid="disabled-item-1">Disabled Action</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="menu-item" data-testid="enabled-item-2">Another Available</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="menu-item" Disabled="true" data-testid="disabled-item-2">Disabled Action 2</SmDropdownMenuItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
     </div>
 
     <div class="test-section">
         <h2>Controlled Menu</h2>
-        <DropdownMenuRoot @bind-Open="_isOpen">
-            <DropdownMenuTrigger class="menu-trigger" data-testid="controlled-trigger">
+        <SmDropdownMenuRoot @bind-Open="_isOpen">
+            <SmDropdownMenuTrigger class="menu-trigger" data-testid="controlled-trigger">
                 Controlled Menu
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="menu-content" data-testid="controlled-content">
-                    <DropdownMenuItem class="menu-item" data-testid="controlled-item">Item</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+            </SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="menu-content" data-testid="controlled-content">
+                    <SmDropdownMenuItem class="menu-item" data-testid="controlled-item">Item</SmDropdownMenuItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
         <button type="button" @onclick="() => _isOpen = !_isOpen" data-testid="external-toggle">
             Toggle Externally
         </button>

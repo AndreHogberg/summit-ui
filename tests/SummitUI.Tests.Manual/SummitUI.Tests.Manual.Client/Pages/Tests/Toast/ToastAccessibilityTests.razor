@@ -23,7 +23,7 @@ else
         </button>
     </div>
 
-    <ToastRegion TContent="TestToastContent"
+    <SmToastRegion TContent="TestToastContent"
                  AriaLabel="Test notifications (F8)"
                  Hotkey="@(["F8"])"
                  GetAnnouncementText="GetAnnouncementText"
@@ -36,7 +36,7 @@ else
                 var urgency = toast.Content.Variant == "assertive" ? ToastUrgency.Assertive : ToastUrgency.Polite;
                 var testIdPrefix = toast.Content.Variant == "assertive" ? "foreground" : "background";
             }
-            <Toast TContent="TestToastContent"
+            <SmToast TContent="TestToastContent"
                    ToastData="toast"
                    Urgency="urgency"
                    SwipeDirection="SwipeDirection.Right"
@@ -64,14 +64,14 @@ else
                         @toast.Content.Action.Label
                     </button>
                 }
-                <ToastCloseButton aria-label="Dismiss notification"
+                <SmToastCloseButton aria-label="Dismiss notification"
                                   class="toast-close"
                                   data-testid="@($"{testIdPrefix}-close")">
                     ×
-                </ToastCloseButton>
-            </Toast>
+                </SmToastCloseButton>
+            </SmToast>
         </ToastTemplate>
-    </ToastRegion>
+    </SmToastRegion>
     
     <button type="button" data-testid="focus-test-after">Focusable element after viewport</button>
 </div>

@@ -22,50 +22,50 @@
     <SuSection Title="Demo">
         <SuCard>
             <div class="flex flex-col gap-4">
-                <SelectRoot TValue="string" @bind-Value="selectedFruit">
-                    <SelectTrigger TValue="string" class="demo-trigger">
-                        <SelectValue TValue="string" Placeholder="Select a fruit..." />
+                <SmSelectRoot TValue="string" @bind-Value="selectedFruit">
+                    <SmSelectTrigger TValue="string" class="demo-trigger">
+                        <SmSelectValue TValue="string" Placeholder="Select a fruit..." />
                         <svg class="demo-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m6 9 6 6 6-6"/>
                         </svg>
-                    </SelectTrigger>
-                    <SelectPortal TValue="string">
-                        <SelectContent TValue="string" class="demo-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
-                            <SelectViewport TValue="string" class="demo-viewport">
-                                <SelectItem TValue="string" Value="@("apple")" Label="Apple" class="demo-item">
+                    </SmSelectTrigger>
+                    <SmSelectPortal TValue="string">
+                        <SmSelectContent TValue="string" class="demo-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
+                            <SmSelectViewport TValue="string" class="demo-viewport">
+                                <SmSelectItem TValue="string" Value="@("apple")" Label="Apple" class="demo-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
-                                    <SelectItemText>Apple</SelectItemText>
-                                </SelectItem>
-                                <SelectItem TValue="string" Value="@("banana")" Label="Banana" class="demo-item">
+                                    <SmSelectItemText>Apple</SmSelectItemText>
+                                </SmSelectItem>
+                                <SmSelectItem TValue="string" Value="@("banana")" Label="Banana" class="demo-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
-                                    <SelectItemText>Banana</SelectItemText>
-                                </SelectItem>
-                                <SelectItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-item">
+                                    <SmSelectItemText>Banana</SmSelectItemText>
+                                </SmSelectItem>
+                                <SmSelectItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
-                                    <SelectItemText>Cherry</SelectItemText>
-                                </SelectItem>
-                                <SelectItem TValue="string" Value="@("orange")" Label="Orange" class="demo-item">
+                                    <SmSelectItemText>Cherry</SmSelectItemText>
+                                </SmSelectItem>
+                                <SmSelectItem TValue="string" Value="@("orange")" Label="Orange" class="demo-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
-                                    <SelectItemText>Orange</SelectItemText>
-                                </SelectItem>
-                                <SelectItem TValue="string" Value="@("grape")" Label="Grape" class="demo-item">
+                                    <SmSelectItemText>Orange</SmSelectItemText>
+                                </SmSelectItem>
+                                <SmSelectItem TValue="string" Value="@("grape")" Label="Grape" class="demo-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
-                                    <SelectItemText>Grape</SelectItemText>
-                                </SelectItem>
-                            </SelectViewport>
-                        </SelectContent>
-                    </SelectPortal>
-                </SelectRoot>
+                                    <SmSelectItemText>Grape</SmSelectItemText>
+                                </SmSelectItem>
+                            </SmSelectViewport>
+                        </SmSelectContent>
+                    </SmSelectPortal>
+                </SmSelectRoot>
                 <SuText Size="SuTextSize.Small" Muted="true">Selected: @(selectedFruit ?? "None")</SuText>
             </div>
         </SuCard>
@@ -546,20 +546,20 @@
         new() { Name = "OnSelect", Type = "EventCallback", Description = "Selection callback" }
     };
 
-    private const string anatomyCode = @"<SelectRoot TValue=""string"">
-    <SelectTrigger TValue=""string"">
-        <SelectValue TValue=""string"" Placeholder=""Select an option..."" />
-    </SelectTrigger>
-    <SelectPortal TValue=""string"">
-        <SelectContent TValue=""string"">
-            <SelectViewport TValue=""string"">
-                <SelectItem TValue=""string"" Value=""@(""option-1"")"">
-                    <SelectItemText>Option 1</SelectItemText>
-                </SelectItem>
-            </SelectViewport>
-        </SelectContent>
-    </SelectPortal>
-</SelectRoot>";
+    private const string anatomyCode = @"<SmSelectRoot TValue=""string"">
+    <SmSelectTrigger TValue=""string"">
+        <SmSelectValue TValue=""string"" Placeholder=""Select an option..."" />
+    </SmSelectTrigger>
+    <SmSelectPortal TValue=""string"">
+        <SmSelectContent TValue=""string"">
+            <SmSelectViewport TValue=""string"">
+                <SmSelectItem TValue=""string"" Value=""@(""option-1"")"">
+                    <SmSelectItemText>Option 1</SmSelectItemText>
+                </SmSelectItem>
+            </SmSelectViewport>
+        </SmSelectContent>
+    </SmSelectPortal>
+</SmSelectRoot>";
 
     private const string sideEnumCode = @"public enum Side
 {
@@ -592,27 +592,27 @@
     private string? selectedFruit;
 }
 
-<SelectRoot TValue=""string"" @bind-Value=""selectedFruit"">
-    <SelectTrigger TValue=""string"" class=""select-trigger"">
-        <SelectValue TValue=""string"" Placeholder=""Select a fruit..."" />
+<SmSelectRoot TValue=""string"" @bind-Value=""selectedFruit"">
+    <SmSelectTrigger TValue=""string"" class=""select-trigger"">
+        <SmSelectValue TValue=""string"" Placeholder=""Select a fruit..."" />
         <span class=""select-icon"">▼</span>
-    </SelectTrigger>
-    <SelectPortal TValue=""string"">
-        <SelectContent TValue=""string"" class=""select-content"" SideOffset=""4"">
-            <SelectViewport TValue=""string"" class=""select-viewport"">
-                <SelectItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">
-                    <SelectItemText>Apple</SelectItemText>
-                </SelectItem>
-                <SelectItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">
-                    <SelectItemText>Banana</SelectItemText>
-                </SelectItem>
-                <SelectItem TValue=""string"" Value=""@(""cherry"")"" Label=""Cherry"">
-                    <SelectItemText>Cherry</SelectItemText>
-                </SelectItem>
-            </SelectViewport>
-        </SelectContent>
-    </SelectPortal>
-</SelectRoot>
+    </SmSelectTrigger>
+    <SmSelectPortal TValue=""string"">
+        <SmSelectContent TValue=""string"" class=""select-content"" SideOffset=""4"">
+            <SmSelectViewport TValue=""string"" class=""select-viewport"">
+                <SmSelectItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">
+                    <SmSelectItemText>Apple</SmSelectItemText>
+                </SmSelectItem>
+                <SmSelectItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">
+                    <SmSelectItemText>Banana</SmSelectItemText>
+                </SmSelectItem>
+                <SmSelectItem TValue=""string"" Value=""@(""cherry"")"" Label=""Cherry"">
+                    <SmSelectItemText>Cherry</SmSelectItemText>
+                </SmSelectItem>
+            </SmSelectViewport>
+        </SmSelectContent>
+    </SmSelectPortal>
+</SmSelectRoot>
 
 <p>Selected: @(selectedFruit ?? ""None"")</p>";
 
@@ -621,29 +621,29 @@
     private Priority selectedPriority = Priority.Medium;
 }
 
-<SelectRoot TValue=""Priority"" @bind-Value=""selectedPriority"">
-    <SelectTrigger TValue=""Priority"" class=""select-trigger"">
-        <SelectValue TValue=""Priority"" Placeholder=""Select priority..."" />
-    </SelectTrigger>
-    <SelectPortal TValue=""Priority"">
-        <SelectContent TValue=""Priority"" class=""select-content"">
-            <SelectViewport TValue=""Priority"">
-                <SelectItem TValue=""Priority"" Value=""Priority.Low"" Label=""Low"">
-                    <SelectItemText>Low Priority</SelectItemText>
-                </SelectItem>
-                <SelectItem TValue=""Priority"" Value=""Priority.Medium"" Label=""Medium"">
-                    <SelectItemText>Medium Priority</SelectItemText>
-                </SelectItem>
-                <SelectItem TValue=""Priority"" Value=""Priority.High"" Label=""High"">
-                    <SelectItemText>High Priority</SelectItemText>
-                </SelectItem>
-                <SelectItem TValue=""Priority"" Value=""Priority.Critical"" Label=""Critical"">
-                    <SelectItemText>Critical Priority</SelectItemText>
-                </SelectItem>
-            </SelectViewport>
-        </SelectContent>
-    </SelectPortal>
-</SelectRoot>";
+<SmSelectRoot TValue=""Priority"" @bind-Value=""selectedPriority"">
+    <SmSelectTrigger TValue=""Priority"" class=""select-trigger"">
+        <SmSelectValue TValue=""Priority"" Placeholder=""Select priority..."" />
+    </SmSelectTrigger>
+    <SmSelectPortal TValue=""Priority"">
+        <SmSelectContent TValue=""Priority"" class=""select-content"">
+            <SmSelectViewport TValue=""Priority"">
+                <SmSelectItem TValue=""Priority"" Value=""Priority.Low"" Label=""Low"">
+                    <SmSelectItemText>Low Priority</SmSelectItemText>
+                </SmSelectItem>
+                <SmSelectItem TValue=""Priority"" Value=""Priority.Medium"" Label=""Medium"">
+                    <SmSelectItemText>Medium Priority</SmSelectItemText>
+                </SmSelectItem>
+                <SmSelectItem TValue=""Priority"" Value=""Priority.High"" Label=""High"">
+                    <SmSelectItemText>High Priority</SmSelectItemText>
+                </SmSelectItem>
+                <SmSelectItem TValue=""Priority"" Value=""Priority.Critical"" Label=""Critical"">
+                    <SmSelectItemText>Critical Priority</SmSelectItemText>
+                </SmSelectItem>
+            </SmSelectViewport>
+        </SmSelectContent>
+    </SmSelectPortal>
+</SmSelectRoot>";
 
     private const string objectExampleCode = @"@code {
     public record Country(string Code, string Name);
@@ -659,56 +659,56 @@
     private Country? selectedCountry;
 }
 
-<SelectRoot TValue=""Country"" @bind-Value=""selectedCountry"">
-    <SelectTrigger TValue=""Country"" class=""select-trigger"">
-        <SelectValue TValue=""Country"" Placeholder=""Select a country..."" />
-    </SelectTrigger>
-    <SelectPortal TValue=""Country"">
-        <SelectContent TValue=""Country"" class=""select-content"">
-            <SelectViewport TValue=""Country"">
+<SmSelectRoot TValue=""Country"" @bind-Value=""selectedCountry"">
+    <SmSelectTrigger TValue=""Country"" class=""select-trigger"">
+        <SmSelectValue TValue=""Country"" Placeholder=""Select a country..."" />
+    </SmSelectTrigger>
+    <SmSelectPortal TValue=""Country"">
+        <SmSelectContent TValue=""Country"" class=""select-content"">
+            <SmSelectViewport TValue=""Country"">
                 @foreach (var country in countries)
                 {
-                    <SelectItem TValue=""Country"" 
+                    <SmSelectItem TValue=""Country"" 
                                 Value=""country"" 
                                 Key=""@country.Code"" 
                                 Label=""@country.Name"">
-                        <SelectItemText>@country.Name (@country.Code)</SelectItemText>
-                    </SelectItem>
+                        <SmSelectItemText>@country.Name (@country.Code)</SmSelectItemText>
+                    </SmSelectItem>
                 }
-            </SelectViewport>
-        </SelectContent>
-    </SelectPortal>
-</SelectRoot>";
+            </SmSelectViewport>
+        </SmSelectContent>
+    </SmSelectPortal>
+</SmSelectRoot>";
 
-    private const string groupedExampleCode = @"<SelectRoot TValue=""string"" @bind-Value=""selectedFood"">
-    <SelectTrigger TValue=""string"" class=""select-trigger"">
-        <SelectValue TValue=""string"" Placeholder=""Select food..."" />
-    </SelectTrigger>
-    <SelectPortal TValue=""string"">
-        <SelectContent TValue=""string"" class=""select-content"">
-            <SelectViewport TValue=""string"">
+    private const string groupedExampleCode = @"<SmSelectRoot TValue=""string"" @bind-Value=""selectedFood"">
+    <SmSelectTrigger TValue=""string"" class=""select-trigger"">
+        <SmSelectValue TValue=""string"" Placeholder=""Select food..."" />
+    </SmSelectTrigger>
+    <SmSelectPortal TValue=""string"">
+        <SmSelectContent TValue=""string"" class=""select-content"">
+            <SmSelectViewport TValue=""string"">
                 <SelectGroup TValue=""string"">
                     <SelectGroupLabel class=""select-group-label"">Fruits</SelectGroupLabel>
-                    <SelectItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">
-                        <SelectItemText>Apple</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">
-                        <SelectItemText>Banana</SelectItemText>
-                    </SelectItem>
+                    <SmSelectItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">
+                        <SmSelectItemText>Apple</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">
+                        <SmSelectItemText>Banana</SmSelectItemText>
+                    </SmSelectItem>
                 </SelectGroup>
                 <SelectGroup TValue=""string"">
                     <SelectGroupLabel class=""select-group-label"">Vegetables</SelectGroupLabel>
-                    <SelectItem TValue=""string"" Value=""@(""carrot"")"" Label=""Carrot"">
-                        <SelectItemText>Carrot</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue=""string"" Value=""@(""broccoli"")"" Label=""Broccoli"">
-                        <SelectItemText>Broccoli</SelectItemText>
-                    </SelectItem>
+                    <SmSelectItem TValue=""string"" Value=""@(""carrot"")"" Label=""Carrot"">
+                        <SmSelectItemText>Carrot</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue=""string"" Value=""@(""broccoli"")"" Label=""Broccoli"">
+                        <SmSelectItemText>Broccoli</SmSelectItemText>
+                    </SmSelectItem>
                 </SelectGroup>
-            </SelectViewport>
-        </SelectContent>
-    </SelectPortal>
-</SelectRoot>";
+            </SmSelectViewport>
+        </SmSelectContent>
+    </SmSelectPortal>
+</SmSelectRoot>";
 
     private const string editFormExampleCode = @"@code {
     public class FormModel
@@ -739,29 +739,29 @@
     
     <div class=""form-field"">
         <label for=""category"">Category</label>
-        <SelectRoot TValue=""string"" 
+        <SmSelectRoot TValue=""string"" 
                     @bind-Value=""formModel.Category"" 
                     Name=""category"" 
                     Required=""true"">
-            <SelectTrigger TValue=""string"" class=""select-trigger"" id=""category"">
-                <SelectValue TValue=""string"" Placeholder=""Select category..."" />
-            </SelectTrigger>
-            <SelectPortal TValue=""string"">
-                <SelectContent TValue=""string"" class=""select-content"">
-                    <SelectViewport TValue=""string"">
-                        <SelectItem TValue=""string"" Value=""@(""electronics"")"" Label=""Electronics"">
-                            <SelectItemText>Electronics</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue=""string"" Value=""@(""clothing"")"" Label=""Clothing"">
-                            <SelectItemText>Clothing</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue=""string"" Value=""@(""books"")"" Label=""Books"">
-                            <SelectItemText>Books</SelectItemText>
-                        </SelectItem>
-                    </SelectViewport>
-                </SelectContent>
-            </SelectPortal>
-        </SelectRoot>
+            <SmSelectTrigger TValue=""string"" class=""select-trigger"" id=""category"">
+                <SmSelectValue TValue=""string"" Placeholder=""Select category..."" />
+            </SmSelectTrigger>
+            <SmSelectPortal TValue=""string"">
+                <SmSelectContent TValue=""string"" class=""select-content"">
+                    <SmSelectViewport TValue=""string"">
+                        <SmSelectItem TValue=""string"" Value=""@(""electronics"")"" Label=""Electronics"">
+                            <SmSelectItemText>Electronics</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue=""string"" Value=""@(""clothing"")"" Label=""Clothing"">
+                            <SmSelectItemText>Clothing</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue=""string"" Value=""@(""books"")"" Label=""Books"">
+                            <SmSelectItemText>Books</SmSelectItemText>
+                        </SmSelectItem>
+                    </SmSelectViewport>
+                </SmSelectContent>
+            </SmSelectPortal>
+        </SmSelectRoot>
         <ValidationMessage For=""@(() => formModel.Category)"" />
     </div>
     
@@ -769,34 +769,34 @@
 </EditForm>";
 
     private const string disabledExampleCode = @"@* Disabled entire select *@
-<SelectRoot TValue=""string"" Disabled=""true"">
-    <SelectTrigger TValue=""string"" class=""select-trigger"">
-        <SelectValue TValue=""string"" Placeholder=""Disabled..."" />
-    </SelectTrigger>
+<SmSelectRoot TValue=""string"" Disabled=""true"">
+    <SmSelectTrigger TValue=""string"" class=""select-trigger"">
+        <SmSelectValue TValue=""string"" Placeholder=""Disabled..."" />
+    </SmSelectTrigger>
     ...
-</SelectRoot>
+</SmSelectRoot>
 
 @* Disabled individual items *@
-<SelectRoot TValue=""string"" @bind-Value=""selectedValue"">
-    <SelectTrigger TValue=""string"" class=""select-trigger"">
-        <SelectValue TValue=""string"" Placeholder=""Select..."" />
-    </SelectTrigger>
-    <SelectPortal TValue=""string"">
-        <SelectContent TValue=""string"" class=""select-content"">
-            <SelectViewport TValue=""string"">
-                <SelectItem TValue=""string"" Value=""@(""option1"")"" Label=""Option 1"">
-                    <SelectItemText>Option 1</SelectItemText>
-                </SelectItem>
-                <SelectItem TValue=""string"" Value=""@(""option2"")"" Label=""Option 2"" Disabled=""true"">
-                    <SelectItemText>Option 2 (Disabled)</SelectItemText>
-                </SelectItem>
-                <SelectItem TValue=""string"" Value=""@(""option3"")"" Label=""Option 3"">
-                    <SelectItemText>Option 3</SelectItemText>
-                </SelectItem>
-            </SelectViewport>
-        </SelectContent>
-    </SelectPortal>
-</SelectRoot>";
+<SmSelectRoot TValue=""string"" @bind-Value=""selectedValue"">
+    <SmSelectTrigger TValue=""string"" class=""select-trigger"">
+        <SmSelectValue TValue=""string"" Placeholder=""Select..."" />
+    </SmSelectTrigger>
+    <SmSelectPortal TValue=""string"">
+        <SmSelectContent TValue=""string"" class=""select-content"">
+            <SmSelectViewport TValue=""string"">
+                <SmSelectItem TValue=""string"" Value=""@(""option1"")"" Label=""Option 1"">
+                    <SmSelectItemText>Option 1</SmSelectItemText>
+                </SmSelectItem>
+                <SmSelectItem TValue=""string"" Value=""@(""option2"")"" Label=""Option 2"" Disabled=""true"">
+                    <SmSelectItemText>Option 2 (Disabled)</SmSelectItemText>
+                </SmSelectItem>
+                <SmSelectItem TValue=""string"" Value=""@(""option3"")"" Label=""Option 3"">
+                    <SmSelectItemText>Option 3</SmSelectItemText>
+                </SmSelectItem>
+            </SmSelectViewport>
+        </SmSelectContent>
+    </SmSelectPortal>
+</SmSelectRoot>";
 
     private const string cssExampleCode = @".select-trigger {
     display: flex;

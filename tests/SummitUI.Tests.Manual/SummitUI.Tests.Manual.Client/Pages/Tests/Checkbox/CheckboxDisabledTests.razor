@@ -13,31 +13,31 @@ else
     <div style="display: flex; flex-direction: column; gap: 1rem;">
         <!-- Disabled unchecked -->
         <label class="checkbox-label">
-            <CheckboxRoot Disabled="true" class="checkbox-root" data-testid="disabled-unchecked">
-                <CheckboxIndicator>
+            <SmCheckboxRoot Disabled="true" class="checkbox-root" data-testid="disabled-unchecked">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Disabled (unchecked)
         </label>
 
         <!-- Disabled checked -->
         <label class="checkbox-label">
-            <CheckboxRoot DefaultChecked="true" Disabled="true" class="checkbox-root" data-testid="disabled-checked">
-                <CheckboxIndicator>
+            <SmCheckboxRoot DefaultChecked="true" Disabled="true" class="checkbox-root" data-testid="disabled-checked">
+                <SmCheckboxIndicator>
                     <span>✓</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Disabled (checked)
         </label>
 
         <!-- Disabled indeterminate -->
         <label class="checkbox-label">
-            <CheckboxRoot Indeterminate="true" Disabled="true" class="checkbox-root" data-testid="disabled-indeterminate">
-                <CheckboxIndicator ForceMount="true">
+            <SmCheckboxRoot Indeterminate="true" Disabled="true" class="checkbox-root" data-testid="disabled-indeterminate">
+                <SmCheckboxIndicator ForceMount="true">
                     <span>-</span>
-                </CheckboxIndicator>
-            </CheckboxRoot>
+                </SmCheckboxIndicator>
+            </SmCheckboxRoot>
             Disabled (indeterminate)
         </label>
     </div>

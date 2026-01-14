@@ -243,18 +243,18 @@
 
     private const string importsCode = @"@using SummitUI";
 
-    private const string usageExampleCode = @"<AccordionRoot DefaultValue=""item-1"">
-    <AccordionItem Value=""item-1"">
-        <AccordionHeader>
-            <AccordionTrigger class=""accordion-trigger"">
+    private const string usageExampleCode = @"<SmAccordionRoot DefaultValue=""item-1"">
+    <SmAccordionItem Value=""item-1"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger class=""accordion-trigger"">
                 What is SummitUI?
-            </AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent class=""accordion-content"">
+            </SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent class=""accordion-content"">
             <p>SummitUI is a headless Blazor component library focused on accessibility.</p>
-        </AccordionContent>
-    </AccordionItem>
-</AccordionRoot>";
+        </SmAccordionContent>
+    </SmAccordionItem>
+</SmAccordionRoot>";
 
     private const string stylingExampleCode = @"/* Target based on component state */
 .accordion-trigger[data-state=""open""] {

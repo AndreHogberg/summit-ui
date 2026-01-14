@@ -1,6 +1,6 @@
 <div class="flex items-start">
-    <PopoverRoot @bind-Open="_isPopoverOpen">
-        <PopoverTrigger
+    <SmPopoverRoot @bind-Open="_isPopoverOpen">
+        <SmPopoverTrigger
             class="inline-flex h-10 w-[240px] items-center justify-start text-left font-normal rounded-md border border-su-border bg-su-background px-3 py-2 text-sm ring-offset-su-background hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
             aria-label="Pick a date">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -19,57 +19,57 @@
             {
                 <span class="text-su-muted-foreground">Pick a date</span>
             }
-        </PopoverTrigger>
-        <PopoverPortal>
-            <PopoverContent
+        </SmPopoverTrigger>
+        <SmPopoverPortal>
+            <SmPopoverContent
                 class="w-auto p-0 bg-su-card text-su-card-foreground border border-su-border rounded-md shadow-md outline-none"
                 Align="Align.Start" SideOffset="4">
-                <CalendarRoot Value="_date" ValueChanged="OnDateChanged" class="p-3" Context="ctx">
-                    <CalendarHeader class="flex items-center justify-between pt-1 relative pb-4">
-                        <CalendarPrevButton
+                <SmCalendarRoot Value="_date" ValueChanged="OnDateChanged" class="p-3" Context="ctx">
+                    <SmCalendarHeader class="flex items-center justify-between pt-1 relative pb-4">
+                        <SmCalendarPrevButton
                             class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent"/>
-                        <CalendarHeading class="text-sm font-medium"/>
-                        <CalendarNextButton
+                        <SmCalendarHeading class="text-sm font-medium"/>
+                        <SmCalendarNextButton
                             class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent"/>
-                    </CalendarHeader>
-                    <CalendarGrid class="w-full border-collapse space-y-1">
-                        <CalendarGridHead>
-                            <CalendarGridRow class="flex">
+                    </SmCalendarHeader>
+                    <SmCalendarGrid class="w-full border-collapse space-y-1">
+                        <SmCalendarGridHead>
+                            <SmCalendarGridRow class="flex">
                                 @if (ctx.Weekdays != null)
                                 {
                                     @for (var i = 0; i < ctx.Weekdays.Length; i++)
                                     {
                                         var idx = i;
-                                        <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]"
+                                        <SmCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]"
                                                           class="text-su-muted-foreground rounded-md w-9 font-normal text-[0.8rem]">
                                             @ctx.Weekdays[idx]
-                                        </CalendarHeadCell>
+                                        </SmCalendarHeadCell>
                                     }
                                 }
-                            </CalendarGridRow>
-                        </CalendarGridHead>
-                        <CalendarGridBody>
+                            </SmCalendarGridRow>
+                        </SmCalendarGridHead>
+                        <SmCalendarGridBody>
                             @if (ctx.CurrentMonth != null)
                             {
                                 @foreach (var week in ctx.CurrentMonth.Weeks)
                                 {
-                                    <CalendarGridRow class="flex w-full mt-2">
+                                    <SmCalendarGridRow class="flex w-full mt-2">
                                         @foreach (var date in week)
                                         {
-                                            <CalendarCell Date="@date"
+                                            <SmCalendarCell Date="@date"
                                                           class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-su-accent [&:has([aria-selected].day-outside)]:bg-su-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md">
-                                                <CalendarDay class="@DayClass"/>
-                                            </CalendarCell>
+                                                <SmCalendarDay class="@DayClass"/>
+                                            </SmCalendarCell>
                                         }
-                                    </CalendarGridRow>
+                                    </SmCalendarGridRow>
                                 }
                             }
-                        </CalendarGridBody>
-                    </CalendarGrid>
-                </CalendarRoot>
-            </PopoverContent>
-        </PopoverPortal>
-    </PopoverRoot>
+                        </SmCalendarGridBody>
+                    </SmCalendarGrid>
+                </SmCalendarRoot>
+            </SmPopoverContent>
+        </SmPopoverPortal>
+    </SmPopoverRoot>
 </div>
 
 @code {

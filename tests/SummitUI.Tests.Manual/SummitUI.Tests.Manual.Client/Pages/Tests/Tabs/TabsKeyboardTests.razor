@@ -13,92 +13,92 @@ else
     <!-- Auto activation mode (default) - activates on arrow navigation -->
     <div class="test-section" data-testid="auto-section">
         <h2>Auto Activation Mode</h2>
-        <TabsRoot DefaultValue="account" ActivationMode="TabsActivationMode.Auto">
-            <TabsList class="tabs-list" data-testid="auto-tabs-list">
-                <TabsTrigger Value="account" class="tabs-trigger" data-testid="auto-trigger-account">Account</TabsTrigger>
-                <TabsTrigger Value="password" class="tabs-trigger" data-testid="auto-trigger-password">Password</TabsTrigger>
-                <TabsTrigger Value="settings" Disabled="true" class="tabs-trigger" data-testid="auto-trigger-settings">Settings (Disabled)</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="account" class="tabs-content" data-testid="auto-content-account">
+        <SmTabsRoot DefaultValue="account" ActivationMode="TabsActivationMode.Auto">
+            <SmTabsList class="tabs-list" data-testid="auto-tabs-list">
+                <SmTabsTrigger Value="account" class="tabs-trigger" data-testid="auto-trigger-account">Account</SmTabsTrigger>
+                <SmTabsTrigger Value="password" class="tabs-trigger" data-testid="auto-trigger-password">Password</SmTabsTrigger>
+                <SmTabsTrigger Value="settings" Disabled="true" class="tabs-trigger" data-testid="auto-trigger-settings">Settings (Disabled)</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="account" class="tabs-content" data-testid="auto-content-account">
                 Account settings content
-            </TabsContent>
-            <TabsContent Value="password" class="tabs-content" data-testid="auto-content-password">
+            </SmTabsContent>
+            <SmTabsContent Value="password" class="tabs-content" data-testid="auto-content-password">
                 Password settings content
-            </TabsContent>
-            <TabsContent Value="settings" class="tabs-content" data-testid="auto-content-settings">
+            </SmTabsContent>
+            <SmTabsContent Value="settings" class="tabs-content" data-testid="auto-content-settings">
                 Settings content
-            </TabsContent>
-        </TabsRoot>
+            </SmTabsContent>
+        </SmTabsRoot>
     </div>
     
     <!-- Manual activation mode - requires Enter/Space to activate -->
     <div class="test-section" data-testid="manual-section">
         <h2>Manual Activation Mode</h2>
-        <TabsRoot DefaultValue="tab1" ActivationMode="TabsActivationMode.Manual">
-            <TabsList class="tabs-list" data-testid="manual-tabs-list">
-                <TabsTrigger Value="tab1" class="tabs-trigger" data-testid="manual-trigger-1">Tab 1</TabsTrigger>
-                <TabsTrigger Value="tab2" class="tabs-trigger" data-testid="manual-trigger-2">Tab 2</TabsTrigger>
-                <TabsTrigger Value="tab3" class="tabs-trigger" data-testid="manual-trigger-3">Tab 3</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="tab1" class="tabs-content" data-testid="manual-content-1">
+        <SmTabsRoot DefaultValue="tab1" ActivationMode="TabsActivationMode.Manual">
+            <SmTabsList class="tabs-list" data-testid="manual-tabs-list">
+                <SmTabsTrigger Value="tab1" class="tabs-trigger" data-testid="manual-trigger-1">Tab 1</SmTabsTrigger>
+                <SmTabsTrigger Value="tab2" class="tabs-trigger" data-testid="manual-trigger-2">Tab 2</SmTabsTrigger>
+                <SmTabsTrigger Value="tab3" class="tabs-trigger" data-testid="manual-trigger-3">Tab 3</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="tab1" class="tabs-content" data-testid="manual-content-1">
                 Tab 1 content
-            </TabsContent>
-            <TabsContent Value="tab2" class="tabs-content" data-testid="manual-content-2">
+            </SmTabsContent>
+            <SmTabsContent Value="tab2" class="tabs-content" data-testid="manual-content-2">
                 Tab 2 content
-            </TabsContent>
-            <TabsContent Value="tab3" class="tabs-content" data-testid="manual-content-3">
+            </SmTabsContent>
+            <SmTabsContent Value="tab3" class="tabs-content" data-testid="manual-content-3">
                 Tab 3 content
-            </TabsContent>
-        </TabsRoot>
+            </SmTabsContent>
+        </SmTabsRoot>
     </div>
     
     <!-- Horizontal orientation (default) -->
     <div class="test-section" data-testid="horizontal-section">
         <h2>Horizontal Orientation</h2>
-        <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Horizontal">
-            <TabsList class="tabs-list" data-testid="horizontal-tabs-list">
-                <TabsTrigger Value="first" class="tabs-trigger" data-testid="horizontal-trigger-first">First</TabsTrigger>
-                <TabsTrigger Value="second" class="tabs-trigger" data-testid="horizontal-trigger-second">Second</TabsTrigger>
-                <TabsTrigger Value="third" class="tabs-trigger" data-testid="horizontal-trigger-third">Third</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="first" class="tabs-content">First content</TabsContent>
-            <TabsContent Value="second" class="tabs-content">Second content</TabsContent>
-            <TabsContent Value="third" class="tabs-content">Third content</TabsContent>
-        </TabsRoot>
+        <SmTabsRoot DefaultValue="first" Orientation="TabsOrientation.Horizontal">
+            <SmTabsList class="tabs-list" data-testid="horizontal-tabs-list">
+                <SmTabsTrigger Value="first" class="tabs-trigger" data-testid="horizontal-trigger-first">First</SmTabsTrigger>
+                <SmTabsTrigger Value="second" class="tabs-trigger" data-testid="horizontal-trigger-second">Second</SmTabsTrigger>
+                <SmTabsTrigger Value="third" class="tabs-trigger" data-testid="horizontal-trigger-third">Third</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="first" class="tabs-content">First content</SmTabsContent>
+            <SmTabsContent Value="second" class="tabs-content">Second content</SmTabsContent>
+            <SmTabsContent Value="third" class="tabs-content">Third content</SmTabsContent>
+        </SmTabsRoot>
     </div>
     
     <!-- Vertical orientation - uses ArrowUp/ArrowDown -->
     <div class="test-section" data-testid="vertical-section">
         <h2>Vertical Orientation</h2>
         <div class="d-flex">
-            <TabsRoot DefaultValue="first" Orientation="TabsOrientation.Vertical">
-                <TabsList class="tabs-list-vertical" data-testid="vertical-tabs-list">
-                    <TabsTrigger Value="first" class="tabs-trigger-vertical" data-testid="vertical-trigger-first">First</TabsTrigger>
-                    <TabsTrigger Value="second" class="tabs-trigger-vertical" data-testid="vertical-trigger-second">Second</TabsTrigger>
-                    <TabsTrigger Value="third" class="tabs-trigger-vertical" data-testid="vertical-trigger-third">Third</TabsTrigger>
-                </TabsList>
+            <SmTabsRoot DefaultValue="first" Orientation="TabsOrientation.Vertical">
+                <SmTabsList class="tabs-list-vertical" data-testid="vertical-tabs-list">
+                    <SmTabsTrigger Value="first" class="tabs-trigger-vertical" data-testid="vertical-trigger-first">First</SmTabsTrigger>
+                    <SmTabsTrigger Value="second" class="tabs-trigger-vertical" data-testid="vertical-trigger-second">Second</SmTabsTrigger>
+                    <SmTabsTrigger Value="third" class="tabs-trigger-vertical" data-testid="vertical-trigger-third">Third</SmTabsTrigger>
+                </SmTabsList>
                 <div class="tabs-content-vertical-container">
-                    <TabsContent Value="first" class="tabs-content" data-testid="vertical-content-first">First content</TabsContent>
-                    <TabsContent Value="second" class="tabs-content" data-testid="vertical-content-second">Second content</TabsContent>
-                    <TabsContent Value="third" class="tabs-content" data-testid="vertical-content-third">Third content</TabsContent>
+                    <SmTabsContent Value="first" class="tabs-content" data-testid="vertical-content-first">First content</SmTabsContent>
+                    <SmTabsContent Value="second" class="tabs-content" data-testid="vertical-content-second">Second content</SmTabsContent>
+                    <SmTabsContent Value="third" class="tabs-content" data-testid="vertical-content-third">Third content</SmTabsContent>
                 </div>
-            </TabsRoot>
+            </SmTabsRoot>
         </div>
     </div>
     
     <!-- Wrap around navigation -->
     <div class="test-section" data-testid="wrap-section">
         <h2>Wrap Around Navigation (Loop enabled)</h2>
-        <TabsRoot DefaultValue="first" Loop="true">
-            <TabsList class="tabs-list" data-testid="wrap-tabs-list">
-                <TabsTrigger Value="first" class="tabs-trigger" data-testid="wrap-trigger-first">First</TabsTrigger>
-                <TabsTrigger Value="second" class="tabs-trigger" data-testid="wrap-trigger-second">Second</TabsTrigger>
-                <TabsTrigger Value="third" class="tabs-trigger" data-testid="wrap-trigger-third">Third</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="first" class="tabs-content">First content</TabsContent>
-            <TabsContent Value="second" class="tabs-content">Second content</TabsContent>
-            <TabsContent Value="third" class="tabs-content">Third content</TabsContent>
-        </TabsRoot>
+        <SmTabsRoot DefaultValue="first" Loop="true">
+            <SmTabsList class="tabs-list" data-testid="wrap-tabs-list">
+                <SmTabsTrigger Value="first" class="tabs-trigger" data-testid="wrap-trigger-first">First</SmTabsTrigger>
+                <SmTabsTrigger Value="second" class="tabs-trigger" data-testid="wrap-trigger-second">Second</SmTabsTrigger>
+                <SmTabsTrigger Value="third" class="tabs-trigger" data-testid="wrap-trigger-third">Third</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="first" class="tabs-content">First content</SmTabsContent>
+            <SmTabsContent Value="second" class="tabs-content">Second content</SmTabsContent>
+            <SmTabsContent Value="third" class="tabs-content">Third content</SmTabsContent>
+        </SmTabsRoot>
     </div>
 </div>
 }

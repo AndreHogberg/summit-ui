@@ -30,51 +30,51 @@
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
                     <label class="text-sm text-su-muted-foreground">Enter verification code</label>
-                    <OtpRoot @bind-Value="otpValue" MaxLength="6" class="demo-otp">
+                    <SmOtpRoot @bind-Value="otpValue" MaxLength="6" class="demo-otp">
                         @foreach (var slot in context.Slots)
                         {
-                            <OtpSlot Slot="slot" class="demo-otp-slot">
-                                <OtpCaret class="demo-otp-caret" />
-                            </OtpSlot>
+                            <SmOtpSlot Slot="slot" class="demo-otp-slot">
+                                <SmOtpCaret class="demo-otp-caret" />
+                            </SmOtpSlot>
                         }
-                    </OtpRoot>
+                    </SmOtpRoot>
                     <span class="text-xs text-su-muted-foreground">Current value: "@otpValue"</span>
                 </div>
                 
                 <div class="flex flex-col gap-2">
                     <label class="text-sm text-su-muted-foreground">With placeholder</label>
-                    <OtpRoot @bind-Value="otpPlaceholder" MaxLength="6" Placeholder="------" class="demo-otp">
+                    <SmOtpRoot @bind-Value="otpPlaceholder" MaxLength="6" Placeholder="------" class="demo-otp">
                         @foreach (var slot in context.Slots)
                         {
-                            <OtpSlot Slot="slot" class="demo-otp-slot">
-                                <OtpCaret class="demo-otp-caret" />
-                            </OtpSlot>
+                            <SmOtpSlot Slot="slot" class="demo-otp-slot">
+                                <SmOtpCaret class="demo-otp-caret" />
+                            </SmOtpSlot>
                         }
-                    </OtpRoot>
+                    </SmOtpRoot>
                 </div>
                 
                 <div class="flex flex-col gap-2">
                     <label class="text-sm text-su-muted-foreground">With separator (123-456 style)</label>
-                    <OtpRoot @bind-Value="otpSeparator" MaxLength="6" class="demo-otp">
+                    <SmOtpRoot @bind-Value="otpSeparator" MaxLength="6" class="demo-otp">
                         @foreach (var slot in context.Slots.Take(3))
                         {
-                            <OtpSlot Slot="slot" class="demo-otp-slot">
-                                <OtpCaret class="demo-otp-caret" />
-                            </OtpSlot>
+                            <SmOtpSlot Slot="slot" class="demo-otp-slot">
+                                <SmOtpCaret class="demo-otp-caret" />
+                            </SmOtpSlot>
                         }
                         <span class="demo-separator">-</span>
                         @foreach (var slot in context.Slots.Skip(3))
                         {
-                            <OtpSlot Slot="slot" class="demo-otp-slot">
-                                <OtpCaret class="demo-otp-caret" />
-                            </OtpSlot>
+                            <SmOtpSlot Slot="slot" class="demo-otp-slot">
+                                <SmOtpCaret class="demo-otp-caret" />
+                            </SmOtpSlot>
                         }
-                    </OtpRoot>
+                    </SmOtpRoot>
                 </div>
                 
                 <div class="flex flex-col gap-2">
                     <label class="text-sm text-su-muted-foreground opacity-50">Disabled</label>
-                    <OtpRoot Value="123456" MaxLength="6" Disabled="true" class="demo-otp" />
+                    <SmOtpRoot Value="123456" MaxLength="6" Disabled="true" class="demo-otp" />
                 </div>
             </div>
         </SuCard>
@@ -503,25 +503,25 @@
         new() { Name = "Ctrl/Cmd + A", Description = "Select all", Type = "" },
     };
 
-    private const string anatomyCode = @"<OtpRoot @bind-Value=""otpValue"" MaxLength=""6"">
+    private const string anatomyCode = @"<SmOtpRoot @bind-Value=""otpValue"" MaxLength=""6"">
     @foreach (var slot in context.Slots)
     {
-        <OtpSlot Slot=""slot"">
-            <OtpCaret />
-        </OtpSlot>
+        <SmOtpSlot Slot=""slot"">
+            <SmOtpCaret />
+        </SmOtpSlot>
     }
-</OtpRoot>";
+</SmOtpRoot>";
 
-    private const string basicExampleCode = @"<OtpRoot @bind-Value=""code"" MaxLength=""6"" />";
+    private const string basicExampleCode = @"<SmOtpRoot @bind-Value=""code"" MaxLength=""6"" />";
 
-    private const string caretExampleCode = @"<OtpRoot @bind-Value=""code"" MaxLength=""6"" class=""otp-container"">
+    private const string caretExampleCode = @"<SmOtpRoot @bind-Value=""code"" MaxLength=""6"" class=""otp-container"">
     @foreach (var slot in context.Slots)
     {
-        <OtpSlot Slot=""slot"" class=""otp-slot"">
-            <OtpCaret class=""otp-caret"" />
-        </OtpSlot>
+        <SmOtpSlot Slot=""slot"" class=""otp-slot"">
+            <SmOtpCaret class=""otp-caret"" />
+        </SmOtpSlot>
     }
-</OtpRoot>
+</SmOtpRoot>
 
 <style>
     .otp-caret {
@@ -537,23 +537,23 @@
     }
 </style>";
 
-    private const string separatorExampleCode = @"<OtpRoot @bind-Value=""code"" MaxLength=""6"" class=""otp-container"">
+    private const string separatorExampleCode = @"<SmOtpRoot @bind-Value=""code"" MaxLength=""6"" class=""otp-container"">
     @foreach (var slot in context.Slots.Take(3))
     {
-        <OtpSlot Slot=""slot"" class=""otp-slot"" />
+        <SmOtpSlot Slot=""slot"" class=""otp-slot"" />
     }
     <span class=""separator"">-</span>
     @foreach (var slot in context.Slots.Skip(3))
     {
-        <OtpSlot Slot=""slot"" class=""otp-slot"" />
+        <SmOtpSlot Slot=""slot"" class=""otp-slot"" />
     }
-</OtpRoot>";
+</SmOtpRoot>";
 
     private const string patternExampleCode = @"@* Digits only *@
-<OtpRoot @bind-Value=""code"" MaxLength=""6"" Pattern=""[0-9]*"" />
+<SmOtpRoot @bind-Value=""code"" MaxLength=""6"" Pattern=""[0-9]*"" />
 
 @* Alphanumeric *@
-<OtpRoot @bind-Value=""code"" MaxLength=""6"" Pattern=""[A-Za-z0-9]*"" />";
+<SmOtpRoot @bind-Value=""code"" MaxLength=""6"" Pattern=""[A-Za-z0-9]*"" />";
 
     private const string completeExampleCode = @"@code {
     private string code = """";
@@ -565,7 +565,7 @@
     }
 }
 
-<OtpRoot @bind-Value=""code"" MaxLength=""6"" OnComplete=""HandleComplete"" />";
+<SmOtpRoot @bind-Value=""code"" MaxLength=""6"" OnComplete=""HandleComplete"" />";
 
     private const string formExampleCode = @"@code {
     private VerificationModel model = new();
@@ -586,12 +586,12 @@
 <EditForm Model=""model"" OnValidSubmit=""HandleSubmit"">
     <DataAnnotationsValidator />
     
-    <OtpRoot @bind-Value=""model.Code"" MaxLength=""6"" Name=""verificationCode"">
+    <SmOtpRoot @bind-Value=""model.Code"" MaxLength=""6"" Name=""verificationCode"">
         @foreach (var slot in context.Slots)
         {
-            <OtpSlot Slot=""slot"" class=""otp-slot"" />
+            <SmOtpSlot Slot=""slot"" class=""otp-slot"" />
         }
-    </OtpRoot>
+    </SmOtpRoot>
     
     <ValidationMessage For=""() => model.Code"" />
     

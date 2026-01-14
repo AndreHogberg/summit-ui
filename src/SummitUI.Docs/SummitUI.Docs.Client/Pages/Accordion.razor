@@ -21,53 +21,53 @@
     @* Live Demo *@
     <SuSection Title="Demo">
         <SuCard>
-            <AccordionRoot DefaultValue="item-1" class="w-full divide-y divide-su-border">
-                <AccordionItem Value="item-1">
-                    <AccordionHeader>
-                        <AccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
+            <SmAccordionRoot DefaultValue="item-1" class="w-full divide-y divide-su-border">
+                <SmAccordionItem Value="item-1">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
                             <span>Is it accessible?</span>
                             <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180 text-su-muted-foreground group-hover:text-su-primary group-data-[state=open]:text-su-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
-                        </AccordionTrigger>
-                    </AccordionHeader>
-                    <AccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
                         <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             Yes. It adheres to the WAI-ARIA design pattern for accordions, including proper keyboard navigation and ARIA attributes.
                         </div>
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem Value="item-2">
-                    <AccordionHeader>
-                        <AccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="item-2">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
                             <span>Is it styled?</span>
                             <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
-                        </AccordionTrigger>
-                    </AccordionHeader>
-                    <AccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
                         <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             No. It's completely unstyled by default, giving you full control over the appearance using CSS and data attributes.
                         </div>
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem Value="item-3">
-                    <AccordionHeader>
-                        <AccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="item-3">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
                             <span>Can I use it with animations?</span>
                             <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m6 9 6 6 6-6"/>
                             </svg>
-                        </AccordionTrigger>
-                    </AccordionHeader>
-                    <AccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
                         <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             Yes! CSS variables for height and width are automatically set, allowing smooth CSS transitions for expand/collapse animations.
                         </div>
-                    </AccordionContent>
-                </AccordionItem>
-            </AccordionRoot>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+            </SmAccordionRoot>
         </SuCard>
     </SuSection>
 
@@ -371,89 +371,89 @@
         new() { Name = "End", Description = "Move focus to last trigger", Type = "" }
     };
 
-    private const string anatomyCode = @"<AccordionRoot>
-    <AccordionItem Value=""item-1"">
-        <AccordionHeader>
-            <AccordionTrigger>Title</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>
+    private const string anatomyCode = @"<SmAccordionRoot>
+    <SmAccordionItem Value=""item-1"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>Title</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>
             Content goes here...
-        </AccordionContent>
-    </AccordionItem>
-</AccordionRoot>";
+        </SmAccordionContent>
+    </SmAccordionItem>
+</SmAccordionRoot>";
 
-    private const string basicExampleCode = @"<AccordionRoot DefaultValue=""item-1"">
-    <AccordionItem Value=""item-1"">
-        <AccordionHeader>
-            <AccordionTrigger>What is SummitUI?</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>
+    private const string basicExampleCode = @"<SmAccordionRoot DefaultValue=""item-1"">
+    <SmAccordionItem Value=""item-1"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>What is SummitUI?</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>
             <p>SummitUI is a Blazor component library focused on accessibility.</p>
-        </AccordionContent>
-    </AccordionItem>
-    <AccordionItem Value=""item-2"">
-        <AccordionHeader>
-            <AccordionTrigger>Is it accessible?</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>
+        </SmAccordionContent>
+    </SmAccordionItem>
+    <SmAccordionItem Value=""item-2"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>Is it accessible?</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>
             <p>Yes! All components are built with WCAG compliance in mind.</p>
-        </AccordionContent>
-    </AccordionItem>
-</AccordionRoot>";
+        </SmAccordionContent>
+    </SmAccordionItem>
+</SmAccordionRoot>";
 
-    private const string multipleExampleCode = @"<AccordionRoot Type=""AccordionType.Multiple"" 
+    private const string multipleExampleCode = @"<SmAccordionRoot Type=""AccordionType.Multiple"" 
                DefaultValues=""@(new[] { ""item-1"", ""item-2"" })"">
-    <AccordionItem Value=""item-1"">
-        <AccordionHeader>
-            <AccordionTrigger>First Section</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>First content...</AccordionContent>
-    </AccordionItem>
-    <AccordionItem Value=""item-2"">
-        <AccordionHeader>
-            <AccordionTrigger>Second Section</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>Second content...</AccordionContent>
-    </AccordionItem>
-</AccordionRoot>";
+    <SmAccordionItem Value=""item-1"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>First Section</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>First content...</SmAccordionContent>
+    </SmAccordionItem>
+    <SmAccordionItem Value=""item-2"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>Second Section</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>Second content...</SmAccordionContent>
+    </SmAccordionItem>
+</SmAccordionRoot>";
 
     private const string controlledExampleCode = @"@code {
     private string? expandedItem = ""item-1"";
 }
 
-<AccordionRoot Value=""@expandedItem"" 
+<SmAccordionRoot Value=""@expandedItem"" 
                ValueChanged=""@(v => expandedItem = v)"">
-    <AccordionItem Value=""item-1"">
-        <AccordionHeader>
-            <AccordionTrigger>Section 1</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>Content 1</AccordionContent>
-    </AccordionItem>
-    <AccordionItem Value=""item-2"">
-        <AccordionHeader>
-            <AccordionTrigger>Section 2</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>Content 2</AccordionContent>
-    </AccordionItem>
-</AccordionRoot>
+    <SmAccordionItem Value=""item-1"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>Section 1</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>Content 1</SmAccordionContent>
+    </SmAccordionItem>
+    <SmAccordionItem Value=""item-2"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>Section 2</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>Content 2</SmAccordionContent>
+    </SmAccordionItem>
+</SmAccordionRoot>
 
 <p>Currently expanded: @(expandedItem ?? ""None"")</p>
 <button @@onclick=""@(() => expandedItem = ""item-2"")"">Open Section 2</button>";
 
-    private const string disabledExampleCode = @"<AccordionRoot DefaultValue=""item-1"">
-    <AccordionItem Value=""item-1"">
-        <AccordionHeader>
-            <AccordionTrigger>Enabled Section</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>This section works normally.</AccordionContent>
-    </AccordionItem>
-    <AccordionItem Value=""item-2"" Disabled=""true"">
-        <AccordionHeader>
-            <AccordionTrigger>Disabled Section</AccordionTrigger>
-        </AccordionHeader>
-        <AccordionContent>This content cannot be accessed.</AccordionContent>
-    </AccordionItem>
-</AccordionRoot>";
+    private const string disabledExampleCode = @"<SmAccordionRoot DefaultValue=""item-1"">
+    <SmAccordionItem Value=""item-1"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>Enabled Section</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>This section works normally.</SmAccordionContent>
+    </SmAccordionItem>
+    <SmAccordionItem Value=""item-2"" Disabled=""true"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger>Disabled Section</SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>This content cannot be accessed.</SmAccordionContent>
+    </SmAccordionItem>
+</SmAccordionRoot>";
 
     private const string cssExampleCode = @"/* Trigger styles */
 .accordion-trigger {

@@ -8,10 +8,10 @@
     <h2>Basic DateOnly Field</h2>
     <p>A simple date field with ISO format. Use Arrow keys to navigate and increment/decrement, or type numbers directly.</p>
     
-    <DateFieldRoot @bind-Value="basicDate" Format="yyyy-MM-dd">
-        <DateFieldLabel class="datefield-label">Select a date</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-Value="basicDate" Format="yyyy-MM-dd">
+        <SmDateFieldLabel class="datefield-label">Select a date</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="basic-value">@(basicDate?.ToString("yyyy-MM-dd") ?? "None")</strong></p>
 </section>
@@ -20,10 +20,10 @@
     <h2>DateTime Field (with time)</h2>
     <p>A date-time field showing date and time segments (24-hour format).</p>
     
-    <DateFieldRoot @bind-DateTimeValue="basicDateTime" Format="yyyy-MM-dd">
-        <DateFieldLabel class="datefield-label">Select date and time</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-DateTimeValue="basicDateTime" Format="yyyy-MM-dd">
+        <SmDateFieldLabel class="datefield-label">Select date and time</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="datetime-value">@(basicDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</strong></p>
 </section>
@@ -32,10 +32,10 @@
     <h2>DateTime Field (12-hour format)</h2>
     <p>A date-time field with 12-hour format and AM/PM indicator.</p>
     
-    <DateFieldRoot @bind-DateTimeValue="dateTime12Hour" Format="MM/dd/yyyy" TimeFormat="hh:mm">
-        <DateFieldLabel class="datefield-label">Select date and time</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-DateTimeValue="dateTime12Hour" Format="MM/dd/yyyy" TimeFormat="hh:mm">
+        <SmDateFieldLabel class="datefield-label">Select date and time</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="datetime-12hour-value">@(dateTime12Hour?.ToString("MM/dd/yyyy hh:mm tt") ?? "None")</strong></p>
 </section>
@@ -44,10 +44,10 @@
     <h2>Swedish Format (yyyy-MM-dd)</h2>
     <p>Date field with Swedish-style formatting.</p>
     
-    <DateFieldRoot @bind-Value="swedishDate" Format="yyyy-MM-dd">
-        <DateFieldLabel class="datefield-label">Välj ett datum</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-Value="swedishDate" Format="yyyy-MM-dd">
+        <SmDateFieldLabel class="datefield-label">Välj ett datum</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="swedish-value">@(swedishDate?.ToString("yyyy-MM-dd") ?? "None")</strong></p>
 </section>
@@ -56,10 +56,10 @@
     <h2>US Format (MM/dd/yyyy)</h2>
     <p>Date field with US-style formatting.</p>
     
-    <DateFieldRoot @bind-Value="usDate" Format="MM/dd/yyyy">
-        <DateFieldLabel class="datefield-label">Select a date</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-Value="usDate" Format="MM/dd/yyyy">
+        <SmDateFieldLabel class="datefield-label">Select a date</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="us-value">@(usDate?.ToString("MM/dd/yyyy") ?? "None")</strong></p>
 </section>
@@ -68,10 +68,10 @@
     <h2>UK Format (dd/MM/yyyy)</h2>
     <p>Date field with UK-style formatting.</p>
     
-    <DateFieldRoot @bind-Value="ukDate" Format="dd/MM/yyyy">
-        <DateFieldLabel class="datefield-label">Select a date</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-Value="ukDate" Format="dd/MM/yyyy">
+        <SmDateFieldLabel class="datefield-label">Select a date</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="uk-value">@(ukDate?.ToString("dd/MM/yyyy") ?? "None")</strong></p>
 </section>
@@ -80,10 +80,10 @@
     <h2>German Format (dd.MM.yyyy)</h2>
     <p>Date field with German-style formatting using dots as separators.</p>
     
-    <DateFieldRoot @bind-Value="germanDate" Format="dd.MM.yyyy">
-        <DateFieldLabel class="datefield-label">Datum auswählen</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-Value="germanDate" Format="dd.MM.yyyy">
+        <SmDateFieldLabel class="datefield-label">Datum auswählen</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="german-value">@(germanDate?.ToString("dd.MM.yyyy") ?? "None")</strong></p>
 </section>
@@ -92,10 +92,10 @@
     <h2>Min/Max Validation</h2>
     <p>Date field with minimum and maximum date constraints. The field shows invalid state when out of range.</p>
     
-    <DateFieldRoot @bind-Value="constrainedDate" Format="yyyy-MM-dd" MinValue="@minDate" MaxValue="@maxDate">
-        <DateFieldLabel class="datefield-label">Select a date (Jan 1, 2025 - Dec 31, 2025)</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-Value="constrainedDate" Format="yyyy-MM-dd" MinValue="@minDate" MaxValue="@maxDate">
+        <SmDateFieldLabel class="datefield-label">Select a date (Jan 1, 2025 - Dec 31, 2025)</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">
         Selected: <strong data-testid="minmax-value">@(constrainedDate?.ToString("yyyy-MM-dd") ?? "None")</strong>
@@ -110,10 +110,10 @@
     <h2>With Placeholder</h2>
     <p>Date field with a placeholder date shown when no value is set. Press Backspace to clear.</p>
     
-    <DateFieldRoot Value="@nullableDate" ValueChanged="v => nullableDate = v" Format="yyyy-MM-dd" Placeholder="@placeholderDate">
-        <DateFieldLabel class="datefield-label">Date with placeholder</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot Value="@nullableDate" ValueChanged="v => nullableDate = v" Format="yyyy-MM-dd" Placeholder="@placeholderDate">
+        <SmDateFieldLabel class="datefield-label">Date with placeholder</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     
     <p style="margin-top: 1rem;">Selected: <strong data-testid="placeholder-value">@(nullableDate?.ToString("yyyy-MM-dd") ?? "None (showing placeholder)")</strong></p>
 </section>
@@ -122,30 +122,30 @@
     <h2>Disabled State</h2>
     <p>The date field can be disabled.</p>
     
-    <DateFieldRoot Value="@disabledDate" Format="yyyy-MM-dd" Disabled="true">
-        <DateFieldLabel class="datefield-label">Disabled date field</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot Value="@disabledDate" Format="yyyy-MM-dd" Disabled="true">
+        <SmDateFieldLabel class="datefield-label">Disabled date field</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
 </section>
 
 <section style="margin-top: 2rem;" data-testid="readonly-section">
     <h2>Read-Only State</h2>
     <p>The date field can be read-only (visible but not editable).</p>
     
-    <DateFieldRoot Value="@readOnlyDate" Format="yyyy-MM-dd" ReadOnly="true">
-        <DateFieldLabel class="datefield-label">Read-only date field</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot Value="@readOnlyDate" Format="yyyy-MM-dd" ReadOnly="true">
+        <SmDateFieldLabel class="datefield-label">Read-only date field</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
 </section>
 
 <section style="margin-top: 2rem;" data-testid="invalid-section">
     <h2>Invalid State</h2>
     <p>The date field showing an invalid/error state.</p>
     
-    <DateFieldRoot @bind-Value="invalidDate" Format="yyyy-MM-dd" Invalid="true">
-        <DateFieldLabel class="datefield-label">Date with error</DateFieldLabel>
-        <DateFieldInput class="datefield-input" />
-    </DateFieldRoot>
+    <SmDateFieldRoot @bind-Value="invalidDate" Format="yyyy-MM-dd" Invalid="true">
+        <SmDateFieldLabel class="datefield-label">Date with error</SmDateFieldLabel>
+        <SmDateFieldInput class="datefield-input" />
+    </SmDateFieldRoot>
     <p style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">Please enter a valid date</p>
 </section>
 
@@ -157,14 +157,14 @@
         <DataAnnotationsValidator />
 
         <div style="margin-bottom: 1rem;">
-            <DateFieldRoot @bind-Value="formModel.BirthDate"
+            <SmDateFieldRoot @bind-Value="formModel.BirthDate"
                            Format="yyyy-MM-dd"
                            Name="birthDate"
                            Required="true"
                            Invalid="@(editFormSubmitted && formModel.BirthDate == null)">
-                <DateFieldLabel class="datefield-label" data-testid="editform-birthdate-label">Birth Date (Required)</DateFieldLabel>
-                <DateFieldInput class="datefield-input" data-testid="editform-birthdate-input" />
-            </DateFieldRoot>
+                <SmDateFieldLabel class="datefield-label" data-testid="editform-birthdate-label">Birth Date (Required)</SmDateFieldLabel>
+                <SmDateFieldInput class="datefield-input" data-testid="editform-birthdate-input" />
+            </SmDateFieldRoot>
             <ValidationMessage For="@(() => formModel.BirthDate)" />
             @if (editFormSubmitted && formModel.BirthDate == null)
             {
@@ -173,14 +173,14 @@
         </div>
 
         <div style="margin-bottom: 1rem;">
-            <DateFieldRoot @bind-DateTimeValue="formModel.AppointmentTime"
+            <SmDateFieldRoot @bind-DateTimeValue="formModel.AppointmentTime"
                            Format="yyyy-MM-dd"
                            Name="appointmentTime"
                            MinDateTime="@DateTime.Now"
                            MaxDateTime="@DateTime.Now.AddYears(1)">
-                <DateFieldLabel class="datefield-label" data-testid="editform-appointment-label">Appointment (Optional, future dates only)</DateFieldLabel>
-                <DateFieldInput class="datefield-input" data-testid="editform-appointment-input" />
-            </DateFieldRoot>
+                <SmDateFieldLabel class="datefield-label" data-testid="editform-appointment-label">Appointment (Optional, future dates only)</SmDateFieldLabel>
+                <SmDateFieldInput class="datefield-input" data-testid="editform-appointment-input" />
+            </SmDateFieldRoot>
         </div>
 
         <button type="submit" class="btn btn-primary" data-testid="editform-submit">Submit</button>
@@ -202,10 +202,10 @@
 
     <form @onsubmit="HandleBasicFormSubmit" @onsubmit:preventDefault>
         <div style="margin-bottom: 1rem;">
-            <DateFieldRoot @bind-Value="basicFormDate" Format="yyyy-MM-dd" Name="eventDate" Required="true">
-                <DateFieldLabel class="datefield-label">Event Date</DateFieldLabel>
-                <DateFieldInput class="datefield-input" data-testid="form-date-input" />
-            </DateFieldRoot>
+            <SmDateFieldRoot @bind-Value="basicFormDate" Format="yyyy-MM-dd" Name="eventDate" Required="true">
+                <SmDateFieldLabel class="datefield-label">Event Date</SmDateFieldLabel>
+                <SmDateFieldInput class="datefield-input" data-testid="form-date-input" />
+            </SmDateFieldRoot>
         </div>
         <button type="submit" class="btn btn-primary" data-testid="form-submit">Submit Form</button>
     </form>

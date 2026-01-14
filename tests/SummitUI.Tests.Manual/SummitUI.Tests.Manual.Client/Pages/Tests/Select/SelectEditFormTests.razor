@@ -20,33 +20,33 @@ else
             <label id="category-label" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
                 Category (Required)
             </label>
-            <SelectRoot TValue="string"
+            <SmSelectRoot TValue="string"
                         @bind-Value="formModel.Category"
                         Name="category"
                         Required="true"
                         Invalid="@(formSubmitted && string.IsNullOrEmpty(formModel.Category))">
-                <SelectTrigger TValue="string" data-testid="category-trigger" AriaLabelledBy="category-label">
-                    <SelectValue TValue="string" Placeholder="Select a category..." />
-                </SelectTrigger>
-                <SelectPortal TValue="string">
-                    <SelectContent TValue="string" data-testid="category-content" SideOffset="4">
-                        <SelectViewport TValue="string">
-                            <SelectItem TValue="string" Value="@("electronics")" Label="Electronics" data-testid="item-electronics">
-                                <SelectItemText>Electronics</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("clothing")" Label="Clothing" data-testid="item-clothing">
-                                <SelectItemText>Clothing</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("books")" Label="Books" data-testid="item-books">
-                                <SelectItemText>Books</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("home")" Label="Home & Garden" data-testid="item-home">
-                                <SelectItemText>Home & Garden</SelectItemText>
-                            </SelectItem>
-                        </SelectViewport>
-                    </SelectContent>
-                </SelectPortal>
-            </SelectRoot>
+                <SmSelectTrigger TValue="string" data-testid="category-trigger" AriaLabelledBy="category-label">
+                    <SmSelectValue TValue="string" Placeholder="Select a category..." />
+                </SmSelectTrigger>
+                <SmSelectPortal TValue="string">
+                    <SmSelectContent TValue="string" data-testid="category-content" SideOffset="4">
+                        <SmSelectViewport TValue="string">
+                            <SmSelectItem TValue="string" Value="@("electronics")" Label="Electronics" data-testid="item-electronics">
+                                <SmSelectItemText>Electronics</SmSelectItemText>
+                            </SmSelectItem>
+                            <SmSelectItem TValue="string" Value="@("clothing")" Label="Clothing" data-testid="item-clothing">
+                                <SmSelectItemText>Clothing</SmSelectItemText>
+                            </SmSelectItem>
+                            <SmSelectItem TValue="string" Value="@("books")" Label="Books" data-testid="item-books">
+                                <SmSelectItemText>Books</SmSelectItemText>
+                            </SmSelectItem>
+                            <SmSelectItem TValue="string" Value="@("home")" Label="Home & Garden" data-testid="item-home">
+                                <SmSelectItemText>Home & Garden</SmSelectItemText>
+                            </SmSelectItem>
+                        </SmSelectViewport>
+                    </SmSelectContent>
+                </SmSelectPortal>
+            </SmSelectRoot>
             <ValidationMessage For="@(() => formModel.Category)" />
             @if (formSubmitted && string.IsNullOrEmpty(formModel.Category))
             {
@@ -60,26 +60,26 @@ else
             <label id="priority-label" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
                 Priority Level (Optional)
             </label>
-            <SelectRoot TValue="string" @bind-Value="formModel.Priority" Name="priority">
-                <SelectTrigger TValue="string" data-testid="priority-trigger" AriaLabelledBy="priority-label">
-                    <SelectValue TValue="string" Placeholder="Select priority..." />
-                </SelectTrigger>
-                <SelectPortal TValue="string">
-                    <SelectContent TValue="string" data-testid="priority-content" SideOffset="4">
-                        <SelectViewport TValue="string">
-                            <SelectItem TValue="string" Value="@("low")" Label="Low" data-testid="item-low">
-                                <SelectItemText>Low</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("medium")" Label="Medium" data-testid="item-medium">
-                                <SelectItemText>Medium</SelectItemText>
-                            </SelectItem>
-                            <SelectItem TValue="string" Value="@("high")" Label="High" data-testid="item-high">
-                                <SelectItemText>High</SelectItemText>
-                            </SelectItem>
-                        </SelectViewport>
-                    </SelectContent>
-                </SelectPortal>
-            </SelectRoot>
+            <SmSelectRoot TValue="string" @bind-Value="formModel.Priority" Name="priority">
+                <SmSelectTrigger TValue="string" data-testid="priority-trigger" AriaLabelledBy="priority-label">
+                    <SmSelectValue TValue="string" Placeholder="Select priority..." />
+                </SmSelectTrigger>
+                <SmSelectPortal TValue="string">
+                    <SmSelectContent TValue="string" data-testid="priority-content" SideOffset="4">
+                        <SmSelectViewport TValue="string">
+                            <SmSelectItem TValue="string" Value="@("low")" Label="Low" data-testid="item-low">
+                                <SmSelectItemText>Low</SmSelectItemText>
+                            </SmSelectItem>
+                            <SmSelectItem TValue="string" Value="@("medium")" Label="Medium" data-testid="item-medium">
+                                <SmSelectItemText>Medium</SmSelectItemText>
+                            </SmSelectItem>
+                            <SmSelectItem TValue="string" Value="@("high")" Label="High" data-testid="item-high">
+                                <SmSelectItemText>High</SmSelectItemText>
+                            </SmSelectItem>
+                        </SmSelectViewport>
+                    </SmSelectContent>
+                </SmSelectPortal>
+            </SmSelectRoot>
         </div>
 
         <button type="submit" data-testid="submit-button">Submit</button>

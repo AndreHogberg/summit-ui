@@ -13,9 +13,9 @@
 else
 {
 <div data-testid="page-ready">
-    <ComboboxRoot TValue="string" @bind-Values="selectedValues">
-        <ComboboxTrigger TValue="string" data-testid="trigger">
-            <ComboboxSelectedValues TValue="string" Context="items">
+    <SmComboboxRoot TValue="string" @bind-Values="selectedValues">
+        <SmComboboxTrigger TValue="string" data-testid="trigger">
+            <SmComboboxSelectedValues TValue="string" Context="items">
                 @if (items.Count == 0)
                 {
                     <span data-placeholder>Select fruits...</span>
@@ -24,36 +24,36 @@ else
                 {
                     <span>@items.Count selected</span>
                 }
-            </ComboboxSelectedValues>
+            </SmComboboxSelectedValues>
             <span class="chevron">▼</span>
-        </ComboboxTrigger>
-        <ComboboxPortal TValue="string">
-            <ComboboxContent TValue="string" data-testid="content" SideOffset="4">
-                <ComboboxViewport TValue="string">
-                    <ComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+        </SmComboboxTrigger>
+        <SmComboboxPortal TValue="string">
+            <SmComboboxContent TValue="string" data-testid="content" SideOffset="4">
+                <SmComboboxViewport TValue="string">
+                    <SmComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
                         <span class="checkbox">@(selectedValues.Contains("apple") ? "☑" : "☐")</span>
                         Apple
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
                         <span class="checkbox">@(selectedValues.Contains("banana") ? "☑" : "☐")</span>
                         Banana
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
                         <span class="checkbox">@(selectedValues.Contains("orange") ? "☑" : "☐")</span>
                         Orange
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("grape")" Label="Grape" data-testid="item-grape">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("grape")" Label="Grape" data-testid="item-grape">
                         <span class="checkbox">@(selectedValues.Contains("grape") ? "☑" : "☐")</span>
                         Grape
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
                         <span class="checkbox">@(selectedValues.Contains("mango") ? "☑" : "☐")</span>
                         Mango
-                    </ComboboxItem>
-                </ComboboxViewport>
-            </ComboboxContent>
-        </ComboboxPortal>
-    </ComboboxRoot>
+                    </SmComboboxItem>
+                </SmComboboxViewport>
+            </SmComboboxContent>
+        </SmComboboxPortal>
+    </SmComboboxRoot>
     
     <div data-testid="selection-count">@selectedValues.Count selected</div>
 </div>

@@ -20,14 +20,14 @@ else
             
             <div class="space-y-2">
                 <label>Enter 6-digit code</label>
-                <OtpRoot @bind-Value="model.Code" MaxLength="6" data-testid="otp-input" class="otp-container" Context="otp">
+                <SmOtpRoot @bind-Value="model.Code" MaxLength="6" data-testid="otp-input" class="otp-container" Context="otp">
                     @foreach (var slot in otp.Slots)
                     {
-                        <OtpSlot Slot="slot" class="otp-slot">
-                            <OtpCaret class="otp-caret" />
-                        </OtpSlot>
+                        <SmOtpSlot Slot="slot" class="otp-slot">
+                            <SmOtpCaret class="otp-caret" />
+                        </SmOtpSlot>
                     }
-                </OtpRoot>
+                </SmOtpRoot>
                 <ValidationMessage For="() => model.Code" data-testid="otp-validation" />
             </div>
             

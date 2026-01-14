@@ -7,25 +7,25 @@
     <h2>Basic Dropdown Menu</h2>
     <p>A simple dropdown menu with default settings.</p>
 
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="btn btn-primary">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="btn btn-primary">
             Open Menu
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content" SideOffset="4">
-                <DropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("New File"))">
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content" SideOffset="4">
+                <SmDropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("New File"))">
                     New File
-                </DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("New Folder"))">
+                </SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("New Folder"))">
                     New Folder
-                </DropdownMenuItem>
-                <DropdownMenuSeparator class="dropdown-menu-separator" />
-                <DropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("Settings"))">
+                </SmDropdownMenuItem>
+                <SmDropdownMenuSeparator class="dropdown-menu-separator" />
+                <SmDropdownMenuItem class="dropdown-menu-item" OnSelect="@(() => LogAction("Settings"))">
                     Settings
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+                </SmDropdownMenuItem>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 
     @if (!string.IsNullOrEmpty(lastAction))
     {
@@ -37,80 +37,80 @@
     <h2>Grouped Items</h2>
     <p>Menu items organized into labeled groups.</p>
 
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="btn btn-success">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="btn btn-success">
             Grouped Menu
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content">
-                <DropdownMenuGroup>
-                    <DropdownMenuGroupLabel class="dropdown-menu-label">File</DropdownMenuGroupLabel>
-                    <DropdownMenuItem class="dropdown-menu-item">New</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Open</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Save</DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator class="dropdown-menu-separator" />
-                <DropdownMenuGroup>
-                    <DropdownMenuGroupLabel class="dropdown-menu-label">Edit</DropdownMenuGroupLabel>
-                    <DropdownMenuItem OnClick="@(() => Console.WriteLine("Undo"))" class="dropdown-menu-item">Undo</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Redo</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Cut</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Copy</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Paste</DropdownMenuItem>
-                </DropdownMenuGroup>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content">
+                <SmDropdownMenuGroup>
+                    <SmDropdownMenuGroupLabel class="dropdown-menu-label">File</SmDropdownMenuGroupLabel>
+                    <SmDropdownMenuItem class="dropdown-menu-item">New</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Open</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Save</SmDropdownMenuItem>
+                </SmDropdownMenuGroup>
+                <SmDropdownMenuSeparator class="dropdown-menu-separator" />
+                <SmDropdownMenuGroup>
+                    <SmDropdownMenuGroupLabel class="dropdown-menu-label">Edit</SmDropdownMenuGroupLabel>
+                    <SmDropdownMenuItem OnClick="@(() => Console.WriteLine("Undo"))" class="dropdown-menu-item">Undo</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Redo</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Cut</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Copy</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Paste</SmDropdownMenuItem>
+                </SmDropdownMenuGroup>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 </section>
 
 <section style="margin-top: 2rem;">
     <h2>With Disabled Items</h2>
     <p>Some items can be disabled and skipped during keyboard navigation.</p>
 
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="btn btn-secondary">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="btn btn-secondary">
             With Disabled
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content">
-                <DropdownMenuItem class="dropdown-menu-item">Available Action</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" Disabled="true">Disabled Action</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item">Another Available</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" Disabled="true">Also Disabled</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item">Last Available</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content">
+                <SmDropdownMenuItem class="dropdown-menu-item">Available Action</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" Disabled="true">Disabled Action</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item">Another Available</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" Disabled="true">Also Disabled</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item">Last Available</SmDropdownMenuItem>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 </section>
 
 <section style="margin-top: 2rem;">
     <h2>Checkbox Items</h2>
     <p>Toggle-able menu items that maintain checked state.</p>
 
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="btn btn-info">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="btn btn-info">
             Settings Menu
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content">
-                <DropdownMenuGroupLabel class="dropdown-menu-label">Preferences</DropdownMenuGroupLabel>
-                <DropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="showToolbar">
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content">
+                <SmDropdownMenuGroupLabel class="dropdown-menu-label">Preferences</SmDropdownMenuGroupLabel>
+                <SmDropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="showToolbar">
                     <span class="checkbox-indicator">@(showToolbar ? "✓" : "")</span>
                     <span>Show Toolbar</span>
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="showSidebar">
+                </SmDropdownMenuCheckboxItem>
+                <SmDropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="showSidebar">
                     <span class="checkbox-indicator">@(showSidebar ? "✓" : "")</span>
                     <span>Show Sidebar</span>
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="enableNotifications">
+                </SmDropdownMenuCheckboxItem>
+                <SmDropdownMenuCheckboxItem class="dropdown-menu-checkbox-item" @bind-Checked="enableNotifications">
                     <span class="checkbox-indicator">@(enableNotifications ? "✓" : "")</span>
                     <span>Enable Notifications</span>
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuSeparator class="dropdown-menu-separator" />
-                <DropdownMenuItem class="dropdown-menu-item">More Settings...</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+                </SmDropdownMenuCheckboxItem>
+                <SmDropdownMenuSeparator class="dropdown-menu-separator" />
+                <SmDropdownMenuItem class="dropdown-menu-item">More Settings...</SmDropdownMenuItem>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 
     <p style="margin-top: 1rem; color: #666; font-size: 0.875rem;">
         Toolbar: @(showToolbar ? "On" : "Off") |
@@ -123,30 +123,30 @@
     <h2>Radio Items</h2>
     <p>Single-select items within a radio group.</p>
 
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="btn btn-warning">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="btn btn-warning">
             Select Theme
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content">
-                <DropdownMenuRadioGroup @bind-Value="selectedTheme" AriaLabel="Theme selection">
-                    <DropdownMenuGroupLabel class="dropdown-menu-label">Theme</DropdownMenuGroupLabel>
-                    <DropdownMenuRadioItem class="dropdown-menu-radio-item" Value="light">
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content">
+                <SmDropdownMenuRadioGroup @bind-Value="selectedTheme" AriaLabel="Theme selection">
+                    <SmDropdownMenuGroupLabel class="dropdown-menu-label">Theme</SmDropdownMenuGroupLabel>
+                    <SmDropdownMenuRadioItem class="dropdown-menu-radio-item" Value="light">
                         <span class="radio-indicator">@(selectedTheme == "light" ? "●" : "○")</span>
                         <span>Light</span>
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem class="dropdown-menu-radio-item" Value="dark">
+                    </SmDropdownMenuRadioItem>
+                    <SmDropdownMenuRadioItem class="dropdown-menu-radio-item" Value="dark">
                         <span class="radio-indicator">@(selectedTheme == "dark" ? "●" : "○")</span>
                         <span>Dark</span>
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem class="dropdown-menu-radio-item" Value="system">
+                    </SmDropdownMenuRadioItem>
+                    <SmDropdownMenuRadioItem class="dropdown-menu-radio-item" Value="system">
                         <span class="radio-indicator">@(selectedTheme == "system" ? "●" : "○")</span>
                         <span>System</span>
-                    </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+                    </SmDropdownMenuRadioItem>
+                </SmDropdownMenuRadioGroup>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 
     <p style="margin-top: 1rem; color: #666; font-size: 0.875rem;">
         Selected theme: @selectedTheme
@@ -158,49 +158,49 @@
     <p>Dropdown menus can appear on different sides of the trigger.</p>
 
     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="btn btn-outline-primary">Bottom Start</DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="dropdown-menu-content" Side="Side.Bottom" Align="Align.Start">
-                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="btn btn-outline-primary">Bottom Start</SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="dropdown-menu-content" Side="Side.Bottom" Align="Align.Start">
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 1</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 2</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 3</SmDropdownMenuItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
 
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="btn btn-outline-primary">Right Start</DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="dropdown-menu-content" Side="Side.Right" Align="Align.Start">
-                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="btn btn-outline-primary">Right Start</SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="dropdown-menu-content" Side="Side.Right" Align="Align.Start">
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 1</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 2</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 3</SmDropdownMenuItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
 
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="btn btn-outline-primary">Top End</DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="dropdown-menu-content" Side="Side.Top" Align="Align.End">
-                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="btn btn-outline-primary">Top End</SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="dropdown-menu-content" Side="Side.Top" Align="Align.End">
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 1</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 2</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 3</SmDropdownMenuItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
 
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="btn btn-outline-primary">Left Center</DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="dropdown-menu-content" Side="Side.Left" Align="Align.Center">
-                    <DropdownMenuItem class="dropdown-menu-item">Item 1</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 2</DropdownMenuItem>
-                    <DropdownMenuItem class="dropdown-menu-item">Item 3</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="btn btn-outline-primary">Left Center</SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="dropdown-menu-content" Side="Side.Left" Align="Align.Center">
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 1</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 2</SmDropdownMenuItem>
+                    <SmDropdownMenuItem class="dropdown-menu-item">Item 3</SmDropdownMenuItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
     </div>
 </section>
 
@@ -214,18 +214,18 @@
         </button>
     </div>
 
-    <DropdownMenuRoot Open="@isControlledOpen" OpenChanged="@(v => isControlledOpen = v)">
-        <DropdownMenuTrigger class="btn btn-secondary">
+    <SmDropdownMenuRoot Open="@isControlledOpen" OpenChanged="@(v => isControlledOpen = v)">
+        <SmDropdownMenuTrigger class="btn btn-secondary">
             Controlled Menu
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content">
-                <DropdownMenuItem class="dropdown-menu-item">Action 1</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item">Action 2</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item">Action 3</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content">
+                <SmDropdownMenuItem class="dropdown-menu-item">Action 1</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item">Action 2</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item">Action 3</SmDropdownMenuItem>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 </section>
 
 <section style="margin-top: 2rem;">
@@ -241,40 +241,40 @@
         <li>Type characters - Typeahead search</li>
     </ul>
 
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="btn btn-primary">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="btn btn-primary">
             Try Keyboard Navigation
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content">
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Apple">Apple</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Banana">Banana</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Cherry">Cherry</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Date">Date</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Elderberry">Elderberry</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Fig">Fig</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Grape">Grape</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content">
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Apple">Apple</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Banana">Banana</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Cherry">Cherry</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Date">Date</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Elderberry">Elderberry</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Fig">Fig</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Grape">Grape</SmDropdownMenuItem>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 </section>
 
 <section style="margin-top: 2rem;">
     <h2>With Animations</h2>
     <p>Dropdown menu with CSS open/close animations. Tests that keyboard navigation works with animated content.</p>
 
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="btn btn-primary">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="btn btn-primary">
             Animated Menu
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="dropdown-menu-content animated-content" SideOffset="4">
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="First">First Option</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Second">Second Option</DropdownMenuItem>
-                <DropdownMenuItem class="dropdown-menu-item" TextValue="Third">Third Option</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="dropdown-menu-content animated-content" SideOffset="4">
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="First">First Option</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Second">Second Option</SmDropdownMenuItem>
+                <SmDropdownMenuItem class="dropdown-menu-item" TextValue="Third">Third Option</SmDropdownMenuItem>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 </section>
 
 @code {

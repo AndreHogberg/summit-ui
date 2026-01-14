@@ -11,25 +11,25 @@ else
     <h1>Accordion Non-Collapsible Tests</h1>
 
     <!-- Non-collapsible accordion - at least one item must always be open -->
-    <AccordionRoot DefaultValue="always-1" Collapsible="false" data-testid="accordion">
-        <AccordionItem Value="always-1" data-testid="item-1">
-            <AccordionHeader>
-                <AccordionTrigger data-testid="trigger-1">Always One Open</AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent data-testid="content-1">
+    <SmAccordionRoot DefaultValue="always-1" Collapsible="false" data-testid="accordion">
+        <SmAccordionItem Value="always-1" data-testid="item-1">
+            <SmAccordionHeader>
+                <SmAccordionTrigger data-testid="trigger-1">Always One Open</SmAccordionTrigger>
+            </SmAccordionHeader>
+            <SmAccordionContent data-testid="content-1">
                 <p>In non-collapsible mode, at least one item must always be open.</p>
-            </AccordionContent>
-        </AccordionItem>
+            </SmAccordionContent>
+        </SmAccordionItem>
 
-        <AccordionItem Value="always-2" data-testid="item-2">
-            <AccordionHeader>
-                <AccordionTrigger data-testid="trigger-2">Try Closing Me</AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent data-testid="content-2">
+        <SmAccordionItem Value="always-2" data-testid="item-2">
+            <SmAccordionHeader>
+                <SmAccordionTrigger data-testid="trigger-2">Try Closing Me</SmAccordionTrigger>
+            </SmAccordionHeader>
+            <SmAccordionContent data-testid="content-2">
                 <p>You can switch to this item, but you can't close the last open item.</p>
-            </AccordionContent>
-        </AccordionItem>
-    </AccordionRoot>
+            </SmAccordionContent>
+        </SmAccordionItem>
+    </SmAccordionRoot>
 </div>
 }
 

@@ -12,35 +12,35 @@ else
     
     <div class="test-section">
         <h2>Popover with Overlay (Modal/TrapFocus)</h2>
-        <PopoverRoot>
-            <PopoverTrigger class="popover-trigger" data-testid="overlay-trigger">
+        <SmPopoverRoot>
+            <SmPopoverTrigger class="popover-trigger" data-testid="overlay-trigger">
                 Open with Overlay
-            </PopoverTrigger>
-            <PopoverPortal>
-                <PopoverOverlay class="popover-overlay" data-testid="popover-overlay" />
-                <PopoverContent class="popover-content" data-testid="overlay-content">
+            </SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverOverlay class="popover-overlay" data-testid="popover-overlay" />
+                <SmPopoverContent class="popover-content" data-testid="overlay-content">
                     <h3>Modal Popover</h3>
                     <p>This popover should trap focus.</p>
                     <input type="text" placeholder="Focusable input" data-testid="overlay-input" />
-                    <PopoverClose class="popover-close" data-testid="overlay-close">Close</PopoverClose>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                    <SmPopoverClose class="popover-close" data-testid="overlay-close">Close</SmPopoverClose>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
     </div>
 
     <div class="test-section">
         <h2>Popover without TrapFocus</h2>
-        <PopoverRoot Modal="false">
-            <PopoverTrigger class="popover-trigger" data-testid="no-trap-trigger">
+        <SmPopoverRoot Modal="false">
+            <SmPopoverTrigger class="popover-trigger" data-testid="no-trap-trigger">
                 Open No Trap
-            </PopoverTrigger>
-            <PopoverPortal>
-                <PopoverContent class="popover-content" data-testid="no-trap-content">
+            </SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverContent class="popover-content" data-testid="no-trap-content">
                     <p>This popover should NOT trap focus.</p>
-                    <PopoverClose class="popover-close" data-testid="no-trap-close">Close</PopoverClose>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                    <SmPopoverClose class="popover-close" data-testid="no-trap-close">Close</SmPopoverClose>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
     </div>
 </div>
 }

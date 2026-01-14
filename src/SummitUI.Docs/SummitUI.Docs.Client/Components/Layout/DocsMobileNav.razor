@@ -3,43 +3,43 @@
 @inject ThemeJsInterop ThemeInterop
 
 @* Mobile Sidebar using Dialog *@
-<DialogRoot Open="@isSidebarOpen" OpenChanged="@(v => isSidebarOpen = v)">
-    <DialogPortal>
-        <DialogOverlay class="fixed inset-0 bg-black/60 backdrop-blur-sm z-90 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out duration-300 md:hidden" />
-        <DialogContent class="fixed top-0 left-0 h-screen w-[280px] bg-su-background border-r border-su-border z-100 data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300 md:hidden" As="aside">
-            <DialogTitle class="sr-only">Navigation Menu</DialogTitle>
+<SmDialogRoot Open="@isSidebarOpen" OpenChanged="@(v => isSidebarOpen = v)">
+    <SmDialogPortal>
+        <SmDialogOverlay class="fixed inset-0 bg-black/60 backdrop-blur-sm z-90 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out duration-300 md:hidden" />
+        <SmDialogContent class="fixed top-0 left-0 h-screen w-[280px] bg-su-background border-r border-su-border z-100 data-[state=open]:animate-in data-[state=open]:slide-in-from-left data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left duration-300 md:hidden" As="aside">
+            <SmDialogTitle class="sr-only">Navigation Menu</SmDialogTitle>
             <div class="flex h-14 items-center justify-between border-b border-su-border px-6">
                 <a href="/" class="flex items-center gap-2.5 font-semibold text-su-foreground" @onclick="CloseSidebar">
                     <img src="/Logo.svg" alt="SummitUI Logo" class="h-7 w-7 rounded-md" />
                     <span class="text-base">SummitUI</span>
                 </a>
-                <DialogClose class="flex h-8 w-8 items-center justify-center rounded-md text-su-muted-foreground hover:text-su-foreground hover:bg-su-accent transition-colors" 
+                <SmDialogClose class="flex h-8 w-8 items-center justify-center rounded-md text-su-muted-foreground hover:text-su-foreground hover:bg-su-accent transition-colors" 
                              AriaLabel="Close menu">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
-                </DialogClose>
+                </SmDialogClose>
             </div>
             <div class="sidebar-scroll-area">
                 <DocsSidebar />
             </div>
-        </DialogContent>
-    </DialogPortal>
+        </SmDialogContent>
+    </SmDialogPortal>
 
     <header class="sticky top-0 z-50 w-full border-b border-su-border bg-su-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-su-background/60">
         <div class="flex h-14 items-center">
             @* Left section - Logo area (responsive width) *@
             <div class="flex h-full shrink-0 items-center px-4 md:w-[280px] md:border-r md:border-su-border md:px-6">
                 @* Hamburger Menu Button (mobile only) *@
-                <DialogTrigger class="mr-3 flex h-8 w-8 items-center justify-center rounded-md text-su-muted-foreground hover:text-su-foreground hover:bg-su-accent md:hidden transition-colors" 
+                <SmDialogTrigger class="mr-3 flex h-8 w-8 items-center justify-center rounded-md text-su-muted-foreground hover:text-su-foreground hover:bg-su-accent md:hidden transition-colors" 
                                aria-label="Open navigation menu">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="12" x2="20" y2="12"></line>
                         <line x1="4" y1="6" x2="20" y2="6"></line>
                         <line x1="4" y1="18" x2="20" y2="18"></line>
                     </svg>
-                </DialogTrigger>
+                </SmDialogTrigger>
 
                 @* Logo *@
                 <a href="/" class="flex items-center gap-2.5 font-semibold text-su-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 focus-visible:ring-offset-su-background rounded-md transition-colors" aria-label="SummitUI Home">
@@ -100,7 +100,7 @@
             </div>
         </div>
     </header>
-</DialogRoot>
+</SmDialogRoot>
 
 @code {
     private bool isSidebarOpen;

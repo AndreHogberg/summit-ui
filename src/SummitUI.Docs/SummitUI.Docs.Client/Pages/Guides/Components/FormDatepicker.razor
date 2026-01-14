@@ -4,8 +4,8 @@
 @inherits InputBase<DateOnly?>
 
 <div class="@Class">
-    <PopoverRoot @bind-Open="_isOpen">
-        <PopoverTrigger @attributes="AdditionalAttributes"
+    <SmPopoverRoot @bind-Open="_isOpen">
+        <SmPopoverTrigger @attributes="AdditionalAttributes"
                         class="@GetTriggerClass()"
                         type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 opacity-50">
@@ -22,51 +22,51 @@
             {
                 <span class="text-su-muted-foreground">Pick a date</span>
             }
-        </PopoverTrigger>
-        <PopoverPortal>
-            <PopoverContent class="w-auto p-0 bg-su-card text-su-card-foreground border border-su-border rounded-md shadow-md outline-none" Align="Align.Start" SideOffset="4">
-                <CalendarRoot Value="CurrentValue" ValueChanged="OnValueChanged" class="p-3" Context="ctx">
-                    <CalendarHeader class="flex items-center justify-between pt-1 relative pb-4">
-                        <CalendarPrevButton class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent" />
-                        <CalendarHeading class="text-sm font-medium" />
-                        <CalendarNextButton class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent" />
-                    </CalendarHeader>
-                    <CalendarGrid class="w-full border-collapse space-y-1">
-                        <CalendarGridHead>
-                            <CalendarGridRow class="flex">
+        </SmPopoverTrigger>
+        <SmPopoverPortal>
+            <SmPopoverContent class="w-auto p-0 bg-su-card text-su-card-foreground border border-su-border rounded-md shadow-md outline-none" Align="Align.Start" SideOffset="4">
+                <SmCalendarRoot Value="CurrentValue" ValueChanged="OnValueChanged" class="p-3" Context="ctx">
+                    <SmCalendarHeader class="flex items-center justify-between pt-1 relative pb-4">
+                        <SmCalendarPrevButton class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent" />
+                        <SmCalendarHeading class="text-sm font-medium" />
+                        <SmCalendarNextButton class="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 flex items-center justify-center rounded-md border border-su-border hover:bg-su-accent" />
+                    </SmCalendarHeader>
+                    <SmCalendarGrid class="w-full border-collapse space-y-1">
+                        <SmCalendarGridHead>
+                            <SmCalendarGridRow class="flex">
                                 @if (ctx.Weekdays != null)
                                 {
                                     @for (int i = 0; i < ctx.Weekdays.Length; i++)
                                     {
                                         var idx = i;
-                                        <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="text-su-muted-foreground rounded-md w-9 font-normal text-[0.8rem]">
+                                        <SmCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="text-su-muted-foreground rounded-md w-9 font-normal text-[0.8rem]">
                                             @ctx.Weekdays[idx]
-                                        </CalendarHeadCell>
+                                        </SmCalendarHeadCell>
                                     }
                                 }
-                            </CalendarGridRow>
-                        </CalendarGridHead>
-                        <CalendarGridBody>
+                            </SmCalendarGridRow>
+                        </SmCalendarGridHead>
+                        <SmCalendarGridBody>
                              @if (ctx.CurrentMonth != null)
                              {
                                  @foreach (var week in ctx.CurrentMonth.Weeks)
                                  {
-                                     <CalendarGridRow class="flex w-full mt-2">
+                                     <SmCalendarGridRow class="flex w-full mt-2">
                                          @foreach (var date in week)
                                          {
-                                             <CalendarCell Date="@date" class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-su-accent [&:has([aria-selected].day-outside)]:bg-su-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md">
-                                                 <CalendarDay class="@DayClass" />
-                                             </CalendarCell>
+                                             <SmCalendarCell Date="@date" class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-su-accent [&:has([aria-selected].day-outside)]:bg-su-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md">
+                                                 <SmCalendarDay class="@DayClass" />
+                                             </SmCalendarCell>
                                          }
-                                     </CalendarGridRow>
+                                     </SmCalendarGridRow>
                                  }
                              }
-                        </CalendarGridBody>
-                    </CalendarGrid>
-                </CalendarRoot>
-            </PopoverContent>
-        </PopoverPortal>
-    </PopoverRoot>
+                        </SmCalendarGridBody>
+                    </SmCalendarGrid>
+                </SmCalendarRoot>
+            </SmPopoverContent>
+        </SmPopoverPortal>
+    </SmPopoverRoot>
 </div>
 
 @code {

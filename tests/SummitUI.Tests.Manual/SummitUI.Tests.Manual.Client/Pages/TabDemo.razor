@@ -1,16 +1,16 @@
 @page "/Tabs"
 @rendermode InteractiveAuto
-<TabsRoot DefaultValue="account">
-    <TabsList>
-        <TabsTrigger Value="account">Account</TabsTrigger>
-        <TabsTrigger Value="password">Password</TabsTrigger>
-        <TabsTrigger Value="settings" Disabled>Settings</TabsTrigger>
-    </TabsList>
+<SmTabsRoot DefaultValue="account">
+    <SmTabsList>
+        <SmTabsTrigger Value="account">Account</SmTabsTrigger>
+        <SmTabsTrigger Value="password">Password</SmTabsTrigger>
+        <SmTabsTrigger Value="settings" Disabled>Settings</SmTabsTrigger>
+    </SmTabsList>
 
-    <TabsContent Value="account">
+    <SmTabsContent Value="account">
         Account settings content...
-    </TabsContent>
-    <TabsContent Value="password">
+    </SmTabsContent>
+    <SmTabsContent Value="password">
         Password settings content...
-    </TabsContent>
-</TabsRoot>
+    </SmTabsContent>
+</SmTabsRoot>

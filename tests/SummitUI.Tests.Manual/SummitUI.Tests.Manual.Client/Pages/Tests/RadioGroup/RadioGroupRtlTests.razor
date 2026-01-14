@@ -14,29 +14,29 @@ else
     <div class="test-section" data-testid="rtl-horizontal-section" dir="rtl">
         <h2>RTL Horizontal (dir="rtl")</h2>
         <p class="info">In RTL mode, ArrowRight should go to previous item, ArrowLeft should go to next item.</p>
-        <RadioGroupRoot @bind-Value="_rtlHorizontalValue" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="RTL horizontal group" class="radio-group radio-group-horizontal" data-testid="rtl-horizontal-radio-group">
-            <RadioGroupItem Value="first" class="radio-item" data-testid="rtl-h-first">
+        <SmRadioGroupRoot @bind-Value="_rtlHorizontalValue" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="RTL horizontal group" class="radio-group radio-group-horizontal" data-testid="rtl-horizontal-radio-group">
+            <SmRadioGroupItem Value="first" class="radio-item" data-testid="rtl-h-first">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">ראשון (First)</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="second" class="radio-item" data-testid="rtl-h-second">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="second" class="radio-item" data-testid="rtl-h-second">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">שני (Second)</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="third" class="radio-item" data-testid="rtl-h-third">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="third" class="radio-item" data-testid="rtl-h-third">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">שלישי (Third)</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <p data-testid="rtl-horizontal-value">Selected: @(_rtlHorizontalValue ?? "none")</p>
     </div>
 
@@ -44,29 +44,29 @@ else
     <div class="test-section" data-testid="rtl-vertical-section" dir="rtl">
         <h2>RTL Vertical (dir="rtl")</h2>
         <p class="info">In RTL mode, vertical navigation (ArrowUp/ArrowDown) should work the same as LTR.</p>
-        <RadioGroupRoot @bind-Value="_rtlVerticalValue" Orientation="RadioGroupOrientation.Vertical" AriaLabel="RTL vertical group" class="radio-group" data-testid="rtl-vertical-radio-group">
-            <RadioGroupItem Value="top" class="radio-item" data-testid="rtl-v-top">
+        <SmRadioGroupRoot @bind-Value="_rtlVerticalValue" Orientation="RadioGroupOrientation.Vertical" AriaLabel="RTL vertical group" class="radio-group" data-testid="rtl-vertical-radio-group">
+            <SmRadioGroupItem Value="top" class="radio-item" data-testid="rtl-v-top">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">עליון (Top)</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="middle" class="radio-item" data-testid="rtl-v-middle">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="middle" class="radio-item" data-testid="rtl-v-middle">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">אמצעי (Middle)</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="bottom" class="radio-item" data-testid="rtl-v-bottom">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="bottom" class="radio-item" data-testid="rtl-v-bottom">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">תחתון (Bottom)</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <p data-testid="rtl-vertical-value">Selected: @(_rtlVerticalValue ?? "none")</p>
     </div>
 
@@ -74,29 +74,29 @@ else
     <div class="test-section" data-testid="ltr-horizontal-section" dir="ltr">
         <h2>LTR Horizontal (dir="ltr") - For Comparison</h2>
         <p class="info">In LTR mode, ArrowRight goes to next item, ArrowLeft goes to previous item.</p>
-        <RadioGroupRoot @bind-Value="_ltrHorizontalValue" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="LTR horizontal group" class="radio-group radio-group-horizontal" data-testid="ltr-horizontal-radio-group">
-            <RadioGroupItem Value="first" class="radio-item" data-testid="ltr-h-first">
+        <SmRadioGroupRoot @bind-Value="_ltrHorizontalValue" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="LTR horizontal group" class="radio-group radio-group-horizontal" data-testid="ltr-horizontal-radio-group">
+            <SmRadioGroupItem Value="first" class="radio-item" data-testid="ltr-h-first">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">First</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="second" class="radio-item" data-testid="ltr-h-second">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="second" class="radio-item" data-testid="ltr-h-second">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Second</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="third" class="radio-item" data-testid="ltr-h-third">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="third" class="radio-item" data-testid="ltr-h-third">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Third</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <p data-testid="ltr-horizontal-value">Selected: @(_ltrHorizontalValue ?? "none")</p>
     </div>
 </div>

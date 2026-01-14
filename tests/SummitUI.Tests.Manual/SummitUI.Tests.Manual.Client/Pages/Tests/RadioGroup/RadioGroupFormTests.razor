@@ -15,29 +15,29 @@ else
     <div class="test-section" data-testid="form-section">
         <h2>Form Submission</h2>
         <form @onsubmit="HandleSubmit" @onsubmit:preventDefault data-testid="radio-form">
-            <RadioGroupRoot @bind-Value="_formValue" Name="plan" AriaLabel="Select a plan" class="radio-group" data-testid="form-radio-group">
-                <RadioGroupItem Value="basic" class="radio-item" data-testid="form-basic" Context="itemContext">
+            <SmRadioGroupRoot @bind-Value="_formValue" Name="plan" AriaLabel="Select a plan" class="radio-group" data-testid="form-radio-group">
+                <SmRadioGroupItem Value="basic" class="radio-item" data-testid="form-basic" Context="itemContext">
                     @itemContext.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">Basic - $9/month</span>
-                </RadioGroupItem>
-                <RadioGroupItem Value="standard" class="radio-item" data-testid="form-standard" Context="itemContext">
+                </SmRadioGroupItem>
+                <SmRadioGroupItem Value="standard" class="radio-item" data-testid="form-standard" Context="itemContext">
                     @itemContext.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">Standard - $19/month</span>
-                </RadioGroupItem>
-                <RadioGroupItem Value="premium" class="radio-item" data-testid="form-premium" Context="itemContext">
+                </SmRadioGroupItem>
+                <SmRadioGroupItem Value="premium" class="radio-item" data-testid="form-premium" Context="itemContext">
                     @itemContext.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">Premium - $49/month</span>
-                </RadioGroupItem>
-            </RadioGroupRoot>
+                </SmRadioGroupItem>
+            </SmRadioGroupRoot>
             <button type="submit" class="btn btn-primary" data-testid="submit-btn">Submit</button>
         </form>
         <p data-testid="form-submitted-value">Submitted value: @_submittedValue</p>
@@ -47,22 +47,22 @@ else
     <div class="test-section" data-testid="required-section">
         <h2>Required Field</h2>
         <form data-testid="required-form">
-            <RadioGroupRoot @bind-Value="_requiredValue" Name="required-field" Required="true" AriaLabel="Required selection" class="radio-group" data-testid="required-radio-group">
-                <RadioGroupItem Value="yes" class="radio-item" data-testid="required-yes" Context="itemContext">
+            <SmRadioGroupRoot @bind-Value="_requiredValue" Name="required-field" Required="true" AriaLabel="Required selection" class="radio-group" data-testid="required-radio-group">
+                <SmRadioGroupItem Value="yes" class="radio-item" data-testid="required-yes" Context="itemContext">
                     @itemContext.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">Yes</span>
-                </RadioGroupItem>
-                <RadioGroupItem Value="no" class="radio-item" data-testid="required-no" Context="itemContext">
+                </SmRadioGroupItem>
+                <SmRadioGroupItem Value="no" class="radio-item" data-testid="required-no" Context="itemContext">
                     @itemContext.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">No</span>
-                </RadioGroupItem>
-            </RadioGroupRoot>
+                </SmRadioGroupItem>
+            </SmRadioGroupRoot>
         </form>
     </div>
 
@@ -70,57 +70,57 @@ else
     <div class="test-section" data-testid="labelledby-section">
         <h2>With aria-labelledby</h2>
         <div id="shipping-label" class="group-label">Shipping Method</div>
-        <RadioGroupRoot @bind-Value="_labelledByValue" AriaLabelledBy="shipping-label" class="radio-group" data-testid="labelledby-radio-group">
-            <RadioGroupItem Value="standard" class="radio-item" data-testid="labelledby-standard" Context="itemContext">
+        <SmRadioGroupRoot @bind-Value="_labelledByValue" AriaLabelledBy="shipping-label" class="radio-group" data-testid="labelledby-radio-group">
+            <SmRadioGroupItem Value="standard" class="radio-item" data-testid="labelledby-standard" Context="itemContext">
                 @itemContext.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Standard Shipping (5-7 days)</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="express" class="radio-item" data-testid="labelledby-express" Context="itemContext">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="express" class="radio-item" data-testid="labelledby-express" Context="itemContext">
                 @itemContext.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Express Shipping (2-3 days)</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="overnight" class="radio-item" data-testid="labelledby-overnight" Context="itemContext">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="overnight" class="radio-item" data-testid="labelledby-overnight" Context="itemContext">
                 @itemContext.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Overnight Shipping (next day)</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
     </div>
 
     <!-- With Description -->
     <div class="test-section" data-testid="describedby-section">
         <h2>With aria-describedby</h2>
-        <RadioGroupRoot @bind-Value="_describedByValue" AriaLabel="Notification preference" AriaDescribedBy="notification-description" class="radio-group" data-testid="describedby-radio-group">
-            <RadioGroupItem Value="all" class="radio-item" data-testid="describedby-all" Context="itemContext">
+        <SmRadioGroupRoot @bind-Value="_describedByValue" AriaLabel="Notification preference" AriaDescribedBy="notification-description" class="radio-group" data-testid="describedby-radio-group">
+            <SmRadioGroupItem Value="all" class="radio-item" data-testid="describedby-all" Context="itemContext">
                 @itemContext.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">All notifications</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="important" class="radio-item" data-testid="describedby-important" Context="itemContext">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="important" class="radio-item" data-testid="describedby-important" Context="itemContext">
                 @itemContext.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Important only</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="none" class="radio-item" data-testid="describedby-none" Context="itemContext">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="none" class="radio-item" data-testid="describedby-none" Context="itemContext">
                 @itemContext.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">None</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <p id="notification-description" class="description">Choose how you want to receive notifications from our platform.</p>
     </div>
 
@@ -131,26 +131,26 @@ else
             <DataAnnotationsValidator />
             <div class="form-group">
                 <label class="group-label">Plan (required)</label>
-                <RadioGroupRoot @bind-Value="_editFormModel.Plan" AriaLabel="Select a plan" class="radio-group" data-testid="editform-radio-group">
-                    <RadioGroupItem Value="starter" class="radio-item" data-testid="editform-starter" Context="itemContext">
-                        <RadioGroupIndicator ForceMount="true" class="radio-indicator">
+                <SmRadioGroupRoot @bind-Value="_editFormModel.Plan" AriaLabel="Select a plan" class="radio-group" data-testid="editform-radio-group">
+                    <SmRadioGroupItem Value="starter" class="radio-item" data-testid="editform-starter" Context="itemContext">
+                        <SmRadioGroupIndicator ForceMount="true" class="radio-indicator">
                             <span class="radio-dot"></span>
-                        </RadioGroupIndicator>
+                        </SmRadioGroupIndicator>
                         <span class="radio-label">Starter - $9/month</span>
-                    </RadioGroupItem>
-                    <RadioGroupItem Value="professional" class="radio-item" data-testid="editform-professional" Context="itemContext">
-                        <RadioGroupIndicator ForceMount="true" class="radio-indicator">
+                    </SmRadioGroupItem>
+                    <SmRadioGroupItem Value="professional" class="radio-item" data-testid="editform-professional" Context="itemContext">
+                        <SmRadioGroupIndicator ForceMount="true" class="radio-indicator">
                             <span class="radio-dot"></span>
-                        </RadioGroupIndicator>
+                        </SmRadioGroupIndicator>
                         <span class="radio-label">Professional - $29/month</span>
-                    </RadioGroupItem>
-                    <RadioGroupItem Value="enterprise" class="radio-item" data-testid="editform-enterprise" Context="itemContext">
-                        <RadioGroupIndicator ForceMount="true" class="radio-indicator">
+                    </SmRadioGroupItem>
+                    <SmRadioGroupItem Value="enterprise" class="radio-item" data-testid="editform-enterprise" Context="itemContext">
+                        <SmRadioGroupIndicator ForceMount="true" class="radio-indicator">
                             <span class="radio-dot"></span>
-                        </RadioGroupIndicator>
+                        </SmRadioGroupIndicator>
                         <span class="radio-label">Enterprise - $99/month</span>
-                    </RadioGroupItem>
-                </RadioGroupRoot>
+                    </SmRadioGroupItem>
+                </SmRadioGroupRoot>
                 <ValidationMessage For="@(() => _editFormModel.Plan)" data-testid="editform-validation" />
             </div>
             <button type="submit" class="btn btn-primary" data-testid="editform-submit-btn">Submit</button>

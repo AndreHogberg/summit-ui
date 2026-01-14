@@ -13,101 +13,101 @@ else
     <!-- Disabled Group -->
     <div class="test-section" data-testid="disabled-group-section">
         <h2>Disabled Group</h2>
-        <RadioGroupRoot @bind-Value="_disabledGroupValue" Disabled="true" AriaLabel="Disabled group" class="radio-group" data-testid="disabled-radio-group">
-            <RadioGroupItem Value="option1" class="radio-item" data-testid="disabled-group-option1">
+        <SmRadioGroupRoot @bind-Value="_disabledGroupValue" Disabled="true" AriaLabel="Disabled group" class="radio-group" data-testid="disabled-radio-group">
+            <SmRadioGroupItem Value="option1" class="radio-item" data-testid="disabled-group-option1">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Option 1</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="option2" class="radio-item" data-testid="disabled-group-option2">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="option2" class="radio-item" data-testid="disabled-group-option2">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Option 2</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="option3" class="radio-item" data-testid="disabled-group-option3">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="option3" class="radio-item" data-testid="disabled-group-option3">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Option 3</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <p data-testid="disabled-group-value">Value: @(_disabledGroupValue ?? "none")</p>
     </div>
 
     <!-- Individual Disabled Items -->
     <div class="test-section" data-testid="disabled-items-section">
         <h2>Individual Disabled Items</h2>
-        <RadioGroupRoot @bind-Value="_disabledItemValue" AriaLabel="Group with disabled items" class="radio-group" data-testid="disabled-items-radio-group">
-            <RadioGroupItem Value="enabled1" class="radio-item" data-testid="enabled1">
+        <SmRadioGroupRoot @bind-Value="_disabledItemValue" AriaLabel="Group with disabled items" class="radio-group" data-testid="disabled-items-radio-group">
+            <SmRadioGroupItem Value="enabled1" class="radio-item" data-testid="enabled1">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Enabled 1</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="disabled1" Disabled="true" class="radio-item" data-testid="disabled1">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="disabled1" Disabled="true" class="radio-item" data-testid="disabled1">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Disabled 1</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="enabled2" class="radio-item" data-testid="enabled2">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="enabled2" class="radio-item" data-testid="enabled2">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Enabled 2</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="disabled2" Disabled="true" class="radio-item" data-testid="disabled2">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="disabled2" Disabled="true" class="radio-item" data-testid="disabled2">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Disabled 2</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="enabled3" class="radio-item" data-testid="enabled3">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="enabled3" class="radio-item" data-testid="enabled3">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Enabled 3</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <p data-testid="disabled-items-value">Selected: @(_disabledItemValue ?? "none")</p>
     </div>
 
     <!-- First Item Disabled -->
     <div class="test-section" data-testid="first-disabled-section">
         <h2>First Item Disabled</h2>
-        <RadioGroupRoot @bind-Value="_firstDisabledValue" AriaLabel="First item disabled" class="radio-group" data-testid="first-disabled-radio-group">
-            <RadioGroupItem Value="first" Disabled="true" class="radio-item" data-testid="first-disabled">
+        <SmRadioGroupRoot @bind-Value="_firstDisabledValue" AriaLabel="First item disabled" class="radio-group" data-testid="first-disabled-radio-group">
+            <SmRadioGroupItem Value="first" Disabled="true" class="radio-item" data-testid="first-disabled">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">First (Disabled)</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="second" class="radio-item" data-testid="first-disabled-second">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="second" class="radio-item" data-testid="first-disabled-second">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Second</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value="third" class="radio-item" data-testid="first-disabled-third">
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value="third" class="radio-item" data-testid="first-disabled-third">
                 @context.Checked
-                <RadioGroupIndicator class="radio-indicator">
+                <SmRadioGroupIndicator class="radio-indicator">
                     <span class="radio-dot"></span>
-                </RadioGroupIndicator>
+                </SmRadioGroupIndicator>
                 <span class="radio-label">Third</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <p data-testid="first-disabled-value">Selected: @(_firstDisabledValue ?? "none")</p>
     </div>
 
@@ -115,29 +115,29 @@ else
     <div class="test-section" data-testid="toggleable-section">
         <h2>Toggleable Group Disabled</h2>
         <div class="d-flex flex-column gap-3">
-            <RadioGroupRoot @bind-Value="_toggleableValue" Disabled="_isGroupDisabled" AriaLabel="Toggleable group" class="radio-group" data-testid="toggleable-radio-group">
-                <RadioGroupItem Value="a" class="radio-item" data-testid="toggleable-a">
+            <SmRadioGroupRoot @bind-Value="_toggleableValue" Disabled="_isGroupDisabled" AriaLabel="Toggleable group" class="radio-group" data-testid="toggleable-radio-group">
+                <SmRadioGroupItem Value="a" class="radio-item" data-testid="toggleable-a">
                     @context.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">Option A</span>
-                </RadioGroupItem>
-                <RadioGroupItem Value="b" class="radio-item" data-testid="toggleable-b">
+                </SmRadioGroupItem>
+                <SmRadioGroupItem Value="b" class="radio-item" data-testid="toggleable-b">
                     @context.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">Option B</span>
-                </RadioGroupItem>
-                <RadioGroupItem Value="c" class="radio-item" data-testid="toggleable-c">
+                </SmRadioGroupItem>
+                <SmRadioGroupItem Value="c" class="radio-item" data-testid="toggleable-c">
                     @context.Checked
-                    <RadioGroupIndicator class="radio-indicator">
+                    <SmRadioGroupIndicator class="radio-indicator">
                         <span class="radio-dot"></span>
-                    </RadioGroupIndicator>
+                    </SmRadioGroupIndicator>
                     <span class="radio-label">Option C</span>
-                </RadioGroupItem>
-            </RadioGroupRoot>
+                </SmRadioGroupItem>
+            </SmRadioGroupRoot>
             <button type="button" class="btn" @onclick="ToggleGroupDisabled" data-testid="toggle-disabled-btn">
                 @(_isGroupDisabled ? "Enable Group" : "Disable Group")
             </button>

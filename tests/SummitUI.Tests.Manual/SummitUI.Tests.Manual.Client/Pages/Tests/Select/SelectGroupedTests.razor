@@ -13,41 +13,41 @@
 else
 {
 <div data-testid="page-ready">
-    <SelectRoot TValue="string" @bind-Value="selectedFood">
-        <SelectTrigger TValue="string" data-testid="trigger">
-            <SelectValue TValue="string" Placeholder="Choose food..." />
-        </SelectTrigger>
-        <SelectPortal TValue="string">
-            <SelectContent TValue="string" data-testid="content" SideOffset="4">
-                <SelectViewport TValue="string">
-                    <SelectGroup TValue="string" data-testid="group-fruits">
-                        <SelectGroupLabel class="select-group-label" data-testid="label-fruits">Fruits</SelectGroupLabel>
-                        <SelectItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
-                            <SelectItemText>Apple</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
-                            <SelectItemText>Banana</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
-                            <SelectItemText>Orange</SelectItemText>
-                        </SelectItem>
-                    </SelectGroup>
-                    <SelectGroup TValue="string" data-testid="group-vegetables">
-                        <SelectGroupLabel class="select-group-label" data-testid="label-vegetables">Vegetables</SelectGroupLabel>
-                        <SelectItem TValue="string" Value="@("carrot")" Label="Carrot" data-testid="item-carrot">
-                            <SelectItemText>Carrot</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue="string" Value="@("broccoli")" Label="Broccoli" data-testid="item-broccoli">
-                            <SelectItemText>Broccoli</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue="string" Value="@("spinach")" Label="Spinach" data-testid="item-spinach">
-                            <SelectItemText>Spinach</SelectItemText>
-                        </SelectItem>
-                    </SelectGroup>
-                </SelectViewport>
-            </SelectContent>
-        </SelectPortal>
-    </SelectRoot>
+    <SmSelectRoot TValue="string" @bind-Value="selectedFood">
+        <SmSelectTrigger TValue="string" data-testid="trigger">
+            <SmSelectValue TValue="string" Placeholder="Choose food..." />
+        </SmSelectTrigger>
+        <SmSelectPortal TValue="string">
+            <SmSelectContent TValue="string" data-testid="content" SideOffset="4">
+                <SmSelectViewport TValue="string">
+                    <SmSelectGroup TValue="string" data-testid="group-fruits">
+                        <SmSelectGroupLabel class="select-group-label" data-testid="label-fruits">Fruits</SmSelectGroupLabel>
+                        <SmSelectItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                            <SmSelectItemText>Apple</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                            <SmSelectItemText>Banana</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                            <SmSelectItemText>Orange</SmSelectItemText>
+                        </SmSelectItem>
+                    </SmSelectGroup>
+                    <SmSelectGroup TValue="string" data-testid="group-vegetables">
+                        <SmSelectGroupLabel class="select-group-label" data-testid="label-vegetables">Vegetables</SmSelectGroupLabel>
+                        <SmSelectItem TValue="string" Value="@("carrot")" Label="Carrot" data-testid="item-carrot">
+                            <SmSelectItemText>Carrot</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue="string" Value="@("broccoli")" Label="Broccoli" data-testid="item-broccoli">
+                            <SmSelectItemText>Broccoli</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue="string" Value="@("spinach")" Label="Spinach" data-testid="item-spinach">
+                            <SmSelectItemText>Spinach</SmSelectItemText>
+                        </SmSelectItem>
+                    </SmSelectGroup>
+                </SmSelectViewport>
+            </SmSelectContent>
+        </SmSelectPortal>
+    </SmSelectRoot>
 </div>
 
 }

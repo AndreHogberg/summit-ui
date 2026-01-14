@@ -24,23 +24,23 @@
         <SuCard>
             <div class="flex flex-col gap-4">
                 <label class="flex items-center gap-3 cursor-pointer">
-                    <SwitchRoot @bind-Checked="isChecked1" class="demo-switch">
-                        <SwitchThumb class="demo-thumb" />
-                    </SwitchRoot>
+                    <SmSwitchRoot @bind-Checked="isChecked1" class="demo-switch">
+                        <SmSwitchThumb class="demo-thumb" />
+                    </SmSwitchRoot>
                     <span class="text-sm text-su-foreground">Airplane mode</span>
                 </label>
                 
                 <label class="flex items-center gap-3 cursor-pointer">
-                    <SwitchRoot @bind-Checked="isChecked2" class="demo-switch">
-                        <SwitchThumb class="demo-thumb" />
-                    </SwitchRoot>
+                    <SmSwitchRoot @bind-Checked="isChecked2" class="demo-switch">
+                        <SmSwitchThumb class="demo-thumb" />
+                    </SmSwitchRoot>
                     <span class="text-sm text-su-foreground">Dark mode</span>
                 </label>
                 
                 <label class="flex items-center gap-3 cursor-not-allowed opacity-50">
-                    <SwitchRoot Disabled="true" class="demo-switch">
-                        <SwitchThumb class="demo-thumb" />
-                    </SwitchRoot>
+                    <SmSwitchRoot Disabled="true" class="demo-switch">
+                        <SmSwitchThumb class="demo-thumb" />
+                    </SmSwitchRoot>
                     <span class="text-sm text-su-foreground">Disabled switch</span>
                 </label>
             </div>
@@ -320,18 +320,18 @@
     private bool isChecked1 = false;
     private bool isChecked2 = true;
 
-    private const string anatomyCode = @"<SwitchRoot>
-    <SwitchThumb />
-</SwitchRoot>";
+    private const string anatomyCode = @"<SmSwitchRoot>
+    <SmSwitchThumb />
+</SmSwitchRoot>";
 
-    private const string basicExampleCode = @"<SwitchRoot DefaultChecked=""true"">
-    <SwitchThumb />
-</SwitchRoot>";
+    private const string basicExampleCode = @"<SmSwitchRoot DefaultChecked=""true"">
+    <SmSwitchThumb />
+</SmSwitchRoot>";
 
     private const string withLabelExampleCode = @"<label style=""display: flex; gap: 0.5rem; align-items: center;"">
-    <SwitchRoot id=""airplane-mode"">
-        <SwitchThumb />
-    </SwitchRoot>
+    <SmSwitchRoot id=""airplane-mode"">
+        <SmSwitchThumb />
+    </SmSwitchRoot>
     Airplane mode
 </label>";
 
@@ -339,9 +339,9 @@
     private bool isChecked = true;
 }
 
-<SwitchRoot @bind-Checked=""isChecked"">
-    <SwitchThumb />
-</SwitchRoot>
+<SmSwitchRoot @bind-Checked=""isChecked"">
+    <SmSwitchThumb />
+</SmSwitchRoot>
 
 <p>Switch is @(isChecked ? ""on"" : ""off"")</p>";
 
@@ -349,9 +349,9 @@
     <DataAnnotationsValidator />
     
     <label>
-        <SwitchRoot @bind-Checked=""model.EnableNotifications"" Name=""notifications"">
-            <SwitchThumb />
-        </SwitchRoot>
+        <SmSwitchRoot @bind-Checked=""model.EnableNotifications"" Name=""notifications"">
+            <SmSwitchThumb />
+        </SmSwitchRoot>
         Enable Notifications
     </label>
     

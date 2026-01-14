@@ -23,41 +23,41 @@
     <SuSection Title="Demo">
         <SuCard>
             <div class="flex flex-col gap-4">
-                <MediaQuery Query="(min-width: 800px)" Context="IsLarge">
+                <SmMediaQuery Query="(min-width: 800px)" Context="IsLarge">
                     <div class="flex items-center gap-3">
                         <div class="@(IsLarge ? "w-4 h-4 rounded-full bg-green-500" : "w-4 h-4 rounded-full bg-amber-500")"></div>
                         <span class="text-sm text-su-foreground">
                             Viewport is <strong>@(IsLarge ? "800px or wider" : "less than 800px")</strong>
                         </span>
                     </div>
-                </MediaQuery>
+                </SmMediaQuery>
 
-                <MediaQuery Query="(min-width: 1024px)" Context="IsDesktop">
+                <SmMediaQuery Query="(min-width: 1024px)" Context="IsDesktop">
                     <div class="flex items-center gap-3">
                         <div class="@(IsDesktop ? "w-4 h-4 rounded-full bg-green-500" : "w-4 h-4 rounded-full bg-amber-500")"></div>
                         <span class="text-sm text-su-foreground">
                             Viewport is <strong>@(IsDesktop ? "1024px or wider (desktop)" : "less than 1024px (mobile/tablet)")</strong>
                         </span>
                     </div>
-                </MediaQuery>
+                </SmMediaQuery>
 
-                <MediaQuery Query="(orientation: landscape)" Context="IsLandscape">
+                <SmMediaQuery Query="(orientation: landscape)" Context="IsLandscape">
                     <div class="flex items-center gap-3">
                         <div class="@(IsLandscape ? "w-4 h-4 rounded-full bg-blue-500" : "w-4 h-4 rounded-full bg-pink-500")"></div>
                         <span class="text-sm text-su-foreground">
                             Orientation: <strong>@(IsLandscape ? "Landscape" : "Portrait")</strong>
                         </span>
                     </div>
-                </MediaQuery>
+                </SmMediaQuery>
 
-                <MediaQuery Query="(hover: hover)" Context="HasHover">
+                <SmMediaQuery Query="(hover: hover)" Context="HasHover">
                     <div class="flex items-center gap-3">
                         <div class="@(HasHover ? "w-4 h-4 rounded-full bg-cyan-500" : "w-4 h-4 rounded-full bg-orange-500")"></div>
                         <span class="text-sm text-su-foreground">
                             Input device: <strong>@(HasHover ? "Supports hover (mouse)" : "No hover (touch)")</strong>
                         </span>
                     </div>
-                </MediaQuery>
+                </SmMediaQuery>
 
                 <p class="text-xs text-su-muted-foreground mt-2">
                     Try resizing your browser window to see the values update in real-time.
@@ -257,7 +257,7 @@
         new() { Name = "(pointer: fine)", Type = "", Description = "Primary input is mouse/fine pointer" }
     };
 
-    private const string anatomyCode = @"<MediaQuery Query=""(min-width: 800px)"" Context=""IsLarge"">
+    private const string anatomyCode = @"<SmMediaQuery Query=""(min-width: 800px)"" Context=""IsLarge"">
     @if (IsLarge)
     {
         <DesktopLayout />
@@ -266,9 +266,9 @@
     {
         <MobileLayout />
     }
-</MediaQuery>";
+</SmMediaQuery>";
 
-    private const string responsiveLayoutCode = @"<MediaQuery Query=""(min-width: 800px)"" Context=""IsDesktop"">
+    private const string responsiveLayoutCode = @"<SmMediaQuery Query=""(min-width: 800px)"" Context=""IsDesktop"">
     @if (IsDesktop)
     {
         <div class=""grid grid-cols-3 gap-4"">
@@ -283,18 +283,18 @@
             <MainContent />
         </div>
     }
-</MediaQuery>";
+</SmMediaQuery>";
 
     private const string darkModeCode = @"@* Detects OS color scheme, not website theme toggles *@
-<MediaQuery Query=""(prefers-color-scheme: dark)"" Context=""IsDarkMode"">
+<SmMediaQuery Query=""(prefers-color-scheme: dark)"" Context=""IsDarkMode"">
     <div class=""@(IsDarkMode ? ""dark-theme"" : ""light-theme"")"">
         <p>OS prefers: @(IsDarkMode ? ""Dark"" : ""Light"")</p>
     </div>
-</MediaQuery>";
+</SmMediaQuery>";
 
-    private const string onChangeCode = @"<MediaQuery Query=""(min-width: 1024px)"" Context=""IsLarge"" OnChange=""HandleBreakpointChange"">
+    private const string onChangeCode = @"<SmMediaQuery Query=""(min-width: 1024px)"" Context=""IsLarge"" OnChange=""HandleBreakpointChange"">
     <p>Large screen: @IsLarge</p>
-</MediaQuery>
+</SmMediaQuery>
 
 @code {
     private void HandleBreakpointChange(bool isLarge)
@@ -309,8 +309,8 @@
     }
 }";
 
-    private const string multipleBreakpointsCode = @"<MediaQuery Query=""(min-width: 1024px)"" Context=""IsLarge"">
-    <MediaQuery Query=""(min-width: 768px)"" Context=""IsMedium"">
+    private const string multipleBreakpointsCode = @"<SmMediaQuery Query=""(min-width: 1024px)"" Context=""IsLarge"">
+    <SmMediaQuery Query=""(min-width: 768px)"" Context=""IsMedium"">
         @if (IsLarge)
         {
             <p>Desktop layout (3 columns)</p>
@@ -323,11 +323,11 @@
         {
             <p>Mobile layout (1 column)</p>
         }
-    </MediaQuery>
-</MediaQuery>";
+    </SmMediaQuery>
+</SmMediaQuery>";
 
     private const string ssrCode = @"@* Set InitialValue to true if most users are on desktop *@
-<MediaQuery Query=""(min-width: 800px)"" Context=""IsDesktop"" InitialValue=""true"">
+<SmMediaQuery Query=""(min-width: 800px)"" Context=""IsDesktop"" InitialValue=""true"">
     @if (IsDesktop)
     {
         <DesktopNav />
@@ -336,17 +336,17 @@
     {
         <MobileNav />
     }
-</MediaQuery>";
+</SmMediaQuery>";
 
     private const string otherFeaturesCode = @"@* Detect reduced motion preference *@
-<MediaQuery Query=""(prefers-reduced-motion: reduce)"" Context=""PrefersReducedMotion"">
+<SmMediaQuery Query=""(prefers-reduced-motion: reduce)"" Context=""PrefersReducedMotion"">
     <div class=""@(PrefersReducedMotion ? """" : ""animate-bounce"")"">
         Animated element
     </div>
-</MediaQuery>
+</SmMediaQuery>
 
 @* Detect touch device *@
-<MediaQuery Query=""(pointer: coarse)"" Context=""IsTouchDevice"">
+<SmMediaQuery Query=""(pointer: coarse)"" Context=""IsTouchDevice"">
     @if (IsTouchDevice)
     {
         <p>Tap to interact</p>
@@ -355,12 +355,12 @@
     {
         <p>Click to interact</p>
     }
-</MediaQuery>
+</SmMediaQuery>
 
 @* Detect high contrast preference *@
-<MediaQuery Query=""(prefers-contrast: more)"" Context=""PrefersHighContrast"">
+<SmMediaQuery Query=""(prefers-contrast: more)"" Context=""PrefersHighContrast"">
     <div class=""@(PrefersHighContrast ? ""border-4 border-black"" : ""border"")"">
         High contrast aware element
     </div>
-</MediaQuery>";
+</SmMediaQuery>";
 }

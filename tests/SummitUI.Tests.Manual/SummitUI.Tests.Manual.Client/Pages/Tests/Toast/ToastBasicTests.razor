@@ -34,7 +34,7 @@ else
         </button>
     </div>
 
-    <ToastRegion TContent="TestToastContent"
+    <SmToastRegion TContent="TestToastContent"
                  AriaLabel="Notifications"
                  GetAnnouncementText="GetAnnouncementText"
                  class="toast-viewport"
@@ -45,7 +45,7 @@ else
                 var descId = $"toast-desc-{toast.Key}";
                 var urgency = toast.Content.Variant == "warning" ? ToastUrgency.Assertive : ToastUrgency.Polite;
             }
-            <Toast TContent="TestToastContent"
+            <SmToast TContent="TestToastContent"
                    ToastData="toast"
                    Urgency="urgency"
                    AriaLabelledBy="@(!string.IsNullOrEmpty(toast.Content.Title) ? titleId : null)"
@@ -72,12 +72,12 @@ else
                         @toast.Content.Action.Label
                     </button>
                 }
-                <ToastCloseButton class="toast-close" data-testid="@($"toast-close-{toast.Key}")">
+                <SmToastCloseButton class="toast-close" data-testid="@($"toast-close-{toast.Key}")">
                     ×
-                </ToastCloseButton>
-            </Toast>
+                </SmToastCloseButton>
+            </SmToast>
         </ToastTemplate>
-    </ToastRegion>
+    </SmToastRegion>
 
     @if (showDeclarative)
     {
@@ -86,7 +86,7 @@ else
                 var declTitleId = "declarative-title";
                 var declDescId = "declarative-description";
             }
-            <Toast TContent="TestToastContent"
+            <SmToast TContent="TestToastContent"
                    ToastData="@declarativeToast"
                    Urgency="ToastUrgency.Polite"
                    AriaLabelledBy="@declTitleId"
@@ -112,7 +112,7 @@ else
                         data-summit-toast-close>
                     ×
                 </button>
-            </Toast>
+            </SmToast>
         </div>
     }
 </div>

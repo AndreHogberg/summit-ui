@@ -16,35 +16,35 @@
     </a>
     
     @* Dropdown Trigger *@
-    <DropdownMenuRoot>
-        <DropdownMenuTrigger class="inline-flex items-center px-2 py-2 text-sm font-medium bg-su-primary text-su-primary-foreground border-l border-su-primary-foreground/20 rounded-e-lg hover:bg-su-primary/90 focus:z-10 focus:ring-2 focus:ring-su-ring focus:ring-offset-2 focus:ring-offset-su-background transition-colors">
+    <SmDropdownMenuRoot>
+        <SmDropdownMenuTrigger class="inline-flex items-center px-2 py-2 text-sm font-medium bg-su-primary text-su-primary-foreground border-l border-su-primary-foreground/20 rounded-e-lg hover:bg-su-primary/90 focus:z-10 focus:ring-2 focus:ring-su-ring focus:ring-offset-2 focus:ring-offset-su-background transition-colors">
             <span class="sr-only">Open options</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m6 9 6 6 6-6"/>
             </svg>
-        </DropdownMenuTrigger>
-        <DropdownMenuPortal>
-            <DropdownMenuContent class="prompt-button-dropdown" Side="Side.Bottom" Align="Align.Center" SideOffset="4">
-                <DropdownMenuItem class="prompt-button-item" TextValue="ChatGPT">
+        </SmDropdownMenuTrigger>
+        <SmDropdownMenuPortal>
+            <SmDropdownMenuContent class="prompt-button-dropdown" Side="Side.Bottom" Align="Align.Center" SideOffset="4">
+                <SmDropdownMenuItem class="prompt-button-item" TextValue="ChatGPT">
                     <a href="@ChatGptUrl" target="_blank" rel="noopener noreferrer" class="flex w-full items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
                         Open with ChatGPT
                     </a>
-                </DropdownMenuItem>
+                </SmDropdownMenuItem>
                 
-                <DropdownMenuItem class="prompt-button-item" TextValue="Claude">
+                <SmDropdownMenuItem class="prompt-button-item" TextValue="Claude">
                     <a href="@ClaudeUrl" target="_blank" rel="noopener noreferrer" class="flex w-full items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
                         </svg>
                         Open with Claude
                     </a>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenuPortal>
-    </DropdownMenuRoot>
+                </SmDropdownMenuItem>
+            </SmDropdownMenuContent>
+        </SmDropdownMenuPortal>
+    </SmDropdownMenuRoot>
 </div>
 
 <style>

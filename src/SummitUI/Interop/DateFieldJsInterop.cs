@@ -18,7 +18,7 @@ public class DateFieldJsInterop(IJSRuntime jsRuntime) : JsInteropBase(jsRuntime)
     /// <summary>
     /// Initializes keyboard handling for a date field segment.
     /// </summary>
-    public async ValueTask InitializeSegmentAsync(ElementReference element, DotNetObjectReference<DateFieldSegment> dotNetHelper)
+    public async ValueTask InitializeSegmentAsync(ElementReference element, DotNetObjectReference<SmDateFieldSegment> dotNetHelper)
     {
         var module = await GetModuleAsync();
         await module.InvokeVoidAsync("dateField_initializeSegment", element, dotNetHelper);

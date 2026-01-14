@@ -1,7 +1,7 @@
 @namespace SummitUI.Docs.Design
 
-<DropdownMenuRoot @bind-Open="_isOpen">
-    <DropdownMenuTrigger class="@FinalButtonClass"
+<SmDropdownMenuRoot @bind-Open="_isOpen">
+    <SmDropdownMenuTrigger class="@FinalButtonClass"
                          aria-label="Get AI help with this component"
                          @attributes="OtherAttributes">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -15,10 +15,10 @@
              class="@ChevronClass">
             <path d="m6 9 6 6 6-6"/>
         </svg>
-    </DropdownMenuTrigger>
+    </SmDropdownMenuTrigger>
 
-    <DropdownMenuContent class="@DropdownClasses" Side="Side.Bottom" Align="Align.Start" SideOffset="8">
-        <DropdownMenuItem class="@MenuItemClasses" OnSelect="CopyLlmsTxtUrl" TextValue="Copy Markdown">
+    <SmDropdownMenuContent class="@DropdownClasses" Side="Side.Bottom" Align="Align.Start" SideOffset="8">
+        <SmDropdownMenuItem class="@MenuItemClasses" OnSelect="CopyLlmsTxtUrl" TextValue="Copy Markdown">
             <span class="shrink-0 text-su-muted-foreground">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -29,11 +29,11 @@
                 </svg>
             </span>
             <span class="font-normal">Copy Markdown</span>
-        </DropdownMenuItem>
+        </SmDropdownMenuItem>
 
-        <DropdownMenuSeparator class="my-1.5 h-px bg-su-border"/>
+        <SmDropdownMenuSeparator class="my-1.5 h-px bg-su-border"/>
 
-        <DropdownMenuItem class="@MenuItemClasses" OnSelect="OpenChatGpt" TextValue="Ask ChatGPT">
+        <SmDropdownMenuItem class="@MenuItemClasses" OnSelect="OpenChatGpt" TextValue="Ask ChatGPT">
             <span class="shrink-0 text-su-muted-foreground">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path
@@ -41,9 +41,9 @@
                 </svg>
             </span>
             <span class="font-normal">Ask ChatGPT</span>
-        </DropdownMenuItem>
+        </SmDropdownMenuItem>
 
-        <DropdownMenuItem class="@MenuItemClasses" OnSelect="OpenClaude" TextValue="Ask Claude">
+        <SmDropdownMenuItem class="@MenuItemClasses" OnSelect="OpenClaude" TextValue="Ask Claude">
             <span class="shrink-0 text-su-muted-foreground">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-claude"
                      viewBox="0 0 16 16">
@@ -52,6 +52,6 @@
                 </svg>
             </span>
             <span class="font-normal">Ask Claude</span>
-        </DropdownMenuItem>
-    </DropdownMenuContent>
-</DropdownMenuRoot>
+        </SmDropdownMenuItem>
+    </SmDropdownMenuContent>
+</SmDropdownMenuRoot>

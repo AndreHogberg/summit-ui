@@ -1,0 +1,90 @@
+namespace SummitUI;
+
+using Microsoft.AspNetCore.Components;
+
+/// <summary>
+/// Provider component that enables alert dialogs triggered by <see cref="IAlertDialogService"/>.
+/// Place this component once at the root of your application (e.g., in MainLayout or App.razor).
+///
+/// This component requires explicit child content defining the dialog structure.
+/// Use AlertDialogPortal, AlertDialogOverlay, AlertDialogContent, AlertDialogTitle,
+/// AlertDialogDescription, AlertDialogConfirm, and AlertDialogCancel to build the UI.
+/// </summary>
+/// <example>
+/// <code>
+/// &lt;AlertDialogProvider Context="alert"&gt;
+///     &lt;AlertDialogPortal&gt;
+///         &lt;AlertDialogOverlay class="my-overlay" /&gt;
+///         &lt;AlertDialogContent class="my-content"&gt;
+///             &lt;AlertDialogTitle /&gt;
+///             &lt;AlertDialogDescription /&gt;
+///             &lt;div class="actions"&gt;
+///                 &lt;AlertDialogCancel class="btn-cancel" /&gt;
+///                 &lt;AlertDialogConfirm class="btn-confirm" /&gt;
+///             &lt;/div&gt;
+///         &lt;/AlertDialogContent&gt;
+///     &lt;/AlertDialogPortal&gt;
+/// &lt;/AlertDialogProvider&gt;
+/// </code>
+/// </example>
+public partial class SmAlertDialogProvider : IDisposable
+{
+    [Inject]
+    private IAlertDialogService AlertDialogService { get; set; } = default!;
+
+    /// <summary>
+    /// Template for rendering the alert dialog UI. Required - no default provided.
+    /// The context parameter provides access to the current dialog state and options.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AlertDialogContext>? ChildContent { get; set; }
+
+    private readonly AlertDialogContext _context = new();
+    private AlertDialogRequest? _currentRequest;
+    private bool _disposed;
+
+    protected override void OnInitialized()
+    {
+        if (AlertDialogService is AlertDialogService service)
+        {
+            service.OnShow += HandleShow;
+        }
+
+        _context.Complete = HandleComplete;
+        _context.NotifyStateChanged = () => InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleShow(AlertDialogRequest request)
+    {
+        _currentRequest = request;
+        _context.IsOpen = true;
+        _context.IsAnimatingClosed = false;
+        _context.Message = request.Message;
+        _context.Options = request.Options;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleComplete(bool result)
+    {
+        if (_currentRequest is null) return;
+
+        _currentRequest.CompletionSource.TrySetResult(result);
+        _context.IsOpen = false;
+        _context.IsAnimatingClosed = true;
+        _currentRequest = null;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _disposed = true;
+
+        if (AlertDialogService is AlertDialogService service)
+        {
+            service.OnShow -= HandleShow;
+        }
+
+        _currentRequest?.CompletionSource.TrySetResult(false);
+    }
+}

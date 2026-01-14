@@ -19,28 +19,28 @@ else
 
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 <label class="checkbox-label">
-                    <CheckboxRoot @bind-Checked="singleCheckboxModel.AcceptTerms"
+                    <SmCheckboxRoot @bind-Checked="singleCheckboxModel.AcceptTerms"
                                   Name="acceptTerms"
                                   Required="true"
                                   data-testid="single-terms-checkbox"
                                   class="checkbox-root">
-                        <CheckboxIndicator>
+                        <SmCheckboxIndicator>
                             <span>✓</span>
-                        </CheckboxIndicator>
-                    </CheckboxRoot>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
                     Accept Terms and Conditions (Required)
                 </label>
                 <ValidationMessage For="@(() => singleCheckboxModel.AcceptTerms)" data-testid="single-terms-validation" class="validation-error" />
 
                 <label class="checkbox-label">
-                    <CheckboxRoot @bind-Checked="singleCheckboxModel.SubscribeNewsletter"
+                    <SmCheckboxRoot @bind-Checked="singleCheckboxModel.SubscribeNewsletter"
                                   Name="subscribeNewsletter"
                                   data-testid="single-newsletter-checkbox"
                                   class="checkbox-root">
-                        <CheckboxIndicator>
+                        <SmCheckboxIndicator>
                             <span>✓</span>
-                        </CheckboxIndicator>
-                    </CheckboxRoot>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
                     Subscribe to Newsletter (Optional)
                 </label>
             </div>
@@ -68,55 +68,55 @@ else
 
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 <span>Select your interests (at least one required):</span>
-                <CheckboxGroup @bind-Values="groupCheckboxModel.Interests" 
+                <SmCheckboxGroup @bind-Values="groupCheckboxModel.Interests" 
                                Name="interests"
                                data-testid="group-interests">
-                    <CheckboxGroupLabel data-testid="group-label">Interests</CheckboxGroupLabel>
+                    <SmCheckboxGroupLabel data-testid="group-label">Interests</SmCheckboxGroupLabel>
                     
                     <label class="checkbox-label">
-                        <CheckboxRoot Value="technology" 
+                        <SmCheckboxRoot Value="technology" 
                                       data-testid="group-technology-checkbox"
                                       class="checkbox-root">
-                            <CheckboxIndicator>
+                            <SmCheckboxIndicator>
                                 <span>✓</span>
-                            </CheckboxIndicator>
-                        </CheckboxRoot>
+                            </SmCheckboxIndicator>
+                        </SmCheckboxRoot>
                         Technology
                     </label>
                     
                     <label class="checkbox-label">
-                        <CheckboxRoot Value="sports" 
+                        <SmCheckboxRoot Value="sports" 
                                       data-testid="group-sports-checkbox"
                                       class="checkbox-root">
-                            <CheckboxIndicator>
+                            <SmCheckboxIndicator>
                                 <span>✓</span>
-                            </CheckboxIndicator>
-                        </CheckboxRoot>
+                            </SmCheckboxIndicator>
+                        </SmCheckboxRoot>
                         Sports
                     </label>
                     
                     <label class="checkbox-label">
-                        <CheckboxRoot Value="music" 
+                        <SmCheckboxRoot Value="music" 
                                       data-testid="group-music-checkbox"
                                       class="checkbox-root">
-                            <CheckboxIndicator>
+                            <SmCheckboxIndicator>
                                 <span>✓</span>
-                            </CheckboxIndicator>
-                        </CheckboxRoot>
+                            </SmCheckboxIndicator>
+                        </SmCheckboxRoot>
                         Music
                     </label>
                     
                     <label class="checkbox-label">
-                        <CheckboxRoot Value="travel" 
+                        <SmCheckboxRoot Value="travel" 
                                       data-testid="group-travel-checkbox"
                                       class="checkbox-root">
-                            <CheckboxIndicator>
+                            <SmCheckboxIndicator>
                                 <span>✓</span>
-                            </CheckboxIndicator>
-                        </CheckboxRoot>
+                            </SmCheckboxIndicator>
+                        </SmCheckboxRoot>
                         Travel
                     </label>
-                </CheckboxGroup>
+                </SmCheckboxGroup>
                 <ValidationMessage For="@(() => groupCheckboxModel.Interests)" data-testid="group-interests-validation" class="validation-error" />
             </div>
 
@@ -142,43 +142,43 @@ else
 
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 <label class="checkbox-label">
-                    <CheckboxRoot Checked="@editFormModel.AcceptTerms"
+                    <SmCheckboxRoot Checked="@editFormModel.AcceptTerms"
                                   CheckedChanged="@(v => { editFormModel.AcceptTerms = v; })"
                                   Name="acceptTerms"
                                   Required="true"
                                   data-testid="editform-terms-checkbox"
                                   class="checkbox-root">
-                        <CheckboxIndicator>
+                        <SmCheckboxIndicator>
                             <span>✓</span>
-                        </CheckboxIndicator>
-                    </CheckboxRoot>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
                     Accept Terms and Conditions (Required)
                 </label>
                 <ValidationMessage For="@(() => editFormModel.AcceptTerms)" class="validation-error" />
 
                 <label class="checkbox-label">
-                    <CheckboxRoot Checked="@editFormModel.SubscribeNewsletter"
+                    <SmCheckboxRoot Checked="@editFormModel.SubscribeNewsletter"
                                   CheckedChanged="@(v => { editFormModel.SubscribeNewsletter = v; })"
                                   Name="subscribeNewsletter"
                                   data-testid="editform-newsletter-checkbox"
                                   class="checkbox-root">
-                        <CheckboxIndicator>
+                        <SmCheckboxIndicator>
                             <span>✓</span>
-                        </CheckboxIndicator>
-                    </CheckboxRoot>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
                     Subscribe to Newsletter (Optional)
                 </label>
 
                 <label class="checkbox-label">
-                    <CheckboxRoot Checked="@editFormModel.EnableNotifications"
+                    <SmCheckboxRoot Checked="@editFormModel.EnableNotifications"
                                   CheckedChanged="@(v => { editFormModel.EnableNotifications = v; })"
                                   Name="enableNotifications"
                                   data-testid="editform-notifications-checkbox"
                                   class="checkbox-root">
-                        <CheckboxIndicator>
+                        <SmCheckboxIndicator>
                             <span>✓</span>
-                        </CheckboxIndicator>
-                    </CheckboxRoot>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
                     Enable Notifications (Optional)
                 </label>
             </div>

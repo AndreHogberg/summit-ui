@@ -13,9 +13,9 @@
 else
 {
 <div data-testid="page-ready">
-    <ComboboxRoot TValue="string" @bind-Values="selectedValues">
-        <ComboboxTrigger TValue="string" data-testid="trigger">
-            <ComboboxSelectedValues TValue="string" Context="items">
+    <SmComboboxRoot TValue="string" @bind-Values="selectedValues">
+        <SmComboboxTrigger TValue="string" data-testid="trigger">
+            <SmComboboxSelectedValues TValue="string" Context="items">
                 @foreach (var item in items)
                 {
                     <span class="badge" data-testid="badge-@item.Value">
@@ -23,48 +23,48 @@ else
                         <button type="button" @onclick="item.DeselectAsync">×</button>
                     </span>
                 }
-            </ComboboxSelectedValues>
-            <ComboboxInput TValue="string" Placeholder="Search..." data-testid="input" />
-        </ComboboxTrigger>
-        <ComboboxPortal TValue="string">
-            <ComboboxContent TValue="string" data-testid="content" SideOffset="4">
-                <ComboboxViewport TValue="string">
-                    <ComboboxGroup TValue="string" GroupId="fruits" data-testid="group-fruits">
-                        <ComboboxGroupLabel TValue="string" data-testid="group-label-fruits">
+            </SmComboboxSelectedValues>
+            <SmComboboxInput TValue="string" Placeholder="Search..." data-testid="input" />
+        </SmComboboxTrigger>
+        <SmComboboxPortal TValue="string">
+            <SmComboboxContent TValue="string" data-testid="content" SideOffset="4">
+                <SmComboboxViewport TValue="string">
+                    <SmComboboxGroup TValue="string" GroupId="fruits" data-testid="group-fruits">
+                        <SmComboboxGroupLabel TValue="string" data-testid="group-label-fruits">
                             Fruits
-                        </ComboboxGroupLabel>
-                        <ComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                        </SmComboboxGroupLabel>
+                        <SmComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
                             Apple
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
                             Banana
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
                             Orange
-                        </ComboboxItem>
-                    </ComboboxGroup>
+                        </SmComboboxItem>
+                    </SmComboboxGroup>
                     
-                    <ComboboxGroup TValue="string" GroupId="vegetables" data-testid="group-vegetables">
-                        <ComboboxGroupLabel TValue="string" data-testid="group-label-vegetables">
+                    <SmComboboxGroup TValue="string" GroupId="vegetables" data-testid="group-vegetables">
+                        <SmComboboxGroupLabel TValue="string" data-testid="group-label-vegetables">
                             Vegetables
-                        </ComboboxGroupLabel>
-                        <ComboboxItem TValue="string" Value="@("carrot")" Label="Carrot" data-testid="item-carrot">
+                        </SmComboboxGroupLabel>
+                        <SmComboboxItem TValue="string" Value="@("carrot")" Label="Carrot" data-testid="item-carrot">
                             Carrot
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("broccoli")" Label="Broccoli" data-testid="item-broccoli">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("broccoli")" Label="Broccoli" data-testid="item-broccoli">
                             Broccoli
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("spinach")" Label="Spinach" data-testid="item-spinach">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("spinach")" Label="Spinach" data-testid="item-spinach">
                             Spinach
-                        </ComboboxItem>
-                    </ComboboxGroup>
-                </ComboboxViewport>
-                <ComboboxEmpty TValue="string" data-testid="empty">
+                        </SmComboboxItem>
+                    </SmComboboxGroup>
+                </SmComboboxViewport>
+                <SmComboboxEmpty TValue="string" data-testid="empty">
                     No results found
-                </ComboboxEmpty>
-            </ComboboxContent>
-        </ComboboxPortal>
-    </ComboboxRoot>
+                </SmComboboxEmpty>
+            </SmComboboxContent>
+        </SmComboboxPortal>
+    </SmComboboxRoot>
 </div>
 }
 

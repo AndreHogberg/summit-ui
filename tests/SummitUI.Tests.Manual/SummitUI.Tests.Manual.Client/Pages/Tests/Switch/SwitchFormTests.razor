@@ -17,16 +17,16 @@ else
         <form @onsubmit="HandleSubmit" @onsubmit:preventDefault class="d-flex flex-column gap-3" style="max-width: 300px;">
             <div class="d-flex align-items-center justify-content-between">
                 <label for="notifications">Notifications</label>
-                <SwitchRoot Name="notifications" @bind-Checked="_notifications" id="notifications" class="switch-root" data-testid="notifications-switch">
-                    <SwitchThumb class="switch-thumb" />
-                </SwitchRoot>
+                <SmSwitchRoot Name="notifications" @bind-Checked="_notifications" id="notifications" class="switch-root" data-testid="notifications-switch">
+                    <SmSwitchThumb class="switch-thumb" />
+                </SmSwitchRoot>
             </div>
             
             <div class="d-flex align-items-center justify-content-between">
                 <label for="marketing">Marketing Emails</label>
-                <SwitchRoot Name="marketing" Value="yes" @bind-Checked="_marketing" id="marketing" class="switch-root" data-testid="marketing-switch">
-                    <SwitchThumb class="switch-thumb" />
-                </SwitchRoot>
+                <SmSwitchRoot Name="marketing" Value="yes" @bind-Checked="_marketing" id="marketing" class="switch-root" data-testid="marketing-switch">
+                    <SmSwitchThumb class="switch-thumb" />
+                </SmSwitchRoot>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -46,9 +46,9 @@ else
         <form class="d-flex flex-column gap-3" style="max-width: 300px;">
             <div class="d-flex align-items-center justify-content-between">
                 <label for="required-switch">Accept Terms</label>
-                <SwitchRoot Name="terms" Required="true" @bind-Checked="_required" id="required-switch" class="switch-root" data-testid="required-switch">
-                    <SwitchThumb class="switch-thumb" />
-                </SwitchRoot>
+                <SmSwitchRoot Name="terms" Required="true" @bind-Checked="_required" id="required-switch" class="switch-root" data-testid="required-switch">
+                    <SmSwitchThumb class="switch-thumb" />
+                </SmSwitchRoot>
             </div>
         </form>
     </div>
@@ -62,27 +62,27 @@ else
             <div class="form-field">
                 <div class="d-flex align-items-center justify-content-between">
                     <label for="editform-notifications">Notifications</label>
-                    <SwitchRoot @bind-Checked="_model.Notifications" id="editform-notifications" class="switch-root" data-testid="editform-notifications-switch">
-                        <SwitchThumb class="switch-thumb" />
-                    </SwitchRoot>
+                    <SmSwitchRoot @bind-Checked="_model.Notifications" id="editform-notifications" class="switch-root" data-testid="editform-notifications-switch">
+                        <SmSwitchThumb class="switch-thumb" />
+                    </SmSwitchRoot>
                 </div>
             </div>
             
             <div class="form-field">
                 <div class="d-flex align-items-center justify-content-between">
                     <label for="editform-marketing">Marketing Emails</label>
-                    <SwitchRoot @bind-Checked="_model.Marketing" id="editform-marketing" class="switch-root" data-testid="editform-marketing-switch">
-                        <SwitchThumb class="switch-thumb" />
-                    </SwitchRoot>
+                    <SmSwitchRoot @bind-Checked="_model.Marketing" id="editform-marketing" class="switch-root" data-testid="editform-marketing-switch">
+                        <SmSwitchThumb class="switch-thumb" />
+                    </SmSwitchRoot>
                 </div>
             </div>
             
             <div class="form-field">
                 <div class="d-flex align-items-center justify-content-between">
                     <label for="editform-terms">Accept Terms (Required)</label>
-                    <SwitchRoot @bind-Checked="_model.AcceptTerms" id="editform-terms" class="switch-root" data-testid="editform-terms-switch">
-                        <SwitchThumb class="switch-thumb" />
-                    </SwitchRoot>
+                    <SmSwitchRoot @bind-Checked="_model.AcceptTerms" id="editform-terms" class="switch-root" data-testid="editform-terms-switch">
+                        <SmSwitchThumb class="switch-thumb" />
+                    </SmSwitchRoot>
                 </div>
                 <ValidationMessage For="@(() => _model.AcceptTerms)" class="validation-message" />
             </div>

@@ -21,20 +21,20 @@
     @* Live Demo *@
     <SuSection Title="Demo">
         <SuCard>
-            <PopoverRoot>
-                <PopoverTrigger class="demo-popover-trigger">
+            <SmPopoverRoot>
+                <SmPopoverTrigger class="demo-popover-trigger">
                     Click me
-                </PopoverTrigger>
-                <PopoverPortal>
-                    <PopoverContent class="demo-popover-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="8">
+                </SmPopoverTrigger>
+                <SmPopoverPortal>
+                    <SmPopoverContent class="demo-popover-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="8">
                         <div class="flex flex-col gap-3">
                             <h3 class="font-medium text-su-foreground">Popover Title</h3>
                             <p class="text-sm text-su-muted-foreground">This is a simple popover with some content. Click outside or press Escape to close.</p>
-                            <PopoverClose class="demo-popover-close">Close</PopoverClose>
+                            <SmPopoverClose class="demo-popover-close">Close</SmPopoverClose>
                         </div>
-                    </PopoverContent>
-                </PopoverPortal>
-            </PopoverRoot>
+                    </SmPopoverContent>
+                </SmPopoverPortal>
+            </SmPopoverRoot>
         </SuCard>
     </SuSection>
 
@@ -350,73 +350,73 @@
         new() { Name = "Tab", Description = "Move focus within popover (when focus trapped)", Type = "" }
     };
 
-    private const string anatomyCode = @"<PopoverRoot>
-    <PopoverTrigger class=""su-popover-trigger"">Open</PopoverTrigger>
-    <PopoverPortal>
-        <PopoverContent class=""su-popover-content"">
+    private const string anatomyCode = @"<SmPopoverRoot>
+    <SmPopoverTrigger class=""su-popover-trigger"">Open</SmPopoverTrigger>
+    <SmPopoverPortal>
+        <SmPopoverContent class=""su-popover-content"">
             <p>Popover content</p>
-            <PopoverClose class=""su-popover-close"">Close</PopoverClose>
-        </PopoverContent>
-    </PopoverPortal>
-</PopoverRoot>";
+            <SmPopoverClose class=""su-popover-close"">Close</SmPopoverClose>
+        </SmPopoverContent>
+    </SmPopoverPortal>
+</SmPopoverRoot>";
 
-    private const string basicExampleCode = @"<PopoverRoot>
-    <PopoverTrigger class=""su-popover-trigger"">Click me</PopoverTrigger>
-    <PopoverPortal>
-        <PopoverContent class=""su-popover-content"" SideOffset=""8"">
+    private const string basicExampleCode = @"<SmPopoverRoot>
+    <SmPopoverTrigger class=""su-popover-trigger"">Click me</SmPopoverTrigger>
+    <SmPopoverPortal>
+        <SmPopoverContent class=""su-popover-content"" SideOffset=""8"">
             <h3 class=""su-popover-title"">Basic Popover</h3>
             <p class=""su-popover-description"">This is a simple popover with some content.</p>
-            <PopoverClose class=""su-popover-close"">Close</PopoverClose>
-        </PopoverContent>
-    </PopoverPortal>
-</PopoverRoot>";
+            <SmPopoverClose class=""su-popover-close"">Close</SmPopoverClose>
+        </SmPopoverContent>
+    </SmPopoverPortal>
+</SmPopoverRoot>";
 
-    private const string overlayExampleCode = @"<PopoverRoot>
-    <PopoverTrigger class=""su-popover-trigger"">Open with Overlay</PopoverTrigger>
-    <PopoverPortal>
-        <PopoverOverlay class=""su-popover-overlay"" />
-        <PopoverContent class=""su-popover-content"" SideOffset=""8"">
+    private const string overlayExampleCode = @"<SmPopoverRoot>
+    <SmPopoverTrigger class=""su-popover-trigger"">Open with Overlay</SmPopoverTrigger>
+    <SmPopoverPortal>
+        <SmPopoverOverlay class=""su-popover-overlay"" />
+        <SmPopoverContent class=""su-popover-content"" SideOffset=""8"">
             <h3 class=""su-popover-title"">Modal-like Popover</h3>
             <p class=""su-popover-description"">Click the overlay or press Escape to close.</p>
-            <PopoverClose class=""su-popover-close"">Done</PopoverClose>
-        </PopoverContent>
-    </PopoverPortal>
-</PopoverRoot>";
+            <SmPopoverClose class=""su-popover-close"">Done</SmPopoverClose>
+        </SmPopoverContent>
+    </SmPopoverPortal>
+</SmPopoverRoot>";
 
     private const string positionsExampleCode = @"@* Bottom (default) *@
-<PopoverContent class=""su-popover-content"" Side=""Side.Bottom"" SideOffset=""8"">
+<SmPopoverContent class=""su-popover-content"" Side=""Side.Bottom"" SideOffset=""8"">
     Content appears below
-</PopoverContent>
+</SmPopoverContent>
 
 @* Top *@
-<PopoverContent class=""su-popover-content"" Side=""Side.Top"" SideOffset=""8"">
+<SmPopoverContent class=""su-popover-content"" Side=""Side.Top"" SideOffset=""8"">
     Content appears above
-</PopoverContent>
+</SmPopoverContent>
 
 @* Left *@
-<PopoverContent class=""su-popover-content"" Side=""Side.Left"" SideOffset=""8"">
+<SmPopoverContent class=""su-popover-content"" Side=""Side.Left"" SideOffset=""8"">
     Content appears to the left
-</PopoverContent>
+</SmPopoverContent>
 
 @* Right *@
-<PopoverContent class=""su-popover-content"" Side=""Side.Right"" SideOffset=""8"">
+<SmPopoverContent class=""su-popover-content"" Side=""Side.Right"" SideOffset=""8"">
     Content appears to the right
-</PopoverContent>";
+</SmPopoverContent>";
 
     private const string controlledExampleCode = @"@code {
     private bool isOpen = false;
 }
 
-<PopoverRoot Open=""@isOpen"" OpenChanged=""@(v => isOpen = v)"">
-    <PopoverTrigger class=""su-popover-trigger"">
+<SmPopoverRoot Open=""@isOpen"" OpenChanged=""@(v => isOpen = v)"">
+    <SmPopoverTrigger class=""su-popover-trigger"">
         @(isOpen ? ""Close"" : ""Open"")
-    </PopoverTrigger>
-    <PopoverPortal>
-        <PopoverContent class=""su-popover-content"" SideOffset=""8"">
+    </SmPopoverTrigger>
+    <SmPopoverPortal>
+        <SmPopoverContent class=""su-popover-content"" SideOffset=""8"">
             <p>Controlled popover content</p>
-        </PopoverContent>
-    </PopoverPortal>
-</PopoverRoot>
+        </SmPopoverContent>
+    </SmPopoverPortal>
+</SmPopoverRoot>
 
 <button class=""su-button"" @onclick=""@(() => isOpen = !isOpen)"">
     Toggle Externally

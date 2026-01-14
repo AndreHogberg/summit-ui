@@ -4,16 +4,16 @@
     RenderFragment<T> cannot cross render mode boundaries (Server -> WASM).
 *@
 
-<AlertDialogProvider Context="alert">
-    <AlertDialogPortal data-testid="alert-portal">
-        <AlertDialogOverlay class="alert-dialog-overlay" data-testid="alert-overlay"/>
-        <AlertDialogContent class="alert-dialog-content" data-testid="alert-content">
-            <AlertDialogTitle class="alert-dialog-title" data-testid="alert-title"/>
-            <AlertDialogDescription class="alert-dialog-description" data-testid="alert-description"/>
+<SmAlertDialogProvider Context="alert">
+    <SmAlertDialogPortal data-testid="alert-portal">
+        <SmAlertDialogOverlay class="alert-dialog-overlay" data-testid="alert-overlay"/>
+        <SmAlertDialogContent class="alert-dialog-content" data-testid="alert-content">
+            <SmAlertDialogTitle class="alert-dialog-title" data-testid="alert-title"/>
+            <SmAlertDialogDescription class="alert-dialog-description" data-testid="alert-description"/>
             <div class="alert-dialog-actions">
-                <AlertDialogCancel class="btn btn-secondary" data-testid="alert-cancel"/>
-                <AlertDialogConfirm class="@(alert.Options.IsDestructive ? "btn btn-danger" : "btn btn-primary")" data-testid="alert-confirm"/>
+                <SmAlertDialogCancel class="btn btn-secondary" data-testid="alert-cancel"/>
+                <SmAlertDialogConfirm class="@(alert.Options.IsDestructive ? "btn btn-danger" : "btn btn-primary")" data-testid="alert-confirm"/>
             </div>
-        </AlertDialogContent>
-    </AlertDialogPortal>
-</AlertDialogProvider>
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>

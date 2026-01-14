@@ -13,32 +13,32 @@
 else
 {
 <div data-testid="page-ready">
-    <SelectRoot TValue="string" @bind-Value="selectedValue">
-        <SelectTrigger TValue="string" data-testid="trigger">
-            <SelectValue TValue="string" Placeholder="Select a fruit..." />
-        </SelectTrigger>
-        <SelectPortal TValue="string">
-            <SelectContent TValue="string" data-testid="content" SideOffset="4">
-                <SelectViewport TValue="string">
-                    <SelectItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
-                        <SelectItemText>Apple</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
-                        <SelectItemText>Banana</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
-                        <SelectItemText>Orange</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue="string" Value="@("grape")" Label="Grape" data-testid="item-grape">
-                        <SelectItemText>Grape</SelectItemText>
-                    </SelectItem>
-                    <SelectItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
-                        <SelectItemText>Mango</SelectItemText>
-                    </SelectItem>
-                </SelectViewport>
-            </SelectContent>
-        </SelectPortal>
-    </SelectRoot>
+    <SmSelectRoot TValue="string" @bind-Value="selectedValue">
+        <SmSelectTrigger TValue="string" data-testid="trigger">
+            <SmSelectValue TValue="string" Placeholder="Select a fruit..." />
+        </SmSelectTrigger>
+        <SmSelectPortal TValue="string">
+            <SmSelectContent TValue="string" data-testid="content" SideOffset="4">
+                <SmSelectViewport TValue="string">
+                    <SmSelectItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                        <SmSelectItemText>Apple</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue="string" Value="@("banana")" Label="Banana" data-testid="item-banana">
+                        <SmSelectItemText>Banana</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                        <SmSelectItemText>Orange</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue="string" Value="@("grape")" Label="Grape" data-testid="item-grape">
+                        <SmSelectItemText>Grape</SmSelectItemText>
+                    </SmSelectItem>
+                    <SmSelectItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
+                        <SmSelectItemText>Mango</SmSelectItemText>
+                    </SmSelectItem>
+                </SmSelectViewport>
+            </SmSelectContent>
+        </SmSelectPortal>
+    </SmSelectRoot>
 </div>
 
 }

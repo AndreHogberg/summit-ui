@@ -22,9 +22,9 @@
     <SuSection Title="Demo">
         <SuCard>
             <div class="flex flex-col gap-4">
-                <ComboboxRoot TValue="string" @bind-Values="selectedFruits">
-                    <ComboboxTrigger TValue="string" class="demo-combobox-trigger">
-                        <ComboboxSelectedValues TValue="string" Context="items">
+                <SmComboboxRoot TValue="string" @bind-Values="selectedFruits">
+                    <SmComboboxTrigger TValue="string" class="demo-combobox-trigger">
+                        <SmComboboxSelectedValues TValue="string" Context="items">
                             @foreach (var item in items)
                             {
                                 <span class="demo-badge">
@@ -34,49 +34,49 @@
                                     </button>
                                 </span>
                             }
-                        </ComboboxSelectedValues>
-                        <ComboboxInput TValue="string" Placeholder="Search fruits..." class="demo-combobox-input" />
-                    </ComboboxTrigger>
-                    <ComboboxPortal TValue="string">
-                        <ComboboxContent TValue="string" class="demo-combobox-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
-                            <ComboboxViewport TValue="string" class="demo-combobox-viewport">
-                                <ComboboxItem TValue="string" Value="@("apple")" Label="Apple" class="demo-combobox-item">
+                        </SmComboboxSelectedValues>
+                        <SmComboboxInput TValue="string" Placeholder="Search fruits..." class="demo-combobox-input" />
+                    </SmComboboxTrigger>
+                    <SmComboboxPortal TValue="string">
+                        <SmComboboxContent TValue="string" class="demo-combobox-content data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 duration-150" SideOffset="4">
+                            <SmComboboxViewport TValue="string" class="demo-combobox-viewport">
+                                <SmComboboxItem TValue="string" Value="@("apple")" Label="Apple" class="demo-combobox-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
                                     Apple
-                                </ComboboxItem>
-                                <ComboboxItem TValue="string" Value="@("banana")" Label="Banana" class="demo-combobox-item">
+                                </SmComboboxItem>
+                                <SmComboboxItem TValue="string" Value="@("banana")" Label="Banana" class="demo-combobox-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
                                     Banana
-                                </ComboboxItem>
-                                <ComboboxItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-combobox-item">
+                                </SmComboboxItem>
+                                <SmComboboxItem TValue="string" Value="@("cherry")" Label="Cherry" class="demo-combobox-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
                                     Cherry
-                                </ComboboxItem>
-                                <ComboboxItem TValue="string" Value="@("orange")" Label="Orange" class="demo-combobox-item">
+                                </SmComboboxItem>
+                                <SmComboboxItem TValue="string" Value="@("orange")" Label="Orange" class="demo-combobox-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
                                     Orange
-                                </ComboboxItem>
-                                <ComboboxItem TValue="string" Value="@("grape")" Label="Grape" class="demo-combobox-item">
+                                </SmComboboxItem>
+                                <SmComboboxItem TValue="string" Value="@("grape")" Label="Grape" class="demo-combobox-item">
                                     <span class="demo-item-check">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
                                     </span>
                                     Grape
-                                </ComboboxItem>
-                            </ComboboxViewport>
-                            <ComboboxEmpty TValue="string" class="demo-combobox-empty">
+                                </SmComboboxItem>
+                            </SmComboboxViewport>
+                            <SmComboboxEmpty TValue="string" class="demo-combobox-empty">
                                 No fruits found
-                            </ComboboxEmpty>
-                        </ComboboxContent>
-                    </ComboboxPortal>
-                </ComboboxRoot>
+                            </SmComboboxEmpty>
+                        </SmComboboxContent>
+                    </SmComboboxPortal>
+                </SmComboboxRoot>
                 <SuText Size="SuTextSize.Small" Muted="true">Selected: @(selectedFruits.Count > 0 ? string.Join(", ", selectedFruits) : "None")</SuText>
             </div>
         </SuCard>
@@ -566,9 +566,9 @@
         new() { Name = "OnSelectionChange", Type = "EventCallback<bool>", Description = "Selection change callback" }
     };
 
-    private const string anatomyCode = @"<ComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
-    <ComboboxTrigger TValue=""string"">
-        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+    private const string anatomyCode = @"<SmComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
+    <SmComboboxTrigger TValue=""string"">
+        <SmComboboxSelectedValues TValue=""string"" Context=""items"">
             @foreach (var item in items)
             {
                 <span class=""badge"">
@@ -576,20 +576,20 @@
                     <button @onclick=""item.DeselectAsync"">x</button>
                 </span>
             }
-        </ComboboxSelectedValues>
-        <ComboboxInput TValue=""string"" Placeholder=""Search..."" />
-    </ComboboxTrigger>
-    <ComboboxPortal TValue=""string"">
-        <ComboboxContent TValue=""string"">
-            <ComboboxViewport TValue=""string"">
-                <ComboboxItem TValue=""string"" Value=""@(""option-1"")"" Label=""Option 1"">
+        </SmComboboxSelectedValues>
+        <SmComboboxInput TValue=""string"" Placeholder=""Search..."" />
+    </SmComboboxTrigger>
+    <SmComboboxPortal TValue=""string"">
+        <SmComboboxContent TValue=""string"">
+            <SmComboboxViewport TValue=""string"">
+                <SmComboboxItem TValue=""string"" Value=""@(""option-1"")"" Label=""Option 1"">
                     Option 1
-                </ComboboxItem>
-            </ComboboxViewport>
-            <ComboboxEmpty TValue=""string"">No results found</ComboboxEmpty>
-        </ComboboxContent>
-    </ComboboxPortal>
-</ComboboxRoot>";
+                </SmComboboxItem>
+            </SmComboboxViewport>
+            <SmComboboxEmpty TValue=""string"">No results found</SmComboboxEmpty>
+        </SmComboboxContent>
+    </SmComboboxPortal>
+</SmComboboxRoot>";
 
     private const string selectedItemModelCode = @"public sealed class ComboboxSelectedItem<TValue> where TValue : notnull
 {
@@ -602,9 +602,9 @@
     private IReadOnlyCollection<string> selectedFruits = Array.Empty<string>();
 }
 
-<ComboboxRoot TValue=""string"" @bind-Values=""selectedFruits"">
-    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
-        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+<SmComboboxRoot TValue=""string"" @bind-Values=""selectedFruits"">
+    <SmComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <SmComboboxSelectedValues TValue=""string"" Context=""items"">
             @foreach (var item in items)
             {
                 <span class=""badge"">
@@ -612,27 +612,27 @@
                     <button type=""button"" @onclick=""item.DeselectAsync"">x</button>
                 </span>
             }
-        </ComboboxSelectedValues>
-        <ComboboxInput TValue=""string"" Placeholder=""Search fruits..."" />
-    </ComboboxTrigger>
-    <ComboboxPortal TValue=""string"">
-        <ComboboxContent TValue=""string"" class=""combobox-content"">
-            <ComboboxViewport TValue=""string"">
-                <ComboboxItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">Apple</ComboboxItem>
-                <ComboboxItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">Banana</ComboboxItem>
-                <ComboboxItem TValue=""string"" Value=""@(""cherry"")"" Label=""Cherry"">Cherry</ComboboxItem>
-            </ComboboxViewport>
-            <ComboboxEmpty TValue=""string"">No fruits found</ComboboxEmpty>
-        </ComboboxContent>
-    </ComboboxPortal>
-</ComboboxRoot>
+        </SmComboboxSelectedValues>
+        <SmComboboxInput TValue=""string"" Placeholder=""Search fruits..."" />
+    </SmComboboxTrigger>
+    <SmComboboxPortal TValue=""string"">
+        <SmComboboxContent TValue=""string"" class=""combobox-content"">
+            <SmComboboxViewport TValue=""string"">
+                <SmComboboxItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">Apple</SmComboboxItem>
+                <SmComboboxItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">Banana</SmComboboxItem>
+                <SmComboboxItem TValue=""string"" Value=""@(""cherry"")"" Label=""Cherry"">Cherry</SmComboboxItem>
+            </SmComboboxViewport>
+            <SmComboboxEmpty TValue=""string"">No fruits found</SmComboboxEmpty>
+        </SmComboboxContent>
+    </SmComboboxPortal>
+</SmComboboxRoot>
 
 <p>Selected: @string.Join("", "", selectedFruits)</p>";
 
     private const string selectOnlyExampleCode = @"@* Select-only mode: no ComboboxInput, trigger gets combobox role *@
-<ComboboxRoot TValue=""string"" @bind-Values=""selectedTags"">
-    <ComboboxTrigger TValue=""string"" class=""combobox-trigger-button"">
-        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+<SmComboboxRoot TValue=""string"" @bind-Values=""selectedTags"">
+    <SmComboboxTrigger TValue=""string"" class=""combobox-trigger-button"">
+        <SmComboboxSelectedValues TValue=""string"" Context=""items"">
             @if (items.Count == 0)
             {
                 <span class=""placeholder"">Select tags...</span>
@@ -641,93 +641,93 @@
             {
                 <span>@items.Count selected</span>
             }
-        </ComboboxSelectedValues>
+        </SmComboboxSelectedValues>
         <span class=""chevron"">▼</span>
-    </ComboboxTrigger>
-    <ComboboxPortal TValue=""string"">
-        <ComboboxContent TValue=""string"" class=""combobox-content"">
-            <ComboboxViewport TValue=""string"">
-                <ComboboxItem TValue=""string"" Value=""@(""important"")"" Label=""Important"">
+    </SmComboboxTrigger>
+    <SmComboboxPortal TValue=""string"">
+        <SmComboboxContent TValue=""string"" class=""combobox-content"">
+            <SmComboboxViewport TValue=""string"">
+                <SmComboboxItem TValue=""string"" Value=""@(""important"")"" Label=""Important"">
                     <span class=""checkbox"">☐</span> Important
-                </ComboboxItem>
-                <ComboboxItem TValue=""string"" Value=""@(""urgent"")"" Label=""Urgent"">
+                </SmComboboxItem>
+                <SmComboboxItem TValue=""string"" Value=""@(""urgent"")"" Label=""Urgent"">
                     <span class=""checkbox"">☐</span> Urgent
-                </ComboboxItem>
-            </ComboboxViewport>
-        </ComboboxContent>
-    </ComboboxPortal>
-</ComboboxRoot>";
+                </SmComboboxItem>
+            </SmComboboxViewport>
+        </SmComboboxContent>
+    </SmComboboxPortal>
+</SmComboboxRoot>";
 
-    private const string groupedExampleCode = @"<ComboboxRoot TValue=""string"" @bind-Values=""selectedFood"">
-    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
-        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+    private const string groupedExampleCode = @"<SmComboboxRoot TValue=""string"" @bind-Values=""selectedFood"">
+    <SmComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <SmComboboxSelectedValues TValue=""string"" Context=""items"">
             @foreach (var item in items)
             {
                 <span class=""badge"">@item.Label</span>
             }
-        </ComboboxSelectedValues>
-        <ComboboxInput TValue=""string"" Placeholder=""Search food..."" />
-    </ComboboxTrigger>
-    <ComboboxPortal TValue=""string"">
-        <ComboboxContent TValue=""string"" class=""combobox-content"">
-            <ComboboxViewport TValue=""string"">
-                <ComboboxGroup TValue=""string"">
-                    <ComboboxGroupLabel class=""group-label"">Fruits</ComboboxGroupLabel>
-                    <ComboboxItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">Apple</ComboboxItem>
-                    <ComboboxItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">Banana</ComboboxItem>
-                </ComboboxGroup>
-                <ComboboxGroup TValue=""string"">
-                    <ComboboxGroupLabel class=""group-label"">Vegetables</ComboboxGroupLabel>
-                    <ComboboxItem TValue=""string"" Value=""@(""carrot"")"" Label=""Carrot"">Carrot</ComboboxItem>
-                    <ComboboxItem TValue=""string"" Value=""@(""broccoli"")"" Label=""Broccoli"">Broccoli</ComboboxItem>
-                </ComboboxGroup>
-            </ComboboxViewport>
-            <ComboboxEmpty TValue=""string"">No food found</ComboboxEmpty>
-        </ComboboxContent>
-    </ComboboxPortal>
-</ComboboxRoot>";
+        </SmComboboxSelectedValues>
+        <SmComboboxInput TValue=""string"" Placeholder=""Search food..."" />
+    </SmComboboxTrigger>
+    <SmComboboxPortal TValue=""string"">
+        <SmComboboxContent TValue=""string"" class=""combobox-content"">
+            <SmComboboxViewport TValue=""string"">
+                <SmComboboxGroup TValue=""string"">
+                    <SmComboboxGroupLabel class=""group-label"">Fruits</SmComboboxGroupLabel>
+                    <SmComboboxItem TValue=""string"" Value=""@(""apple"")"" Label=""Apple"">Apple</SmComboboxItem>
+                    <SmComboboxItem TValue=""string"" Value=""@(""banana"")"" Label=""Banana"">Banana</SmComboboxItem>
+                </SmComboboxGroup>
+                <SmComboboxGroup TValue=""string"">
+                    <SmComboboxGroupLabel class=""group-label"">Vegetables</SmComboboxGroupLabel>
+                    <SmComboboxItem TValue=""string"" Value=""@(""carrot"")"" Label=""Carrot"">Carrot</SmComboboxItem>
+                    <SmComboboxItem TValue=""string"" Value=""@(""broccoli"")"" Label=""Broccoli"">Broccoli</SmComboboxItem>
+                </SmComboboxGroup>
+            </SmComboboxViewport>
+            <SmComboboxEmpty TValue=""string"">No food found</SmComboboxEmpty>
+        </SmComboboxContent>
+    </SmComboboxPortal>
+</SmComboboxRoot>";
 
-    private const string clearButtonExampleCode = @"<ComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
-    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
-        <ComboboxSelectedValues TValue=""string"" Context=""items"">
+    private const string clearButtonExampleCode = @"<SmComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
+    <SmComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <SmComboboxSelectedValues TValue=""string"" Context=""items"">
             @foreach (var item in items)
             {
                 <span class=""badge"">@item.Label</span>
             }
-        </ComboboxSelectedValues>
-        <ComboboxInput TValue=""string"" Placeholder=""Search..."" />
-        <ComboboxClear TValue=""string"" class=""clear-button"">
+        </SmComboboxSelectedValues>
+        <SmComboboxInput TValue=""string"" Placeholder=""Search..."" />
+        <SmComboboxClear TValue=""string"" class=""clear-button"">
             <svg>...</svg> @* Clear icon *@
-        </ComboboxClear>
-    </ComboboxTrigger>
+        </SmComboboxClear>
+    </SmComboboxTrigger>
     ...
-</ComboboxRoot>";
+</SmComboboxRoot>";
 
     private const string disabledExampleCode = @"@* Disabled entire combobox *@
-<ComboboxRoot TValue=""string"" Disabled=""true"">
-    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
-        <ComboboxInput TValue=""string"" Placeholder=""Disabled..."" />
-    </ComboboxTrigger>
+<SmComboboxRoot TValue=""string"" Disabled=""true"">
+    <SmComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <SmComboboxInput TValue=""string"" Placeholder=""Disabled..."" />
+    </SmComboboxTrigger>
     ...
-</ComboboxRoot>
+</SmComboboxRoot>
 
 @* Disabled individual items *@
-<ComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
-    <ComboboxTrigger TValue=""string"" class=""combobox-trigger"">
-        <ComboboxInput TValue=""string"" Placeholder=""Select..."" />
-    </ComboboxTrigger>
-    <ComboboxPortal TValue=""string"">
-        <ComboboxContent TValue=""string"" class=""combobox-content"">
-            <ComboboxViewport TValue=""string"">
-                <ComboboxItem TValue=""string"" Value=""@(""option1"")"" Label=""Option 1"">Option 1</ComboboxItem>
-                <ComboboxItem TValue=""string"" Value=""@(""option2"")"" Label=""Option 2"" Disabled=""true"">
+<SmComboboxRoot TValue=""string"" @bind-Values=""selectedValues"">
+    <SmComboboxTrigger TValue=""string"" class=""combobox-trigger"">
+        <SmComboboxInput TValue=""string"" Placeholder=""Select..."" />
+    </SmComboboxTrigger>
+    <SmComboboxPortal TValue=""string"">
+        <SmComboboxContent TValue=""string"" class=""combobox-content"">
+            <SmComboboxViewport TValue=""string"">
+                <SmComboboxItem TValue=""string"" Value=""@(""option1"")"" Label=""Option 1"">Option 1</SmComboboxItem>
+                <SmComboboxItem TValue=""string"" Value=""@(""option2"")"" Label=""Option 2"" Disabled=""true"">
                     Option 2 (Disabled)
-                </ComboboxItem>
-                <ComboboxItem TValue=""string"" Value=""@(""option3"")"" Label=""Option 3"">Option 3</ComboboxItem>
-            </ComboboxViewport>
-        </ComboboxContent>
-    </ComboboxPortal>
-</ComboboxRoot>";
+                </SmComboboxItem>
+                <SmComboboxItem TValue=""string"" Value=""@(""option3"")"" Label=""Option 3"">Option 3</SmComboboxItem>
+            </SmComboboxViewport>
+        </SmComboboxContent>
+    </SmComboboxPortal>
+</SmComboboxRoot>";
 
     private const string cssExampleCode = @".combobox-trigger {
     display: flex;

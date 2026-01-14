@@ -6,20 +6,20 @@
     <h2>Basic Popover</h2>
     <p>A simple popover with default settings.</p>
     
-    <PopoverRoot>
-        <PopoverTrigger class="btn btn-primary">
+    <SmPopoverRoot>
+        <SmPopoverTrigger class="btn btn-primary">
             Open Popover
-        </PopoverTrigger>
-        <PopoverPortal>
-            <PopoverContent class="popover-content" SideOffset="8">
+        </SmPopoverTrigger>
+        <SmPopoverPortal>
+            <SmPopoverContent class="popover-content" SideOffset="8">
                 <div class="popover-panel">
                     <h3>Basic Popover</h3>
                     <p>This is a simple popover with default positioning.</p>
-                    <PopoverClose class="btn btn-secondary btn-sm">Close</PopoverClose>
+                    <SmPopoverClose class="btn btn-secondary btn-sm">Close</SmPopoverClose>
                 </div>
-            </PopoverContent>
-        </PopoverPortal>
-    </PopoverRoot>
+            </SmPopoverContent>
+        </SmPopoverPortal>
+    </SmPopoverRoot>
 </section>
 
 <section style="margin-top: 2rem;">
@@ -27,49 +27,49 @@
     <p>Popovers can appear on different sides of the trigger.</p>
 
     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <PopoverRoot>
-            <PopoverTrigger class="btn btn-outline-primary">Top</PopoverTrigger>
-            <PopoverPortal>
-                <PopoverContent class="popover-content" Side="Side.Top" SideOffset="8">
+        <SmPopoverRoot>
+            <SmPopoverTrigger class="btn btn-outline-primary">Top</SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverContent class="popover-content" Side="Side.Top" SideOffset="8">
                     <div class="popover-panel">
                         <p>I appear above!</p>
                     </div>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
 
-        <PopoverRoot>
-            <PopoverTrigger class="btn btn-outline-primary">Right</PopoverTrigger>
-            <PopoverPortal>
-                <PopoverContent class="popover-content" Side="Side.Right" SideOffset="8">
+        <SmPopoverRoot>
+            <SmPopoverTrigger class="btn btn-outline-primary">Right</SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverContent class="popover-content" Side="Side.Right" SideOffset="8">
                     <div class="popover-panel">
                         <p>I appear to the right!</p>
                     </div>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
 
-        <PopoverRoot>
-            <PopoverTrigger class="btn btn-outline-primary">Bottom</PopoverTrigger>
-            <PopoverPortal>
-                <PopoverContent class="popover-content" Side="Side.Bottom" SideOffset="8">
+        <SmPopoverRoot>
+            <SmPopoverTrigger class="btn btn-outline-primary">Bottom</SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverContent class="popover-content" Side="Side.Bottom" SideOffset="8">
                     <div class="popover-panel">
                         <p>I appear below!</p>
                     </div>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
 
-        <PopoverRoot>
-            <PopoverTrigger class="btn btn-outline-primary">Left</PopoverTrigger>
-            <PopoverPortal>
-                <PopoverContent class="popover-content" Side="Side.Left" SideOffset="8">
+        <SmPopoverRoot>
+            <SmPopoverTrigger class="btn btn-outline-primary">Left</SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverContent class="popover-content" Side="Side.Left" SideOffset="8">
                     <div class="popover-panel">
                         <p>I appear to the left!</p>
                     </div>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
     </div>
 </section>
 
@@ -77,23 +77,23 @@
     <h2>With Overlay</h2>
     <p>A popover with a backdrop overlay for modal-like behavior.</p>
 
-    <PopoverRoot>
-        <PopoverTrigger class="btn btn-warning">
+    <SmPopoverRoot>
+        <SmPopoverTrigger class="btn btn-warning">
             Open with Overlay
-        </PopoverTrigger>
-        <PopoverPortal>
-            <PopoverOverlay class="popover-overlay" />
-            <PopoverContent class="popover-content" Side="Side.Bottom" SideOffset="8" TrapFocus="true">
+        </SmPopoverTrigger>
+        <SmPopoverPortal>
+            <SmPopoverOverlay class="popover-overlay" />
+            <SmPopoverContent class="popover-content" Side="Side.Bottom" SideOffset="8" TrapFocus="true">
                 <div class="popover-panel">
                     <h3>Modal-like Popover</h3>
                     <p>Click the overlay or press Escape to close.</p>
                     <p>Focus is trapped within this popover.</p>
                     <input type="text" class="form-control" placeholder="Try tabbing..." style="margin-bottom: 0.5rem;" />
-                    <PopoverClose class="btn btn-primary">Done</PopoverClose>
+                    <SmPopoverClose class="btn btn-primary">Done</SmPopoverClose>
                 </div>
-            </PopoverContent>
-        </PopoverPortal>
-    </PopoverRoot>
+            </SmPopoverContent>
+        </SmPopoverPortal>
+    </SmPopoverRoot>
 </section>
 
 <section style="margin-top: 2rem;">
@@ -106,41 +106,41 @@
         </button>
     </div>
 
-    <PopoverRoot Open="@isControlledOpen" OpenChanged="@(v => isControlledOpen = v)">
-        <PopoverTrigger class="btn btn-secondary">
+    <SmPopoverRoot Open="@isControlledOpen" OpenChanged="@(v => isControlledOpen = v)">
+        <SmPopoverTrigger class="btn btn-secondary">
             Controlled Popover
-        </PopoverTrigger>
-        <PopoverPortal>
-            <PopoverContent class="popover-content" SideOffset="8">
+        </SmPopoverTrigger>
+        <SmPopoverPortal>
+            <SmPopoverContent class="popover-content" SideOffset="8">
                 <div class="popover-panel">
                     <h3>Controlled State</h3>
                     <p>This popover's state is managed externally.</p>
-                    <PopoverClose class="btn btn-secondary btn-sm">Close</PopoverClose>
+                    <SmPopoverClose class="btn btn-secondary btn-sm">Close</SmPopoverClose>
                 </div>
-            </PopoverContent>
-        </PopoverPortal>
-    </PopoverRoot>
+            </SmPopoverContent>
+        </SmPopoverPortal>
+    </SmPopoverRoot>
 </section>
 
 <section style="margin-top: 2rem;">
     <h2>With Animations</h2>
     <p>Popover with CSS open/close animations. Tests that focus management works with animated content.</p>
 
-    <PopoverRoot>
-        <PopoverTrigger class="btn btn-primary">
+    <SmPopoverRoot>
+        <SmPopoverTrigger class="btn btn-primary">
             Animated Popover
-        </PopoverTrigger>
-        <PopoverPortal>
-            <PopoverContent class="popover-content animated-content" SideOffset="8">
+        </SmPopoverTrigger>
+        <SmPopoverPortal>
+            <SmPopoverContent class="popover-content animated-content" SideOffset="8">
                 <div class="popover-panel">
                     <h3>Animated Popover</h3>
                     <p>This popover has CSS animations on open and close.</p>
                     <input type="text" class="form-control" placeholder="Focus should land here..." style="margin-bottom: 0.5rem;" />
-                    <PopoverClose class="btn btn-secondary btn-sm">Close</PopoverClose>
+                    <SmPopoverClose class="btn btn-secondary btn-sm">Close</SmPopoverClose>
                 </div>
-            </PopoverContent>
-        </PopoverPortal>
-    </PopoverRoot>
+            </SmPopoverContent>
+        </SmPopoverPortal>
+    </SmPopoverRoot>
 </section>
 
 @code {

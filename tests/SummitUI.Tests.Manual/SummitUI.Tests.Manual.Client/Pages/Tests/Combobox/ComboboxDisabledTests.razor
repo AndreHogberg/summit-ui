@@ -16,62 +16,62 @@ else
     @* Combobox with disabled items *@
     <div style="margin-bottom: 2rem;">
         <h4>With Disabled Items</h4>
-        <ComboboxRoot TValue="string" @bind-Values="selectedValues1">
-            <ComboboxTrigger TValue="string" data-testid="trigger-disabled-items">
-                <ComboboxSelectedValues TValue="string" Context="items">
+        <SmComboboxRoot TValue="string" @bind-Values="selectedValues1">
+            <SmComboboxTrigger TValue="string" data-testid="trigger-disabled-items">
+                <SmComboboxSelectedValues TValue="string" Context="items">
                     @foreach (var item in items)
                     {
                         <span class="badge">@item.Label</span>
                     }
-                </ComboboxSelectedValues>
-                <ComboboxInput TValue="string" Placeholder="Search..." data-testid="input-disabled-items" />
-            </ComboboxTrigger>
-            <ComboboxPortal TValue="string">
-                <ComboboxContent TValue="string" data-testid="content-disabled-items" SideOffset="4">
-                    <ComboboxViewport TValue="string">
-                        <ComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
+                </SmComboboxSelectedValues>
+                <SmComboboxInput TValue="string" Placeholder="Search..." data-testid="input-disabled-items" />
+            </SmComboboxTrigger>
+            <SmComboboxPortal TValue="string">
+                <SmComboboxContent TValue="string" data-testid="content-disabled-items" SideOffset="4">
+                    <SmComboboxViewport TValue="string">
+                        <SmComboboxItem TValue="string" Value="@("apple")" Label="Apple" data-testid="item-apple">
                             Apple
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("banana")" Label="Banana" Disabled="true" data-testid="item-banana-disabled">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("banana")" Label="Banana" Disabled="true" data-testid="item-banana-disabled">
                             Banana (Disabled)
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("orange")" Label="Orange" data-testid="item-orange">
                             Orange
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("grape")" Label="Grape" Disabled="true" data-testid="item-grape-disabled">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("grape")" Label="Grape" Disabled="true" data-testid="item-grape-disabled">
                             Grape (Disabled)
-                        </ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
+                        </SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("mango")" Label="Mango" data-testid="item-mango">
                             Mango
-                        </ComboboxItem>
-                    </ComboboxViewport>
-                </ComboboxContent>
-            </ComboboxPortal>
-        </ComboboxRoot>
+                        </SmComboboxItem>
+                    </SmComboboxViewport>
+                </SmComboboxContent>
+            </SmComboboxPortal>
+        </SmComboboxRoot>
     </div>
     
     @* Fully disabled combobox *@
     <div>
         <h4>Fully Disabled</h4>
-        <ComboboxRoot TValue="string" @bind-Values="selectedValues2" Disabled="true">
-            <ComboboxTrigger TValue="string" data-testid="trigger-disabled">
-                <ComboboxSelectedValues TValue="string" Context="items">
+        <SmComboboxRoot TValue="string" @bind-Values="selectedValues2" Disabled="true">
+            <SmComboboxTrigger TValue="string" data-testid="trigger-disabled">
+                <SmComboboxSelectedValues TValue="string" Context="items">
                     @if (items.Count == 0)
                     {
                         <span data-placeholder>Select fruits...</span>
                     }
-                </ComboboxSelectedValues>
-                <ComboboxInput TValue="string" Placeholder="Search..." data-testid="input-disabled" />
-            </ComboboxTrigger>
-            <ComboboxPortal TValue="string">
-                <ComboboxContent TValue="string" data-testid="content-disabled" SideOffset="4">
-                    <ComboboxViewport TValue="string">
-                        <ComboboxItem TValue="string" Value="@("apple")" Label="Apple">Apple</ComboboxItem>
-                        <ComboboxItem TValue="string" Value="@("banana")" Label="Banana">Banana</ComboboxItem>
-                    </ComboboxViewport>
-                </ComboboxContent>
-            </ComboboxPortal>
-        </ComboboxRoot>
+                </SmComboboxSelectedValues>
+                <SmComboboxInput TValue="string" Placeholder="Search..." data-testid="input-disabled" />
+            </SmComboboxTrigger>
+            <SmComboboxPortal TValue="string">
+                <SmComboboxContent TValue="string" data-testid="content-disabled" SideOffset="4">
+                    <SmComboboxViewport TValue="string">
+                        <SmComboboxItem TValue="string" Value="@("apple")" Label="Apple">Apple</SmComboboxItem>
+                        <SmComboboxItem TValue="string" Value="@("banana")" Label="Banana">Banana</SmComboboxItem>
+                    </SmComboboxViewport>
+                </SmComboboxContent>
+            </SmComboboxPortal>
+        </SmComboboxRoot>
     </div>
 </div>
 }

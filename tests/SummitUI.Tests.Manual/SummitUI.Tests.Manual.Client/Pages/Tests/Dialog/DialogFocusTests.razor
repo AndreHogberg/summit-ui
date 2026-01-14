@@ -12,12 +12,12 @@ else
     
     <div class="test-section">
         <h2>Form Dialog</h2>
-        <DialogRoot>
-            <DialogTrigger class="dialog-trigger" data-testid="form-trigger">Edit Profile</DialogTrigger>
-            <DialogPortal>
-                <DialogOverlay class="dialog-overlay" />
-                <DialogContent class="dialog-content" data-testid="form-content">
-                    <DialogTitle>Edit Profile</DialogTitle>
+        <SmDialogRoot>
+            <SmDialogTrigger class="dialog-trigger" data-testid="form-trigger">Edit Profile</SmDialogTrigger>
+            <SmDialogPortal>
+                <SmDialogOverlay class="dialog-overlay" />
+                <SmDialogContent class="dialog-content" data-testid="form-content">
+                    <SmDialogTitle>Edit Profile</SmDialogTitle>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" data-testid="name-input" />
@@ -27,12 +27,12 @@ else
                         <input type="email" id="email" data-testid="email-input" />
                     </div>
                     <div class="actions">
-                        <DialogClose class="dialog-close" data-testid="cancel-button">Cancel</DialogClose>
-                        <DialogClose class="dialog-close" data-testid="save-button">Save</DialogClose>
+                        <SmDialogClose class="dialog-close" data-testid="cancel-button">Cancel</SmDialogClose>
+                        <SmDialogClose class="dialog-close" data-testid="save-button">Save</SmDialogClose>
                     </div>
-                </DialogContent>
-            </DialogPortal>
-        </DialogRoot>
+                </SmDialogContent>
+            </SmDialogPortal>
+        </SmDialogRoot>
     </div>
 
     <div style="height: 200vh;">

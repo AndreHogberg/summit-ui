@@ -422,13 +422,13 @@ builder.Services.AddToastQueue<MyToast>();
 
     private string step3Code = """
 @* In your layout - ToastRegion automatically portals to body *@
-<ToastRegion TContent="MyToast" 
+<SmToastRegion TContent="MyToast" 
              AriaLabel="Notifications"
              GetAnnouncementText="t => t.Description ?? t.Title"
              Hotkey="@(["F8"])"
              class="absolute inset-0 overflow-clip flex flex-col-reverse items-end gap-2 p-4 z-50">
-    <ToastTemplate Context="toast">
-        <Toast TContent="MyToast" 
+    <SmToastTemplate Context="toast">
+        <SmToast TContent="MyToast" 
                ToastData="toast" 
                SwipeDirection="SwipeDirection.Right"
                SwipeThreshold="50"
@@ -438,10 +438,10 @@ builder.Services.AddToastQueue<MyToast>();
             {
                 <p class="text-sm opacity-80">@toast.Content.Description</p>
             }
-            <ToastCloseButton aria-label="Close">×</ToastCloseButton>
-        </Toast>
-    </ToastTemplate>
-</ToastRegion>
+            <SmToastCloseButton aria-label="Close">×</SmToastCloseButton>
+        </SmToast>
+    </SmToastTemplate>
+</SmToastRegion>
 
 @* In any component *@
 @inject IToastQueue<MyToast> Toasts
@@ -476,7 +476,7 @@ Toasts.Add(
 
     private string swipeExample = """
 @* Enable swipe-to-dismiss on the Toast component *@
-<Toast TContent="MyToast" 
+<SmToast TContent="MyToast" 
        ToastData="toast"
        SwipeDirection="SwipeDirection.Right"
        SwipeThreshold="50"
@@ -484,7 +484,7 @@ Toasts.Add(
               data-[swipe=move]:translate-x-[var(--summit-toast-swipe-move-x)]
               data-[swipe=end]:animate-out data-[swipe=end]:slide-out-to-right-full">
     ...
-</Toast>
+</SmToast>
 
 @* Swipe directions available: Left, Right, Up, Down *@
 @* CSS variables set during swipe: *@

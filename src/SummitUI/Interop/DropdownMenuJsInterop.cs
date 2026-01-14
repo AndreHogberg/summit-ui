@@ -61,7 +61,7 @@ public sealed class DropdownMenuJsInterop(IJSRuntime jsRuntime) : JsInteropBase(
     /// <param name="closeDelay">Delay before closing in milliseconds.</param>
     public async ValueTask InitializeSubTriggerAsync(
         ElementReference triggerElement,
-        DotNetObjectReference<DropdownMenuSubTrigger> dotNetRef,
+        DotNetObjectReference<SmDropdownMenuSubTrigger> dotNetRef,
         int openDelay,
         int closeDelay)
     {

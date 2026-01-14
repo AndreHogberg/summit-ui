@@ -1,0 +1,41 @@
+@namespace SummitUI
+
+<SmPrimitive
+    As="@As"
+    id="@Context.DescriptionId"
+    data-summit-alertdialog-description
+    data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+    @attributes="AdditionalAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @Context.Message
+    }
+</SmPrimitive>
+
+@code {
+    [CascadingParameter]
+    private AlertDialogContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// Child content that completely replaces the default message.
+    /// If provided, the message from ConfirmAsync is ignored.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// HTML element to render. Defaults to "p".
+    /// </summary>
+    [Parameter]
+    public string As { get; set; } = "p";
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

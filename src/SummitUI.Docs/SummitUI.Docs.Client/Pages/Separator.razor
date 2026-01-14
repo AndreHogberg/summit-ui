@@ -27,12 +27,12 @@
                     <h4 class="text-sm font-medium text-su-foreground">SummitUI</h4>
                     <p class="text-sm text-su-muted-foreground">An open-source UI component library.</p>
                 </div>
-                <SeparatorRoot class="demo-separator" />
+                <SmSeparatorRoot class="demo-separator" />
                 <div class="flex h-5 items-center space-x-4 text-sm">
                     <span>Blog</span>
-                    <SeparatorRoot Orientation="SeparatorOrientation.Vertical" class="demo-separator-vertical" />
+                    <SmSeparatorRoot Orientation="SeparatorOrientation.Vertical" class="demo-separator-vertical" />
                     <span>Docs</span>
-                    <SeparatorRoot Orientation="SeparatorOrientation.Vertical" class="demo-separator-vertical" />
+                    <SmSeparatorRoot Orientation="SeparatorOrientation.Vertical" class="demo-separator-vertical" />
                     <span>Source</span>
                 </div>
             </div>
@@ -198,22 +198,22 @@
         new() { Name = "data-orientation", Type = "\"horizontal\" | \"vertical\"", Description = "The orientation of the separator" }
     };
 
-    private const string anatomyCode = @"<SeparatorRoot />";
+    private const string anatomyCode = @"<SmSeparatorRoot />";
 
     private const string horizontalExampleCode = @"<p>Content above</p>
-<SeparatorRoot class=""my-separator"" />
+<SmSeparatorRoot class=""my-separator"" />
 <p>Content below</p>";
 
     private const string verticalExampleCode = @"<div style=""display: flex; align-items: center; gap: 1rem;"">
     <span>Blog</span>
-    <SeparatorRoot Orientation=""SeparatorOrientation.Vertical"" class=""my-separator-vertical"" />
+    <SmSeparatorRoot Orientation=""SeparatorOrientation.Vertical"" class=""my-separator-vertical"" />
     <span>Docs</span>
-    <SeparatorRoot Orientation=""SeparatorOrientation.Vertical"" class=""my-separator-vertical"" />
+    <SmSeparatorRoot Orientation=""SeparatorOrientation.Vertical"" class=""my-separator-vertical"" />
     <span>Source</span>
 </div>";
 
     private const string decorativeExampleCode = @"@* Decorative separator - ignored by screen readers *@
-<SeparatorRoot Decorative=""true"" class=""my-separator"" />";
+<SmSeparatorRoot Decorative=""true"" class=""my-separator"" />";
 
     private const string cssExampleCode = @"/* Horizontal separator */
 .separator {

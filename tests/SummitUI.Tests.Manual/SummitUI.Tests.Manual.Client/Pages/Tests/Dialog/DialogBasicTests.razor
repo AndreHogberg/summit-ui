@@ -12,37 +12,37 @@ else
     
     <div class="test-section">
         <h2>Basic Dialog</h2>
-        <DialogRoot>
-            <DialogTrigger class="dialog-trigger" data-testid="basic-trigger">Open Dialog</DialogTrigger>
-            <DialogPortal>
-                <DialogOverlay class="dialog-overlay" data-testid="basic-overlay" />
-                <DialogContent class="dialog-content" data-testid="basic-content">
-                    <DialogTitle class="dialog-title" data-testid="basic-title">Dialog Title</DialogTitle>
-                    <DialogDescription class="dialog-description" data-testid="basic-description">
+        <SmDialogRoot>
+            <SmDialogTrigger class="dialog-trigger" data-testid="basic-trigger">Open Dialog</SmDialogTrigger>
+            <SmDialogPortal>
+                <SmDialogOverlay class="dialog-overlay" data-testid="basic-overlay" />
+                <SmDialogContent class="dialog-content" data-testid="basic-content">
+                    <SmDialogTitle class="dialog-title" data-testid="basic-title">Dialog Title</SmDialogTitle>
+                    <SmDialogDescription class="dialog-description" data-testid="basic-description">
                         This is a basic dialog description.
-                    </DialogDescription>
-                    <DialogClose class="dialog-close" data-testid="basic-close">Close</DialogClose>
-                </DialogContent>
-            </DialogPortal>
-        </DialogRoot>
+                    </SmDialogDescription>
+                    <SmDialogClose class="dialog-close" data-testid="basic-close">Close</SmDialogClose>
+                </SmDialogContent>
+            </SmDialogPortal>
+        </SmDialogRoot>
     </div>
 
     <div class="test-section">
         <h2>Controlled Dialog</h2>
-        <DialogRoot @bind-Open="_isOpen">
-            <DialogTrigger class="dialog-trigger" data-testid="controlled-trigger">
+        <SmDialogRoot @bind-Open="_isOpen">
+            <SmDialogTrigger class="dialog-trigger" data-testid="controlled-trigger">
                 @(_isOpen ? "Open" : "Closed")
-            </DialogTrigger>
-            <DialogPortal>
-                <DialogOverlay class="dialog-overlay" />
-                <DialogContent class="dialog-content" data-testid="controlled-content">
-                    <DialogTitle>Controlled Dialog</DialogTitle>
+            </SmDialogTrigger>
+            <SmDialogPortal>
+                <SmDialogOverlay class="dialog-overlay" />
+                <SmDialogContent class="dialog-content" data-testid="controlled-content">
+                    <SmDialogTitle>Controlled Dialog</SmDialogTitle>
                     <button type="button" @onclick="() => _isOpen = false" data-testid="internal-close">
                         Internal Close
                     </button>
-                </DialogContent>
-            </DialogPortal>
-        </DialogRoot>
+                </SmDialogContent>
+            </SmDialogPortal>
+        </SmDialogRoot>
         <button type="button" @onclick="() => _isOpen = !_isOpen" data-testid="external-toggle">
             External Toggle
         </button>

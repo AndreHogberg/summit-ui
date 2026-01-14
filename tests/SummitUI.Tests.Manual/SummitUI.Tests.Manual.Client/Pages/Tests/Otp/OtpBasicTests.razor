@@ -16,30 +16,30 @@ else
     <div class="space-y-4">
         <div class="space-y-2">
             <label>Controlled OTP</label>
-            <OtpRoot @bind-Value="otpValue" MaxLength="6" data-testid="otp-input" class="otp-container">
+            <SmOtpRoot @bind-Value="otpValue" MaxLength="6" data-testid="otp-input" class="otp-container">
                 @foreach (var slot in context.Slots)
                 {
-                    <OtpSlot Slot="slot" class="otp-slot">
-                        <OtpCaret class="otp-caret" />
-                    </OtpSlot>
+                    <SmOtpSlot Slot="slot" class="otp-slot">
+                        <SmOtpCaret class="otp-caret" />
+                    </SmOtpSlot>
                 }
-            </OtpRoot>
+            </SmOtpRoot>
             <div data-testid="otp-value">Value: @otpValue</div>
         </div>
 
         <div class="space-y-2">
             <label>Disabled OTP</label>
-            <OtpRoot Value="123" MaxLength="4" Disabled="true" data-testid="otp-disabled" class="otp-container" />
+            <SmOtpRoot Value="123" MaxLength="4" Disabled="true" data-testid="otp-disabled" class="otp-container" />
         </div>
 
         <div class="space-y-2">
             <label>OTP with Pattern (digits only)</label>
-            <OtpRoot MaxLength="4" Pattern="[0-9]*" data-testid="otp-pattern" class="otp-container" />
+            <SmOtpRoot MaxLength="4" Pattern="[0-9]*" data-testid="otp-pattern" class="otp-container" />
         </div>
         
         <div class="space-y-2">
             <label>OTP with Placeholder</label>
-            <OtpRoot MaxLength="6" Placeholder="------" data-testid="otp-placeholder" class="otp-container" />
+            <SmOtpRoot MaxLength="6" Placeholder="------" data-testid="otp-placeholder" class="otp-container" />
         </div>
     </div>
 </div>

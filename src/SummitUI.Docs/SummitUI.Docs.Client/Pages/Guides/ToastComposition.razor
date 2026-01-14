@@ -237,18 +237,18 @@ builder.Services.AddToastQueue<AppToastContent>();";
 @using SummitUI
 @inject IToastQueue<AppToastContent> Queue
 
-<ToastRegion TContent=""AppToastContent""
+<SmToastRegion TContent=""AppToastContent""
              AriaLabel=""Notifications""
              GetAnnouncementText=""GetAnnouncementText""
              Hotkey=""@([""F8""])""
              class=""pointer-events-none fixed inset-0 flex flex-col-reverse items-end gap-2 p-4 sm:p-6 z-[9999] outline-none"">
-    <ToastTemplate Context=""toast"">
+    <SmToastTemplate Context=""toast"">
         @{
             var titleId = $""toast-title-{toast.Key}"";
             var descId = $""toast-desc-{toast.Key}"";
             var urgency = toast.Content.Variant == ""error"" ? ToastUrgency.Assertive : ToastUrgency.Polite;
         }
-        <Toast TContent=""AppToastContent""
+        <SmToast TContent=""AppToastContent""
                ToastData=""toast""
                SwipeDirection=""SummitUI.SwipeDirection.Right""
                SwipeThreshold=""50""
@@ -280,13 +280,13 @@ builder.Services.AddToastQueue<AppToastContent>();";
                         @toast.Content.Action.Label
                     </button>
                 }
-                <ToastCloseButton aria-label=""Close notification"" class=""..."">
+                <SmToastCloseButton aria-label=""Close notification"" class=""..."">
                     ×
-                </ToastCloseButton>
+                </SmToastCloseButton>
             </div>
-        </Toast>
-    </ToastTemplate>
-</ToastRegion>
+        </SmToast>
+    </SmToastTemplate>
+</SmToastRegion>
 
 @code {
     private string GetAnnouncementText(AppToastContent content)
@@ -352,17 +352,17 @@ builder.Services.AddToastQueue<AppToastContent>();";
     border-color: var(--color-yellow-500);
 }";
 
-    private const string tailwindVariantCode = @"<Toast 
+    private const string tailwindVariantCode = @"<SmToast 
     class=""... 
         data-[variant=success]:bg-green-600 data-[variant=success]:text-white 
         data-[variant=error]:bg-red-600 data-[variant=error]:text-white 
         data-[variant=warning]:bg-yellow-500 data-[variant=warning]:text-black""
     data-variant=""@toast.Content.Variant"">
     ...
-</Toast>";
+</SmToast>";
 
     private const string swipeCode = @"@* Enable swipe-to-dismiss with visual feedback *@
-<Toast TContent=""AppToastContent""
+<SmToast TContent=""AppToastContent""
        ToastData=""toast""
        SwipeDirection=""SummitUI.SwipeDirection.Right""
        SwipeThreshold=""50""
@@ -372,7 +372,7 @@ builder.Services.AddToastQueue<AppToastContent>();";
            data-[swipe=end]:animate-out
            data-[swipe=end]:slide-out-to-right-full"">
     ...
-</Toast>
+</SmToast>
 
 @* Available SwipeDirection values: Left, Right, Up, Down *@
 @* CSS variables during swipe: *@

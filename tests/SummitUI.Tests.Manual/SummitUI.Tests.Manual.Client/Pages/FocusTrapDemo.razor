@@ -14,14 +14,14 @@
     @if (showZeroItems)
     {
         <div class="dialog-overlay" data-testid="zero-items-overlay">
-            <FocusTrap IsActive="true" AutoFocus="true">
+            <SmFocusTrap IsActive="true" AutoFocus="true">
                 <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="zero-dialog-title" 
                      data-testid="zero-items-dialog" tabindex="-1" @onkeydown="HandleZeroItemsKeyDown">
                     <h3 id="zero-dialog-title">No Focusable Elements</h3>
                     <p>This dialog has no buttons or inputs. Press Escape to close.</p>
                     <p>Focus is trapped here - you cannot Tab away to external elements.</p>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 </section>
@@ -37,7 +37,7 @@
     @if (showOneItem)
     {
         <div class="dialog-overlay" data-testid="one-item-overlay">
-            <FocusTrap IsActive="true" AutoFocus="true">
+            <SmFocusTrap IsActive="true" AutoFocus="true">
                 <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="one-dialog-title" data-testid="one-item-dialog">
                     <h3 id="one-dialog-title">Single Focusable Element</h3>
                     <p>This dialog has only one button. Tabbing should cycle back to the same button.</p>
@@ -45,7 +45,7 @@
                         Close
                     </button>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 </section>
@@ -61,7 +61,7 @@
     @if (showTwoItems)
     {
         <div class="dialog-overlay" data-testid="two-items-overlay">
-            <FocusTrap IsActive="true" AutoFocus="true">
+            <SmFocusTrap IsActive="true" AutoFocus="true">
                 <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="two-dialog-title" data-testid="two-items-dialog">
                     <h3 id="two-dialog-title">Two Focusable Elements</h3>
                     <p>This dialog has two buttons. Tab cycles between them.</p>
@@ -74,7 +74,7 @@
                         </button>
                     </div>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 </section>
@@ -90,7 +90,7 @@
     @if (showMultipleItems)
     {
         <div class="dialog-overlay" data-testid="multiple-items-overlay">
-            <FocusTrap IsActive="true" AutoFocus="true">
+            <SmFocusTrap IsActive="true" AutoFocus="true">
                 <div class="dialog-content" role="dialog" aria-modal="true" aria-labelledby="multiple-dialog-title" data-testid="multiple-items-dialog">
                     <h3 id="multiple-dialog-title">Form Dialog</h3>
                     <div style="margin-bottom: 1rem;">
@@ -110,7 +110,7 @@
                         </button>
                     </div>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 </section>

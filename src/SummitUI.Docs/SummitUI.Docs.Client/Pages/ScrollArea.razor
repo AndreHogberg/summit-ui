@@ -26,8 +26,8 @@
                 @* Vertical scroll demo *@
                 <div class="flex flex-col gap-2">
                     <span class="text-sm text-su-muted-foreground">Vertical</span>
-                    <ScrollAreaRoot Type="ScrollAreaType.Hover" class="demo-scroll-area">
-                        <ScrollAreaViewport class="demo-viewport">
+                    <SmScrollAreaRoot Type="ScrollAreaType.Hover" class="demo-scroll-area">
+                        <SmScrollAreaViewport class="demo-viewport">
                             <div class="p-4">
                                 <h4 class="text-sm font-medium mb-4">Tags</h4>
                                 @for (var i = 50; i > 0; i--)
@@ -35,29 +35,29 @@
                                     <div class="demo-tag">v1.2.0-beta.@i</div>
                                 }
                             </div>
-                        </ScrollAreaViewport>
-                        <ScrollAreaScrollbar Orientation="ScrollAreaOrientation.Vertical" ForceMount="true" class="demo-scrollbar-vertical">
-                            <ScrollAreaThumb class="demo-thumb" />
-                        </ScrollAreaScrollbar>
-                    </ScrollAreaRoot>
+                        </SmScrollAreaViewport>
+                        <SmScrollAreaScrollbar Orientation="ScrollAreaOrientation.Vertical" ForceMount="true" class="demo-scrollbar-vertical">
+                            <SmScrollAreaThumb class="demo-thumb" />
+                        </SmScrollAreaScrollbar>
+                    </SmScrollAreaRoot>
                 </div>
 
                 @* Horizontal scroll demo *@
                 <div class="flex flex-col gap-2">
                     <span class="text-sm text-su-muted-foreground">Horizontal</span>
-                    <ScrollAreaRoot Type="ScrollAreaType.Hover" class="demo-scroll-area-horizontal">
-                        <ScrollAreaViewport class="demo-viewport-horizontal">
+                    <SmScrollAreaRoot Type="ScrollAreaType.Hover" class="demo-scroll-area-horizontal">
+                        <SmScrollAreaViewport class="demo-viewport-horizontal">
                             <div class="demo-horizontal-content">
                                 @for (var i = 1; i <= 20; i++)
                                 {
                                     <div class="demo-card">Card @i</div>
                                 }
                             </div>
-                        </ScrollAreaViewport>
-                        <ScrollAreaScrollbar Orientation="ScrollAreaOrientation.Horizontal" ForceMount="true" class="demo-scrollbar-horizontal">
-                            <ScrollAreaThumb class="demo-thumb" />
-                        </ScrollAreaScrollbar>
-                    </ScrollAreaRoot>
+                        </SmScrollAreaViewport>
+                        <SmScrollAreaScrollbar Orientation="ScrollAreaOrientation.Horizontal" ForceMount="true" class="demo-scrollbar-horizontal">
+                            <SmScrollAreaThumb class="demo-thumb" />
+                        </SmScrollAreaScrollbar>
+                    </SmScrollAreaRoot>
                 </div>
             </div>
         </SuCard>
@@ -587,37 +587,37 @@
         new() { Name = "data-state", Type = "\"visible\" | \"hidden\"", Description = "Current visibility state of scrollbar/thumb" }
     };
 
-    private const string anatomyCode = @"<ScrollAreaRoot>
-    <ScrollAreaViewport>
+    private const string anatomyCode = @"<SmScrollAreaRoot>
+    <SmScrollAreaViewport>
         <!-- Your scrollable content -->
-    </ScrollAreaViewport>
-    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"">
-        <ScrollAreaThumb />
-    </ScrollAreaScrollbar>
-    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"">
-        <ScrollAreaThumb />
-    </ScrollAreaScrollbar>
-    <ScrollAreaCorner />
-</ScrollAreaRoot>";
+    </SmScrollAreaViewport>
+    <SmScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"">
+        <SmScrollAreaThumb />
+    </SmScrollAreaScrollbar>
+    <SmScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"">
+        <SmScrollAreaThumb />
+    </SmScrollAreaScrollbar>
+    <SmScrollAreaCorner />
+</SmScrollAreaRoot>";
 
-    private const string hoverTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Hover"">
+    private const string hoverTypeCode = @"<SmScrollAreaRoot Type=""ScrollAreaType.Hover"">
     <!-- Scrollbars appear on hover, hide after delay -->
-</ScrollAreaRoot>";
+</SmScrollAreaRoot>";
 
-    private const string scrollTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Scroll"">
+    private const string scrollTypeCode = @"<SmScrollAreaRoot Type=""ScrollAreaType.Scroll"">
     <!-- Scrollbars appear when scrolling, hide after delay -->
-</ScrollAreaRoot>";
+</SmScrollAreaRoot>";
 
-    private const string autoTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Auto"">
+    private const string autoTypeCode = @"<SmScrollAreaRoot Type=""ScrollAreaType.Auto"">
     <!-- Scrollbars appear when content overflows -->
-</ScrollAreaRoot>";
+</SmScrollAreaRoot>";
 
-    private const string alwaysTypeCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Always"">
+    private const string alwaysTypeCode = @"<SmScrollAreaRoot Type=""ScrollAreaType.Always"">
     <!-- Scrollbars always visible -->
-</ScrollAreaRoot>";
+</SmScrollAreaRoot>";
 
-    private const string basicExampleCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Hover"" class=""h-72 w-48 rounded-lg border"">
-    <ScrollAreaViewport class=""h-full w-full p-4"">
+    private const string basicExampleCode = @"<SmScrollAreaRoot Type=""ScrollAreaType.Hover"" class=""h-72 w-48 rounded-lg border"">
+    <SmScrollAreaViewport class=""h-full w-full p-4"">
         <h4 class=""mb-4 text-sm font-medium"">Tags</h4>
         @for (var i = 50; i > 0; i--)
         {
@@ -625,14 +625,14 @@
                 v1.2.0-beta.@i
             </div>
         }
-    </ScrollAreaViewport>
-    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"" class=""scrollbar"">
-        <ScrollAreaThumb class=""thumb"" />
-    </ScrollAreaScrollbar>
-</ScrollAreaRoot>";
+    </SmScrollAreaViewport>
+    <SmScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"" class=""scrollbar"">
+        <SmScrollAreaThumb class=""thumb"" />
+    </SmScrollAreaScrollbar>
+</SmScrollAreaRoot>";
 
-    private const string horizontalExampleCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Hover"" class=""w-96 rounded-lg border"">
-    <ScrollAreaViewport class=""h-full w-full"">
+    private const string horizontalExampleCode = @"<SmScrollAreaRoot Type=""ScrollAreaType.Hover"" class=""w-96 rounded-lg border"">
+    <SmScrollAreaViewport class=""h-full w-full"">
         <div class=""flex gap-4 p-4"" style=""width: max-content;"">
             @for (var i = 1; i <= 20; i++)
             {
@@ -641,36 +641,36 @@
                 </div>
             }
         </div>
-    </ScrollAreaViewport>
-    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"" class=""scrollbar-h"">
-        <ScrollAreaThumb class=""thumb"" />
-    </ScrollAreaScrollbar>
-</ScrollAreaRoot>";
+    </SmScrollAreaViewport>
+    <SmScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"" class=""scrollbar-h"">
+        <SmScrollAreaThumb class=""thumb"" />
+    </SmScrollAreaScrollbar>
+</SmScrollAreaRoot>";
 
-    private const string bothScrollbarsCode = @"<ScrollAreaRoot Type=""ScrollAreaType.Auto"" class=""h-64 w-64 rounded-lg border"">
-    <ScrollAreaViewport class=""h-full w-full"">
+    private const string bothScrollbarsCode = @"<SmScrollAreaRoot Type=""ScrollAreaType.Auto"" class=""h-64 w-64 rounded-lg border"">
+    <SmScrollAreaViewport class=""h-full w-full"">
         <div style=""width: 500px; height: 500px; padding: 1rem;"">
             Large content that overflows both directions...
         </div>
-    </ScrollAreaViewport>
-    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"" class=""scrollbar-v"">
-        <ScrollAreaThumb class=""thumb"" />
-    </ScrollAreaScrollbar>
-    <ScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"" class=""scrollbar-h"">
-        <ScrollAreaThumb class=""thumb"" />
-    </ScrollAreaScrollbar>
-    <ScrollAreaCorner class=""corner"" />
-</ScrollAreaRoot>";
+    </SmScrollAreaViewport>
+    <SmScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Vertical"" class=""scrollbar-v"">
+        <SmScrollAreaThumb class=""thumb"" />
+    </SmScrollAreaScrollbar>
+    <SmScrollAreaScrollbar Orientation=""ScrollAreaOrientation.Horizontal"" class=""scrollbar-h"">
+        <SmScrollAreaThumb class=""thumb"" />
+    </SmScrollAreaScrollbar>
+    <SmScrollAreaCorner class=""corner"" />
+</SmScrollAreaRoot>";
 
     private const string customDelayCode = @"@* Scrollbars hide after 100ms instead of default 600ms *@
-<ScrollAreaRoot Type=""ScrollAreaType.Hover"" ScrollHideDelay=""100"">
+<SmScrollAreaRoot Type=""ScrollAreaType.Hover"" ScrollHideDelay=""100"">
     ...
-</ScrollAreaRoot>
+</SmScrollAreaRoot>
 
 @* Scrollbars stay visible longer (2 seconds) *@
-<ScrollAreaRoot Type=""ScrollAreaType.Scroll"" ScrollHideDelay=""2000"">
+<SmScrollAreaRoot Type=""ScrollAreaType.Scroll"" ScrollHideDelay=""2000"">
     ...
-</ScrollAreaRoot>";
+</SmScrollAreaRoot>";
 
     private const string cssExampleCode = @"/* Root container */
 .scroll-area {

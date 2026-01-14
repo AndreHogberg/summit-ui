@@ -22,25 +22,25 @@
     @* Live Demo *@
     <SuSection Title="Demo">
         <SuCard>
-            <TabsRoot DefaultValue="account">
-                <TabsList class="demo-tabs-list">
-                    <TabsTrigger Value="account" class="demo-tabs-trigger">Account</TabsTrigger>
-                    <TabsTrigger Value="password" class="demo-tabs-trigger">Password</TabsTrigger>
-                    <TabsTrigger Value="notifications" class="demo-tabs-trigger">Notifications</TabsTrigger>
-                </TabsList>
-                <TabsContent Value="account" class="demo-tabs-content">
+            <SmTabsRoot DefaultValue="account">
+                <SmTabsList class="demo-tabs-list">
+                    <SmTabsTrigger Value="account" class="demo-tabs-trigger">Account</SmTabsTrigger>
+                    <SmTabsTrigger Value="password" class="demo-tabs-trigger">Password</SmTabsTrigger>
+                    <SmTabsTrigger Value="notifications" class="demo-tabs-trigger">Notifications</SmTabsTrigger>
+                </SmTabsList>
+                <SmTabsContent Value="account" class="demo-tabs-content">
                     <h3 class="font-medium text-su-foreground mb-2">Account Settings</h3>
                     <p class="text-sm text-su-muted-foreground">Manage your account information and preferences here.</p>
-                </TabsContent>
-                <TabsContent Value="password" class="demo-tabs-content">
+                </SmTabsContent>
+                <SmTabsContent Value="password" class="demo-tabs-content">
                     <h3 class="font-medium text-su-foreground mb-2">Password Settings</h3>
                     <p class="text-sm text-su-muted-foreground">Change your password and security options.</p>
-                </TabsContent>
-                <TabsContent Value="notifications" class="demo-tabs-content">
+                </SmTabsContent>
+                <SmTabsContent Value="notifications" class="demo-tabs-content">
                     <h3 class="font-medium text-su-foreground mb-2">Notification Preferences</h3>
                     <p class="text-sm text-su-muted-foreground">Configure how you receive notifications.</p>
-                </TabsContent>
-            </TabsRoot>
+                </SmTabsContent>
+            </SmTabsRoot>
         </SuCard>
     </SuSection>
 
@@ -350,75 +350,75 @@
         new() { Name = "Enter / Space", Description = "Activate focused tab (manual mode)", Type = "" }
     };
 
-    private const string anatomyCode = @"<TabsRoot DefaultValue=""tab1"">
-    <TabsList>
-        <TabsTrigger Value=""tab1"">Tab 1</TabsTrigger>
-        <TabsTrigger Value=""tab2"">Tab 2</TabsTrigger>
-    </TabsList>
-    <TabsContent Value=""tab1"">Content 1</TabsContent>
-    <TabsContent Value=""tab2"">Content 2</TabsContent>
-</TabsRoot>";
+    private const string anatomyCode = @"<SmTabsRoot DefaultValue=""tab1"">
+    <SmTabsList>
+        <SmTabsTrigger Value=""tab1"">Tab 1</SmTabsTrigger>
+        <SmTabsTrigger Value=""tab2"">Tab 2</SmTabsTrigger>
+    </SmTabsList>
+    <SmTabsContent Value=""tab1"">Content 1</SmTabsContent>
+    <SmTabsContent Value=""tab2"">Content 2</SmTabsContent>
+</SmTabsRoot>";
 
-    private const string basicExampleCode = @"<TabsRoot DefaultValue=""account"">
-    <TabsList class=""tabs-list"">
-        <TabsTrigger Value=""account"" class=""tabs-trigger"">Account</TabsTrigger>
-        <TabsTrigger Value=""password"" class=""tabs-trigger"">Password</TabsTrigger>
-    </TabsList>
+    private const string basicExampleCode = @"<SmTabsRoot DefaultValue=""account"">
+    <SmTabsList class=""tabs-list"">
+        <SmTabsTrigger Value=""account"" class=""tabs-trigger"">Account</SmTabsTrigger>
+        <SmTabsTrigger Value=""password"" class=""tabs-trigger"">Password</SmTabsTrigger>
+    </SmTabsList>
     
-    <TabsContent Value=""account"" class=""tabs-content"">
+    <SmTabsContent Value=""account"" class=""tabs-content"">
         <h3>Account Settings</h3>
         <p>Manage your account information here.</p>
-    </TabsContent>
-    <TabsContent Value=""password"" class=""tabs-content"">
+    </SmTabsContent>
+    <SmTabsContent Value=""password"" class=""tabs-content"">
         <h3>Password Settings</h3>
         <p>Change your password and security options.</p>
-    </TabsContent>
-</TabsRoot>";
+    </SmTabsContent>
+</SmTabsRoot>";
 
-    private const string verticalExampleCode = @"<TabsRoot DefaultValue=""general"" Orientation=""TabsOrientation.Vertical"">
+    private const string verticalExampleCode = @"<SmTabsRoot DefaultValue=""general"" Orientation=""TabsOrientation.Vertical"">
     <div class=""tabs-container-vertical"">
-        <TabsList class=""tabs-list-vertical"">
-            <TabsTrigger Value=""general"">General</TabsTrigger>
-            <TabsTrigger Value=""privacy"">Privacy</TabsTrigger>
-            <TabsTrigger Value=""security"">Security</TabsTrigger>
-        </TabsList>
+        <SmTabsList class=""tabs-list-vertical"">
+            <SmTabsTrigger Value=""general"">General</SmTabsTrigger>
+            <SmTabsTrigger Value=""privacy"">Privacy</SmTabsTrigger>
+            <SmTabsTrigger Value=""security"">Security</SmTabsTrigger>
+        </SmTabsList>
         
         <div class=""tabs-content-container"">
-            <TabsContent Value=""general"">General settings...</TabsContent>
-            <TabsContent Value=""privacy"">Privacy settings...</TabsContent>
-            <TabsContent Value=""security"">Security settings...</TabsContent>
+            <SmTabsContent Value=""general"">General settings...</SmTabsContent>
+            <SmTabsContent Value=""privacy"">Privacy settings...</SmTabsContent>
+            <SmTabsContent Value=""security"">Security settings...</SmTabsContent>
         </div>
     </div>
-</TabsRoot>";
+</SmTabsRoot>";
 
     private const string controlledExampleCode = @"@code {
     private string activeTab = ""overview"";
 }
 
-<TabsRoot Value=""@activeTab"" ValueChanged=""@(v => activeTab = v)"">
-    <TabsList>
-        <TabsTrigger Value=""overview"">Overview</TabsTrigger>
-        <TabsTrigger Value=""details"">Details</TabsTrigger>
-    </TabsList>
+<SmTabsRoot Value=""@activeTab"" ValueChanged=""@(v => activeTab = v)"">
+    <SmTabsList>
+        <SmTabsTrigger Value=""overview"">Overview</SmTabsTrigger>
+        <SmTabsTrigger Value=""details"">Details</SmTabsTrigger>
+    </SmTabsList>
     
-    <TabsContent Value=""overview"">Overview content...</TabsContent>
-    <TabsContent Value=""details"">Details content...</TabsContent>
-</TabsRoot>
+    <SmTabsContent Value=""overview"">Overview content...</SmTabsContent>
+    <SmTabsContent Value=""details"">Details content...</SmTabsContent>
+</SmTabsRoot>
 
 <p>Active tab: @activeTab</p>
 <button @onclick=""@(() => activeTab = ""details"")"">Go to Details</button>";
 
-    private const string disabledExampleCode = @"<TabsRoot DefaultValue=""active1"">
-    <TabsList>
-        <TabsTrigger Value=""active1"">Active Tab</TabsTrigger>
-        <TabsTrigger Value=""disabled"" Disabled=""true"">Disabled Tab</TabsTrigger>
-        <TabsTrigger Value=""active2"">Another Active</TabsTrigger>
-    </TabsList>
+    private const string disabledExampleCode = @"<SmTabsRoot DefaultValue=""active1"">
+    <SmTabsList>
+        <SmTabsTrigger Value=""active1"">Active Tab</SmTabsTrigger>
+        <SmTabsTrigger Value=""disabled"" Disabled=""true"">Disabled Tab</SmTabsTrigger>
+        <SmTabsTrigger Value=""active2"">Another Active</SmTabsTrigger>
+    </SmTabsList>
     
-    <TabsContent Value=""active1"">This tab is accessible.</TabsContent>
-    <TabsContent Value=""disabled"">This content is not accessible.</TabsContent>
-    <TabsContent Value=""active2"">This tab is also accessible.</TabsContent>
-</TabsRoot>";
+    <SmTabsContent Value=""active1"">This tab is accessible.</SmTabsContent>
+    <SmTabsContent Value=""disabled"">This content is not accessible.</SmTabsContent>
+    <SmTabsContent Value=""active2"">This tab is also accessible.</SmTabsContent>
+</SmTabsRoot>";
 
     private const string cssExampleCode = @"/* Tab list styles */
 .tabs-list {

@@ -13,56 +13,56 @@ else
     <!-- Tabs with disabled items -->
     <div class="test-section" data-testid="disabled-section">
         <h2>Tabs with Disabled Tab</h2>
-        <TabsRoot DefaultValue="account">
-            <TabsList class="tabs-list" data-testid="disabled-tabs-list">
-                <TabsTrigger Value="account" class="tabs-trigger" data-testid="trigger-account">Account</TabsTrigger>
-                <TabsTrigger Value="password" class="tabs-trigger" data-testid="trigger-password">Password</TabsTrigger>
-                <TabsTrigger Value="settings" Disabled="true" class="tabs-trigger" data-testid="trigger-settings">Settings (Disabled)</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="account" class="tabs-content" data-testid="content-account">
+        <SmTabsRoot DefaultValue="account">
+            <SmTabsList class="tabs-list" data-testid="disabled-tabs-list">
+                <SmTabsTrigger Value="account" class="tabs-trigger" data-testid="trigger-account">Account</SmTabsTrigger>
+                <SmTabsTrigger Value="password" class="tabs-trigger" data-testid="trigger-password">Password</SmTabsTrigger>
+                <SmTabsTrigger Value="settings" Disabled="true" class="tabs-trigger" data-testid="trigger-settings">Settings (Disabled)</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="account" class="tabs-content" data-testid="content-account">
                 Account settings content
-            </TabsContent>
-            <TabsContent Value="password" class="tabs-content" data-testid="content-password">
+            </SmTabsContent>
+            <SmTabsContent Value="password" class="tabs-content" data-testid="content-password">
                 Password settings content
-            </TabsContent>
-            <TabsContent Value="settings" class="tabs-content" data-testid="content-settings">
+            </SmTabsContent>
+            <SmTabsContent Value="settings" class="tabs-content" data-testid="content-settings">
                 Settings content (should not be visible)
-            </TabsContent>
-        </TabsRoot>
+            </SmTabsContent>
+        </SmTabsRoot>
     </div>
     
     <!-- Multiple disabled tabs -->
     <div class="test-section" data-testid="multiple-disabled-section">
         <h2>Multiple Disabled Tabs</h2>
-        <TabsRoot DefaultValue="tab2">
-            <TabsList class="tabs-list" data-testid="multiple-disabled-tabs-list">
-                <TabsTrigger Value="tab1" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-1">Tab 1 (Disabled)</TabsTrigger>
-                <TabsTrigger Value="tab2" class="tabs-trigger" data-testid="multi-trigger-2">Tab 2</TabsTrigger>
-                <TabsTrigger Value="tab3" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-3">Tab 3 (Disabled)</TabsTrigger>
-                <TabsTrigger Value="tab4" class="tabs-trigger" data-testid="multi-trigger-4">Tab 4</TabsTrigger>
-                <TabsTrigger Value="tab5" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-5">Tab 5 (Disabled)</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="tab1" class="tabs-content">Tab 1 content</TabsContent>
-            <TabsContent Value="tab2" class="tabs-content" data-testid="multi-content-2">Tab 2 content</TabsContent>
-            <TabsContent Value="tab3" class="tabs-content">Tab 3 content</TabsContent>
-            <TabsContent Value="tab4" class="tabs-content" data-testid="multi-content-4">Tab 4 content</TabsContent>
-            <TabsContent Value="tab5" class="tabs-content">Tab 5 content</TabsContent>
-        </TabsRoot>
+        <SmTabsRoot DefaultValue="tab2">
+            <SmTabsList class="tabs-list" data-testid="multiple-disabled-tabs-list">
+                <SmTabsTrigger Value="tab1" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-1">Tab 1 (Disabled)</SmTabsTrigger>
+                <SmTabsTrigger Value="tab2" class="tabs-trigger" data-testid="multi-trigger-2">Tab 2</SmTabsTrigger>
+                <SmTabsTrigger Value="tab3" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-3">Tab 3 (Disabled)</SmTabsTrigger>
+                <SmTabsTrigger Value="tab4" class="tabs-trigger" data-testid="multi-trigger-4">Tab 4</SmTabsTrigger>
+                <SmTabsTrigger Value="tab5" Disabled="true" class="tabs-trigger" data-testid="multi-trigger-5">Tab 5 (Disabled)</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="tab1" class="tabs-content">Tab 1 content</SmTabsContent>
+            <SmTabsContent Value="tab2" class="tabs-content" data-testid="multi-content-2">Tab 2 content</SmTabsContent>
+            <SmTabsContent Value="tab3" class="tabs-content">Tab 3 content</SmTabsContent>
+            <SmTabsContent Value="tab4" class="tabs-content" data-testid="multi-content-4">Tab 4 content</SmTabsContent>
+            <SmTabsContent Value="tab5" class="tabs-content">Tab 5 content</SmTabsContent>
+        </SmTabsRoot>
     </div>
     
     <!-- Dynamic disabled state -->
     <div class="test-section" data-testid="dynamic-disabled-section">
         <h2>Dynamic Disabled State</h2>
-        <TabsRoot DefaultValue="first">
-            <TabsList class="tabs-list">
-                <TabsTrigger Value="first" class="tabs-trigger" data-testid="dynamic-trigger-first">First</TabsTrigger>
-                <TabsTrigger Value="second" Disabled="_secondDisabled" class="tabs-trigger" data-testid="dynamic-trigger-second">Second</TabsTrigger>
-                <TabsTrigger Value="third" class="tabs-trigger" data-testid="dynamic-trigger-third">Third</TabsTrigger>
-            </TabsList>
-            <TabsContent Value="first" class="tabs-content">First content</TabsContent>
-            <TabsContent Value="second" class="tabs-content">Second content</TabsContent>
-            <TabsContent Value="third" class="tabs-content">Third content</TabsContent>
-        </TabsRoot>
+        <SmTabsRoot DefaultValue="first">
+            <SmTabsList class="tabs-list">
+                <SmTabsTrigger Value="first" class="tabs-trigger" data-testid="dynamic-trigger-first">First</SmTabsTrigger>
+                <SmTabsTrigger Value="second" Disabled="_secondDisabled" class="tabs-trigger" data-testid="dynamic-trigger-second">Second</SmTabsTrigger>
+                <SmTabsTrigger Value="third" class="tabs-trigger" data-testid="dynamic-trigger-third">Third</SmTabsTrigger>
+            </SmTabsList>
+            <SmTabsContent Value="first" class="tabs-content">First content</SmTabsContent>
+            <SmTabsContent Value="second" class="tabs-content">Second content</SmTabsContent>
+            <SmTabsContent Value="third" class="tabs-content">Third content</SmTabsContent>
+        </SmTabsRoot>
         <div class="mt-3">
             <button type="button" class="btn btn-secondary" @onclick="ToggleSecondDisabled" data-testid="toggle-disabled-btn">
                 @(_secondDisabled ? "Enable" : "Disable") Second Tab

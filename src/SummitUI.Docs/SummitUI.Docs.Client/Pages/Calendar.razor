@@ -26,39 +26,39 @@
         <SuCard class="animate-fade-in-up animate-duration-500 animate-delay-100">
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
-                    <CalendarRoot FixedWeeks="true" @bind-Value="_selectedDate" class="calendar-demo" Context="calendarContext">
-                        <CalendarHeader class="flex items-center justify-between mb-4">
-                            <CalendarPrevButton class="calendar-nav-btn" />
-                            <CalendarHeading class="text-sm font-semibold" />
-                            <CalendarNextButton class="calendar-nav-btn" />
-                        </CalendarHeader>
-                        <CalendarGrid class="w-full border-collapse">
-                            <CalendarGridHead>
-                                <CalendarGridRow>
+                    <SmCalendarRoot FixedWeeks="true" @bind-Value="_selectedDate" class="calendar-demo" Context="calendarContext">
+                        <SmCalendarHeader class="flex items-center justify-between mb-4">
+                            <SmCalendarPrevButton class="calendar-nav-btn" />
+                            <SmCalendarHeading class="text-sm font-semibold" />
+                            <SmCalendarNextButton class="calendar-nav-btn" />
+                        </SmCalendarHeader>
+                        <SmCalendarGrid class="w-full border-collapse">
+                            <SmCalendarGridHead>
+                                <SmCalendarGridRow>
                                     @for (int i = 0; i < calendarContext.Weekdays.Length; i++)
                                     {
                                         var idx = i;
-                                        <CalendarHeadCell Abbreviation="@calendarContext.WeekdaysLong[idx]" class="calendar-head-cell">
+                                        <SmCalendarHeadCell Abbreviation="@calendarContext.WeekdaysLong[idx]" class="calendar-head-cell">
                                             @calendarContext.Weekdays[idx]
-                                        </CalendarHeadCell>
+                                        </SmCalendarHeadCell>
                                     }
-                                </CalendarGridRow>
-                            </CalendarGridHead>
-                            <CalendarGridBody>
+                                </SmCalendarGridRow>
+                            </SmCalendarGridHead>
+                            <SmCalendarGridBody>
                                 @foreach (var week in calendarContext.CurrentMonth.Weeks)
                                 {
-                                    <CalendarGridRow>
+                                    <SmCalendarGridRow>
                                         @foreach (var date in week)
                                         {
-                                            <CalendarCell Date="@date">
-                                                <CalendarDay class="calendar-day" />
-                                            </CalendarCell>
+                                            <SmCalendarCell Date="@date">
+                                                <SmCalendarDay class="calendar-day" />
+                                            </SmCalendarCell>
                                         }
-                                    </CalendarGridRow>
+                                    </SmCalendarGridRow>
                                 }
-                            </CalendarGridBody>
-                        </CalendarGrid>
-                    </CalendarRoot>
+                            </SmCalendarGridBody>
+                        </SmCalendarGrid>
+                    </SmCalendarRoot>
                     <p class="text-xs text-su-muted-foreground mt-2">Selected: @(_selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
                 </div>
             </div>
@@ -495,62 +495,62 @@
         new() { Name = "Enter / Space", Type = "", Description = "Select the focused date" }
     };
 
-    private const string anatomyCode = @"<CalendarRoot @bind-Value=""selectedDate"" Context=""ctx"">
-    <CalendarHeader>
-        <CalendarPrevButton />
-        <CalendarHeading />
-        <CalendarNextButton />
-    </CalendarHeader>
-    <CalendarGrid>
-        <CalendarGridHead>
-            <CalendarGridRow>
+    private const string anatomyCode = @"<SmCalendarRoot @bind-Value=""selectedDate"" Context=""ctx"">
+    <SmCalendarHeader>
+        <SmCalendarPrevButton />
+        <SmCalendarHeading />
+        <SmCalendarNextButton />
+    </SmCalendarHeader>
+    <SmCalendarGrid>
+        <SmCalendarGridHead>
+            <SmCalendarGridRow>
                 @for (int i = 0; i < ctx.Weekdays.Length; i++)
                 {
                     var idx = i;
-                    <CalendarHeadCell Abbreviation=""@ctx.WeekdaysLong[idx]"">
+                    <SmCalendarHeadCell Abbreviation=""@ctx.WeekdaysLong[idx]"">
                         @ctx.Weekdays[idx]
-                    </CalendarHeadCell>
+                    </SmCalendarHeadCell>
                 }
-            </CalendarGridRow>
-        </CalendarGridHead>
-        <CalendarGridBody>
+            </SmCalendarGridRow>
+        </SmCalendarGridHead>
+        <SmCalendarGridBody>
             @foreach (var week in ctx.CurrentMonth.Weeks)
             {
-                <CalendarGridRow>
+                <SmCalendarGridRow>
                     @foreach (var date in week)
                     {
-                        <CalendarCell Date=""@date"">
-                            <CalendarDay />
-                        </CalendarCell>
+                        <SmCalendarCell Date=""@date"">
+                            <SmCalendarDay />
+                        </SmCalendarCell>
                     }
-                </CalendarGridRow>
+                </SmCalendarGridRow>
             }
-        </CalendarGridBody>
-    </CalendarGrid>
-</CalendarRoot>";
+        </SmCalendarGridBody>
+    </SmCalendarGrid>
+</SmCalendarRoot>";
 
     private const string basicExampleCode = @"@code {
     private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
 }
 
-<CalendarRoot @bind-Value=""selectedDate"" Context=""ctx"">
-    <CalendarHeader class=""flex items-center justify-between mb-4"">
-        <CalendarPrevButton class=""..."" />
-        <CalendarHeading class=""text-sm font-semibold"" />
-        <CalendarNextButton class=""..."" />
-    </CalendarHeader>
-    <CalendarGrid class=""w-full"">
+<SmCalendarRoot @bind-Value=""selectedDate"" Context=""ctx"">
+    <SmCalendarHeader class=""flex items-center justify-between mb-4"">
+        <SmCalendarPrevButton class=""..."" />
+        <SmCalendarHeading class=""text-sm font-semibold"" />
+        <SmCalendarNextButton class=""..."" />
+    </SmCalendarHeader>
+    <SmCalendarGrid class=""w-full"">
         <!-- Grid content -->
-    </CalendarGrid>
-</CalendarRoot>
+    </SmCalendarGrid>
+</SmCalendarRoot>
 
 <p>Selected: @(selectedDate?.ToString(""yyyy-MM-dd"") ?? ""None"")</p>";
 
-    private const string mondayStartCode = @"<CalendarRoot @bind-Value=""selectedDate"" 
+    private const string mondayStartCode = @"<SmCalendarRoot @bind-Value=""selectedDate"" 
                WeekStartsOn=""WeekStartsOn.Monday"" 
                Context=""ctx"">
     <!-- Calendar content -->
-</CalendarRoot>";
+</SmCalendarRoot>";
 
     private const string minMaxExampleCode = @"@code {
     private DateOnly? selectedDate;
@@ -558,18 +558,18 @@
     private DateOnly maxDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30));
 }
 
-<CalendarRoot @bind-Value=""selectedDate"" 
+<SmCalendarRoot @bind-Value=""selectedDate"" 
                MinValue=""@minDate"" 
                MaxValue=""@maxDate""
                Context=""ctx"">
     <!-- Calendar content -->
-</CalendarRoot>";
+</SmCalendarRoot>";
 
-    private const string fixedWeeksCode = @"<CalendarRoot @bind-Value=""selectedDate"" 
+    private const string fixedWeeksCode = @"<SmCalendarRoot @bind-Value=""selectedDate"" 
                FixedWeeks=""true""
                Context=""ctx"">
     <!-- Always shows 6 weeks -->
-</CalendarRoot>";
+</SmCalendarRoot>";
 
     private const string customDisabledCode = @"@code {
     private DateOnly? selectedDate;
@@ -580,11 +580,11 @@
         date.DayOfWeek == DayOfWeek.Sunday;
 }
 
-<CalendarRoot @bind-Value=""selectedDate"" 
+<SmCalendarRoot @bind-Value=""selectedDate"" 
                IsDateDisabled=""IsWeekend""
                Context=""ctx"">
     <!-- Weekend dates are disabled -->
-</CalendarRoot>";
+</SmCalendarRoot>";
 
     private const string tailwindExampleCode = @"/* Calendar day styling with Tailwind */
 .calendar-day {

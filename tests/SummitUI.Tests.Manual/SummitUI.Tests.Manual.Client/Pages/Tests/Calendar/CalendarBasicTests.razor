@@ -12,191 +12,191 @@ else
     
     <div class="test-section" data-testid="basic-section">
         <h2>Basic Calendar</h2>
-        <CalendarRoot @bind-Value="_selectedDate" data-testid="calendar-basic" Context="calendarContext">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" data-testid="prev-button" />
-                <CalendarHeading class="calendar-heading" data-testid="heading" />
-                <CalendarNextButton class="calendar-nav-button" data-testid="next-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid" data-testid="grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
+        <SmCalendarRoot @bind-Value="_selectedDate" data-testid="calendar-basic" Context="calendarContext">
+            <SmCalendarHeader class="calendar-header">
+                <SmCalendarPrevButton class="calendar-nav-button" data-testid="prev-button" />
+                <SmCalendarHeading class="calendar-heading" data-testid="heading" />
+                <SmCalendarNextButton class="calendar-nav-button" data-testid="next-button" />
+            </SmCalendarHeader>
+            <SmCalendarGrid class="calendar-grid" data-testid="grid">
+                <SmCalendarGridHead>
+                    <SmCalendarGridRow>
                         @for (int i = 0; i < calendarContext.Weekdays.Length; i++)
                         {
                             var idx = i;
-                            <CalendarHeadCell Abbreviation="@calendarContext.WeekdaysLong[idx]" class="calendar-head-cell">
+                            <SmCalendarHeadCell Abbreviation="@calendarContext.WeekdaysLong[idx]" class="calendar-head-cell">
                                 @calendarContext.Weekdays[idx]
-                            </CalendarHeadCell>
+                            </SmCalendarHeadCell>
                         }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
+                    </SmCalendarGridRow>
+                </SmCalendarGridHead>
+                <SmCalendarGridBody>
                     @foreach (var week in calendarContext.CurrentMonth.Weeks)
                     {
-                        <CalendarGridRow>
+                        <SmCalendarGridRow>
                             @foreach (var date in week)
                             {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
+                                <SmCalendarCell Date="@date">
+                                    <SmCalendarDay class="calendar-day" />
+                                </SmCalendarCell>
                             }
-                        </CalendarGridRow>
+                        </SmCalendarGridRow>
                     }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
+                </SmCalendarGridBody>
+            </SmCalendarGrid>
+        </SmCalendarRoot>
         <p data-testid="basic-value">Selected: @(_selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
     </div>
 
     <div class="test-section" data-testid="fixed-weeks-section">
         <h2>Fixed Weeks Calendar</h2>
-        <CalendarRoot @bind-Value="_selectedDate2" FixedWeeks="true" data-testid="calendar-fixed-weeks" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
+        <SmCalendarRoot @bind-Value="_selectedDate2" FixedWeeks="true" data-testid="calendar-fixed-weeks" Context="ctx">
+            <SmCalendarHeader class="calendar-header">
+                <SmCalendarPrevButton class="calendar-nav-button" />
+                <SmCalendarHeading class="calendar-heading" />
+                <SmCalendarNextButton class="calendar-nav-button" />
+            </SmCalendarHeader>
+            <SmCalendarGrid class="calendar-grid">
+                <SmCalendarGridHead>
+                    <SmCalendarGridRow>
                         @for (int i = 0; i < ctx.Weekdays.Length; i++)
                         {
                             var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                            <SmCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
                                 @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
+                            </SmCalendarHeadCell>
                         }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
+                    </SmCalendarGridRow>
+                </SmCalendarGridHead>
+                <SmCalendarGridBody>
                     @foreach (var week in ctx.CurrentMonth.Weeks)
                     {
-                        <CalendarGridRow>
+                        <SmCalendarGridRow>
                             @foreach (var date in week)
                             {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
+                                <SmCalendarCell Date="@date">
+                                    <SmCalendarDay class="calendar-day" />
+                                </SmCalendarCell>
                             }
-                        </CalendarGridRow>
+                        </SmCalendarGridRow>
                     }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
+                </SmCalendarGridBody>
+            </SmCalendarGrid>
+        </SmCalendarRoot>
         <p data-testid="fixed-weeks-value">Selected: @(_selectedDate2?.ToString("yyyy-MM-dd") ?? "None")</p>
     </div>
 
     <div class="test-section" data-testid="disabled-section">
         <h2>Disabled Calendar</h2>
-        <CalendarRoot @bind-Value="_selectedDate3" Disabled="true" data-testid="calendar-disabled" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
+        <SmCalendarRoot @bind-Value="_selectedDate3" Disabled="true" data-testid="calendar-disabled" Context="ctx">
+            <SmCalendarHeader class="calendar-header">
+                <SmCalendarPrevButton class="calendar-nav-button" />
+                <SmCalendarHeading class="calendar-heading" />
+                <SmCalendarNextButton class="calendar-nav-button" />
+            </SmCalendarHeader>
+            <SmCalendarGrid class="calendar-grid">
+                <SmCalendarGridHead>
+                    <SmCalendarGridRow>
                         @for (int i = 0; i < ctx.Weekdays.Length; i++)
                         {
                             var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                            <SmCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
                                 @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
+                            </SmCalendarHeadCell>
                         }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
+                    </SmCalendarGridRow>
+                </SmCalendarGridHead>
+                <SmCalendarGridBody>
                     @foreach (var week in ctx.CurrentMonth.Weeks)
                     {
-                        <CalendarGridRow>
+                        <SmCalendarGridRow>
                             @foreach (var date in week)
                             {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
+                                <SmCalendarCell Date="@date">
+                                    <SmCalendarDay class="calendar-day" />
+                                </SmCalendarCell>
                             }
-                        </CalendarGridRow>
+                        </SmCalendarGridRow>
                     }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
+                </SmCalendarGridBody>
+            </SmCalendarGrid>
+        </SmCalendarRoot>
     </div>
 
     <div class="test-section" data-testid="minmax-section">
         <h2>Min/Max Constraints</h2>
-        <CalendarRoot @bind-Value="_selectedDate4" MinValue="@_minDate" MaxValue="@_maxDate" data-testid="calendar-minmax" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
+        <SmCalendarRoot @bind-Value="_selectedDate4" MinValue="@_minDate" MaxValue="@_maxDate" data-testid="calendar-minmax" Context="ctx">
+            <SmCalendarHeader class="calendar-header">
+                <SmCalendarPrevButton class="calendar-nav-button" />
+                <SmCalendarHeading class="calendar-heading" />
+                <SmCalendarNextButton class="calendar-nav-button" />
+            </SmCalendarHeader>
+            <SmCalendarGrid class="calendar-grid">
+                <SmCalendarGridHead>
+                    <SmCalendarGridRow>
                         @for (int i = 0; i < ctx.Weekdays.Length; i++)
                         {
                             var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
+                            <SmCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell">
                                 @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
+                            </SmCalendarHeadCell>
                         }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
+                    </SmCalendarGridRow>
+                </SmCalendarGridHead>
+                <SmCalendarGridBody>
                     @foreach (var week in ctx.CurrentMonth.Weeks)
                     {
-                        <CalendarGridRow>
+                        <SmCalendarGridRow>
                             @foreach (var date in week)
                             {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
+                                <SmCalendarCell Date="@date">
+                                    <SmCalendarDay class="calendar-day" />
+                                </SmCalendarCell>
                             }
-                        </CalendarGridRow>
+                        </SmCalendarGridRow>
                     }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
+                </SmCalendarGridBody>
+            </SmCalendarGrid>
+        </SmCalendarRoot>
         <p>Min: @_minDate.ToString("yyyy-MM-dd"), Max: @_maxDate.ToString("yyyy-MM-dd")</p>
         <p data-testid="minmax-value">Selected: @(_selectedDate4?.ToString("yyyy-MM-dd") ?? "None")</p>
     </div>
 
     <div class="test-section" data-testid="monday-start-section">
         <h2>Week Starts Monday</h2>
-        <CalendarRoot @bind-Value="_selectedDate5" WeekStartsOn="DayOfWeek.Monday" data-testid="calendar-monday" Context="ctx">
-            <CalendarHeader class="calendar-header">
-                <CalendarPrevButton class="calendar-nav-button" />
-                <CalendarHeading class="calendar-heading" />
-                <CalendarNextButton class="calendar-nav-button" />
-            </CalendarHeader>
-            <CalendarGrid class="calendar-grid">
-                <CalendarGridHead>
-                    <CalendarGridRow>
+        <SmCalendarRoot @bind-Value="_selectedDate5" WeekStartsOn="DayOfWeek.Monday" data-testid="calendar-monday" Context="ctx">
+            <SmCalendarHeader class="calendar-header">
+                <SmCalendarPrevButton class="calendar-nav-button" />
+                <SmCalendarHeading class="calendar-heading" />
+                <SmCalendarNextButton class="calendar-nav-button" />
+            </SmCalendarHeader>
+            <SmCalendarGrid class="calendar-grid">
+                <SmCalendarGridHead>
+                    <SmCalendarGridRow>
                         @for (int i = 0; i < ctx.Weekdays.Length; i++)
                         {
                             var idx = i;
-                            <CalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell" data-testid="@($"weekday-{idx}")">
+                            <SmCalendarHeadCell Abbreviation="@ctx.WeekdaysLong[idx]" class="calendar-head-cell" data-testid="@($"weekday-{idx}")">
                                 @ctx.Weekdays[idx]
-                            </CalendarHeadCell>
+                            </SmCalendarHeadCell>
                         }
-                    </CalendarGridRow>
-                </CalendarGridHead>
-                <CalendarGridBody>
+                    </SmCalendarGridRow>
+                </SmCalendarGridHead>
+                <SmCalendarGridBody>
                     @foreach (var week in ctx.CurrentMonth.Weeks)
                     {
-                        <CalendarGridRow>
+                        <SmCalendarGridRow>
                             @foreach (var date in week)
                             {
-                                <CalendarCell Date="@date">
-                                    <CalendarDay class="calendar-day" />
-                                </CalendarCell>
+                                <SmCalendarCell Date="@date">
+                                    <SmCalendarDay class="calendar-day" />
+                                </SmCalendarCell>
                             }
-                        </CalendarGridRow>
+                        </SmCalendarGridRow>
                     }
-                </CalendarGridBody>
-            </CalendarGrid>
-        </CalendarRoot>
+                </SmCalendarGridBody>
+            </SmCalendarGrid>
+        </SmCalendarRoot>
     </div>
 </div>
 }

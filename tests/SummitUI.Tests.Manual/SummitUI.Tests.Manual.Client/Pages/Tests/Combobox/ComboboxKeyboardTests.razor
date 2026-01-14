@@ -13,9 +13,9 @@
 else
 {
 <div data-testid="page-ready">
-    <ComboboxRoot TValue="string" @bind-Values="selectedValues">
-        <ComboboxTrigger TValue="string" data-testid="trigger">
-            <ComboboxSelectedValues TValue="string" Context="items">
+    <SmComboboxRoot TValue="string" @bind-Values="selectedValues">
+        <SmComboboxTrigger TValue="string" data-testid="trigger">
+            <SmComboboxSelectedValues TValue="string" Context="items">
                 @foreach (var item in items)
                 {
                     <span class="badge" data-testid="badge-@item.Value">
@@ -23,34 +23,34 @@ else
                         <button type="button" @onclick="item.DeselectAsync" data-testid="remove-@item.Value">×</button>
                     </span>
                 }
-            </ComboboxSelectedValues>
-            <ComboboxInput TValue="string" Placeholder="Type to filter..." data-testid="input" />
-        </ComboboxTrigger>
-        <ComboboxPortal TValue="string">
-            <ComboboxContent TValue="string" data-testid="content" SideOffset="4">
-                <ComboboxViewport TValue="string">
-                    <ComboboxItem TValue="string" Value="@("first")" Label="First Item" data-testid="item-first">
+            </SmComboboxSelectedValues>
+            <SmComboboxInput TValue="string" Placeholder="Type to filter..." data-testid="input" />
+        </SmComboboxTrigger>
+        <SmComboboxPortal TValue="string">
+            <SmComboboxContent TValue="string" data-testid="content" SideOffset="4">
+                <SmComboboxViewport TValue="string">
+                    <SmComboboxItem TValue="string" Value="@("first")" Label="First Item" data-testid="item-first">
                         First Item
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("second")" Label="Second Item" data-testid="item-second">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("second")" Label="Second Item" data-testid="item-second">
                         Second Item
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("third")" Label="Third Item" data-testid="item-third">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("third")" Label="Third Item" data-testid="item-third">
                         Third Item
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("fourth")" Label="Fourth Item" data-testid="item-fourth">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("fourth")" Label="Fourth Item" data-testid="item-fourth">
                         Fourth Item
-                    </ComboboxItem>
-                    <ComboboxItem TValue="string" Value="@("last")" Label="Last Item" data-testid="item-last">
+                    </SmComboboxItem>
+                    <SmComboboxItem TValue="string" Value="@("last")" Label="Last Item" data-testid="item-last">
                         Last Item
-                    </ComboboxItem>
-                </ComboboxViewport>
-                <ComboboxEmpty TValue="string" data-testid="empty">
+                    </SmComboboxItem>
+                </SmComboboxViewport>
+                <SmComboboxEmpty TValue="string" data-testid="empty">
                     No results found
-                </ComboboxEmpty>
-            </ComboboxContent>
-        </ComboboxPortal>
-    </ComboboxRoot>
+                </SmComboboxEmpty>
+            </SmComboboxContent>
+        </SmComboboxPortal>
+    </SmComboboxRoot>
 </div>
 }
 

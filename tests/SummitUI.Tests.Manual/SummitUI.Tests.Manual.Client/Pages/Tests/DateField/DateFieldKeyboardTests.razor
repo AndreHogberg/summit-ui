@@ -12,20 +12,20 @@ else
     
     <div class="test-section" data-testid="keyboard-section">
         <label id="label-keyboard">Keyboard Navigation</label>
-        <DateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" aria-labelledby="label-keyboard">
-            <DateFieldInput class="datefield-input" data-testid="keyboard-input" />
-        </DateFieldRoot>
+        <SmDateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" aria-labelledby="label-keyboard">
+            <SmDateFieldInput class="datefield-input" data-testid="keyboard-input" />
+        </SmDateFieldRoot>
         <p data-testid="keyboard-value">Value: @(_date?.ToString("yyyy-MM-dd") ?? "None")</p>
     </div>
 
     <div class="test-section" data-testid="minmax-section">
         <label>Min/Max Validation</label>
-        <DateFieldRoot @bind-Value="_minMaxDate" 
+        <SmDateFieldRoot @bind-Value="_minMaxDate" 
                        Format="yyyy-MM-dd" 
                        MinValue="@(new DateOnly(2025, 1, 1))" 
                        MaxValue="@(new DateOnly(2025, 12, 31))">
-            <DateFieldInput class="datefield-input" />
-        </DateFieldRoot>
+            <SmDateFieldInput class="datefield-input" />
+        </SmDateFieldRoot>
         @if (_minMaxDate < new DateOnly(2025, 1, 1) || _minMaxDate > new DateOnly(2025, 12, 31))
         {
             <p data-testid="minmax-error" style="color: red;">Out of range</p>

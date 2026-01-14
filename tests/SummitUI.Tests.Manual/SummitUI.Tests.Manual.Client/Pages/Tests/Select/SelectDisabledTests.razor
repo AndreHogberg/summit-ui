@@ -17,44 +17,44 @@ else
 <div data-testid="page-ready">
     <section data-testid="disabled-select-section" style="margin-bottom: 2rem;">
         <h2>Disabled Select</h2>
-        <SelectRoot TValue="string" Value="@("preset")" Disabled="true">
-            <SelectTrigger TValue="string" data-testid="disabled-trigger">
-                <SelectValue TValue="string" Placeholder="Disabled select" />
-            </SelectTrigger>
-            <SelectPortal TValue="string">
-                <SelectContent TValue="string" SideOffset="4">
-                    <SelectViewport TValue="string">
-                        <SelectItem TValue="string" Value="@("preset")" Label="Preset Value">
-                            <SelectItemText>Preset Value</SelectItemText>
-                        </SelectItem>
-                    </SelectViewport>
-                </SelectContent>
-            </SelectPortal>
-        </SelectRoot>
+        <SmSelectRoot TValue="string" Value="@("preset")" Disabled="true">
+            <SmSelectTrigger TValue="string" data-testid="disabled-trigger">
+                <SmSelectValue TValue="string" Placeholder="Disabled select" />
+            </SmSelectTrigger>
+            <SmSelectPortal TValue="string">
+                <SmSelectContent TValue="string" SideOffset="4">
+                    <SmSelectViewport TValue="string">
+                        <SmSelectItem TValue="string" Value="@("preset")" Label="Preset Value">
+                            <SmSelectItemText>Preset Value</SmSelectItemText>
+                        </SmSelectItem>
+                    </SmSelectViewport>
+                </SmSelectContent>
+            </SmSelectPortal>
+        </SmSelectRoot>
     </section>
 
     <section data-testid="disabled-items-section">
         <h2>Select with Disabled Items</h2>
-        <SelectRoot TValue="string" @bind-Value="selectedPlan">
-            <SelectTrigger TValue="string" data-testid="disabled-items-trigger">
-                <SelectValue TValue="string" Placeholder="Choose a plan..." />
-            </SelectTrigger>
-            <SelectPortal TValue="string">
-                <SelectContent TValue="string" data-testid="disabled-items-content" SideOffset="4">
-                    <SelectViewport TValue="string">
-                        <SelectItem TValue="string" Value="@("free")" Label="Free" data-testid="item-free">
-                            <SelectItemText>Free</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue="string" Value="@("pro")" Label="Pro" data-testid="item-pro">
-                            <SelectItemText>Pro - $9/month</SelectItemText>
-                        </SelectItem>
-                        <SelectItem TValue="string" Value="@("enterprise")" Label="Enterprise" Disabled="true" data-testid="item-enterprise">
-                            <SelectItemText>Enterprise (Coming Soon)</SelectItemText>
-                        </SelectItem>
-                    </SelectViewport>
-                </SelectContent>
-            </SelectPortal>
-        </SelectRoot>
+        <SmSelectRoot TValue="string" @bind-Value="selectedPlan">
+            <SmSelectTrigger TValue="string" data-testid="disabled-items-trigger">
+                <SmSelectValue TValue="string" Placeholder="Choose a plan..." />
+            </SmSelectTrigger>
+            <SmSelectPortal TValue="string">
+                <SmSelectContent TValue="string" data-testid="disabled-items-content" SideOffset="4">
+                    <SmSelectViewport TValue="string">
+                        <SmSelectItem TValue="string" Value="@("free")" Label="Free" data-testid="item-free">
+                            <SmSelectItemText>Free</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue="string" Value="@("pro")" Label="Pro" data-testid="item-pro">
+                            <SmSelectItemText>Pro - $9/month</SmSelectItemText>
+                        </SmSelectItem>
+                        <SmSelectItem TValue="string" Value="@("enterprise")" Label="Enterprise" Disabled="true" data-testid="item-enterprise">
+                            <SmSelectItemText>Enterprise (Coming Soon)</SmSelectItemText>
+                        </SmSelectItem>
+                    </SmSelectViewport>
+                </SmSelectContent>
+            </SmSelectPortal>
+        </SmSelectRoot>
     </section>
 </div>
 }

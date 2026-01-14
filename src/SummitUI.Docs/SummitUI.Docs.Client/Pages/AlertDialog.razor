@@ -417,19 +417,19 @@
     };
 
     private const string setupComponentCode = @"@* Components/AlertDialog.razor *@
-<AlertDialogProvider Context=""alert"">
-    <AlertDialogPortal>
-        <AlertDialogOverlay class=""overlay-styles"" />
-        <AlertDialogContent class=""content-styles"">
-            <AlertDialogTitle class=""title-styles"" />
-            <AlertDialogDescription class=""description-styles"" />
+<SmAlertDialogProvider Context=""alert"">
+    <SmAlertDialogPortal>
+        <SmAlertDialogOverlay class=""overlay-styles"" />
+        <SmAlertDialogContent class=""content-styles"">
+            <SmAlertDialogTitle class=""title-styles"" />
+            <SmAlertDialogDescription class=""description-styles"" />
             <div class=""actions"">
-                <AlertDialogCancel class=""cancel-button-styles"" />
-                <AlertDialogConfirm class=""confirm-button-styles"" />
+                <SmAlertDialogCancel class=""cancel-button-styles"" />
+                <SmAlertDialogConfirm class=""confirm-button-styles"" />
             </div>
-        </AlertDialogContent>
-    </AlertDialogPortal>
-</AlertDialogProvider>";
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>";
 
     private const string setupPlacementCode = @"@* In your layout (e.g., MainLayout.razor) *@
 @inherits LayoutComponentBase
@@ -440,19 +440,19 @@
     @Body
 </main>";
 
-    private const string anatomyCode = @"<AlertDialogProvider Context=""alert"">
-    <AlertDialogPortal>
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-            <AlertDialogTitle />
-            <AlertDialogDescription />
+    private const string anatomyCode = @"<SmAlertDialogProvider Context=""alert"">
+    <SmAlertDialogPortal>
+        <SmAlertDialogOverlay />
+        <SmAlertDialogContent>
+            <SmAlertDialogTitle />
+            <SmAlertDialogDescription />
             <div class=""actions"">
-                <AlertDialogCancel />
-                <AlertDialogConfirm />
+                <SmAlertDialogCancel />
+                <SmAlertDialogConfirm />
             </div>
-        </AlertDialogContent>
-    </AlertDialogPortal>
-</AlertDialogProvider>";
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>";
 
     private const string simpleExampleCode = @"@inject IAlertDialogService AlertDialogService
 

@@ -12,32 +12,32 @@ else
     
     <div class="test-section">
         <h2>Uncontrolled Popover</h2>
-        <PopoverRoot>
-            <PopoverTrigger class="popover-trigger" data-testid="basic-trigger">Open Popover</PopoverTrigger>
-            <PopoverPortal>
-                <PopoverContent class="popover-content" data-testid="basic-content">
+        <SmPopoverRoot>
+            <SmPopoverTrigger class="popover-trigger" data-testid="basic-trigger">Open Popover</SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverContent class="popover-content" data-testid="basic-content">
                     <p>Popover content here</p>
-                    <PopoverClose class="popover-close" data-testid="basic-close">Close</PopoverClose>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                    <SmPopoverClose class="popover-close" data-testid="basic-close">Close</SmPopoverClose>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
     </div>
 
     <div class="test-section">
         <h2>Controlled Popover</h2>
-        <PopoverRoot @bind-Open="_isOpen">
-            <PopoverTrigger class="popover-trigger" data-testid="controlled-trigger">
+        <SmPopoverRoot @bind-Open="_isOpen">
+            <SmPopoverTrigger class="popover-trigger" data-testid="controlled-trigger">
                 @(_isOpen ? "Open" : "Closed")
-            </PopoverTrigger>
-            <PopoverPortal>
-                <PopoverContent class="popover-content" data-testid="controlled-content">
+            </SmPopoverTrigger>
+            <SmPopoverPortal>
+                <SmPopoverContent class="popover-content" data-testid="controlled-content">
                     <p>Controlled content</p>
                     <button type="button" @onclick="() => _isOpen = false" data-testid="internal-close">
                         Internal Close
                     </button>
-                </PopoverContent>
-            </PopoverPortal>
-        </PopoverRoot>
+                </SmPopoverContent>
+            </SmPopoverPortal>
+        </SmPopoverRoot>
         <button type="button" @onclick="() => _isOpen = !_isOpen" data-testid="external-toggle">
             External Toggle
         </button>

@@ -98,12 +98,12 @@ public class CalendarContext
     public event Action? OnStateChanged;
 
     // Reference to root component for JS interop
-    public CalendarRoot? RootComponent { get; private set; }
+    public SmCalendarRoot? RootComponent { get; private set; }
 
     /// <summary>
     /// Sets the root component reference for JS interop.
     /// </summary>
-    public void SetRootComponent(CalendarRoot root)
+    public void SetRootComponent(SmCalendarRoot root)
     {
         RootComponent = root;
     }

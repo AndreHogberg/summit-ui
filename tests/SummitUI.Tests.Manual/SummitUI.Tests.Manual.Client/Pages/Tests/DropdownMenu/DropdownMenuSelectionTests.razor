@@ -13,57 +13,57 @@ else
     <div class="test-section">
         <h2>Checkbox Items</h2>
         <p data-testid="checkbox-status">Toolbar: @(_showToolbar ? "On" : "Off")</p>
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="menu-trigger" data-testid="checkbox-trigger">
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="menu-trigger" data-testid="checkbox-trigger">
                 Settings
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="menu-content" data-testid="checkbox-content">
-                    <DropdownMenuCheckboxItem @bind-Checked="_showToolbar" class="menu-item" data-testid="checkbox-item-toolbar">
+            </SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="menu-content" data-testid="checkbox-content">
+                    <SmDropdownMenuCheckboxItem @bind-Checked="_showToolbar" class="menu-item" data-testid="checkbox-item-toolbar">
                         Show Toolbar
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem @bind-Checked="_showFullNames" class="menu-item" data-testid="checkbox-item-names">
+                    </SmDropdownMenuCheckboxItem>
+                    <SmDropdownMenuCheckboxItem @bind-Checked="_showFullNames" class="menu-item" data-testid="checkbox-item-names">
                         Show Full Names
-                    </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+                    </SmDropdownMenuCheckboxItem>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
     </div>
 
     <div class="test-section">
         <h2>Radio Items</h2>
         <p data-testid="radio-status">Theme: @_theme</p>
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="menu-trigger" data-testid="radio-trigger">
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="menu-trigger" data-testid="radio-trigger">
                 Theme
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="menu-content" data-testid="radio-content">
-                    <DropdownMenuRadioGroup @bind-Value="_theme" data-testid="radio-group" aria-label="Theme selection">
-                        <DropdownMenuRadioItem Value="@("light")" class="menu-item" data-testid="radio-item-light">Light</DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem Value="@("dark")" class="menu-item" data-testid="radio-item-dark">Dark</DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem Value="@("system")" class="menu-item" data-testid="radio-item-system">System</DropdownMenuRadioItem>
-                    </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+            </SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="menu-content" data-testid="radio-content">
+                    <SmDropdownMenuRadioGroup @bind-Value="_theme" data-testid="radio-group" aria-label="Theme selection">
+                        <SmDropdownMenuRadioItem Value="@("light")" class="menu-item" data-testid="radio-item-light">Light</SmDropdownMenuRadioItem>
+                        <SmDropdownMenuRadioItem Value="@("dark")" class="menu-item" data-testid="radio-item-dark">Dark</SmDropdownMenuRadioItem>
+                        <SmDropdownMenuRadioItem Value="@("system")" class="menu-item" data-testid="radio-item-system">System</SmDropdownMenuRadioItem>
+                    </SmDropdownMenuRadioGroup>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
     </div>
 
     <div class="test-section">
         <h2>Grouped with Labels</h2>
-        <DropdownMenuRoot>
-            <DropdownMenuTrigger class="menu-trigger" data-testid="group-trigger">
+        <SmDropdownMenuRoot>
+            <SmDropdownMenuTrigger class="menu-trigger" data-testid="group-trigger">
                 Groups
-            </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuContent class="menu-content" data-testid="group-content">
-                    <DropdownMenuGroup data-testid="group-1">
-                        <DropdownMenuGroupLabel class="menu-label" data-testid="group-label-1">Group 1</DropdownMenuGroupLabel>
-                        <DropdownMenuItem class="menu-item" data-testid="group-item-1">Item 1</DropdownMenuItem>
-                    </DropdownMenuGroup>
-                </DropdownMenuContent>
-            </DropdownMenuPortal>
-        </DropdownMenuRoot>
+            </SmDropdownMenuTrigger>
+            <SmDropdownMenuPortal>
+                <SmDropdownMenuContent class="menu-content" data-testid="group-content">
+                    <SmDropdownMenuGroup data-testid="group-1">
+                        <SmDropdownMenuGroupLabel class="menu-label" data-testid="group-label-1">Group 1</SmDropdownMenuGroupLabel>
+                        <SmDropdownMenuItem class="menu-item" data-testid="group-item-1">Item 1</SmDropdownMenuItem>
+                    </SmDropdownMenuGroup>
+                </SmDropdownMenuContent>
+            </SmDropdownMenuPortal>
+        </SmDropdownMenuRoot>
     </div>
 </div>
 }

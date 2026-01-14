@@ -26,51 +26,51 @@
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
                     <span class="text-sm font-medium text-su-foreground">Select a plan:</span>
-                    <RadioGroupRoot @bind-Value="_selectedPlan" AriaLabel="Select a plan" class="demo-radio-group">
-                        <RadioGroupItem Value="starter" class="demo-radio-item" data-testid="demo-starter">
-                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                    <SmRadioGroupRoot @bind-Value="_selectedPlan" AriaLabel="Select a plan" class="demo-radio-group">
+                        <SmRadioGroupItem Value="starter" class="demo-radio-item" data-testid="demo-starter">
+                            <SmRadioGroupIndicator ForceMount="true" class="demo-indicator">
                                 <span class="demo-dot"></span>
-                            </RadioGroupIndicator>
+                            </SmRadioGroupIndicator>
                             <span class="demo-label">Starter - $9/month</span>
-                        </RadioGroupItem>
-                        <RadioGroupItem Value="pro" class="demo-radio-item" data-testid="demo-pro">
-                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                        </SmRadioGroupItem>
+                        <SmRadioGroupItem Value="pro" class="demo-radio-item" data-testid="demo-pro">
+                            <SmRadioGroupIndicator ForceMount="true" class="demo-indicator">
                                 <span class="demo-dot"></span>
-                            </RadioGroupIndicator>
+                            </SmRadioGroupIndicator>
                             <span class="demo-label">Pro - $29/month</span>
-                        </RadioGroupItem>
-                        <RadioGroupItem Value="enterprise" class="demo-radio-item" data-testid="demo-enterprise">
-                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                        </SmRadioGroupItem>
+                        <SmRadioGroupItem Value="enterprise" class="demo-radio-item" data-testid="demo-enterprise">
+                            <SmRadioGroupIndicator ForceMount="true" class="demo-indicator">
                                 <span class="demo-dot"></span>
-                            </RadioGroupIndicator>
+                            </SmRadioGroupIndicator>
                             <span class="demo-label">Enterprise - $99/month</span>
-                        </RadioGroupItem>
-                    </RadioGroupRoot>
+                        </SmRadioGroupItem>
+                    </SmRadioGroupRoot>
                     <span class="text-sm text-su-muted-foreground">Selected: @(_selectedPlan ?? "none")</span>
                 </div>
 
                 <div class="flex flex-col gap-2">
                     <span class="text-sm font-medium text-su-foreground">Horizontal layout:</span>
-                    <RadioGroupRoot @bind-Value="_selectedAlignment" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="Select alignment" class="demo-radio-group demo-radio-group-horizontal">
-                        <RadioGroupItem Value="left" class="demo-radio-item">
-                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                    <SmRadioGroupRoot @bind-Value="_selectedAlignment" Orientation="RadioGroupOrientation.Horizontal" AriaLabel="Select alignment" class="demo-radio-group demo-radio-group-horizontal">
+                        <SmRadioGroupItem Value="left" class="demo-radio-item">
+                            <SmRadioGroupIndicator ForceMount="true" class="demo-indicator">
                                 <span class="demo-dot"></span>
-                            </RadioGroupIndicator>
+                            </SmRadioGroupIndicator>
                             <span class="demo-label">Left</span>
-                        </RadioGroupItem>
-                        <RadioGroupItem Value="center" class="demo-radio-item">
-                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                        </SmRadioGroupItem>
+                        <SmRadioGroupItem Value="center" class="demo-radio-item">
+                            <SmRadioGroupIndicator ForceMount="true" class="demo-indicator">
                                 <span class="demo-dot"></span>
-                            </RadioGroupIndicator>
+                            </SmRadioGroupIndicator>
                             <span class="demo-label">Center</span>
-                        </RadioGroupItem>
-                        <RadioGroupItem Value="right" class="demo-radio-item">
-                            <RadioGroupIndicator ForceMount="true" class="demo-indicator">
+                        </SmRadioGroupItem>
+                        <SmRadioGroupItem Value="right" class="demo-radio-item">
+                            <SmRadioGroupIndicator ForceMount="true" class="demo-indicator">
                                 <span class="demo-dot"></span>
-                            </RadioGroupIndicator>
+                            </SmRadioGroupIndicator>
                             <span class="demo-label">Right</span>
-                        </RadioGroupItem>
-                    </RadioGroupRoot>
+                        </SmRadioGroupItem>
+                    </SmRadioGroupRoot>
                 </div>
             </div>
         </SuCard>
@@ -422,7 +422,7 @@
     {
         new() { Name = "Value", Type = "string", Required = true, Description = "Unique value for this radio item" },
         new() { Name = "Disabled", Type = "bool", Default = "false", Description = "Disable this specific item" },
-        new() { Name = "ChildContent", Type = "RenderFragment<RadioGroupItemContext>?", Description = "Content with context providing Checked and Disabled state" }
+        new() { Name = "ChildContent", Type = "RenderFragment<SmRadioGroupItemContext>?", Description = "Content with context providing Checked and Disabled state" }
     };
 
     private List<SuApiProperty> radioGroupIndicatorProperties = new()
@@ -450,107 +450,107 @@
         new() { Name = "ArrowLeft", Type = "", Description = "Moves to and selects the previous item (horizontal orientation, RTL-aware)" }
     };
 
-    private const string anatomyCode = @"<RadioGroupRoot>
-    <RadioGroupItem Value=""option1"">
-        <RadioGroupIndicator>
+    private const string anatomyCode = @"<SmRadioGroupRoot>
+    <SmRadioGroupItem Value=""option1"">
+        <SmRadioGroupIndicator>
             <span class=""dot""></span>
-        </RadioGroupIndicator>
+        </SmRadioGroupIndicator>
         <span>Option 1</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""option2"">
-        <RadioGroupIndicator>
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""option2"">
+        <SmRadioGroupIndicator>
             <span class=""dot""></span>
-        </RadioGroupIndicator>
+        </SmRadioGroupIndicator>
         <span>Option 2</span>
-    </RadioGroupItem>
-</RadioGroupRoot>";
+    </SmRadioGroupItem>
+</SmRadioGroupRoot>";
 
-    private const string basicExampleCode = @"<RadioGroupRoot AriaLabel=""Favorite color"">
-    <RadioGroupItem Value=""red"">
-        <RadioGroupIndicator />
+    private const string basicExampleCode = @"<SmRadioGroupRoot AriaLabel=""Favorite color"">
+    <SmRadioGroupItem Value=""red"">
+        <SmRadioGroupIndicator />
         <span>Red</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""green"">
-        <RadioGroupIndicator />
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""green"">
+        <SmRadioGroupIndicator />
         <span>Green</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""blue"">
-        <RadioGroupIndicator />
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""blue"">
+        <SmRadioGroupIndicator />
         <span>Blue</span>
-    </RadioGroupItem>
-</RadioGroupRoot>";
+    </SmRadioGroupItem>
+</SmRadioGroupRoot>";
 
-    private const string defaultValueExampleCode = @"<RadioGroupRoot DefaultValue=""medium"" AriaLabel=""Select size"">
-    <RadioGroupItem Value=""small"">
-        <RadioGroupIndicator />
+    private const string defaultValueExampleCode = @"<SmRadioGroupRoot DefaultValue=""medium"" AriaLabel=""Select size"">
+    <SmRadioGroupItem Value=""small"">
+        <SmRadioGroupIndicator />
         <span>Small</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""medium"">
-        <RadioGroupIndicator />
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""medium"">
+        <SmRadioGroupIndicator />
         <span>Medium</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""large"">
-        <RadioGroupIndicator />
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""large"">
+        <SmRadioGroupIndicator />
         <span>Large</span>
-    </RadioGroupItem>
-</RadioGroupRoot>";
+    </SmRadioGroupItem>
+</SmRadioGroupRoot>";
 
     private const string controlledExampleCode = @"@code {
     private string? selectedValue = ""option1"";
 }
 
-<RadioGroupRoot @bind-Value=""selectedValue"" AriaLabel=""Select option"">
-    <RadioGroupItem Value=""option1"">
-        <RadioGroupIndicator />
+<SmRadioGroupRoot @bind-Value=""selectedValue"" AriaLabel=""Select option"">
+    <SmRadioGroupItem Value=""option1"">
+        <SmRadioGroupIndicator />
         <span>Option 1</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""option2"">
-        <RadioGroupIndicator />
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""option2"">
+        <SmRadioGroupIndicator />
         <span>Option 2</span>
-    </RadioGroupItem>
-</RadioGroupRoot>
+    </SmRadioGroupItem>
+</SmRadioGroupRoot>
 
 <p>Selected: @selectedValue</p>";
 
-    private const string horizontalExampleCode = @"<RadioGroupRoot Orientation=""RadioGroupOrientation.Horizontal"" AriaLabel=""Text alignment"">
-    <RadioGroupItem Value=""left"">
-        <RadioGroupIndicator />
+    private const string horizontalExampleCode = @"<SmRadioGroupRoot Orientation=""RadioGroupOrientation.Horizontal"" AriaLabel=""Text alignment"">
+    <SmRadioGroupItem Value=""left"">
+        <SmRadioGroupIndicator />
         <span>Left</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""center"">
-        <RadioGroupIndicator />
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""center"">
+        <SmRadioGroupIndicator />
         <span>Center</span>
-    </RadioGroupItem>
-    <RadioGroupItem Value=""right"">
-        <RadioGroupIndicator />
+    </SmRadioGroupItem>
+    <SmRadioGroupItem Value=""right"">
+        <SmRadioGroupIndicator />
         <span>Right</span>
-    </RadioGroupItem>
-</RadioGroupRoot>";
+    </SmRadioGroupItem>
+</SmRadioGroupRoot>";
 
     private const string disabledExampleCode = @"@* Disable entire group *@
-<RadioGroupRoot Disabled=""true"" AriaLabel=""Disabled group"">
-    <RadioGroupItem Value=""a""><RadioGroupIndicator /><span>Option A</span></RadioGroupItem>
-    <RadioGroupItem Value=""b""><RadioGroupIndicator /><span>Option B</span></RadioGroupItem>
-</RadioGroupRoot>
+<SmRadioGroupRoot Disabled=""true"" AriaLabel=""Disabled group"">
+    <SmRadioGroupItem Value=""a""><SmRadioGroupIndicator /><span>Option A</span></SmRadioGroupItem>
+    <SmRadioGroupItem Value=""b""><SmRadioGroupIndicator /><span>Option B</span></SmRadioGroupItem>
+</SmRadioGroupRoot>
 
 @* Disable individual items *@
-<RadioGroupRoot AriaLabel=""Partially disabled"">
-    <RadioGroupItem Value=""available""><RadioGroupIndicator /><span>Available</span></RadioGroupItem>
-    <RadioGroupItem Value=""sold-out"" Disabled=""true""><RadioGroupIndicator /><span>Sold Out</span></RadioGroupItem>
-    <RadioGroupItem Value=""coming-soon"" Disabled=""true""><RadioGroupIndicator /><span>Coming Soon</span></RadioGroupItem>
-</RadioGroupRoot>";
+<SmRadioGroupRoot AriaLabel=""Partially disabled"">
+    <SmRadioGroupItem Value=""available""><SmRadioGroupIndicator /><span>Available</span></SmRadioGroupItem>
+    <SmRadioGroupItem Value=""sold-out"" Disabled=""true""><SmRadioGroupIndicator /><span>Sold Out</span></SmRadioGroupItem>
+    <SmRadioGroupItem Value=""coming-soon"" Disabled=""true""><SmRadioGroupIndicator /><span>Coming Soon</span></SmRadioGroupItem>
+</SmRadioGroupRoot>";
 
     private const string formExampleCode = @"<form method=""post"">
-    <RadioGroupRoot Name=""subscription"" Required=""true"" AriaLabel=""Subscription plan"">
-        <RadioGroupItem Value=""monthly"">
-            <RadioGroupIndicator />
+    <SmRadioGroupRoot Name=""subscription"" Required=""true"" AriaLabel=""Subscription plan"">
+        <SmRadioGroupItem Value=""monthly"">
+            <SmRadioGroupIndicator />
             <span>Monthly - $9/month</span>
-        </RadioGroupItem>
-        <RadioGroupItem Value=""yearly"">
-            <RadioGroupIndicator />
+        </SmRadioGroupItem>
+        <SmRadioGroupItem Value=""yearly"">
+            <SmRadioGroupIndicator />
             <span>Yearly - $99/year</span>
-        </RadioGroupItem>
-    </RadioGroupRoot>
+        </SmRadioGroupItem>
+    </SmRadioGroupRoot>
     <button type=""submit"">Subscribe</button>
 </form>";
 
@@ -561,20 +561,20 @@
     
     <div class=""form-group"">
         <label>Select a subscription plan:</label>
-        <RadioGroupRoot @bind-Value=""model.Plan"" AriaLabel=""Subscription plan"">
-            <RadioGroupItem Value=""starter"" Context=""itemContext"">
-                <RadioGroupIndicator />
+        <SmRadioGroupRoot @bind-Value=""model.Plan"" AriaLabel=""Subscription plan"">
+            <SmRadioGroupItem Value=""starter"" Context=""itemContext"">
+                <SmRadioGroupIndicator />
                 <span>Starter - $9/month</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value=""pro"" Context=""itemContext"">
-                <RadioGroupIndicator />
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value=""pro"" Context=""itemContext"">
+                <SmRadioGroupIndicator />
                 <span>Pro - $29/month</span>
-            </RadioGroupItem>
-            <RadioGroupItem Value=""enterprise"" Context=""itemContext"">
-                <RadioGroupIndicator />
+            </SmRadioGroupItem>
+            <SmRadioGroupItem Value=""enterprise"" Context=""itemContext"">
+                <SmRadioGroupIndicator />
                 <span>Enterprise - $99/month</span>
-            </RadioGroupItem>
-        </RadioGroupRoot>
+            </SmRadioGroupItem>
+        </SmRadioGroupRoot>
         <ValidationMessage For=""@(() => model.Plan)"" />
     </div>
     

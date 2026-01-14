@@ -11,34 +11,34 @@ else
     <h1>Accordion Disabled Tests</h1>
 
     <!-- Accordion with disabled items for testing disabled behavior -->
-    <AccordionRoot DefaultValue="enabled-1" data-testid="accordion">
-        <AccordionItem Value="enabled-1" data-testid="item-enabled-1">
-            <AccordionHeader>
-                <AccordionTrigger data-testid="trigger-enabled-1">Enabled Item</AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent data-testid="content-enabled-1">
+    <SmAccordionRoot DefaultValue="enabled-1" data-testid="accordion">
+        <SmAccordionItem Value="enabled-1" data-testid="item-enabled-1">
+            <SmAccordionHeader>
+                <SmAccordionTrigger data-testid="trigger-enabled-1">Enabled Item</SmAccordionTrigger>
+            </SmAccordionHeader>
+            <SmAccordionContent data-testid="content-enabled-1">
                 <p>This item works normally.</p>
-            </AccordionContent>
-        </AccordionItem>
+            </SmAccordionContent>
+        </SmAccordionItem>
 
-        <AccordionItem Value="disabled-1" Disabled="true" data-testid="item-disabled-1">
-            <AccordionHeader>
-                <AccordionTrigger data-testid="trigger-disabled-1">Disabled Item</AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent data-testid="content-disabled-1">
+        <SmAccordionItem Value="disabled-1" Disabled="true" data-testid="item-disabled-1">
+            <SmAccordionHeader>
+                <SmAccordionTrigger data-testid="trigger-disabled-1">Disabled Item</SmAccordionTrigger>
+            </SmAccordionHeader>
+            <SmAccordionContent data-testid="content-disabled-1">
                 <p>You shouldn't be able to see this!</p>
-            </AccordionContent>
-        </AccordionItem>
+            </SmAccordionContent>
+        </SmAccordionItem>
 
-        <AccordionItem Value="enabled-2" data-testid="item-enabled-2">
-            <AccordionHeader>
-                <AccordionTrigger data-testid="trigger-enabled-2">Another Enabled Item</AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent data-testid="content-enabled-2">
+        <SmAccordionItem Value="enabled-2" data-testid="item-enabled-2">
+            <SmAccordionHeader>
+                <SmAccordionTrigger data-testid="trigger-enabled-2">Another Enabled Item</SmAccordionTrigger>
+            </SmAccordionHeader>
+            <SmAccordionContent data-testid="content-enabled-2">
                 <p>Keyboard navigation skips the disabled item.</p>
-            </AccordionContent>
-        </AccordionItem>
-    </AccordionRoot>
+            </SmAccordionContent>
+        </SmAccordionItem>
+    </SmAccordionRoot>
 </div>
 }
 

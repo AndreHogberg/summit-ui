@@ -14,9 +14,9 @@ else
     <div class="test-section" data-testid="basic-section">
         <h2>Basic Switch</h2>
         <div class="d-flex align-items-center">
-            <SwitchRoot @bind-Checked="_checked" class="switch-root" data-testid="basic-switch">
-                <SwitchThumb class="switch-thumb" />
-            </SwitchRoot>
+            <SmSwitchRoot @bind-Checked="_checked" class="switch-root" data-testid="basic-switch">
+                <SmSwitchThumb class="switch-thumb" />
+            </SmSwitchRoot>
             <span class="ms-2">@(_checked ? "Checked" : "Unchecked")</span>
         </div>
     </div>
@@ -26,9 +26,9 @@ else
         <h2>Controlled Mode</h2>
         <div class="d-flex flex-column gap-3">
             <div class="d-flex align-items-center gap-3">
-                <SwitchRoot @bind-Checked="_controlledChecked" class="switch-root" data-testid="controlled-switch">
-                    <SwitchThumb class="switch-thumb" />
-                </SwitchRoot>
+                <SmSwitchRoot @bind-Checked="_controlledChecked" class="switch-root" data-testid="controlled-switch">
+                    <SmSwitchThumb class="switch-thumb" />
+                </SmSwitchRoot>
                 <button type="button" class="btn btn-secondary" @onclick="ToggleControlled">
                     Toggle Externally (@(_controlledChecked ? "Checked" : "Unchecked"))
                 </button>
@@ -40,9 +40,9 @@ else
     <div class="test-section" data-testid="default-checked-section">
         <h2>Default Checked</h2>
         <div class="d-flex align-items-center">
-            <SwitchRoot DefaultChecked="true" class="switch-root" data-testid="default-checked-switch">
-                <SwitchThumb class="switch-thumb" />
-            </SwitchRoot>
+            <SmSwitchRoot DefaultChecked="true" class="switch-root" data-testid="default-checked-switch">
+                <SmSwitchThumb class="switch-thumb" />
+            </SmSwitchRoot>
             <span class="ms-2">Default checked (uncontrolled)</span>
         </div>
     </div>
@@ -51,9 +51,9 @@ else
     <div class="test-section" data-testid="label-section">
         <h2>With Label</h2>
         <label class="d-flex align-items-center gap-2" data-testid="labeled-switch-container">
-            <SwitchRoot @bind-Checked="_labeledChecked" class="switch-root" data-testid="labeled-switch">
-                <SwitchThumb class="switch-thumb" />
-            </SwitchRoot>
+            <SmSwitchRoot @bind-Checked="_labeledChecked" class="switch-root" data-testid="labeled-switch">
+                <SmSwitchThumb class="switch-thumb" />
+            </SmSwitchRoot>
             <span>Enable notifications</span>
         </label>
     </div>

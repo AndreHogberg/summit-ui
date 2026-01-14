@@ -25,26 +25,26 @@
         <SuCard>
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
-                    <DateFieldRoot @bind-Value="selectedDate" Format="yyyy-MM-dd" class="group">
-                        <DateFieldLabel class="text-sm font-medium text-su-foreground">Select a date</DateFieldLabel>
-                        <DateFieldInput class="@dateFieldInputClasses" />
-                    </DateFieldRoot>
+                    <SmDateFieldRoot @bind-Value="selectedDate" Format="yyyy-MM-dd" class="group">
+                        <SmDateFieldLabel class="text-sm font-medium text-su-foreground">Select a date</SmDateFieldLabel>
+                        <SmDateFieldInput class="@dateFieldInputClasses" />
+                    </SmDateFieldRoot>
                     <p class="text-xs text-su-muted-foreground">Selected: @(selectedDate?.ToString("yyyy-MM-dd") ?? "None")</p>
                 </div>
                 
                 <div class="flex flex-col gap-2">
-                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime" Format="yyyy-MM-dd" class="group">
-                        <DateFieldLabel class="text-sm font-medium text-su-foreground">Date and time (24-hour)</DateFieldLabel>
-                        <DateFieldInput class="@dateFieldInputClasses" />
-                    </DateFieldRoot>
+                    <SmDateFieldRoot @bind-DateTimeValue="selectedDateTime" Format="yyyy-MM-dd" class="group">
+                        <SmDateFieldLabel class="text-sm font-medium text-su-foreground">Date and time (24-hour)</SmDateFieldLabel>
+                        <SmDateFieldInput class="@dateFieldInputClasses" />
+                    </SmDateFieldRoot>
                     <p class="text-xs text-su-muted-foreground">Selected: @(selectedDateTime?.ToString("yyyy-MM-dd HH:mm") ?? "None")</p>
                 </div>
                 
                 <div class="flex flex-col gap-2">
-                    <DateFieldRoot @bind-DateTimeValue="selectedDateTime12" Format="MM/dd/yyyy" TimeFormat="hh:mm" class="group">
-                        <DateFieldLabel class="text-sm font-medium text-su-foreground">Date and time (12-hour)</DateFieldLabel>
-                        <DateFieldInput class="@dateFieldInputClasses" />
-                    </DateFieldRoot>
+                    <SmDateFieldRoot @bind-DateTimeValue="selectedDateTime12" Format="MM/dd/yyyy" TimeFormat="hh:mm" class="group">
+                        <SmDateFieldLabel class="text-sm font-medium text-su-foreground">Date and time (12-hour)</SmDateFieldLabel>
+                        <SmDateFieldInput class="@dateFieldInputClasses" />
+                    </SmDateFieldRoot>
                     <p class="text-xs text-su-muted-foreground">Selected: @(selectedDateTime12?.ToString("MM/dd/yyyy hh:mm tt") ?? "None")</p>
                 </div>
             </div>
@@ -400,19 +400,19 @@
         new() { Name = "A / P", Description = "Toggle AM/PM on DayPeriod segment", Type = "" }
     };
 
-    private const string anatomyCode = @"<DateFieldRoot @bind-Value=""date"" Format=""yyyy-MM-dd"" class=""group"">
-    <DateFieldLabel>Select a date</DateFieldLabel>
-    <DateFieldInput class=""..."" />
-</DateFieldRoot>";
+    private const string anatomyCode = @"<SmDateFieldRoot @bind-Value=""date"" Format=""yyyy-MM-dd"" class=""group"">
+    <SmDateFieldLabel>Select a date</SmDateFieldLabel>
+    <SmDateFieldInput class=""..."" />
+</SmDateFieldRoot>";
 
     private const string basicExampleCode = @"@code {
     private DateOnly? selectedDate = DateOnly.FromDateTime(DateTime.Today);
 }
 
-<DateFieldRoot @bind-Value=""selectedDate"" Format=""yyyy-MM-dd"" class=""group"">
-    <DateFieldLabel>Select a date</DateFieldLabel>
-    <DateFieldInput class=""..."" />
-</DateFieldRoot>
+<SmDateFieldRoot @bind-Value=""selectedDate"" Format=""yyyy-MM-dd"" class=""group"">
+    <SmDateFieldLabel>Select a date</SmDateFieldLabel>
+    <SmDateFieldInput class=""..."" />
+</SmDateFieldRoot>
 
 <p>Selected: @(selectedDate?.ToString(""yyyy-MM-dd"") ?? ""None"")</p>";
 
@@ -420,12 +420,12 @@
     private DateTime? selectedDateTime = DateTime.Now;
 }
 
-<DateFieldRoot @bind-DateTimeValue=""selectedDateTime"" 
+<SmDateFieldRoot @bind-DateTimeValue=""selectedDateTime"" 
                Format=""yyyy-MM-dd""
                class=""group"">
-    <DateFieldLabel>Select date and time</DateFieldLabel>
-    <DateFieldInput class=""..."" />
-</DateFieldRoot>
+    <SmDateFieldLabel>Select date and time</SmDateFieldLabel>
+    <SmDateFieldInput class=""..."" />
+</SmDateFieldRoot>
 
 <p>Selected: @(selectedDateTime?.ToString(""yyyy-MM-dd HH:mm"") ?? ""None"")</p>";
 
@@ -433,13 +433,13 @@
     private DateTime? dateTime = DateTime.Now;
 }
 
-<DateFieldRoot @bind-DateTimeValue=""dateTime"" 
+<SmDateFieldRoot @bind-DateTimeValue=""dateTime"" 
                Format=""MM/dd/yyyy""
                TimeFormat=""hh:mm""
                class=""group"">
-    <DateFieldLabel>Select date and time</DateFieldLabel>
-    <DateFieldInput class=""..."" />
-</DateFieldRoot>
+    <SmDateFieldLabel>Select date and time</SmDateFieldLabel>
+    <SmDateFieldInput class=""..."" />
+</SmDateFieldRoot>
 
 <p>Selected: @(dateTime?.ToString(""MM/dd/yyyy hh:mm tt"") ?? ""None"")</p>";
 
@@ -449,34 +449,34 @@
     private DateOnly maxDate = new DateOnly(2025, 12, 31);
 }
 
-<DateFieldRoot @bind-Value=""date"" 
+<SmDateFieldRoot @bind-Value=""date"" 
                Format=""yyyy-MM-dd""
                MinValue=""@minDate"" 
                MaxValue=""@maxDate""
                class=""group"">
-    <DateFieldLabel>Select a date (Jan - Dec 2025)</DateFieldLabel>
-    <DateFieldInput class=""..."" />
-</DateFieldRoot>";
+    <SmDateFieldLabel>Select a date (Jan - Dec 2025)</SmDateFieldLabel>
+    <SmDateFieldInput class=""..."" />
+</SmDateFieldRoot>";
 
     private const string formExampleCode = @"<EditForm EditContext=""editContext"" OnSubmit=""HandleSubmit"">
     <DataAnnotationsValidator />
     
-    <DateFieldRoot @bind-Value=""model.BirthDate""
+    <SmDateFieldRoot @bind-Value=""model.BirthDate""
                    Format=""yyyy-MM-dd""
                    Name=""birthDate""
                    Required=""true""
                    Invalid=""@(submitted && model.BirthDate == null)""
                    class=""group"">
-        <DateFieldLabel>Birth Date (Required)</DateFieldLabel>
-        <DateFieldInput class=""..."" />
-    </DateFieldRoot>
+        <SmDateFieldLabel>Birth Date (Required)</SmDateFieldLabel>
+        <SmDateFieldInput class=""..."" />
+    </SmDateFieldRoot>
     <ValidationMessage For=""@(() => model.BirthDate)"" />
 
     <button type=""submit"">Submit</button>
 </EditForm>";
 
     private const string tailwindExampleCode = @"<!-- DateFieldInput with Tailwind classes -->
-<DateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background 
+<SmDateFieldInput class=""inline-flex items-center px-3 py-2 bg-su-background 
     border border-su-border rounded-lg text-sm mt-2 transition-all min-w-[200px] 
     focus-within:border-su-primary focus-within:ring-2 focus-within:ring-su-primary/20 
     group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed 

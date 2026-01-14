@@ -21,48 +21,48 @@ else
     @if (_showZero)
     {
         <div data-testid="zero-items-dialog" class="dialog" tabindex="-1">
-            <FocusTrap>
+            <SmFocusTrap>
                 <div class="dialog-content">
                     <p>No tabbable items here.</p>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 
     @if (_showOne)
     {
         <div data-testid="one-item-dialog" class="dialog">
-            <FocusTrap>
+            <SmFocusTrap>
                 <div class="dialog-content">
                     <button type="button" @onclick="() => _showOne = false" data-testid="one-item-close">Close</button>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 
     @if (_showTwo)
     {
         <div data-testid="two-items-dialog" class="dialog">
-            <FocusTrap>
+            <SmFocusTrap>
                 <div class="dialog-content">
                     <button type="button" @onclick="() => _showTwo = false" data-testid="two-items-cancel">Cancel</button>
                     <button type="button" @onclick="() => _showTwo = false" data-testid="two-items-confirm">Confirm</button>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 
     @if (_showMultiple)
     {
         <div data-testid="multiple-items-dialog" class="dialog">
-            <FocusTrap>
+            <SmFocusTrap>
                 <div class="dialog-content">
                     <input type="text" placeholder="Name" data-testid="multiple-items-input" />
                     <input type="email" placeholder="Email" data-testid="multiple-items-email" />
                     <button type="button" @onclick="() => _showMultiple = false" data-testid="multiple-items-cancel">Cancel</button>
                     <button type="button" @onclick="() => _showMultiple = false" data-testid="multiple-items-submit">Submit</button>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         </div>
     }
 </div>

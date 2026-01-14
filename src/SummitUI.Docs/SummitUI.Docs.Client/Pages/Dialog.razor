@@ -22,17 +22,17 @@
     @* Live Demo *@
     <SuSection Title="Demo">
         <SuCard>
-            <DialogRoot>
-                <DialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90 transition-colors">
+            <SmDialogRoot>
+                <SmDialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90 transition-colors">
                     Open Dialog
-                </DialogTrigger>
-                <DialogPortal>
-                    <DialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
-                    <DialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-lg h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
-                        <DialogTitle class="text-lg font-semibold">Edit Profile</DialogTitle>
-                        <DialogDescription class="text-sm text-su-muted-foreground">
+                </SmDialogTrigger>
+                <SmDialogPortal>
+                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                    <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-lg h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
+                        <SmDialogTitle class="text-lg font-semibold">Edit Profile</SmDialogTitle>
+                        <SmDialogDescription class="text-sm text-su-muted-foreground">
                             Make changes to your profile here. Click save when you're done.
-                        </DialogDescription>
+                        </SmDialogDescription>
                         <div class="grid gap-4 py-4">
                             <div class="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
                                 <label class="text-sm font-medium">Name</label>
@@ -44,12 +44,12 @@
                             </div>
                         </div>
                         <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                            <DialogClose class="mt-2 sm:mt-0 inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent sm:mr-2">Cancel</DialogClose>
-                            <DialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90">Save Changes</DialogClose>
+                            <SmDialogClose class="mt-2 sm:mt-0 inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent sm:mr-2">Cancel</SmDialogClose>
+                            <SmDialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90">Save Changes</SmDialogClose>
                         </div>
-                    </DialogContent>
-                </DialogPortal>
-            </DialogRoot>
+                    </SmDialogContent>
+                </SmDialogPortal>
+            </SmDialogRoot>
         </SuCard>
     </SuSection>
 
@@ -59,77 +59,77 @@
             Dialogs can be nested within each other. Each nested dialog stacks properly with correct z-index handling.
         </SuText>
         <SuCard>
-            <DialogRoot>
-                <DialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90 transition-colors">
+            <SmDialogRoot>
+                <SmDialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90 transition-colors">
                     Open Parent Dialog
-                </DialogTrigger>
-                <DialogPortal>
-                    <DialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
-                    <DialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-lg h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
-                        <DialogTitle class="text-lg font-semibold">Parent Dialog</DialogTitle>
-                        <DialogDescription class="text-sm text-su-muted-foreground">
+                </SmDialogTrigger>
+                <SmDialogPortal>
+                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                    <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-lg h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
+                        <SmDialogTitle class="text-lg font-semibold">Parent Dialog</SmDialogTitle>
+                        <SmDialogDescription class="text-sm text-su-muted-foreground">
                             This is the parent dialog. You can open a nested dialog from here.
-                        </DialogDescription>
+                        </SmDialogDescription>
                         <div class="py-4">
                             <p class="text-sm text-su-muted-foreground mb-4">
                                 Notice how nested dialogs properly stack above their parent with correct overlay handling.
                             </p>
                             
                             @* Nested Dialog *@
-                            <DialogRoot>
-                                <DialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-secondary px-4 py-2 text-sm font-medium text-su-secondary-foreground hover:bg-su-secondary/80 transition-colors">
+                            <SmDialogRoot>
+                                <SmDialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-secondary px-4 py-2 text-sm font-medium text-su-secondary-foreground hover:bg-su-secondary/80 transition-colors">
                                     Open Nested Dialog
-                                </DialogTrigger>
-                                <DialogPortal>
-                                    <DialogOverlay class="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
-                                    <DialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-md h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
-                                        <DialogTitle class="text-lg font-semibold">Nested Dialog (Depth 1)</DialogTitle>
-                                        <DialogDescription class="text-sm text-su-muted-foreground">
+                                </SmDialogTrigger>
+                                <SmDialogPortal>
+                                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                                    <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-md h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
+                                        <SmDialogTitle class="text-lg font-semibold">Nested Dialog (Depth 1)</SmDialogTitle>
+                                        <SmDialogDescription class="text-sm text-su-muted-foreground">
                                             This dialog is nested inside another dialog.
-                                        </DialogDescription>
+                                        </SmDialogDescription>
                                         <div class="py-4">
                                             <p class="text-sm text-su-muted-foreground mb-4">
                                                 Press Escape to close this dialog, then press Escape again to close the parent.
                                             </p>
                                             
                                             @* Deep Nested Dialog *@
-                                            <DialogRoot>
-                                                <DialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-destructive px-4 py-2 text-sm font-medium text-su-destructive-foreground hover:bg-su-destructive/90 transition-colors">
+                                            <SmDialogRoot>
+                                                <SmDialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-destructive px-4 py-2 text-sm font-medium text-su-destructive-foreground hover:bg-su-destructive/90 transition-colors">
                                                     Go Deeper
-                                                </DialogTrigger>
-                                                <DialogPortal>
-                                                    <DialogOverlay class="fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
-                                                    <DialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-sm h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
-                                                        <DialogTitle class="text-lg font-semibold">Deep Nested (Depth 2)</DialogTitle>
-                                                        <DialogDescription class="text-sm text-su-muted-foreground">
+                                                </SmDialogTrigger>
+                                                <SmDialogPortal>
+                                                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                                                    <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-sm h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
+                                                        <SmDialogTitle class="text-lg font-semibold">Deep Nested (Depth 2)</SmDialogTitle>
+                                                        <SmDialogDescription class="text-sm text-su-muted-foreground">
                                                             How deep can we go? 🐰🕳️
-                                                        </DialogDescription>
+                                                        </SmDialogDescription>
                                                         <div class="flex justify-end pt-4">
-                                                            <DialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90">
+                                                            <SmDialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90">
                                                                 Close
-                                                            </DialogClose>
+                                                            </SmDialogClose>
                                                         </div>
-                                                    </DialogContent>
-                                                </DialogPortal>
-                                            </DialogRoot>
+                                                    </SmDialogContent>
+                                                </SmDialogPortal>
+                                            </SmDialogRoot>
                                         </div>
                                         <div class="flex justify-end">
-                                            <DialogClose class="inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent">
+                                            <SmDialogClose class="inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent">
                                                 Close Nested
-                                            </DialogClose>
+                                            </SmDialogClose>
                                         </div>
-                                    </DialogContent>
-                                </DialogPortal>
-                            </DialogRoot>
+                                    </SmDialogContent>
+                                </SmDialogPortal>
+                            </SmDialogRoot>
                         </div>
                         <div class="flex justify-end">
-                            <DialogClose class="inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent">
+                            <SmDialogClose class="inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent">
                                 Close Parent
-                            </DialogClose>
+                            </SmDialogClose>
                         </div>
-                    </DialogContent>
-                </DialogPortal>
-            </DialogRoot>
+                    </SmDialogContent>
+                </SmDialogPortal>
+            </SmDialogRoot>
         </SuCard>
     </SuSection>
 
@@ -492,35 +492,35 @@
         new() { Name = "Shift + Tab", Description = "Moves focus to previous focusable element", Type = "" }
     };
 
-    private const string anatomyCode = @"<DialogRoot>
-    <DialogTrigger>Open Dialog</DialogTrigger>
-    <DialogPortal>
-        <DialogOverlay />
-        <DialogContent>
-            <DialogTitle>Title</DialogTitle>
-            <DialogDescription>Description</DialogDescription>
-            <DialogClose>Close</DialogClose>
-        </DialogContent>
-    </DialogPortal>
-</DialogRoot>";
+    private const string anatomyCode = @"<SmDialogRoot>
+    <SmDialogTrigger>Open Dialog</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay />
+        <SmDialogContent>
+            <SmDialogTitle>Title</SmDialogTitle>
+            <SmDialogDescription>Description</SmDialogDescription>
+            <SmDialogClose>Close</SmDialogClose>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>";
 
-    private const string basicExampleCode = @"<DialogRoot>
-    <DialogTrigger class=""btn btn-primary"">Open Dialog</DialogTrigger>
-    <DialogPortal>
-        <DialogOverlay class=""dialog-overlay"">
-            <DialogContent class=""dialog-content"">
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogDescription>
+    private const string basicExampleCode = @"<SmDialogRoot>
+    <SmDialogTrigger class=""btn btn-primary"">Open Dialog</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class=""dialog-overlay"">
+            <SmDialogContent class=""dialog-content"">
+                <SmDialogTitle>Edit Profile</SmDialogTitle>
+                <SmDialogDescription>
                     Make changes to your profile here. Click save when you're done.
-                </DialogDescription>
+                </SmDialogDescription>
                 <div class=""dialog-actions"">
-                    <DialogClose class=""btn btn-secondary"">Cancel</DialogClose>
-                    <DialogClose class=""btn btn-primary"">Save Changes</DialogClose>
+                    <SmDialogClose class=""btn btn-secondary"">Cancel</SmDialogClose>
+                    <SmDialogClose class=""btn btn-primary"">Save Changes</SmDialogClose>
                 </div>
-            </DialogContent>
-        </DialogOverlay>
-    </DialogPortal>
-</DialogRoot>";
+            </SmDialogContent>
+        </SmDialogOverlay>
+    </SmDialogPortal>
+</SmDialogRoot>";
 
     private const string controlledExampleCode = @"@code {
     private bool isOpen = false;
@@ -528,56 +528,56 @@
 
 <button @onclick=""@(() => isOpen = true)"">Open Dialog</button>
 
-<DialogRoot Open=""@isOpen"" OpenChanged=""@(v => isOpen = v)"">
-    <DialogPortal>
-        <DialogOverlay class=""dialog-overlay"">
-            <DialogContent class=""dialog-content"">
-                <DialogTitle>Controlled Dialog</DialogTitle>
-                <DialogDescription>
+<SmDialogRoot Open=""@isOpen"" OpenChanged=""@(v => isOpen = v)"">
+    <SmDialogPortal>
+        <SmDialogOverlay class=""dialog-overlay"">
+            <SmDialogContent class=""dialog-content"">
+                <SmDialogTitle>Controlled Dialog</SmDialogTitle>
+                <SmDialogDescription>
                     This dialog's state is managed externally.
-                </DialogDescription>
-                <DialogClose class=""btn btn-primary"">Close</DialogClose>
-            </DialogContent>
-        </DialogOverlay>
-    </DialogPortal>
-</DialogRoot>";
+                </SmDialogDescription>
+                <SmDialogClose class=""btn btn-primary"">Close</SmDialogClose>
+            </SmDialogContent>
+        </SmDialogOverlay>
+    </SmDialogPortal>
+</SmDialogRoot>";
 
-    private const string nestedExampleCode = @"<DialogRoot>
-    <DialogTrigger class=""btn btn-primary"">Open Parent</DialogTrigger>
-    <DialogPortal>
-        <DialogOverlay class=""dialog-overlay"">
-            <DialogContent class=""dialog-content"">
-                <DialogTitle>Parent Dialog</DialogTitle>
-                <DialogDescription>This is the parent dialog.</DialogDescription>
+    private const string nestedExampleCode = @"<SmDialogRoot>
+    <SmDialogTrigger class=""btn btn-primary"">Open Parent</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class=""dialog-overlay"">
+            <SmDialogContent class=""dialog-content"">
+                <SmDialogTitle>Parent Dialog</SmDialogTitle>
+                <SmDialogDescription>This is the parent dialog.</SmDialogDescription>
 
-                <DialogRoot>
-                    <DialogTrigger class=""btn btn-secondary"">Open Nested</DialogTrigger>
-                    <DialogPortal>
-                        <DialogOverlay class=""dialog-overlay nested"">
-                            <DialogContent class=""dialog-content nested"">
-                                <DialogTitle>Nested Dialog</DialogTitle>
-                                <DialogDescription>This is nested inside another dialog.</DialogDescription>
-                                <DialogClose class=""btn btn-secondary"">Close</DialogClose>
-                            </DialogContent>
-                        </DialogOverlay>
-                    </DialogPortal>
-                </DialogRoot>
+                <SmDialogRoot>
+                    <SmDialogTrigger class=""btn btn-secondary"">Open Nested</SmDialogTrigger>
+                    <SmDialogPortal>
+                        <SmDialogOverlay class=""dialog-overlay nested"">
+                            <SmDialogContent class=""dialog-content nested"">
+                                <SmDialogTitle>Nested Dialog</SmDialogTitle>
+                                <SmDialogDescription>This is nested inside another dialog.</SmDialogDescription>
+                                <SmDialogClose class=""btn btn-secondary"">Close</SmDialogClose>
+                            </SmDialogContent>
+                        </SmDialogOverlay>
+                    </SmDialogPortal>
+                </SmDialogRoot>
 
-                <DialogClose class=""btn btn-secondary"">Close Parent</DialogClose>
-            </DialogContent>
-        </DialogOverlay>
-    </DialogPortal>
-</DialogRoot>";
+                <SmDialogClose class=""btn btn-secondary"">Close Parent</SmDialogClose>
+            </SmDialogContent>
+        </SmDialogOverlay>
+    </SmDialogPortal>
+</SmDialogRoot>";
 
-    private const string formExampleCode = @"<DialogRoot>
-    <DialogTrigger class=""btn btn-primary"">Edit Profile</DialogTrigger>
-    <DialogPortal>
-        <DialogOverlay class=""dialog-overlay"">
-            <DialogContent class=""dialog-content"">
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogDescription>
+    private const string formExampleCode = @"<SmDialogRoot>
+    <SmDialogTrigger class=""btn btn-primary"">Edit Profile</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class=""dialog-overlay"">
+            <SmDialogContent class=""dialog-content"">
+                <SmDialogTitle>Edit Profile</SmDialogTitle>
+                <SmDialogDescription>
                     Make changes to your profile here. Click save when you're done.
-                </DialogDescription>
+                </SmDialogDescription>
 
                 <EditForm Model=""@model"" OnValidSubmit=""HandleSubmit"">
                     <div class=""dialog-form"">
@@ -592,14 +592,14 @@
                     </div>
 
                     <div class=""dialog-actions"">
-                        <DialogClose type=""submit"" class=""btn btn-primary"">Save Changes</DialogClose>
-                        <DialogClose class=""btn btn-secondary"">Cancel</DialogClose>
+                        <SmDialogClose type=""submit"" class=""btn btn-primary"">Save Changes</SmDialogClose>
+                        <SmDialogClose class=""btn btn-secondary"">Cancel</SmDialogClose>
                     </div>
                 </EditForm>
-            </DialogContent>
-        </DialogOverlay>
-    </DialogPortal>
-</DialogRoot>";
+            </SmDialogContent>
+        </SmDialogOverlay>
+    </SmDialogPortal>
+</SmDialogRoot>";
 
     private const string cssExampleCode = @"/* Overlay styles */
 .dialog-overlay {

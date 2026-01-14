@@ -30,7 +30,7 @@
                 @if (showDialog)
                 {
                     <div class="demo-overlay" @onclick="@(() => showDialog = false)">
-                        <FocusTrap IsActive="true" AutoFocus="true" ReturnFocus="true">
+                        <SmFocusTrap IsActive="true" AutoFocus="true" ReturnFocus="true">
                             <SuCard class="max-w-[400px] w-[90%]" role="dialog" aria-modal="true" aria-labelledby="demo-dialog-title" @onclick:stopPropagation="true">
                                 <SuHeading Level="SuHeadingLevel.H3" id="demo-dialog-title">Focus Trap Demo</SuHeading>
                                 <SuText Size="SuTextSize.Small" Muted="true" class="mt-2">
@@ -64,7 +64,7 @@
                                     </div>
                                 </div>
                             </SuCard>
-                        </FocusTrap>
+                        </SmFocusTrap>
                     </div>
                 }
             </div>
@@ -426,12 +426,12 @@
 
     private const string anatomyCode = @"@using SummitUI.Components.Utilities
 
-<FocusTrap IsActive=""true"">
+<SmFocusTrap IsActive=""true"">
     <div class=""su-trap-container"">
         <input type=""text"" class=""su-input"" />
         <button class=""su-button"">Submit</button>
     </div>
-</FocusTrap>";
+</SmFocusTrap>";
 
     private const string basicDialogCode = @"@code {
     private bool showDialog = false;
@@ -440,7 +440,7 @@
 @if (showDialog)
 {
     <div class=""su-dialog-overlay"">
-        <FocusTrap IsActive=""true"" AutoFocus=""true"">
+        <SmFocusTrap IsActive=""true"" AutoFocus=""true"">
             <div class=""su-dialog"" role=""dialog"" aria-modal=""true"" aria-labelledby=""dialog-title"">
                 <h2 id=""dialog-title"" class=""su-dialog-title"">Confirm Action</h2>
                 <p class=""su-dialog-description"">Are you sure you want to proceed?</p>
@@ -449,7 +449,7 @@
                     <button class=""su-button"" @onclick=""HandleConfirm"">Confirm</button>
                 </div>
             </div>
-        </FocusTrap>
+        </SmFocusTrap>
     </div>
 }
 
@@ -472,7 +472,7 @@
 @if (showModal)
 {
     <div class=""su-modal-overlay"" @onclick=""@(() => showModal = false)"">
-        <FocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
+        <SmFocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
             <div class=""su-modal"" @onclick:stopPropagation=""true"" role=""dialog"" aria-modal=""true"">
                 <h2 class=""su-modal-title"">Sign Up</h2>
                 <form @onsubmit=""HandleSubmit"" class=""su-form"">
@@ -492,7 +492,7 @@
                     </div>
                 </form>
             </div>
-        </FocusTrap>
+        </SmFocusTrap>
     </div>
 }
 
@@ -508,7 +508,7 @@
     </button>
 </div>
 
-<FocusTrap IsActive=""@isTrapActive"" 
+<SmFocusTrap IsActive=""@isTrapActive"" 
            OnActivated=""HandleActivated"" 
            OnDeactivated=""HandleDeactivated"">
     <div class=""su-trap-container"">
@@ -517,7 +517,7 @@
         <input type=""text"" class=""su-input"" placeholder=""Second input"" />
         <button class=""su-button"">Action Button</button>
     </div>
-</FocusTrap>
+</SmFocusTrap>
 
 @code {
     private void HandleActivated()
@@ -535,13 +535,13 @@
     private FocusTrap? focusTrap;
 }
 
-<FocusTrap @ref=""focusTrap"" IsActive=""true"" AutoFocus=""false"">
+<SmFocusTrap @ref=""focusTrap"" IsActive=""true"" AutoFocus=""false"">
     <div class=""su-trap-container"">
         <input type=""text"" class=""su-input"" placeholder=""First"" />
         <input type=""text"" class=""su-input"" placeholder=""Middle"" />
         <input type=""text"" class=""su-input"" placeholder=""Last"" />
     </div>
-</FocusTrap>
+</SmFocusTrap>
 
 <div class=""su-controls"">
     <button class=""su-button"" @onclick=""FocusFirst"">Focus First</button>
@@ -577,7 +577,7 @@
 @if (sidebarOpen)
 {
     <div class=""su-sidebar-overlay"" @onclick=""@(() => sidebarOpen = false)"">
-        <FocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
+        <SmFocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
             <nav class=""su-sidebar"" @onclick:stopPropagation=""true"" role=""navigation"">
                 <button class=""su-close-btn"" @onclick=""@(() => sidebarOpen = false)"" 
                         aria-label=""Close menu"">
@@ -588,7 +588,7 @@
                 <a href=""/services"" class=""su-nav-link"">Services</a>
                 <a href=""/contact"" class=""su-nav-link"">Contact</a>
             </nav>
-        </FocusTrap>
+        </SmFocusTrap>
     </div>
 }";
 
@@ -596,7 +596,7 @@
     private bool showInnerDialog = false;
 }
 
-<FocusTrap IsActive=""true"">
+<SmFocusTrap IsActive=""true"">
     <div class=""su-outer-dialog"">
         <h2 class=""su-dialog-title"">Outer Dialog</h2>
         <input type=""text"" class=""su-input"" placeholder=""Outer input"" />
@@ -604,16 +604,16 @@
         
         @if (showInnerDialog)
         {
-            <FocusTrap IsActive=""true"" AutoFocus=""true"">
+            <SmFocusTrap IsActive=""true"" AutoFocus=""true"">
                 <div class=""su-inner-dialog"">
                     <h3 class=""su-dialog-title"">Inner Dialog</h3>
                     <input type=""text"" class=""su-input"" placeholder=""Inner input"" />
                     <button class=""su-button"" @onclick=""@(() => showInnerDialog = false)"">Close</button>
                 </div>
-            </FocusTrap>
+            </SmFocusTrap>
         }
     </div>
-</FocusTrap>";
+</SmFocusTrap>";
 
     private const string cssExampleCode = @".su-dialog-overlay {
     position: fixed;
@@ -658,7 +658,7 @@
     border-color: rgb(var(--su-primary));
 }";
 
-    private const string accessibleDialogCode = @"<FocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
+    private const string accessibleDialogCode = @"<SmFocusTrap IsActive=""true"" AutoFocus=""true"" ReturnFocus=""true"">
     <div role=""dialog"" 
          class=""su-dialog""
          aria-modal=""true"" 
@@ -671,6 +671,6 @@
         <button class=""su-button su-button-secondary"" @onclick=""Cancel"">Cancel</button>
         <button class=""su-button su-button-destructive"" @onclick=""Delete"">Delete</button>
     </div>
-</FocusTrap>";
+</SmFocusTrap>";
 }
 
