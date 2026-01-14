@@ -6,6 +6,7 @@ namespace SummitUI;
 
 /// <summary>
 /// Trigger button that toggles the popover open/closed.
+/// Supports the AsChild pattern for rendering custom elements.
 /// </summary>
 public class SmPopoverTrigger : ComponentBase
 {
@@ -13,13 +14,21 @@ public class SmPopoverTrigger : ComponentBase
     private PopoverContext Context { get; set; } = default!;
 
     /// <summary>
-    /// Child content (typically button text/icon).
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
     /// </summary>
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public bool AsChild { get; set; }
 
     /// <summary>
-    /// HTML element to render. Defaults to "button".
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
+
+    /// <summary>
+    /// HTML element to render when AsChild is false. Defaults to "button".
     /// </summary>
     [Parameter]
     public string As { get; set; } = "button";
@@ -32,6 +41,8 @@ public class SmPopoverTrigger : ComponentBase
 
     private ElementReference _elementRef;
 
+    private string DataState => Context.IsOpen ? "open" : "closed";
+
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
@@ -42,18 +53,51 @@ public class SmPopoverTrigger : ComponentBase
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "aria-haspopup", "dialog");
-        builder.AddAttribute(2, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
-        builder.AddAttribute(3, "aria-controls", Context.PopoverId);
-        builder.AddAttribute(4, "data-state", DataState);
-        builder.AddAttribute(5, "data-summit-popover-trigger", true);
-        builder.AddMultipleAttributes(6, AdditionalAttributes);
-        builder.AddAttribute(7, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddAttribute(8, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddElementReferenceCapture(9, (elementRef) => { _elementRef = elementRef; });
-        builder.AddContent(10, ChildContent);
-        builder.CloseElement();
+        var context = new AsChildContext
+        {
+            Attrs = BuildAttributes(),
+            RefCallback = el => _elementRef = el
+        };
+
+        if (AsChild)
+        {
+            // Render only the child content with context - no wrapper element
+            builder.AddContent(0, ChildContent?.Invoke(context));
+        }
+        else
+        {
+            // Render wrapper element
+            builder.OpenElement(0, As);
+            builder.AddMultipleAttributes(1, context.Attrs);
+            builder.AddElementReferenceCapture(2, el => _elementRef = el);
+            builder.AddContent(3, ChildContent?.Invoke(context));
+            builder.CloseElement();
+        }
+    }
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>
+        {
+            ["aria-haspopup"] = "dialog",
+            ["aria-expanded"] = Context.IsOpen.ToString().ToLowerInvariant(),
+            ["aria-controls"] = Context.PopoverId,
+            ["data-state"] = DataState,
+            ["data-summit-popover-trigger"] = true,
+            ["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync),
+            ["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync)
+        };
+
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)
@@ -71,6 +115,4 @@ public class SmPopoverTrigger : ComponentBase
             await Context.ToggleAsync();
         }
     }
-
-    private string DataState => Context.IsOpen ? "open" : "closed";
 }

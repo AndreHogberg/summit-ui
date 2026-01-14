@@ -6,6 +6,7 @@ namespace SummitUI;
 
 /// <summary>
 /// Trigger button that opens the dialog when clicked.
+/// Supports the AsChild pattern for rendering custom elements.
 /// </summary>
 public class SmDialogTrigger : ComponentBase
 {
@@ -13,13 +14,21 @@ public class SmDialogTrigger : ComponentBase
     private DialogContext Context { get; set; } = default!;
 
     /// <summary>
-    /// Child content (typically button text/icon).
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
     /// </summary>
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public bool AsChild { get; set; }
 
     /// <summary>
-    /// HTML element to render. Defaults to "button".
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
+
+    /// <summary>
+    /// HTML element to render when AsChild is false. Defaults to "button".
     /// </summary>
     [Parameter]
     public string As { get; set; } = "button";
@@ -44,19 +53,56 @@ public class SmDialogTrigger : ComponentBase
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "type", As == "button" ? "button" : null);
-        builder.AddAttribute(2, "aria-haspopup", "dialog");
-        builder.AddAttribute(3, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
-        builder.AddAttribute(4, "aria-controls", Context.DialogId);
-        builder.AddAttribute(5, "data-state", DataState);
-        builder.AddAttribute(6, "data-summit-dialog-trigger", true);
-        builder.AddMultipleAttributes(7, AdditionalAttributes);
-        builder.AddAttribute(8, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddAttribute(9, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddElementReferenceCapture(10, elementRef => _elementRef = elementRef);
-        builder.AddContent(11, ChildContent);
-        builder.CloseElement();
+        var context = new AsChildContext
+        {
+            Attrs = BuildAttributes(),
+            RefCallback = el => _elementRef = el
+        };
+
+        if (AsChild)
+        {
+            // Render only the child content with context - no wrapper element
+            builder.AddContent(0, ChildContent?.Invoke(context));
+        }
+        else
+        {
+            // Render wrapper element
+            builder.OpenElement(0, As);
+            builder.AddMultipleAttributes(1, context.Attrs);
+            builder.AddElementReferenceCapture(2, el => _elementRef = el);
+            builder.AddContent(3, ChildContent?.Invoke(context));
+            builder.CloseElement();
+        }
+    }
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>();
+
+        // Add type for button elements
+        if (As == "button" && !AsChild)
+        {
+            attrs["type"] = "button";
+        }
+
+        attrs["aria-haspopup"] = "dialog";
+        attrs["aria-expanded"] = Context.IsOpen.ToString().ToLowerInvariant();
+        attrs["aria-controls"] = Context.DialogId;
+        attrs["data-state"] = DataState;
+        attrs["data-summit-dialog-trigger"] = true;
+        attrs["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync);
+        attrs["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync);
+
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)

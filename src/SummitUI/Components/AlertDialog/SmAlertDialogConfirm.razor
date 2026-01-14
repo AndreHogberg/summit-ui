@@ -1,37 +1,89 @@
 @namespace SummitUI
 
-<button
-    type="button"
-    data-summit-alertdialog-confirm
-    data-destructive="@(Context.Options.IsDestructive ? "" : null)"
-    @onclick="HandleClick"
-    @attributes="AdditionalAttributes">
-    @if (ChildContent is not null)
+@if (AsChild)
+{
+    @ChildContent?.Invoke(new AsChildContext
     {
-        @ChildContent
-    }
-    else
-    {
-        @Context.Options.ConfirmText
-    }
-</button>
+        Attrs = BuildAttributes(),
+        RefCallback = el => _elementRef = el
+    })
+}
+else
+{
+    <button
+        type="button"
+        data-summit-alertdialog-confirm
+        data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+        @onclick="HandleClick"
+        @ref="_elementRef"
+        @attributes="AdditionalAttributes">
+        @if (ChildContent is not null)
+        {
+            @ChildContent.Invoke(new AsChildContext
+            {
+                Attrs = BuildAttributes(),
+                RefCallback = el => _elementRef = el
+            })
+        }
+        else
+        {
+            @Context.Options.ConfirmText
+        }
+    </button>
+}
 
 @code {
     [CascadingParameter]
     private AlertDialogContext Context { get; set; } = default!;
 
     /// <summary>
-    /// Child content that completely replaces the default confirm text.
-    /// If provided, <see cref="AlertDialogOptions.ConfirmText"/> is ignored.
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
     /// </summary>
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public bool AsChild { get; set; }
+
+    /// <summary>
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// If provided without AsChild, replaces the default confirm text.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
 
     /// <summary>
     /// Additional HTML attributes.
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private ElementReference _elementRef;
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>
+        {
+            ["type"] = "button",
+            ["data-summit-alertdialog-confirm"] = true,
+            ["onclick"] = EventCallback.Factory.Create(this, HandleClick)
+        };
+
+        if (Context.Options.IsDestructive)
+        {
+            attrs["data-destructive"] = "";
+        }
+
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
+    }
 
     private void HandleClick() => Context.Complete(true);
 }

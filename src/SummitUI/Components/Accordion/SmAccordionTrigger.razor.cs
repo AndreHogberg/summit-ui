@@ -10,6 +10,7 @@ namespace SummitUI;
 /// <summary>
 /// Accordion trigger button that toggles the associated content panel.
 /// Handles keyboard navigation including arrow keys, Home, and End.
+/// Supports the AsChild pattern for rendering custom elements.
 /// </summary>
 public partial class SmAccordionTrigger : ComponentBase, IAsyncDisposable
 {
@@ -26,10 +27,18 @@ public partial class SmAccordionTrigger : ComponentBase, IAsyncDisposable
     private AccordionJsInterop JsInterop { get; set; } = default!;
 
     /// <summary>
-    /// Child content (trigger label).
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
     /// </summary>
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public bool AsChild { get; set; }
+
+    /// <summary>
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
 
     /// <summary>
     /// Additional HTML attributes to apply.
@@ -73,6 +82,39 @@ public partial class SmAccordionTrigger : ComponentBase, IAsyncDisposable
         {
             Context.UpdateTriggerDisabled(ItemContext.Value, IsDisabled);
         }
+    }
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>
+        {
+            ["type"] = "button",
+            ["id"] = TriggerId,
+            ["aria-expanded"] = IsExpanded.ToString().ToLowerInvariant(),
+            ["aria-controls"] = ContentId,
+            ["data-state"] = DataState,
+            ["data-orientation"] = Orientation,
+            ["data-summit-accordion-trigger"] = true,
+            ["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync),
+            ["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync)
+        };
+
+        if (IsDisabled)
+        {
+            attrs["disabled"] = true;
+            attrs["data-disabled"] = true;
+        }
+
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)

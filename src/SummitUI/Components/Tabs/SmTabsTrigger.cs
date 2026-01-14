@@ -7,6 +7,7 @@ namespace SummitUI;
 /// <summary>
 /// Individual tab trigger button. Renders with role="tab".
 /// Registers with the TabsContext for keyboard navigation support.
+/// Supports the AsChild pattern for rendering custom elements.
 /// </summary>
 public class SmTabsTrigger : ComponentBase, IDisposable
 {
@@ -20,13 +21,21 @@ public class SmTabsTrigger : ComponentBase, IDisposable
     public string Value { get; set; } = "";
 
     /// <summary>
-    /// Child content (tab label).
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
     /// </summary>
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public bool AsChild { get; set; }
 
     /// <summary>
-    /// HTML element to render. Defaults to "button".
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
+
+    /// <summary>
+    /// HTML element to render when AsChild is false. Defaults to "button".
     /// </summary>
     [Parameter]
     public string As { get; set; } = "button";
@@ -83,30 +92,62 @@ public class SmTabsTrigger : ComponentBase, IDisposable
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "role", "tab");
-        builder.AddAttribute(2, "id", Context.GetTriggerId(Value));
-        builder.AddAttribute(3, "aria-selected", IsActive.ToString().ToLowerInvariant());
-        builder.AddAttribute(4, "aria-controls", Context.GetContentId(Value));
-        builder.AddAttribute(5, "tabindex", TabIndex);
-        builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-orientation", Context.Orientation.ToString().ToLowerInvariant());
-        builder.AddAttribute(8, "data-summit-tabs-trigger", true);
-        builder.AddAttribute(9, "data-value", Value);
+        var context = new AsChildContext
+        {
+            Attrs = BuildAttributes(),
+            RefCallback = el => _elementRef = el
+        };
+
+        if (AsChild)
+        {
+            // Render only the child content with context - no wrapper element
+            builder.AddContent(0, ChildContent?.Invoke(context));
+        }
+        else
+        {
+            // Render wrapper element
+            builder.OpenElement(0, As);
+            builder.AddMultipleAttributes(1, context.Attrs);
+            builder.AddElementReferenceCapture(2, el => _elementRef = el);
+            builder.AddContent(3, ChildContent?.Invoke(context));
+            builder.CloseElement();
+        }
+    }
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>
+        {
+            ["role"] = "tab",
+            ["id"] = Context.GetTriggerId(Value),
+            ["aria-selected"] = IsActive.ToString().ToLowerInvariant(),
+            ["aria-controls"] = Context.GetContentId(Value),
+            ["tabindex"] = TabIndex,
+            ["data-state"] = DataState,
+            ["data-orientation"] = Context.Orientation.ToString().ToLowerInvariant(),
+            ["data-summit-tabs-trigger"] = true,
+            ["data-value"] = Value,
+            ["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync),
+            ["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync),
+            ["onfocus"] = EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusAsync)
+        };
 
         if (Disabled)
         {
-            builder.AddAttribute(10, "aria-disabled", "true");
-            builder.AddAttribute(11, "data-disabled", true);
+            attrs["aria-disabled"] = "true";
+            attrs["data-disabled"] = true;
         }
 
-        builder.AddMultipleAttributes(12, AdditionalAttributes);
-        builder.AddAttribute(13, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddAttribute(14, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddAttribute(15, "onfocus", EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusAsync));
-        builder.AddElementReferenceCapture(16, elementRef => _elementRef = elementRef);
-        builder.AddContent(17, ChildContent);
-        builder.CloseElement();
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)

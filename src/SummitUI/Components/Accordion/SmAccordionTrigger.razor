@@ -1,17 +1,32 @@
 @namespace SummitUI
 
-<button type="button"
-        id="@TriggerId"
-        aria-expanded="@IsExpanded.ToString().ToLowerInvariant()"
-        aria-controls="@ContentId"
-        data-state="@DataState"
-        data-orientation="@Orientation"
-        data-summit-accordion-trigger
-        disabled="@(IsDisabled ? true : null)"
-        data-disabled="@(IsDisabled ? true : null)"
-        @onclick="HandleClickAsync"
-        @onkeydown="HandleKeyDownAsync"
-        @ref="_elementRef"
-        @attributes="AdditionalAttributes">
-    @ChildContent
-</button>
+@if (AsChild)
+{
+    @ChildContent?.Invoke(new AsChildContext
+    {
+        Attrs = BuildAttributes(),
+        RefCallback = el => _elementRef = el
+    })
+}
+else
+{
+    <button type="button"
+            id="@TriggerId"
+            aria-expanded="@IsExpanded.ToString().ToLowerInvariant()"
+            aria-controls="@ContentId"
+            data-state="@DataState"
+            data-orientation="@Orientation"
+            data-summit-accordion-trigger
+            disabled="@(IsDisabled ? true : null)"
+            data-disabled="@(IsDisabled ? true : null)"
+            @onclick="HandleClickAsync"
+            @onkeydown="HandleKeyDownAsync"
+            @ref="_elementRef"
+            @attributes="AdditionalAttributes">
+        @ChildContent?.Invoke(new AsChildContext
+        {
+            Attrs = BuildAttributes(),
+            RefCallback = el => _elementRef = el
+        })
+    </button>
+}

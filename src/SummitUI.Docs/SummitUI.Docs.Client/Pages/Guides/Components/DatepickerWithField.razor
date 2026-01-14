@@ -3,9 +3,10 @@
         <SmDateFieldRoot @bind-Value="_date" Format="yyyy-MM-dd" class="group">
             <SmDateFieldLabel class="sr-only">Date</SmDateFieldLabel>
             <SmDateFieldInput
-                class="flex flex-row gap-4 justify-between h-10 w-full items-center rounded-md border border-su-border bg-su-background pl-3 py-2 text-sm ring-offset-su-background focus-within:ring-2 focus-within:ring-su-ring focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                class="flex flex-row gap-4 justify-between h-10 w-full items-center rounded-md border border-su-border bg-su-background pl-3 py-2 text-sm ring-offset-su-background focus-within:ring-2 focus-within:ring-su-ring focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                Context="segments">
                 <div class="flex flex-row gap-1 items-center">
-                    @foreach (var segment in context)
+                    @foreach (var segment in segments)
                     {
                         <SmDateFieldSegment Segment="@segment"/>
                     }

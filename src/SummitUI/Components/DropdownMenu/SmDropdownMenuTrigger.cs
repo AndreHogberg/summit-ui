@@ -9,6 +9,7 @@ namespace SummitUI;
 
 /// <summary>
 /// Trigger button that toggles the dropdown menu open/closed.
+/// Supports the AsChild pattern for rendering custom elements.
 /// </summary>
 public class SmDropdownMenuTrigger : ComponentBase, IAsyncDisposable
 {
@@ -19,13 +20,21 @@ public class SmDropdownMenuTrigger : ComponentBase, IAsyncDisposable
     private DropdownMenuContext Context { get; set; } = default!;
 
     /// <summary>
-    /// Child content (typically button text/icon).
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
     /// </summary>
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public bool AsChild { get; set; }
 
     /// <summary>
-    /// HTML element to render. Defaults to "button".
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
+
+    /// <summary>
+    /// HTML element to render when AsChild is false. Defaults to "button".
     /// </summary>
     [Parameter]
     public string As { get; set; } = "button";
@@ -39,6 +48,8 @@ public class SmDropdownMenuTrigger : ComponentBase, IAsyncDisposable
     private ElementReference _elementRef;
     private bool _isInitialized;
     private bool _isDisposed;
+
+    private string DataState => Context.IsOpen ? "open" : "closed";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,20 +67,63 @@ public class SmDropdownMenuTrigger : ComponentBase, IAsyncDisposable
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "id", $"{Context.MenuId}-trigger");
-        builder.AddAttribute(2, "type", As == "button" ? "button" : null);
-        builder.AddAttribute(3, "aria-haspopup", "menu");
-        builder.AddAttribute(4, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
-        builder.AddAttribute(5, "aria-controls", Context.IsOpen ? Context.MenuId : null);
-        builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-summit-dropdown-menu-trigger", true);
-        builder.AddMultipleAttributes(8, AdditionalAttributes);
-        builder.AddAttribute(9, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddAttribute(10, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddElementReferenceCapture(11, (elementRef) => { _elementRef = elementRef; });
-        builder.AddContent(12, ChildContent);
-        builder.CloseElement();
+        var context = new AsChildContext
+        {
+            Attrs = BuildAttributes(),
+            RefCallback = el => _elementRef = el
+        };
+
+        if (AsChild)
+        {
+            // Render only the child content with context - no wrapper element
+            builder.AddContent(0, ChildContent?.Invoke(context));
+        }
+        else
+        {
+            // Render wrapper element
+            builder.OpenElement(0, As);
+            builder.AddMultipleAttributes(1, context.Attrs);
+            builder.AddElementReferenceCapture(2, el => _elementRef = el);
+            builder.AddContent(3, ChildContent?.Invoke(context));
+            builder.CloseElement();
+        }
+    }
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>
+        {
+            ["id"] = $"{Context.MenuId}-trigger",
+            ["aria-haspopup"] = "menu",
+            ["aria-expanded"] = Context.IsOpen.ToString().ToLowerInvariant(),
+            ["data-state"] = DataState,
+            ["data-summit-dropdown-menu-trigger"] = true,
+            ["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync),
+            ["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync)
+        };
+
+        // Add type for button elements (only when not AsChild)
+        if (As == "button" && !AsChild)
+        {
+            attrs["type"] = "button";
+        }
+
+        // Only add aria-controls when open
+        if (Context.IsOpen)
+        {
+            attrs["aria-controls"] = Context.MenuId;
+        }
+
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)
@@ -100,8 +154,6 @@ public class SmDropdownMenuTrigger : ComponentBase, IAsyncDisposable
                 break;
         }
     }
-
-    private string DataState => Context.IsOpen ? "open" : "closed";
 
     public async ValueTask DisposeAsync()
     {

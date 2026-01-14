@@ -8,6 +8,7 @@ namespace SummitUI;
 /// A single menu item within the dropdown menu.
 /// Implements menuitem role with full ARIA support.
 /// Works in both root menu and submenus.
+/// Supports the AsChild pattern for rendering custom elements (e.g., navigation links).
 /// </summary>
 public class SmDropdownMenuItem : ComponentBase, IDisposable
 {
@@ -43,10 +44,18 @@ public class SmDropdownMenuItem : ComponentBase, IDisposable
     public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     /// <summary>
-    /// Child content.
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
     /// </summary>
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public bool AsChild { get; set; }
+
+    /// <summary>
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
 
     /// <summary>
     /// Additional HTML attributes.
@@ -54,6 +63,7 @@ public class SmDropdownMenuItem : ComponentBase, IDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
+    private ElementReference _elementRef;
     private string _itemId = "";
     private bool _isSubscribed;
     private string? _registeredTextValue;
@@ -136,31 +146,64 @@ public class SmDropdownMenuItem : ComponentBase, IDisposable
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "role", "menuitem");
-        builder.AddAttribute(2, "id", _itemId);
-        builder.AddAttribute(3, "tabindex", "-1");
+        var context = new AsChildContext
+        {
+            Attrs = BuildAttributes(),
+            RefCallback = el => _elementRef = el
+        };
+
+        if (AsChild)
+        {
+            // Render only the child content with context - no wrapper element
+            builder.AddContent(0, ChildContent?.Invoke(context));
+        }
+        else
+        {
+            // Render wrapper element
+            builder.OpenElement(0, "div");
+            builder.AddMultipleAttributes(1, context.Attrs);
+            builder.AddElementReferenceCapture(2, el => _elementRef = el);
+            builder.AddContent(3, ChildContent?.Invoke(context));
+            builder.CloseElement();
+        }
+    }
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>
+        {
+            ["role"] = "menuitem",
+            ["id"] = _itemId,
+            ["tabindex"] = -1,
+            ["data-summit-dropdown-menu-item"] = "",
+            ["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync),
+            ["onpointerenter"] = EventCallback.Factory.Create<PointerEventArgs>(this, HandlePointerEnterAsync),
+            ["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync),
+            ["__internal_preventDefault_onkeydown"] = true,
+            ["__internal_stopPropagation_onkeydown"] = true
+        };
+
         if (Disabled)
         {
-            builder.AddAttribute(4, "aria-disabled", "true");
+            attrs["aria-disabled"] = "true";
+            attrs["data-disabled"] = "";
         }
-        builder.AddAttribute(5, "data-summit-dropdown-menu-item", "");
-        if (Disabled)
-        {
-            builder.AddAttribute(6, "data-disabled", "");
-        }
+
         if (IsHighlighted)
         {
-            builder.AddAttribute(7, "data-highlighted", "");
+            attrs["data-highlighted"] = "";
         }
-        builder.AddAttribute(8, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddAttribute(9, "onpointerenter", EventCallback.Factory.Create<PointerEventArgs>(this, HandlePointerEnterAsync));
-        builder.AddAttribute(10, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddEventPreventDefaultAttribute(11, "onkeydown", true);
-        builder.AddEventStopPropagationAttribute(12, "onkeydown", true);
-        builder.AddMultipleAttributes(13, AdditionalAttributes);
-        builder.AddContent(14, ChildContent);
-        builder.CloseElement();
+
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)
