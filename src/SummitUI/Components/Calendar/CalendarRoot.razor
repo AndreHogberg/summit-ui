@@ -1,52 +1,25 @@
 @namespace SummitUI
-@using Microsoft.AspNetCore.Components.Rendering
 
 @* The root component for the Calendar. Provides context and manages state. *@
 
-@{
-    RenderRoot(__builder);
-}
+<div data-summit-calendar-root
+     data-disabled="@(Disabled ? "true" : null)"
+     data-readonly="@(ReadOnly ? "true" : null)"
+     @attributes="AdditionalAttributes">
 
-@code {
-    private void RenderRoot(RenderTreeBuilder builder)
-    {
-        // Root div
-        builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "data-summit-calendar-root", true);
-        builder.AddAttribute(2, "data-disabled", Disabled ? "true" : null);
-        builder.AddAttribute(3, "data-readonly", ReadOnly ? "true" : null);
+    @* Visually hidden live region for screen reader announcements *@
+    <div aria-live="assertive"
+         aria-atomic="true"
+         style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        @_context.FocusAnnouncement
+    </div>
 
-        builder.AddMultipleAttributes(4, AdditionalAttributes);
-
-        // Visually hidden live region for screen reader announcements
-        builder.OpenElement(5, "div");
-        builder.AddAttribute(6, "aria-live", "assertive");
-        builder.AddAttribute(7, "aria-atomic", "true");
-        builder.AddAttribute(8, "style", "position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;");
-        builder.AddContent(9, _context.FocusAnnouncement);
-        builder.CloseElement();
-
-        // Cascading CalendarRoot for Grid to access
-        builder.OpenComponent<CascadingValue<CalendarRoot>>(10);
-        builder.AddComponentParameter(11, "Value", this);
-        builder.AddComponentParameter(12, "IsFixed", true);
-        builder.AddComponentParameter(13, "ChildContent", (RenderFragment)(cascadeBuilder =>
-        {
-            // Cascading context - NOT IsFixed to allow re-renders to propagate
-            cascadeBuilder.OpenComponent<CascadingValue<CalendarContext>>(0);
-            cascadeBuilder.AddComponentParameter(1, "Value", _context);
-            cascadeBuilder.AddComponentParameter(2, "IsFixed", false);
-            cascadeBuilder.AddComponentParameter(3, "ChildContent", (RenderFragment)(childBuilder =>
+    <CascadingValue Value="this" IsFixed="true">
+        <CascadingValue Value="_context" IsFixed="false">
+            @if (ChildContent is not null)
             {
-                if (ChildContent is not null)
-                {
-                    childBuilder.AddContent(0, ChildContent(_context.GetChildContext()));
-                }
-            }));
-            cascadeBuilder.CloseComponent();
-        }));
-        builder.CloseComponent();
-
-        builder.CloseElement();
-    }
-}
+                @ChildContent(_context.GetChildContext())
+            }
+        </CascadingValue>
+    </CascadingValue>
+</div>

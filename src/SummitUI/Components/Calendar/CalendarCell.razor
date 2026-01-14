@@ -1,63 +1,55 @@
 @namespace SummitUI
-@using Microsoft.AspNetCore.Components.Rendering
 
 @* A cell in the calendar grid representing a single date. *@
 
-@{
-    RenderCell(__builder);
-}
+<td role="gridcell"
+    data-summit-calendar-cell
+    data-state="@(_isSelected ? "selected" : null)"
+    data-today="@(_isToday ? true : null)"
+    data-outside-month="@(_isOutsideMonth ? true : null)"
+    data-unavailable="@(_isUnavailable ? true : null)"
+    data-disabled="@(_isDisabled ? true : null)"
+    @attributes="AdditionalAttributes">
+
+    <CascadingValue Value="_cellContext" IsFixed="false">
+        @if (ChildContent is not null)
+        {
+            @ChildContent(_cellContext)
+        }
+        else if (SimpleContent is not null)
+        {
+            @SimpleContent
+        }
+    </CascadingValue>
+</td>
 
 @code {
-    private void RenderCell(RenderTreeBuilder builder)
+    private bool _isSelected;
+    private bool _isToday;
+    private bool _isFocused;
+    private bool _isOutsideMonth;
+    private bool _isUnavailable;
+    private bool _isDisabled;
+    private CalendarCellContext _cellContext = default!;
+
+    protected override void OnParametersSet()
     {
-        var isSelected = Context.IsSelected(Date);
-        var isToday = Context.IsToday(Date);
-        var isFocused = Context.IsFocused(Date);
-        var isOutsideMonth = Context.IsOutsideMonth(Date);
-        var isUnavailable = Context.IsDateUnavailable(Date);
-        var isDisabled = Context.Disabled;
+        _isSelected = Context.IsSelected(Date);
+        _isToday = Context.IsToday(Date);
+        _isFocused = Context.IsFocused(Date);
+        _isOutsideMonth = Context.IsOutsideMonth(Date);
+        _isUnavailable = Context.IsDateUnavailable(Date);
+        _isDisabled = Context.Disabled;
 
-        builder.OpenElement(0, "td");
-        builder.AddAttribute(1, "role", "gridcell");
-        builder.AddAttribute(2, "data-summit-calendar-cell", true);
-
-        // Data attributes - always add or use null to remove
-        builder.AddAttribute(3, "data-state", isSelected ? "selected" : null);
-        builder.AddAttribute(4, "data-today", isToday ? (object)true : null);
-        builder.AddAttribute(5, "data-outside-month", isOutsideMonth ? (object)true : null);
-        builder.AddAttribute(6, "data-unavailable", isUnavailable ? (object)true : null);
-        builder.AddAttribute(7, "data-disabled", isDisabled ? (object)true : null);
-
-        builder.AddMultipleAttributes(8, AdditionalAttributes);
-
-        // Provide cascading cell context
-        var cellContext = new CalendarCellContext
+        _cellContext = new CalendarCellContext
         {
             Date = Date,
-            IsSelected = isSelected,
-            IsToday = isToday,
-            IsFocused = isFocused,
-            IsOutsideMonth = isOutsideMonth,
-            IsUnavailable = isUnavailable,
-            IsDisabled = isDisabled
+            IsSelected = _isSelected,
+            IsToday = _isToday,
+            IsFocused = _isFocused,
+            IsOutsideMonth = _isOutsideMonth,
+            IsUnavailable = _isUnavailable,
+            IsDisabled = _isDisabled
         };
-
-        builder.OpenComponent<CascadingValue<CalendarCellContext>>(9);
-        builder.AddComponentParameter(10, "Value", cellContext);
-        builder.AddComponentParameter(11, "IsFixed", false);
-        builder.AddComponentParameter(12, "ChildContent", (RenderFragment)(childBuilder =>
-        {
-            if (ChildContent is not null)
-            {
-                childBuilder.AddContent(0, ChildContent(cellContext));
-            }
-            else if (SimpleContent is not null)
-            {
-                childBuilder.AddContent(0, SimpleContent);
-            }
-        }));
-        builder.CloseComponent();
-
-        builder.CloseElement();
     }
 }
