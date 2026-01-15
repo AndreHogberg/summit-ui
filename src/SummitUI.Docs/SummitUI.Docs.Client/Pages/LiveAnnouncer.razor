@@ -1,0 +1,507 @@
+@page "/docs/liveannouncer"
+@layout DocsLayout
+@rendermode InteractiveWebAssembly
+@using SummitUI
+@using SummitUI.Services
+@inject ILiveAnnouncer Announcer
+<PageTitle>SummitUI - LiveAnnouncer</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div>
+            <SuBadge Variant="SuBadgeVariant.Outline">Utility</SuBadge>
+        </div>
+        <SuHeading Level="SuHeadingLevel.H1" class="flex flex-row items-center gap-4">
+            LiveAnnouncer
+            <SuPromptButton ComponentName="LiveAnnouncer" Url="/docs/liveannouncer" />
+        </SuHeading>
+        <SuText Lead="true" Muted="true">
+            A service and component for making announcements to screen readers via ARIA live regions.
+        </SuText>
+    </div>
+
+    @* Live Demo *@
+    <SuSection Title="Demo">
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Click the buttons below to trigger announcements. If you have a screen reader enabled, 
+                    you'll hear the announcement. The announcement text is also shown below for visual feedback.
+                </SuText>
+                
+                <div class="flex flex-wrap gap-3">
+                    <SuButton @onclick="AnnouncePolite">
+                        Announce (Polite)
+                    </SuButton>
+                    <SuButton Variant="SuButtonVariant.Destructive" @onclick="AnnounceAssertive">
+                        Announce (Assertive)
+                    </SuButton>
+                </div>
+                
+                @if (!string.IsNullOrEmpty(_lastAnnouncement))
+                {
+                    <div class="p-3 rounded-md bg-su-muted border border-su-border">
+                        <SuText Size="SuTextSize.Small" class="font-mono">
+                            Last announcement: "@_lastAnnouncement" (@_lastPriority)
+                        </SuText>
+                    </div>
+                }
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Features *@
+    <SuSection Title="Features">
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Reliable screen reader announcements using React Aria's proven pattern
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Supports both polite (non-interrupting) and assertive (immediate) announcements
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Automatic cleanup after 7 seconds (following React Aria's timing)
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Safari-compatible with 100ms initialization delay
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Simple dependency injection pattern
+            </li>
+            <li class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                Used internally by Calendar, Combobox, and other SummitUI components
+            </li>
+        </ul>
+    </SuSection>
+
+    @* Installation *@
+    <SuSection Title="Installation">
+        <SuCodeBlock Language="bash" Code="dotnet add package SummitUI" />
+    </SuSection>
+
+    @* Setup *@
+    <SuSection Title="Setup" Description="Two steps are required to enable announcements:">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">1. Add the component to your layout</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Place <SuCode>SmLiveAnnouncer</SuCode> once at the root of your application (e.g., MainLayout.razor). 
+                    This component initializes the JavaScript module that handles screen reader announcements.
+                </SuText>
+                <SuCodeBlock Language="razor" Code="@layoutCode" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">2. Inject the service where needed</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Inject <SuCode>ILiveAnnouncer</SuCode> into any component that needs to make announcements.
+                </SuText>
+                <SuCodeBlock Language="razor" Code="@injectCode" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* API Reference *@
+    <SuSection Title="API Reference">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">ILiveAnnouncer (Service)</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Method</SuTableHead>
+                            <SuTableHead>Parameters</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        @foreach (var method in serviceMethods)
+                        {
+                            <SuTableRow>
+                                <SuTableCell class="font-mono text-su-primary font-medium">@method.Name</SuTableCell>
+                                <SuTableCell class="font-mono text-su-muted-foreground text-sm">@method.Type</SuTableCell>
+                                <SuTableCell class="text-su-muted-foreground">@method.Description</SuTableCell>
+                            </SuTableRow>
+                        }
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">AnnouncementPriority (Enum)</SuHeading>
+                <SuTable>
+                    <SuTableHeader>
+                        <SuTableRow>
+                            <SuTableHead>Value</SuTableHead>
+                            <SuTableHead>ARIA Equivalent</SuTableHead>
+                            <SuTableHead>Description</SuTableHead>
+                        </SuTableRow>
+                    </SuTableHeader>
+                    <SuTableBody>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">Polite</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">aria-live="polite"</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Waits for the user to finish their current task before announcing. Use for non-urgent information.</SuTableCell>
+                        </SuTableRow>
+                        <SuTableRow>
+                            <SuTableCell class="font-mono text-su-primary font-medium">Assertive</SuTableCell>
+                            <SuTableCell class="font-mono text-su-muted-foreground text-sm">aria-live="assertive"</SuTableCell>
+                            <SuTableCell class="text-su-muted-foreground">Interrupts the user immediately. Use sparingly for urgent information like errors.</SuTableCell>
+                        </SuTableRow>
+                    </SuTableBody>
+                </SuTable>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">SmLiveAnnouncer (Component)</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    This component has no parameters. It simply initializes the JavaScript live announcer module 
+                    when placed in your layout.
+                </SuText>
+            </div>
+        </div>
+    </SuSection>
+
+    @* How It Works *@
+    <SuSection Title="How It Works">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">The Problem</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Screen readers monitor ARIA live regions for content changes, but they only reliably detect 
+                    <span class="font-medium text-su-foreground">DOM node additions</span>, not content replacements. 
+                    When Blazor re-renders a component, it replaces elements rather than appending new ones, 
+                    which screen readers often miss.
+                </SuText>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">The Solution</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    SummitUI uses React Aria's proven pattern: vanilla JavaScript DOM manipulation that 
+                    <span class="font-medium text-su-foreground">appends</span> new child elements to the live region. 
+                    This triggers reliable screen reader announcements across all major assistive technologies.
+                </SuText>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Technical Details</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0 w-32">Live regions:</span>
+                        <span>Two hidden <SuCode>div</SuCode> elements with <SuCode>role="log"</SuCode> and <SuCode>aria-relevant="additions"</SuCode></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0 w-32">Announcement:</span>
+                        <span>New <SuCode>div</SuCode> element appended as a child with the message text</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0 w-32">Cleanup:</span>
+                        <span>Messages removed after 7000ms (following React Aria's timing)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0 w-32">Safari fix:</span>
+                        <span>100ms delay before first announcement to ensure live region is recognized</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+
+    @* Examples *@
+    <SuSection Title="Examples">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Basic Announcement</SuHeading>
+                <SuCodeBlock Language="razor" Code="@basicExampleCode" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Form Validation Error</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use assertive priority for errors that need immediate attention.</SuText>
+                <SuCodeBlock Language="razor" Code="@errorExampleCode" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Selection Confirmation</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Use polite priority for confirmations and status updates.</SuText>
+                <SuCodeBlock Language="razor" Code="@selectionExampleCode" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Search Results</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Announce dynamic content updates like search results.</SuText>
+                <SuCodeBlock Language="razor" Code="@searchExampleCode" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* When to Use Each Priority *@
+    <SuSection Title="When to Use Each Priority">
+        <SuTable>
+            <SuTableHeader>
+                <SuTableRow>
+                    <SuTableHead>Priority</SuTableHead>
+                    <SuTableHead>Use Case</SuTableHead>
+                    <SuTableHead>Example</SuTableHead>
+                </SuTableRow>
+            </SuTableHeader>
+            <SuTableBody>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Polite</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Selection confirmations</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">"January 15, 2026 selected"</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Polite</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Status updates</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">"5 results found"</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Polite</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Progress updates</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">"Upload complete"</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Assertive</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Validation errors</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">"Error: Email is required"</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Assertive</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Time-sensitive alerts</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">"Session expires in 2 minutes"</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">Assertive</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Critical failures</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">"Connection lost"</SuTableCell>
+                </SuTableRow>
+            </SuTableBody>
+        </SuTable>
+    </SuSection>
+
+    @* Accessibility *@
+    <SuSection Title="Accessibility">
+        <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-3">
+                <SuHeading Level="SuHeadingLevel.H3">Best Practices</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                        <span><span class="font-medium text-su-foreground">Prefer polite:</span> Use assertive only for truly urgent information</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                        <span><span class="font-medium text-su-foreground">Be concise:</span> Keep messages short and to the point</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                        <span><span class="font-medium text-su-foreground">Include context:</span> Make messages understandable without visual context</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                        <span><span class="font-medium text-su-foreground">Localize:</span> The caller is responsible for localizing messages</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-su-primary"><path d="M20 6 9 17l-5-5"/></svg>
+                        <span><span class="font-medium text-su-foreground">Don't over-announce:</span> Too many announcements become noise</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Testing with Screen Readers</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="shrink-0">-</span>
+                        <span><span class="font-medium text-su-foreground">VoiceOver (macOS):</span> Press <SuCode>Cmd + F5</SuCode> to toggle</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="shrink-0">-</span>
+                        <span><span class="font-medium text-su-foreground">NVDA (Windows):</span> Free screen reader for testing</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="shrink-0">-</span>
+                        <span><span class="font-medium text-su-foreground">JAWS (Windows):</span> Commercial screen reader widely used</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="shrink-0">-</span>
+                        <span><span class="font-medium text-su-foreground">TalkBack (Android):</span> Built-in Android screen reader</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </SuSection>
+
+    @* Integration with SummitUI Components *@
+    <SuSection Title="Integration with SummitUI Components">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            The following SummitUI components use LiveAnnouncer internally for accessibility:
+        </SuText>
+        <ul class="grid gap-2 text-sm text-su-muted-foreground">
+            <li class="flex items-center gap-2">
+                <span class="font-medium text-su-foreground w-24">Calendar</span>
+                <span>Announces date selection (e.g., "January 15, 2026 selected")</span>
+            </li>
+        </ul>
+        <SuText Size="SuTextSize.Small" Muted="true" class="mt-4">
+            When using these components, ensure <SuCode>SmLiveAnnouncer</SuCode> is placed in your layout 
+            to enable the announcements.
+        </SuText>
+    </SuSection>
+</div>
+
+@code {
+    private string? _lastAnnouncement;
+    private string? _lastPriority;
+    private int _politeCount = 0;
+    private int _assertiveCount = 0;
+
+    private void AnnouncePolite()
+    {
+        _politeCount++;
+        _lastAnnouncement = $"This is polite announcement number {_politeCount}";
+        _lastPriority = "Polite";
+        Announcer.Announce(_lastAnnouncement, AnnouncementPriority.Polite);
+    }
+
+    private void AnnounceAssertive()
+    {
+        _assertiveCount++;
+        _lastAnnouncement = $"Attention! This is urgent announcement number {_assertiveCount}";
+        _lastPriority = "Assertive";
+        Announcer.Announce(_lastAnnouncement, AnnouncementPriority.Assertive);
+    }
+
+    private List<SuApiProperty> serviceMethods =
+    [
+        new() { Name = "Announce", Type = "string message, AnnouncementPriority priority = Polite", Description = "Announces a message to screen readers" },
+        new() { Name = "Clear", Type = "AnnouncementPriority priority", Description = "Clears announcements for the specified priority" },
+        new() { Name = "ClearAll", Type = "(none)", Description = "Clears all announcements (both polite and assertive)" }
+    ];
+
+    private const string layoutCode = @"@* MainLayout.razor *@
+@using SummitUI
+
+<SmLiveAnnouncer />
+
+<main>
+    @Body
+</main>";
+
+    private const string injectCode = @"@using SummitUI.Services
+@inject ILiveAnnouncer Announcer
+
+<button @onclick=""HandleClick"">Select Item</button>
+
+@code {
+    private void HandleClick()
+    {
+        Announcer.Announce(""Item selected"");
+    }
+}";
+
+    private const string basicExampleCode = @"@using SummitUI.Services
+@inject ILiveAnnouncer Announcer
+
+<button @onclick=""AnnounceMessage"">Make Announcement</button>
+
+@code {
+    private void AnnounceMessage()
+    {
+        // Polite announcement (default) - waits for user to finish current task
+        Announcer.Announce(""Your changes have been saved"");
+    }
+}";
+
+    private const string errorExampleCode = @"@using SummitUI.Services
+@inject ILiveAnnouncer Announcer
+
+<EditForm Model=""model"" OnValidSubmit=""HandleSubmit"" OnInvalidSubmit=""HandleInvalidSubmit"">
+    <DataAnnotationsValidator />
+    <InputText @bind-Value=""model.Email"" />
+    <button type=""submit"">Submit</button>
+</EditForm>
+
+@code {
+    private MyModel model = new();
+
+    private void HandleInvalidSubmit()
+    {
+        // Assertive announcement - interrupts immediately for errors
+        Announcer.Announce(""Error: Please fix the form errors before submitting"", 
+                          AnnouncementPriority.Assertive);
+    }
+
+    private void HandleSubmit()
+    {
+        // Polite announcement for success
+        Announcer.Announce(""Form submitted successfully"");
+    }
+}";
+
+    private const string selectionExampleCode = @"@using SummitUI.Services
+@inject ILiveAnnouncer Announcer
+
+<ul role=""listbox"">
+    @foreach (var item in items)
+    {
+        <li role=""option"" 
+            aria-selected=""@(selectedItem == item)""
+            @onclick=""() => SelectItem(item)"">
+            @item.Name
+        </li>
+    }
+</ul>
+
+@code {
+    private List<Item> items = new() { /* ... */ };
+    private Item? selectedItem;
+
+    private void SelectItem(Item item)
+    {
+        selectedItem = item;
+        Announcer.Announce($""{item.Name} selected"");
+    }
+}";
+
+    private const string searchExampleCode = @"@using SummitUI.Services
+@inject ILiveAnnouncer Announcer
+
+<input type=""search"" @bind=""searchTerm"" @bind:event=""oninput"" @onkeyup=""Search"" />
+
+<ul>
+    @foreach (var result in results)
+    {
+        <li>@result.Title</li>
+    }
+</ul>
+
+@code {
+    private string searchTerm = """";
+    private List<SearchResult> results = new();
+
+    private async Task Search()
+    {
+        results = await SearchService.SearchAsync(searchTerm);
+        
+        // Announce the result count
+        var message = results.Count switch
+        {
+            0 => ""No results found"",
+            1 => ""1 result found"",
+            _ => $""{results.Count} results found""
+        };
+        
+        Announcer.Announce(message);
+    }
+}";
+}

@@ -10,12 +10,19 @@ namespace SummitUI.Services;
 /// </summary>
 /// <remarks>
 /// <para>
-/// This implementation follows React Aria's LiveAnnouncer pattern:
-/// - Uses vanilla DOM manipulation via JavaScript
-/// - Creates role="log" elements with aria-relevant="additions"
-/// - Appends new child nodes rather than replacing content
-/// - 7000ms timeout before clearing announcements
-/// - 100ms delay on first announcement (Safari compatibility)
+/// Inspired by React Aria's LiveAnnouncer pattern.
+/// See: https://github.com/adobe/react-spectrum/blob/main/packages/@react-aria/live-announcer
+/// Copyright 2020 Adobe. Licensed under Apache 2.0.
+/// </para>
+/// <para>
+/// This implementation follows React Aria's approach:
+/// <list type="bullet">
+///   <item>Uses vanilla DOM manipulation via JavaScript</item>
+///   <item>Creates role="log" elements with aria-relevant="additions"</item>
+///   <item>Appends new child nodes rather than replacing content</item>
+///   <item>7000ms timeout before clearing announcements</item>
+///   <item>100ms delay on first announcement (Safari compatibility)</item>
+/// </list>
 /// </para>
 /// <para>
 /// The <see cref="SmLiveAnnouncer"/> component must be placed in the app's layout

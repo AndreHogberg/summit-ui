@@ -1,7 +1,10 @@
 /**
  * LiveAnnouncer - Screen reader announcement utility
  * 
- * Based on React Aria's LiveAnnouncer implementation.
+ * Inspired by React Aria's LiveAnnouncer pattern.
+ * https://github.com/adobe/react-spectrum/blob/main/packages/@react-aria/live-announcer
+ * Copyright 2020 Adobe. Licensed under Apache 2.0.
+ * 
  * Uses vanilla DOM manipulation to ensure reliable screen reader announcements.
  * 
  * Key design decisions (from React Aria):
