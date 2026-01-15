@@ -53,9 +53,37 @@ Interactive button that toggles the associated content panel.
 ### AccordionContent
 Collapsible content panel that shows/hides based on state.
 
+## Enums
+
+### AccordionType
+
+Controls whether one or multiple items can be expanded simultaneously.
+
+```csharp
+public enum AccordionType
+{
+    Single,   // Only one item can be expanded at a time
+    Multiple  // Multiple items can be expanded simultaneously
+}
+```
+
+### AccordionOrientation
+
+Affects keyboard navigation direction (arrow key behavior).
+
+```csharp
+public enum AccordionOrientation
+{
+    Vertical,   // Arrow Up/Down keys navigate between items
+    Horizontal  // Arrow Left/Right keys navigate between items
+}
+```
+
 ## API Reference
 
 ### AccordionRoot
+
+Root container managing accordion state and providing cascading context to all child components.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -73,12 +101,16 @@ Collapsible content panel that shows/hides based on state.
 
 ### AccordionItem
 
+Individual collapsible section with a unique identifier.
+
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | Value | string | **required** | Unique identifier for this accordion item |
 | Disabled | bool | false | Disable this specific item |
 
 ### AccordionHeader
+
+Semantic heading wrapper for proper document structure and accessibility.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -87,10 +119,15 @@ Collapsible content panel that shows/hides based on state.
 
 ### AccordionTrigger
 
+Interactive button element that toggles the expansion state of its associated content.
+
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
+| AsChild | bool | false | Render as a child element instead of button. Child must apply context.Attrs and context.RefCallback. |
 
 ### AccordionContent
+
+Collapsible content region that expands/collapses based on trigger interaction.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -193,6 +230,58 @@ Disable specific accordion items.
     </AccordionItem>
 </AccordionRoot>
 ```
+
+### AsChild Pattern
+
+Use `AsChild="true"` to render a custom element instead of the default button. The child element must apply `@attributes="context.Attrs"` and `@ref="context.RefCallback"` to receive the required functionality.
+
+```razor
+<AccordionRoot DefaultValue="item-1">
+    <AccordionItem Value="item-1">
+        <AccordionHeader>
+            <AccordionTrigger AsChild="true">
+                @context =>
+                {
+                    <!-- Custom div element instead of default button -->
+                    <div role="button"
+                         tabindex="0"
+                         @attributes="context.Attrs"
+                         @ref="context.RefCallback"
+                         class="custom-trigger">
+                        <span class="trigger-icon">▶</span>
+                        <span>Custom Trigger Element</span>
+                    </div>
+                }
+            </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>Content with a custom trigger element.</p>
+        </AccordionContent>
+    </AccordionItem>
+    
+    <AccordionItem Value="item-2">
+        <AccordionHeader>
+            <AccordionTrigger AsChild="true">
+                @context =>
+                {
+                    <!-- Custom anchor-styled button -->
+                    <a href="#"
+                       @attributes="context.Attrs"
+                       @ref="context.RefCallback"
+                       class="text-blue-600 hover:underline p-2 block">
+                        Click to expand section 2
+                    </a>
+                }
+            </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+            <p>This trigger looks like a link but behaves as an accordion trigger.</p>
+        </AccordionContent>
+    </AccordionItem>
+</AccordionRoot>
+```
+
+**Note:** The AsChild pattern gives you complete control over the rendered element while maintaining all accordion functionality (keyboard navigation, ARIA attributes, data attributes, etc.).
 
 ## Styling
 

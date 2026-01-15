@@ -2,6 +2,9 @@
 @rendermode InteractiveWebAssembly
 @layout DocsLayout
 @using SummitUI
+<HeadContent>
+    <meta name="description" content="A vertically stacked set of interactive headings that each reveal an associated section of content."/>
+</HeadContent>
 <PageTitle>SummitUI - Accordion</PageTitle>
 <div class="flex flex-col gap-12">
     @* Header *@
@@ -64,6 +67,288 @@
                     <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
                         <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
                             Yes! CSS variables for height and width are automatically set, allowing smooth CSS transitions for expand/collapse animations.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+            </SmAccordionRoot>
+        </SuCard>
+    </SuSection>
+
+    @* Multiple Items Demo *@
+    <SuSection Title="Multiple Items Expanded">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Allow users to expand multiple items simultaneously using <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">Type="AccordionType.Multiple"</code>.
+        </SuText>
+        <SuCard>
+            <SmAccordionRoot Type="AccordionType.Multiple" DefaultValues="@(new[] { "multi-1" })" class="w-full divide-y divide-su-border">
+                <SmAccordionItem Value="multi-1">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                            <span>Features</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            Full keyboard navigation, ARIA compliance, and customizable styling through data attributes.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="multi-2">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                            <span>Installation</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            Simply run <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">dotnet add package SummitUI</code> to get started.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="multi-3">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                            <span>Browser Support</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            Works across all modern browsers including Chrome, Firefox, Safari, and Edge.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+            </SmAccordionRoot>
+        </SuCard>
+    </SuSection>
+
+    @* Disabled Items Demo *@
+    <SuSection Title="Disabled Items">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Disable specific items to prevent user interaction while keeping them visible.
+        </SuText>
+        <SuCard>
+            <SmAccordionRoot DefaultValue="dis-1" class="w-full divide-y divide-su-border">
+                <SmAccordionItem Value="dis-1">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
+                            <span>Active Section</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            This section is fully interactive and can be toggled.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="dis-2" Disabled="true">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
+                            <span>Disabled Section</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            This content cannot be accessed because the item is disabled.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="dis-3">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[state=open]:text-su-primary">
+                            <span>Another Active Section</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            This section also works normally and demonstrates keyboard navigation skips disabled items.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+            </SmAccordionRoot>
+        </SuCard>
+    </SuSection>
+
+    @* Non-Collapsible Demo *@
+    <SuSection Title="Non-Collapsible Mode">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            When <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">Collapsible="false"</code>, at least one item must always remain open in single mode.
+        </SuText>
+        <SuCard>
+            <SmAccordionRoot DefaultValue="nc-1" Collapsible="false" class="w-full divide-y divide-su-border">
+                <SmAccordionItem Value="nc-1">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                            <span>Account Settings</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            Try clicking this trigger again - it won't close because one item must stay open.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="nc-2">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                            <span>Privacy Settings</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            Opening this will automatically close the previous section.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="nc-3">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                            <span>Notification Settings</span>
+                            <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                            Useful for wizards, settings panels, or any UI where context should always be visible.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+            </SmAccordionRoot>
+        </SuCard>
+    </SuSection>
+
+    @* Controlled Mode Demo *@
+    <SuSection Title="Controlled Mode">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Control the accordion state externally using <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">Value</code> and <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">ValueChanged</code> parameters.
+        </SuText>
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-3 p-3 bg-su-muted/50 rounded-md border border-su-border">
+                    <span class="text-sm font-medium">Currently open:</span>
+                    <code class="text-xs bg-su-background px-2 py-1 rounded border border-su-border">@(controlledValue ?? "None")</code>
+                    <div class="flex gap-2 ml-auto">
+                        <button @onclick="@(() => controlledValue = "ctrl-1")" class="px-3 py-1 text-xs font-medium bg-su-primary text-su-primary-foreground rounded hover:bg-su-primary/90">
+                            Open Section 1
+                        </button>
+                        <button @onclick="@(() => controlledValue = "ctrl-2")" class="px-3 py-1 text-xs font-medium bg-su-primary text-su-primary-foreground rounded hover:bg-su-primary/90">
+                            Open Section 2
+                        </button>
+                        <button @onclick="@(() => controlledValue = null)" class="px-3 py-1 text-xs font-medium bg-su-secondary text-su-secondary-foreground rounded hover:bg-su-secondary/80">
+                            Close All
+                        </button>
+                    </div>
+                </div>
+                <SmAccordionRoot Value="@controlledValue" ValueChanged="@(v => controlledValue = v)" class="w-full divide-y divide-su-border">
+                    <SmAccordionItem Value="ctrl-1">
+                        <SmAccordionHeader>
+                            <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                                <span>Programmatically Controlled Section 1</span>
+                                <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m6 9 6 6 6-6"/>
+                                </svg>
+                            </SmAccordionTrigger>
+                        </SmAccordionHeader>
+                        <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                            <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                                This accordion's state is controlled by the buttons above. Use this pattern for complex UIs with external state management.
+                            </div>
+                        </SmAccordionContent>
+                    </SmAccordionItem>
+                    <SmAccordionItem Value="ctrl-2">
+                        <SmAccordionHeader>
+                            <SmAccordionTrigger class="group flex flex-1 items-center justify-between py-4 text-[0.9375rem] font-medium bg-transparent border-none cursor-pointer text-su-foreground transition-colors w-full text-left hover:text-su-primary data-[state=open]:text-su-primary">
+                                <span>Programmatically Controlled Section 2</span>
+                                <svg class="shrink-0 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m6 9 6 6 6-6"/>
+                                </svg>
+                            </SmAccordionTrigger>
+                        </SmAccordionHeader>
+                        <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                            <div class="pb-4 pt-0 text-sm text-su-muted-foreground">
+                                Perfect for wizards, guided tours, or when you need to react to accordion state changes in your application logic.
+                            </div>
+                        </SmAccordionContent>
+                    </SmAccordionItem>
+                </SmAccordionRoot>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Custom Styling Demo *@
+    <SuSection Title="Custom Styling Example">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Accordion components are completely headless - style them however you want using data attributes and CSS.
+        </SuText>
+        <SuCard>
+            <SmAccordionRoot DefaultValue="styled-1" class="w-full space-y-2">
+                <SmAccordionItem Value="styled-1" class="border-2 border-su-primary rounded-lg overflow-hidden">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between px-6 py-4 text-base font-semibold bg-su-primary/5 border-none cursor-pointer text-su-primary transition-all w-full text-left hover:bg-su-primary/10 data-[state=open]:bg-su-primary data-[state=open]:text-su-primary-foreground">
+                            <span>🎨 Styled with Color</span>
+                            <svg class="shrink-0 transition-transform duration-300 ease-in-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="px-6 py-4 bg-su-primary/5 text-sm">
+                            This demonstrates custom styling with borders, colors, spacing, and transitions. The trigger has a colored background that changes on hover and when open.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="styled-2" class="border-2 border-su-primary rounded-lg overflow-hidden">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between px-6 py-4 text-base font-semibold bg-su-primary/5 border-none cursor-pointer text-su-primary transition-all w-full text-left hover:bg-su-primary/10 data-[state=open]:bg-su-primary data-[state=open]:text-su-primary-foreground">
+                            <span>✨ Different Animations</span>
+                            <svg class="shrink-0 transition-transform duration-300 ease-in-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="px-6 py-4 bg-su-primary/5 text-sm">
+                            Notice how the chevron rotates with a smooth transition. You can customize every aspect: colors, spacing, borders, shadows, animations, and more.
+                        </div>
+                    </SmAccordionContent>
+                </SmAccordionItem>
+                <SmAccordionItem Value="styled-3" class="border-2 border-su-primary rounded-lg overflow-hidden">
+                    <SmAccordionHeader>
+                        <SmAccordionTrigger class="group flex flex-1 items-center justify-between px-6 py-4 text-base font-semibold bg-su-primary/5 border-none cursor-pointer text-su-primary transition-all w-full text-left hover:bg-su-primary/10 data-[state=open]:bg-su-primary data-[state=open]:text-su-primary-foreground">
+                            <span>🚀 Fully Customizable</span>
+                            <svg class="shrink-0 transition-transform duration-300 ease-in-out group-data-[state=open]:rotate-180" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </SmAccordionTrigger>
+                    </SmAccordionHeader>
+                    <SmAccordionContent class="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up" ForceMount="true">
+                        <div class="px-6 py-4 bg-su-primary/5 text-sm">
+                            Use data attributes like <code class="text-xs bg-su-background px-1.5 py-0.5 rounded border border-su-border">data-state</code>, <code class="text-xs bg-su-background px-1.5 py-0.5 rounded border border-su-border">data-disabled</code>, and <code class="text-xs bg-su-background px-1.5 py-0.5 rounded border border-su-border">data-orientation</code> to style based on component state.
                         </div>
                     </SmAccordionContent>
                 </SmAccordionItem>
@@ -137,19 +422,40 @@
         </div>
     </SuSection>
 
+    @* Enums *@
+    <SuSection Title="Enums">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">AccordionType</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Controls whether one or multiple items can be expanded simultaneously.
+                </SuText>
+                <SuCodeBlock Code="@accordionTypeEnumCode" Language="csharp" />
+            </div>
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">AccordionOrientation</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Affects keyboard navigation direction (arrow key behavior).
+                </SuText>
+                <SuCodeBlock Code="@accordionOrientationEnumCode" Language="csharp" />
+            </div>
+        </div>
+    </SuSection>
+
     @* API Reference *@
     <SuSection Title="API Reference">
         <div class="flex flex-col gap-12">
-            @foreach (var table in new[] { 
-                (Title: "AccordionRoot", Props: accordionRootProperties), 
-                (Title: "AccordionItem", Props: accordionItemProperties),
-                (Title: "AccordionHeader", Props: accordionHeaderProperties),
-                (Title: "AccordionTrigger", Props: accordionTriggerProperties),
-                (Title: "AccordionContent", Props: accordionContentProperties)
+            @foreach (var table in new[] {
+                (Title: "AccordionRoot", Props: accordionRootProperties, Desc: "Root container managing accordion state and providing cascading context to all child components."),
+                (Title: "AccordionItem", Props: accordionItemProperties, Desc: "Individual collapsible section with a unique identifier."),
+                (Title: "AccordionHeader", Props: accordionHeaderProperties, Desc: "Semantic heading wrapper for proper document structure and accessibility."),
+                (Title: "AccordionTrigger", Props: accordionTriggerProperties, Desc: "Interactive button element that toggles the expansion state of its associated content."),
+                (Title: "AccordionContent", Props: accordionContentProperties, Desc: "Collapsible content region that expands/collapses based on trigger interaction.")
             })
             {
                 <div class="flex flex-col gap-3">
                     <SuHeading Level="SuHeadingLevel.H3">@table.Title</SuHeading>
+                    <SuText Size="SuTextSize.Small" Muted="true">@table.Desc</SuText>
                     <SuTable>
                         <SuTableHeader>
                             <SuTableRow>
@@ -187,7 +493,18 @@
         <div class="flex flex-col gap-8">
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
-                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+                <SmTabsRoot DefaultValue="code">
+                    <SmTabsList class="inline-flex h-10 items-center justify-start rounded-md bg-su-muted p-1">
+                        <SmTabsTrigger Value="code" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Code</SmTabsTrigger>
+                        <SmTabsTrigger Value="styling" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Styling</SmTabsTrigger>
+                    </SmTabsList>
+                    <SmTabsContent Value="code" class="mt-4">
+                        <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+                    </SmTabsContent>
+                    <SmTabsContent Value="styling" class="mt-4">
+                        <SuCodeBlock Code="@basicExampleStylingCode" Language="css" />
+                    </SmTabsContent>
+                </SmTabsRoot>
             </div>
 
             <div class="flex flex-col gap-4">
@@ -206,6 +523,14 @@
                 <SuHeading Level="SuHeadingLevel.H3">Disabled Items</SuHeading>
                 <SuText Size="SuTextSize.Small" Muted="true">Disable specific accordion items.</SuText>
                 <SuCodeBlock Code="@disabledExampleCode" Language="razor" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">AsChild Pattern</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Use <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">AsChild="true"</code> to render a custom element instead of the default button. The child element must apply <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">@@attributes="context.Attrs"</code> and <code class="text-xs bg-su-muted px-1.5 py-0.5 rounded">@@ref="context.RefCallback"</code> to receive the required functionality.
+                </SuText>
+                <SuCodeBlock Code="@asChildExampleCode" Language="razor" />
             </div>
         </div>
     </SuSection>
@@ -256,7 +581,7 @@
                     </SuTableBody>
                 </SuTable>
             </div>
-            
+
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
                 <SuCodeBlock Code="@cssExampleCode" Language="css" />
@@ -310,6 +635,8 @@
 </div>
 
 @code {
+    private string? controlledValue = null;
+
     private List<SuApiProperty> accordionRootProperties = new()
     {
         new() { Name = "Type", Type = "AccordionType", Default = "Single", Description = "Whether one or multiple items can be expanded" },
@@ -339,6 +666,7 @@
 
     private List<SuApiProperty> accordionTriggerProperties = new()
     {
+        new() { Name = "AsChild", Type = "bool", Default = "false", Description = "Render as a child element instead of button. Child must apply context.Attrs and context.RefCallback." }
     };
 
     private List<SuApiProperty> accordionContentProperties = new()
@@ -401,7 +729,7 @@
     </SmAccordionItem>
 </SmAccordionRoot>";
 
-    private const string multipleExampleCode = @"<SmAccordionRoot Type=""AccordionType.Multiple"" 
+    private const string multipleExampleCode = @"<SmAccordionRoot Type=""AccordionType.Multiple""
                DefaultValues=""@(new[] { ""item-1"", ""item-2"" })"">
     <SmAccordionItem Value=""item-1"">
         <SmAccordionHeader>
@@ -421,7 +749,7 @@
     private string? expandedItem = ""item-1"";
 }
 
-<SmAccordionRoot Value=""@expandedItem"" 
+<SmAccordionRoot Value=""@expandedItem""
                ValueChanged=""@(v => expandedItem = v)"">
     <SmAccordionItem Value=""item-1"">
         <SmAccordionHeader>
@@ -497,5 +825,128 @@
 /* Chevron rotation */
 .accordion-trigger[data-state=""open""] .chevron {
     transform: rotate(180deg);
+}";
+
+    private const string accordionTypeEnumCode = @"public enum AccordionType
+{
+    Single,   // Only one item can be expanded at a time
+    Multiple  // Multiple items can be expanded simultaneously
+}";
+
+    private const string accordionOrientationEnumCode = @"public enum AccordionOrientation
+{
+    Vertical,   // Arrow Up/Down keys navigate between items
+    Horizontal  // Arrow Left/Right keys navigate between items
+}";
+
+    private const string basicExampleStylingCode = @"/* Basic accordion trigger styling */
+.accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 150ms ease;
+}
+
+.accordion-trigger:hover {
+    color: hsl(var(--primary));
+}
+
+.accordion-trigger[data-state=""open""] {
+    color: hsl(var(--primary));
+}
+
+/* Chevron icon animation */
+.accordion-trigger .chevron {
+    transition: transform 200ms ease-out;
+}
+
+.accordion-trigger[data-state=""open""] .chevron {
+    transform: rotate(180deg);
+}
+
+/* Content panel with smooth height animation */
+.accordion-content {
+    overflow: hidden;
+}
+
+.accordion-content[data-state=""open""] {
+    animation: accordion-down 200ms ease-out;
+}
+
+.accordion-content[data-state=""closed""] {
+    animation: accordion-up 200ms ease-out;
+}
+
+@keyframes accordion-down {
+    from {
+        height: 0;
+    }
+    to {
+        height: var(--summit-accordion-content-height);
+    }
+}
+
+@keyframes accordion-up {
+    from {
+        height: var(--summit-accordion-content-height);
+    }
+    to {
+        height: 0;
+    }
+}";
+
+    private const string asChildExampleCode = @"<SmAccordionRoot DefaultValue=""item-1"">
+    <SmAccordionItem Value=""item-1"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger AsChild=""true"">
+                @context =>
+                {
+                    <!-- Custom div element instead of default button -->
+                    <div role=""button""
+                         tabindex=""0""
+                         @attributes=""context.Attrs""
+                         @ref=""context.RefCallback""
+                         class=""custom-trigger"">
+                        <span class=""trigger-icon"">▶</span>
+                        <span>Custom Trigger Element</span>
+                    </div>
+                }
+            </SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>
+            <p>Content with a custom trigger element.</p>
+        </SmAccordionContent>
+    </SmAccordionItem>
+
+    <SmAccordionItem Value=""item-2"">
+        <SmAccordionHeader>
+            <SmAccordionTrigger AsChild=""true"">
+                @context =>
+                {
+                    <!-- Custom anchor-styled button -->
+                    <a href=""#""
+                       @attributes=""context.Attrs""
+                       @ref=""context.RefCallback""
+                       class=""text-blue-600 hover:underline p-2 block"">
+                        Click to expand section 2
+                    </a>
+                }
+            </SmAccordionTrigger>
+        </SmAccordionHeader>
+        <SmAccordionContent>
+            <p>This trigger looks like a link but behaves as an accordion trigger.</p>
+        </SmAccordionContent>
+    </SmAccordionItem>
+</SmAccordionRoot>
+
+@code {
+    // The AsChild pattern gives you complete control over the rendered element
+    // while maintaining all accordion functionality (keyboard nav, ARIA, etc.)
 }";
 }
