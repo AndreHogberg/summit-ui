@@ -180,7 +180,7 @@ public class SmOtpRoot : ComponentBase, IAsyncDisposable
 
         if (!string.IsNullOrEmpty(Pattern))
         {
-            _regex = new Regex(Pattern, RegexOptions.Compiled);
+            _regex = new Regex(Pattern);
         }
 
         if (EditContext != null && ValueExpression != null)
@@ -198,7 +198,7 @@ public class SmOtpRoot : ComponentBase, IAsyncDisposable
     {
         if (!string.IsNullOrEmpty(Pattern) && (_regex == null || _regex.ToString() != Pattern))
         {
-            _regex = new Regex(Pattern, RegexOptions.Compiled);
+            _regex = new Regex(Pattern);
         }
 
         // Track previous value for onComplete detection

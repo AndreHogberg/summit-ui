@@ -12,6 +12,9 @@
         <!-- Globalization: Load full ICU data for calendar system demos -->
         <InvariantGlobalization>false</InvariantGlobalization>
         <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+        
+        <!-- AOT compilation for Release builds -->
+        <RunAOTCompilation Condition="'$(Configuration)' == 'Release'">true</RunAOTCompilation>
     </PropertyGroup>
 
     <ItemGroup>

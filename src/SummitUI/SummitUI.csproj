@@ -6,6 +6,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
+        <!-- AOT and Trimming compatibility -->
+        <IsTrimmable>true</IsTrimmable>
+        <IsAotCompatible>true</IsAotCompatible>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+
         <!-- NuGet Metadata -->
         <PackageId>SummitUI</PackageId>
         <Version>0.0.9-alpha</Version>
