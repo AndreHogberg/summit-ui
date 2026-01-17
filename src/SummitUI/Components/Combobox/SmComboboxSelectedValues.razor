@@ -1,0 +1,80 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+@implements IDisposable
+
+@{
+    var selectedItems = BuildSelectedItems();
+    var content = ChildContent?.Invoke(selectedItems);
+}
+
+@if (content is not null)
+{
+    <span data-summit-combobox-selected-values @attributes="AdditionalAttributes">
+        @content
+    </span>
+}
+
+@code {
+    [CascadingParameter]
+    private ComboboxContext<TValue> Context { get; set; } = default!;
+
+    /// <summary>
+    /// Child content receiving a list of selected items with deselect delegates.
+    /// Use with Context="items" to access the IReadOnlyList&lt;ComboboxSelectedItem&lt;TValue&gt;&gt;.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<IReadOnlyList<ComboboxSelectedItem<TValue>>>? ChildContent { get; set; }
+
+    /// <summary>
+    /// Additional HTML attributes for the wrapper element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+
+    private bool _isSubscribed;
+
+    protected override void OnInitialized()
+    {
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private IReadOnlyList<ComboboxSelectedItem<TValue>> BuildSelectedItems()
+    {
+        var items = new List<ComboboxSelectedItem<TValue>>();
+
+        foreach (var value in Context.SelectedValues)
+        {
+
+            var label = Context.ValueToLabelRegistry.TryGetValue(value, out var l)
+                ? l
+                : value.ToString() ?? "";
+
+            var capturedValue = value;
+
+            var item = new ComboboxSelectedItem<TValue>(
+                capturedValue,
+                label,
+                () => Context.DeselectValueAsync(capturedValue)
+            );
+
+            items.Add(item);
+        }
+
+        return items.AsReadOnly();
+    }
+
+    public void Dispose()
+    {
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
+    }
+}

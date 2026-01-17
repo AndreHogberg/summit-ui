@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
@@ -12,7 +11,7 @@ namespace SummitUI;
 /// Implements listbox role with keyboard navigation support for multi-select.
 /// </summary>
 /// <typeparam name="TValue">The type of the combobox value.</typeparam>
-public class SmComboboxContent<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
+public partial class SmComboboxContent<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
     [Inject]
     private FloatingJsInterop FloatingInterop { get; set; } = default!;
@@ -25,12 +24,6 @@ public class SmComboboxContent<TValue> : ComponentBase, IAsyncDisposable where T
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>
-    /// HTML element to render. Defaults to "div".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "div";
 
     /// <summary>
     /// Preferred placement side relative to the trigger.
@@ -215,34 +208,6 @@ public class SmComboboxContent<TValue> : ComponentBase, IAsyncDisposable where T
         _wasOpen = Context.IsOpen;
     }
 
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
-
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "role", "listbox");
-        builder.AddAttribute(2, "id", Context.ContentId);
-        builder.AddAttribute(3, "tabindex", "-1");
-        builder.AddAttribute(4, "aria-multiselectable", "true");
-        builder.AddAttribute(5, "aria-labelledby", Context.HasInput ? Context.InputId : Context.TriggerId);
-        builder.AddAttribute(6, "aria-activedescendant", GetActiveDescendantId());
-        builder.AddAttribute(7, "data-state", DataState);
-        builder.AddAttribute(8, "data-summit-combobox-content", "");
-        builder.AddAttribute(9, "style", ContentStyle);
-        builder.AddMultipleAttributes(10, AdditionalAttributes);
-
-        // Only handle keyboard events if there's no input (select-only mode)
-        if (!Context.HasInput)
-        {
-            builder.AddAttribute(11, "onkeydown", EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-            builder.AddEventPreventDefaultAttribute(12, "onkeydown", true);
-        }
-
-        builder.AddElementReferenceCapture(13, (elementRef) => { _elementRef = elementRef; });
-        builder.AddContent(14, ChildContent);
-        builder.CloseElement();
-    }
-
     private string? GetActiveDescendantId()
     {
         return !string.IsNullOrEmpty(Context.HighlightedKey)
@@ -342,6 +307,8 @@ public class SmComboboxContent<TValue> : ComponentBase, IAsyncDisposable where T
     /// </summary>
     private async Task HandleKeyDownAsync(KeyboardEventArgs args)
     {
+        // Skip keyboard handling if there's an input (input handles its own keys)
+        if (Context.HasInput) return;
         if (_isDisposed || !Context.IsOpen) return;
 
         switch (args.Key)

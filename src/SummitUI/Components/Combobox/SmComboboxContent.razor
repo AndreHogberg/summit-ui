@@ -1,0 +1,21 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+@if (Context.IsOpen || Context.IsAnimatingClosed)
+{
+    <div role="listbox"
+         id="@Context.ContentId"
+         tabindex="-1"
+         aria-multiselectable="true"
+         aria-labelledby="@(Context.HasInput ? Context.InputId : Context.TriggerId)"
+         aria-activedescendant="@GetActiveDescendantId()"
+         data-state="@DataState"
+         data-summit-combobox-content
+         style="@ContentStyle"
+         @onkeydown="HandleKeyDownAsync"
+         @onkeydown:preventDefault="@(!Context.HasInput)"
+         @ref="_elementRef"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}

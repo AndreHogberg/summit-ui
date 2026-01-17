@@ -1,0 +1,28 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+<input type="text"
+       id="@(Id ?? Context.InputId)"
+       role="combobox"
+       aria-haspopup="listbox"
+       aria-expanded="@Context.IsOpen.ToString().ToLowerInvariant()"
+       aria-controls="@Context.ContentId"
+       aria-autocomplete="list"
+       aria-activedescendant="@HighlightedItemId"
+       aria-label="@AriaLabel"
+       aria-labelledby="@AriaLabelledBy"
+       aria-required="@(Context.Required ? "true" : null)"
+       aria-invalid="@(Context.Invalid ? "true" : null)"
+       aria-disabled="@(Context.Disabled ? "true" : null)"
+       disabled="@Context.Disabled"
+       placeholder="@Placeholder"
+       value="@_inputValue"
+       data-state="@DataState"
+       data-summit-combobox-input
+       data-disabled="@(Context.Disabled ? "" : null)"
+       data-invalid="@(Context.Invalid ? "" : null)"
+       @oninput="HandleInputAsync"
+       @onkeydown="HandleKeyDownAsync"
+       @onclick="HandleClickAsync"
+       @ref="_elementRef"
+       @attributes="AdditionalAttributes" />

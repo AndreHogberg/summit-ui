@@ -1,0 +1,22 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+<div data-summit-combobox-viewport
+     style="overflow: auto;"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>
+    /// Child content (ComboboxItem, ComboboxGroup, ComboboxEmpty, etc.).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,30 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+<div id="@(!string.IsNullOrEmpty(GroupId) ? Context.GetGroupLabelId(GroupId) : null)"
+     role="presentation"
+     aria-hidden="true"
+     data-summit-combobox-group-label
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter]
+    private ComboboxContext<TValue> Context { get; set; } = default!;
+
+    [CascadingParameter(Name = "ComboboxGroupId")]
+    private string? GroupId { get; set; }
+
+    /// <summary>
+    /// Label content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

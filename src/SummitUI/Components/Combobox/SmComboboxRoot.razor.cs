@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Rendering;
 
 using SummitUI.Services;
 
@@ -13,7 +12,7 @@ namespace SummitUI;
 /// Provides cascading context to child components.
 /// </summary>
 /// <typeparam name="TValue">The type of the combobox values.</typeparam>
-public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
+public partial class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
     /// <summary>
     /// Optional live announcer for screen reader announcements.
@@ -127,7 +126,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     /// <code>
     /// // Simple announcement
     /// GetSelectionAnnouncement="@(label => $"{label} selected")"
-    /// 
+    ///
     /// // Localized announcement using IStringLocalizer
     /// GetSelectionAnnouncement="@(label => string.Format(Localizer["SelectionAnnouncement"], label))"
     /// </code>
@@ -155,7 +154,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     /// <code>
     /// // Simple announcement
     /// GetDeselectionAnnouncement="@(label => $"{label} removed")"
-    /// 
+    ///
     /// // Localized announcement using IStringLocalizer
     /// GetDeselectionAnnouncement="@(label => string.Format(Localizer["DeselectionAnnouncement"], label))"
     /// </code>
@@ -181,7 +180,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     /// <code>
     /// // Simple announcement
     /// ClearAnnouncement="Selection cleared"
-    /// 
+    ///
     /// // Localized announcement using IStringLocalizer
     /// ClearAnnouncement="@Localizer["SelectionCleared"]"
     /// </code>
@@ -209,7 +208,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     /// <code>
     /// // Simple announcement
     /// GetFilterResultsAnnouncement="@(count => count == 0 ? "No items match" : $"{count} items available")"
-    /// 
+    ///
     /// // Localized announcement using IStringLocalizer
     /// GetFilterResultsAnnouncement="@(count => string.Format(Localizer["FilterResults"], count))"
     /// </code>
@@ -232,8 +231,8 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
     /// <summary>
     /// Effective selected values (controlled or uncontrolled).
     /// </summary>
-    private HashSet<TValue> EffectiveValues => Values is not null 
-        ? new HashSet<TValue>(Values) 
+    private HashSet<TValue> EffectiveValues => Values is not null
+        ? new HashSet<TValue>(Values)
         : _internalValues;
 
     /// <summary>
@@ -300,32 +299,6 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         }
     }
 
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenComponent<CascadingValue<ComboboxContext<TValue>>>(0);
-        builder.AddComponentParameter(1, "Value", _context);
-        builder.AddComponentParameter(2, "IsFixed", false);
-        builder.AddComponentParameter(3, "ChildContent", (RenderFragment)(childBuilder =>
-        {
-            childBuilder.AddContent(0, ChildContent);
-
-            // Render hidden inputs for form submission
-            if (!string.IsNullOrEmpty(Name))
-            {
-                var index = 1;
-                foreach (var value in EffectiveValues)
-                {
-                    childBuilder.OpenElement(index++, "input");
-                    childBuilder.AddAttribute(index++, "type", "hidden");
-                    childBuilder.AddAttribute(index++, "name", Name);
-                    childBuilder.AddAttribute(index++, "value", value?.ToString());
-                    childBuilder.CloseElement();
-                }
-            }
-        }));
-        builder.CloseComponent();
-    }
-
     private async Task ToggleAsync()
     {
         if (Disabled) return;
@@ -349,11 +322,11 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         }
 
         _context.IsOpen = true;
-        
+
         // Highlight first visible item when opening (will be set after items render)
         // Note: Items register on render, so we trigger state change which will re-render
         // and the filter will auto-highlight first item if any filter is applied
-        
+
         await OpenChanged.InvokeAsync(true);
         StateHasChanged();
     }
@@ -464,7 +437,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
                 _context.FilterText = "";
                 HighlightFirstVisibleItem();
             }
-            
+
             // Focus input after selection (multi-select keeps dropdown open)
             if (_context.HasInput)
             {
@@ -568,7 +541,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         if (_context.FilterText != text)
         {
             _context.FilterText = text;
-            
+
             // Auto-highlight first visible item when filter changes
             HighlightFirstVisibleItem();
 
@@ -582,7 +555,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
                     Announcer.Announce(announcement);
                 }
             }
-            
+
             _context.RaiseStateChanged();
         }
         return Task.CompletedTask;
@@ -612,7 +585,7 @@ public class SmComboboxRoot<TValue> : ComponentBase, IAsyncDisposable where TVal
         string? firstVisibleKey = null;
         foreach (var key in _context.ItemRegistry.Keys)
         {
-            if (_context.MatchesFilter(key) && 
+            if (_context.MatchesFilter(key) &&
                 (!_context.DisabledRegistry.TryGetValue(key, out var disabled) || !disabled))
             {
                 firstVisibleKey = key;

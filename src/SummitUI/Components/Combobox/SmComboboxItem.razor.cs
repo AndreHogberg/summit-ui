@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace SummitUI;
@@ -9,7 +8,7 @@ namespace SummitUI;
 /// Implements option role with multi-select support.
 /// </summary>
 /// <typeparam name="TValue">The type of the combobox value.</typeparam>
-public class SmComboboxItem<TValue> : ComponentBase, IDisposable where TValue : notnull
+public partial class SmComboboxItem<TValue> : ComponentBase, IDisposable where TValue : notnull
 {
     [CascadingParameter]
     private ComboboxContext<TValue> Context { get; set; } = default!;
@@ -133,46 +132,6 @@ public class SmComboboxItem<TValue> : ComponentBase, IDisposable where TValue : 
             Context.UnregisterItem(_registeredKey);
             _registeredKey = null;
         }
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        // Don't render if filtered out
-        if (!IsVisible) return;
-
-        builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "role", "option");
-        builder.AddAttribute(2, "id", Context.GetItemId(EffectiveKey));
-        builder.AddAttribute(3, "aria-selected", IsSelected ? "true" : "false");
-        if (Disabled)
-        {
-            builder.AddAttribute(4, "aria-disabled", "true");
-        }
-        builder.AddAttribute(5, "data-summit-combobox-item", "");
-        builder.AddAttribute(6, "data-value", EffectiveKey);
-        builder.AddAttribute(7, "data-label", EffectiveLabel);
-        builder.AddAttribute(8, "data-state", DataState);
-        if (Disabled)
-        {
-            builder.AddAttribute(9, "data-disabled", "");
-        }
-        if (IsHighlighted)
-        {
-            builder.AddAttribute(10, "data-highlighted", "");
-        }
-        if (IsSelected)
-        {
-            builder.AddAttribute(11, "data-selected", "");
-        }
-        builder.AddAttribute(12, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        if (!Disabled)
-        {
-            builder.AddEventPreventDefaultAttribute(13, "onclick", true);
-        }
-        builder.AddAttribute(14, "onmouseenter", EventCallback.Factory.Create<MouseEventArgs>(this, HandleMouseEnterAsync));
-        builder.AddMultipleAttributes(15, AdditionalAttributes);
-        builder.AddContent(16, ChildContent);
-        builder.CloseElement();
     }
 
     private async Task HandleClickAsync(MouseEventArgs args)

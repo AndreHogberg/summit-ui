@@ -1,0 +1,36 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+<div role="group"
+     aria-labelledby="@Context.GetGroupLabelId(EffectiveGroupId)"
+     data-summit-combobox-group
+     @attributes="AdditionalAttributes">
+    <CascadingValue Name="ComboboxGroupId" Value="@EffectiveGroupId">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [CascadingParameter]
+    private ComboboxContext<TValue> Context { get; set; } = default!;
+
+    /// <summary>
+    /// Child content (ComboboxGroupLabel and ComboboxItems).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Unique identifier for this group (used for ARIA relationships).
+    /// </summary>
+    [Parameter]
+    public string? GroupId { get; set; }
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string EffectiveGroupId => GroupId ?? Guid.NewGuid().ToString("N")[..8];
+}

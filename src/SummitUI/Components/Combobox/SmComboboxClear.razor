@@ -1,0 +1,81 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+@implements IDisposable
+
+@if (!(HideWhenEmpty && Context.SelectedValues.Count == 0))
+{
+    <button type="button"
+            aria-label="@(AriaLabel ?? Localizer["Combobox_ClearAllLabel"])"
+            data-summit-combobox-clear
+            aria-disabled="@(Context.Disabled ? "true" : null)"
+            disabled="@Context.Disabled"
+            data-disabled="@(Context.Disabled ? "" : null)"
+            data-empty="@(Context.SelectedValues.Count == 0 ? "" : null)"
+            @onclick="HandleClickAsync"
+            @onclick:stopPropagation="true"
+            @attributes="AdditionalAttributes">
+        @ChildContent
+    </button>
+}
+
+@code {
+    [CascadingParameter]
+    private ComboboxContext<TValue> Context { get; set; } = default!;
+
+    [Inject]
+    private ISummitUILocalizer Localizer { get; set; } = default!;
+
+    /// <summary>
+    /// Content of the clear button.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Whether to hide the button when no items are selected.
+    /// Defaults to true.
+    /// </summary>
+    [Parameter]
+    public bool HideWhenEmpty { get; set; } = true;
+
+    /// <summary>
+    /// Accessible label for the clear button.
+    /// If not provided, uses the localized default from <see cref="ISummitUILocalizer"/>.
+    /// </summary>
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
+    /// <summary>
+    /// Additional HTML attributes.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool _isSubscribed;
+
+    protected override void OnInitialized()
+    {
+        Context.OnStateChanged += HandleStateChanged;
+        _isSubscribed = true;
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleClickAsync()
+    {
+        if (Context.Disabled) return;
+
+        await Context.ClearAsync();
+    }
+
+    public void Dispose()
+    {
+        if (_isSubscribed)
+        {
+            Context.OnStateChanged -= HandleStateChanged;
+        }
+    }
+}

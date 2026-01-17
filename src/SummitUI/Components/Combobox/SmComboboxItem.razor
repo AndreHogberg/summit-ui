@@ -1,0 +1,23 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+@if (IsVisible)
+{
+    <div role="option"
+         id="@Context.GetItemId(EffectiveKey)"
+         aria-selected="@(IsSelected ? "true" : "false")"
+         aria-disabled="@(Disabled ? "true" : null)"
+         data-summit-combobox-item
+         data-value="@EffectiveKey"
+         data-label="@EffectiveLabel"
+         data-state="@DataState"
+         data-disabled="@(Disabled ? "" : null)"
+         data-highlighted="@(IsHighlighted ? "" : null)"
+         data-selected="@(IsSelected ? "" : null)"
+         @onclick="HandleClickAsync"
+         @onclick:preventDefault="@(!Disabled)"
+         @onmouseenter="HandleMouseEnterAsync"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}

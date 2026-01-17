@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
@@ -12,7 +11,7 @@ namespace SummitUI;
 /// Implements the combobox role when present (editable combobox pattern).
 /// </summary>
 /// <typeparam name="TValue">The type of the combobox value.</typeparam>
-public class SmComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
+public partial class SmComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TValue : notnull
 {
     [Inject]
     private FloatingJsInterop FloatingInterop { get; set; } = default!;
@@ -88,70 +87,6 @@ public class SmComboboxInput<TValue> : ComponentBase, IAsyncDisposable where TVa
         {
             Context.RegisterInput(_elementRef);
         }
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, "input");
-        builder.AddAttribute(1, "type", "text");
-        builder.AddAttribute(2, "id", Id ?? Context.InputId);
-        builder.AddAttribute(3, "role", "combobox");
-        builder.AddAttribute(4, "aria-haspopup", "listbox");
-        builder.AddAttribute(5, "aria-expanded", Context.IsOpen.ToString().ToLowerInvariant());
-        builder.AddAttribute(6, "aria-controls", Context.ContentId);
-        builder.AddAttribute(7, "aria-autocomplete", "list");
-
-        if (!string.IsNullOrEmpty(HighlightedItemId))
-        {
-            builder.AddAttribute(8, "aria-activedescendant", HighlightedItemId);
-        }
-        if (!string.IsNullOrEmpty(AriaLabel))
-        {
-            builder.AddAttribute(9, "aria-label", AriaLabel);
-        }
-        if (!string.IsNullOrEmpty(AriaLabelledBy))
-        {
-            builder.AddAttribute(10, "aria-labelledby", AriaLabelledBy);
-        }
-        if (Context.Required)
-        {
-            builder.AddAttribute(11, "aria-required", "true");
-        }
-        if (Context.Invalid)
-        {
-            builder.AddAttribute(12, "aria-invalid", "true");
-        }
-        if (Context.Disabled)
-        {
-            builder.AddAttribute(13, "aria-disabled", "true");
-            builder.AddAttribute(14, "disabled", true);
-        }
-
-        if (!string.IsNullOrEmpty(Placeholder))
-        {
-            builder.AddAttribute(15, "placeholder", Placeholder);
-        }
-
-        builder.AddAttribute(16, "value", _inputValue);
-        builder.AddAttribute(17, "data-state", DataState);
-        builder.AddAttribute(18, "data-summit-combobox-input", "");
-
-        if (Context.Disabled)
-        {
-            builder.AddAttribute(19, "data-disabled", "");
-        }
-        if (Context.Invalid)
-        {
-            builder.AddAttribute(20, "data-invalid", "");
-        }
-
-        builder.AddMultipleAttributes(21, AdditionalAttributes);
-        builder.AddAttribute(22, "oninput", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleInputAsync));
-        builder.AddAttribute(23, "onkeydown",
-            EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync));
-        builder.AddAttribute(24, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddElementReferenceCapture(25, (elementRef) => { _elementRef = elementRef; });
-        builder.CloseElement();
     }
 
     private async Task HandleInputAsync(ChangeEventArgs args)
