@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="0" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Dialog component -->
+  <data name="Dialog_CloseLabel" xml:space="preserve">
+    <value>Close dialog</value>
+    <comment>ARIA label for the dialog close button</comment>
+  </data>
+  
+  <!-- Popover component -->
+  <data name="Popover_CloseLabel" xml:space="preserve">
+    <value>Close</value>
+    <comment>ARIA label for the popover close button</comment>
+  </data>
+  
+  <!-- Combobox component -->
+  <data name="Combobox_ClearAllLabel" xml:space="preserve">
+    <value>Clear all selections</value>
+    <comment>ARIA label for the combobox clear button</comment>
+  </data>
+  
+  <!-- Calendar component -->
+  <data name="Calendar_NextMonthLabel" xml:space="preserve">
+    <value>Next month</value>
+    <comment>ARIA label for the calendar next month navigation button</comment>
+  </data>
+  <data name="Calendar_PreviousMonthLabel" xml:space="preserve">
+    <value>Previous month</value>
+    <comment>ARIA label for the calendar previous month navigation button</comment>
+  </data>
+  <data name="Calendar_GridInstructions" xml:space="preserve">
+    <value>Use arrow keys to navigate dates, Enter or Space to select</value>
+    <comment>Screen reader instructions for the calendar grid</comment>
+  </data>
+  <data name="Calendar_DateSelectedAnnouncement" xml:space="preserve">
+    <value>{0} selected</value>
+    <comment>Screen reader announcement when a date is selected. {0} is the formatted date.</comment>
+  </data>
+  
+  <!-- DateField component segment labels -->
+  <data name="DateField_YearLabel" xml:space="preserve">
+    <value>Year</value>
+    <comment>ARIA label for the year segment in the date field</comment>
+  </data>
+  <data name="DateField_MonthLabel" xml:space="preserve">
+    <value>Month</value>
+    <comment>ARIA label for the month segment in the date field</comment>
+  </data>
+  <data name="DateField_DayLabel" xml:space="preserve">
+    <value>Day</value>
+    <comment>ARIA label for the day segment in the date field</comment>
+  </data>
+  <data name="DateField_HourLabel" xml:space="preserve">
+    <value>Hour</value>
+    <comment>ARIA label for the hour segment in the date field</comment>
+  </data>
+  <data name="DateField_MinuteLabel" xml:space="preserve">
+    <value>Minute</value>
+    <comment>ARIA label for the minute segment in the date field</comment>
+  </data>
+  <data name="DateField_DayPeriodLabel" xml:space="preserve">
+    <value>AM/PM</value>
+    <comment>ARIA label for the AM/PM segment in the date field</comment>
+  </data>
+</root>

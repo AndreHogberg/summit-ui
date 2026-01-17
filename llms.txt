@@ -11,6 +11,7 @@ SummitUI provides accessible, unstyled UI components for Blazor applications. Al
 - **Data Attributes for Styling**: Use `data-state`, `data-disabled`, `data-orientation` for CSS selectors
 - **Controlled & Uncontrolled**: All components support both patterns
 - **Cross-Render-Mode**: Works with Blazor WASM, SSR, and Interactive Server
+- **Localization**: Customizable ARIA labels and screen reader announcements via ISummitUILocalizer
 
 ## Installation
 
@@ -33,6 +34,68 @@ dotnet add package SummitUI
 ## Utilities
 
 - [FocusTrap](https://raw.githubusercontent.com/AndreHogberg/summit-ui/main/docs/focustrap.md): Utility to trap keyboard focus within a container
+
+## Localization
+
+SummitUI uses `ISummitUILocalizer` for accessibility strings (ARIA labels, screen reader announcements). The library ships with English defaults.
+
+### Resource Keys
+
+| Key | Default | Used By |
+|-----|---------|---------|
+| Dialog_CloseLabel | "Close dialog" | SmDialogClose, SmPopoverClose |
+| Popover_CloseLabel | "Close" | SmPopoverClose |
+| Combobox_ClearAllLabel | "Clear all selections" | SmComboboxClear |
+| Calendar_NextMonthLabel | "Next month" | SmCalendarNextButton |
+| Calendar_PreviousMonthLabel | "Previous month" | SmCalendarPrevButton |
+| Calendar_GridInstructions | "Use arrow keys to navigate dates, Enter or Space to select" | SmCalendarGrid |
+| Calendar_DateSelectedAnnouncement | "{0} selected" | CalendarContext |
+| DateField_YearLabel | "Year" | SmDateFieldInput |
+| DateField_MonthLabel | "Month" | SmDateFieldInput |
+| DateField_DayLabel | "Day" | SmDateFieldInput |
+| DateField_HourLabel | "Hour" | SmDateFieldInput |
+| DateField_MinuteLabel | "Minute" | SmDateFieldInput |
+| DateField_DayPeriodLabel | "AM/PM" | SmDateFieldInput |
+
+### Custom Localizer
+
+```csharp
+// Implement ISummitUILocalizer
+public class SwedishLocalizer : ISummitUILocalizer
+{
+    private readonly Dictionary<string, string> _translations = new()
+    {
+        ["Dialog_CloseLabel"] = "Stäng dialogrutan",
+        ["Calendar_NextMonthLabel"] = "Nästa månad",
+        // ... other keys
+    };
+
+    public string this[string key] => 
+        _translations.TryGetValue(key, out var value) ? value : key;
+
+    public string this[string key, params object[] arguments] => 
+        string.Format(this[key], arguments);
+}
+
+// Register after AddSummitUI()
+builder.Services.AddSummitUI();
+builder.Services.AddSingleton<ISummitUILocalizer, SwedishLocalizer>();
+```
+
+### User-Facing Text
+
+Some components require user-facing text as parameters (not localized by the library):
+
+```csharp
+// AlertDialog requires button text
+await AlertDialogService.ConfirmAsync("Delete item?", new AlertDialogOptions
+{
+    Title = "Confirm Delete",
+    ConfirmText = "Delete",   // Required - provide localized text
+    CancelText = "Cancel",    // Required - provide localized text
+    IsDestructive = true
+});
+```
 
 ## Common Patterns
 
@@ -87,6 +150,8 @@ SummitUI/
 │   │   ├── Switch/                 # Switch component files
 │   │   ├── Tabs/                   # Tabs component files
 │   │   └── Utilities/              # Utility components (FocusTrap)
+│   ├── Localization/               # ISummitUILocalizer interface and implementation
+│   ├── Resources/                  # SummitUIResources.resx (English defaults)
 │   ├── Interop/                    # JavaScript interop classes
 │   └── Scripts/                    # JavaScript modules
 ├── docs/                           # Component documentation (markdown)
@@ -96,6 +161,7 @@ SummitUI/
 ## Documentation
 
 - Full documentation: https://summitui.dev/docs
+- Localization guide: https://summitui.dev/docs/localization
 - GitHub: https://github.com/andrehogberg/summit-ui
 
 ## Optional

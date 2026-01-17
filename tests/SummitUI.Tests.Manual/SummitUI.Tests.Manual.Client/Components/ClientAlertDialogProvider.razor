@@ -12,7 +12,7 @@
             <SmAlertDialogDescription class="alert-dialog-description" data-testid="alert-description"/>
             <div class="alert-dialog-actions">
                 <SmAlertDialogCancel class="btn btn-secondary" data-testid="alert-cancel"/>
-                <SmAlertDialogConfirm class="@(alert.Options.IsDestructive ? "btn btn-danger" : "btn btn-primary")" data-testid="alert-confirm"/>
+                <SmAlertDialogConfirm class="@(alert.Options!.IsDestructive ? "btn btn-danger" : "btn btn-primary")" data-testid="alert-confirm"/>
             </div>
         </SmAlertDialogContent>
     </SmAlertDialogPortal>

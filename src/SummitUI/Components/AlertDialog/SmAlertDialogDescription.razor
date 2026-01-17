@@ -4,7 +4,7 @@
     As="@As"
     id="@Context.DescriptionId"
     data-summit-alertdialog-description
-    data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+    data-destructive="@(Context.Options!.IsDestructive ? "" : null)"
     @attributes="AdditionalAttributes">
     @if (ChildContent is not null)
     {

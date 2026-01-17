@@ -13,7 +13,7 @@ else
     <button
         type="button"
         data-summit-alertdialog-confirm
-        data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+        data-destructive="@(Context.Options!.IsDestructive ? "" : null)"
         @onclick="HandleClick"
         @ref="_elementRef"
         @attributes="AdditionalAttributes">
@@ -27,7 +27,7 @@ else
         }
         else
         {
-            @Context.Options.ConfirmText
+            @Context.Options!.ConfirmText
         }
     </button>
 }
@@ -68,7 +68,7 @@ else
             ["onclick"] = EventCallback.Factory.Create(this, HandleClick)
         };
 
-        if (Context.Options.IsDestructive)
+        if (Context.Options!.IsDestructive)
         {
             attrs["data-destructive"] = "";
         }

@@ -6,7 +6,7 @@
         id="@Context.PortalId"
         data-summit-alertdialog-portal
         data-state="@DataState"
-        data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+        data-destructive="@(Context.Options!.IsDestructive ? "" : null)"
         @attributes="AdditionalAttributes">
         @ChildContent
     </div>

@@ -96,6 +96,7 @@ public class CalendarContext
     // Announcer for screen reader announcements
     private ILiveAnnouncer? _announcer;
     private Func<string, string?>? _getSelectionAnnouncement;
+    private ISummitUILocalizer? _localizer;
 
     // Events
     public event Action? OnStateChanged;
@@ -185,7 +186,8 @@ public class CalendarContext
         EventCallback<DateOnly?> valueChanged,
         EventCallback<DateOnly?> onValueChange,
         ILiveAnnouncer? announcer,
-        Func<string, string?>? getSelectionAnnouncement)
+        Func<string, string?>? getSelectionAnnouncement,
+        ISummitUILocalizer? localizer)
     {
         _value = value;
         _defaultValue = defaultValue;
@@ -202,6 +204,7 @@ public class CalendarContext
         _onValueChange = onValueChange;
         _announcer = announcer;
         _getSelectionAnnouncement = getSelectionAnnouncement;
+        _localizer = localizer;
 
         // Initialize focused date and displayed month
         var effectiveValue = Value ?? placeholder ?? Today;
@@ -281,10 +284,10 @@ public class CalendarContext
 
         var formattedDate = GetLocalizedDateString(date);
 
-        // Use custom announcement if provided, otherwise use default
+        // Use custom announcement if provided, otherwise use localized default
         var announcement = _getSelectionAnnouncement is not null
             ? _getSelectionAnnouncement(formattedDate)
-            : $"{formattedDate} selected";
+            : _localizer?["Calendar_DateSelectedAnnouncement", formattedDate] ?? $"{formattedDate} selected";
 
         if (!string.IsNullOrEmpty(announcement))
         {

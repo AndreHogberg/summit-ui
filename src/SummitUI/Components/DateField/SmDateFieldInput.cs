@@ -10,6 +10,8 @@ public class SmDateFieldInput : ComponentBase, IDisposable
 {
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
 
+    [Inject] private ISummitUILocalizer Localizer { get; set; } = default!;
+
     /// <summary>
     /// Optional custom rendering template for segments.
     /// </summary>
@@ -26,7 +28,7 @@ public class SmDateFieldInput : ComponentBase, IDisposable
 
         Context.OnStateChanged += HandleStateChanged;
         
-        // Initialize segment labels from culture
+        // Initialize segment labels from localizer
         InitializeSegmentLabels();
         
         RegenerateSegments();
@@ -38,21 +40,18 @@ public class SmDateFieldInput : ComponentBase, IDisposable
     }
 
     /// <summary>
-    /// Initializes segment labels from the culture's DateTimeFormatInfo.
+    /// Initializes segment labels from the localizer.
     /// </summary>
     private void InitializeSegmentLabels()
     {
-        // Use English labels as fallback - segment labels are accessibility text
-        // and don't need complex localization for the date field to function correctly.
-        // The Culture's AM/PM designators are already used from DateTimeFormat.
         var labels = new Dictionary<string, string>
         {
-            ["year"] = "Year",
-            ["month"] = "Month",
-            ["day"] = "Day",
-            ["hour"] = "Hour",
-            ["minute"] = "Minute",
-            ["dayPeriod"] = "AM/PM"
+            ["year"] = Localizer["DateField_YearLabel"],
+            ["month"] = Localizer["DateField_MonthLabel"],
+            ["day"] = Localizer["DateField_DayLabel"],
+            ["hour"] = Localizer["DateField_HourLabel"],
+            ["minute"] = Localizer["DateField_MinuteLabel"],
+            ["dayPeriod"] = Localizer["DateField_DayPeriodLabel"]
         };
         Context.SetSegmentLabels(labels);
     }

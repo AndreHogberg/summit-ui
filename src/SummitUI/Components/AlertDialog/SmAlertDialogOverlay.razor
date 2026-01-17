@@ -5,7 +5,7 @@
     <div
         data-summit-alertdialog-overlay
         data-state="@DataState"
-        data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+        data-destructive="@(Context.Options!.IsDestructive ? "" : null)"
         @onclick="HandleClick"
         @attributes="AdditionalAttributes" ></div>
 }
@@ -24,7 +24,7 @@
 
     private void HandleClick()
     {
-        if (Context.Options.AllowOverlayClose)
+        if (Context.Options!.AllowOverlayClose)
         {
             Context.Complete(false);
         }

@@ -13,6 +13,9 @@ public class SmComboboxClear<TValue> : ComponentBase, IDisposable where TValue :
     [CascadingParameter]
     private ComboboxContext<TValue> Context { get; set; } = default!;
 
+    [Inject]
+    private ISummitUILocalizer Localizer { get; set; } = default!;
+
     /// <summary>
     /// Content of the clear button.
     /// </summary>
@@ -31,6 +34,13 @@ public class SmComboboxClear<TValue> : ComponentBase, IDisposable where TValue :
     /// </summary>
     [Parameter]
     public bool HideWhenEmpty { get; set; } = true;
+
+    /// <summary>
+    /// Accessible label for the clear button.
+    /// If not provided, uses the localized default from <see cref="ISummitUILocalizer"/>.
+    /// </summary>
+    [Parameter]
+    public string? AriaLabel { get; set; }
 
     /// <summary>
     /// Additional HTML attributes.
@@ -66,7 +76,7 @@ public class SmComboboxClear<TValue> : ComponentBase, IDisposable where TValue :
             builder.AddAttribute(1, "type", "button");
         }
         
-        builder.AddAttribute(2, "aria-label", "Clear all selections");
+        builder.AddAttribute(2, "aria-label", AriaLabel ?? Localizer["Combobox_ClearAllLabel"]);
         builder.AddAttribute(3, "data-summit-combobox-clear", "");
         
         if (Context.Disabled)

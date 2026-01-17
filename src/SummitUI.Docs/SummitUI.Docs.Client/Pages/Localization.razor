@@ -1,0 +1,332 @@
+@page "/docs/localization"
+@layout DocsLayout
+
+<PageTitle>SummitUI - Localization</PageTitle>
+
+<div class="flex flex-col gap-12">
+    @* Header *@
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+            <SuBadge Variant="SuBadgeVariant.Outline">Internationalization</SuBadge>
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight">Localization</h1>
+        <p class="text-xl text-su-muted-foreground leading-relaxed">
+            Customize accessibility labels and screen reader announcements for different languages.
+        </p>
+    </div>
+
+    @* Overview *@
+    <SuSection Title="Overview">
+        <div class="flex flex-col gap-4">
+            <p class="text-su-muted-foreground leading-relaxed">
+                SummitUI components use localized strings for ARIA labels, screen reader announcements, and other
+                accessibility-related text. The library ships with English defaults and provides multiple ways to
+                customize these strings for your application's locale.
+            </p>
+            <SuAlert>
+                <div class="text-sm">
+                    <strong class="text-su-foreground">Note:</strong> Localization in SummitUI focuses on
+                    <em>accessibility strings</em> (ARIA labels, screen reader text), not visible UI text.
+                    User-facing content like button labels should be provided by your application.
+                </div>
+            </SuAlert>
+        </div>
+    </SuSection>
+
+    @* Default Resource Keys *@
+    <SuSection Title="Resource Keys">
+        <div class="flex flex-col gap-4">
+            <p class="text-su-muted-foreground leading-relaxed">
+                SummitUI uses the following resource keys for accessibility strings:
+            </p>
+            <SuTable>
+                <SuTableHeader>
+                    <SuTableRow>
+                        <SuTableHead>Key</SuTableHead>
+                        <SuTableHead>Default Value</SuTableHead>
+                        <SuTableHead>Description</SuTableHead>
+                    </SuTableRow>
+                </SuTableHeader>
+                <SuTableBody>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">Dialog_CloseLabel</code></SuTableCell>
+                        <SuTableCell>Close dialog</SuTableCell>
+                        <SuTableCell>ARIA label for dialog close buttons</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">Popover_CloseLabel</code></SuTableCell>
+                        <SuTableCell>Close</SuTableCell>
+                        <SuTableCell>ARIA label for popover close buttons</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">Combobox_ClearAllLabel</code></SuTableCell>
+                        <SuTableCell>Clear all selections</SuTableCell>
+                        <SuTableCell>ARIA label for combobox clear button</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">Calendar_NextMonthLabel</code></SuTableCell>
+                        <SuTableCell>Next month</SuTableCell>
+                        <SuTableCell>ARIA label for calendar next month button</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">Calendar_PreviousMonthLabel</code></SuTableCell>
+                        <SuTableCell>Previous month</SuTableCell>
+                        <SuTableCell>ARIA label for calendar previous month button</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">Calendar_GridInstructions</code></SuTableCell>
+                        <SuTableCell>Use arrow keys to navigate dates, Enter or Space to select</SuTableCell>
+                        <SuTableCell>Screen reader instructions for calendar grid</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">Calendar_DateSelectedAnnouncement</code></SuTableCell>
+                        <SuTableCell>{0} selected</SuTableCell>
+                        <SuTableCell>Screen reader announcement when date is selected</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">DateField_YearLabel</code></SuTableCell>
+                        <SuTableCell>Year</SuTableCell>
+                        <SuTableCell>ARIA label for year segment</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">DateField_MonthLabel</code></SuTableCell>
+                        <SuTableCell>Month</SuTableCell>
+                        <SuTableCell>ARIA label for month segment</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">DateField_DayLabel</code></SuTableCell>
+                        <SuTableCell>Day</SuTableCell>
+                        <SuTableCell>ARIA label for day segment</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">DateField_HourLabel</code></SuTableCell>
+                        <SuTableCell>Hour</SuTableCell>
+                        <SuTableCell>ARIA label for hour segment</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">DateField_MinuteLabel</code></SuTableCell>
+                        <SuTableCell>Minute</SuTableCell>
+                        <SuTableCell>ARIA label for minute segment</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell><code class="text-su-primary">DateField_DayPeriodLabel</code></SuTableCell>
+                        <SuTableCell>AM/PM</SuTableCell>
+                        <SuTableCell>ARIA label for AM/PM segment</SuTableCell>
+                    </SuTableRow>
+                </SuTableBody>
+            </SuTable>
+        </div>
+    </SuSection>
+
+    @* Option 1: Custom Implementation *@
+    <SuSection Title="Option 1: Custom Localizer">
+        <div class="flex flex-col gap-6">
+            <p class="text-su-muted-foreground leading-relaxed">
+                For full control, implement the <code class="text-su-primary">ISummitUILocalizer</code> interface
+                and register it in your DI container. This is useful when you want to use your own localization
+                system or need dynamic translations.
+            </p>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">1. Create your localizer class</SuHeading>
+                <SuCodeBlock Language="csharp" Code="@customLocalizerCode" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">2. Register in Program.cs</SuHeading>
+                <SuCodeBlock Language="csharp" Code="@registerLocalizerCode" />
+                <SuAlert Variant="SuAlertVariant.Warning">
+                    <div class="text-sm">
+                        <strong class="text-su-foreground">Important:</strong> Register your custom localizer
+                        <em>after</em> calling <code class="text-su-primary">AddSummitUI()</code> to override the default implementation.
+                    </div>
+                </SuAlert>
+            </div>
+        </div>
+    </SuSection>
+
+    @* Option 2: Resource Files *@
+    <SuSection Title="Option 2: Resource Files (.resx)">
+        <div class="flex flex-col gap-6">
+            <p class="text-su-muted-foreground leading-relaxed">
+                The default localizer uses .NET's <code class="text-su-primary">IStringLocalizer&lt;T&gt;</code> which
+                supports satellite assemblies. You can provide translations by creating resource files in your application.
+            </p>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">1. Enable localization services</SuHeading>
+                <SuCodeBlock Language="csharp" Code="@enableLocalizationCode" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">2. Create resource files</SuHeading>
+                <p class="text-su-muted-foreground">
+                    Create <code class="text-su-primary">SummitUIResources.{culture}.resx</code> files in a <code class="text-su-primary">Resources</code> folder.
+                    For example, for French translations:
+                </p>
+                <SuCodeBlock Language="xml" Code="@resxExampleCode" />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">3. Configure your project</SuHeading>
+                <p class="text-su-muted-foreground">
+                    Update your <code class="text-su-primary">.csproj</code> to embed the resources:
+                </p>
+                <SuCodeBlock Language="xml" Code="@csprojCode" />
+            </div>
+        </div>
+    </SuSection>
+
+    @* User-Facing Text *@
+    <SuSection Title="User-Facing Text">
+        <div class="flex flex-col gap-4">
+            <p class="text-su-muted-foreground leading-relaxed">
+                Some components require user-facing text that should be localized by your application, not the library.
+                These are exposed as required parameters rather than using the internal localizer.
+            </p>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">AlertDialog Example</SuHeading>
+                <p class="text-su-muted-foreground">
+                    The <code class="text-su-primary">AlertDialogOptions</code> requires you to provide button text:
+                </p>
+                <SuCodeBlock Language="csharp" Code="@alertDialogCode" />
+            </div>
+
+            <SuAlert>
+                <div class="text-sm">
+                    <strong class="text-su-foreground">Why required?</strong> Button text like "Confirm" and "Cancel"
+                    is visible to users and should match your application's terminology and language. By making these
+                    required, we ensure you consciously choose appropriate text for your context.
+                </div>
+            </SuAlert>
+        </div>
+    </SuSection>
+
+    @* How It Works *@
+    <SuSection Title="Architecture">
+        <div class="flex flex-col gap-4">
+            <p class="text-su-muted-foreground leading-relaxed">
+                SummitUI's localization is built on standard .NET patterns:
+            </p>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                    <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-su-foreground">ISummitUILocalizer</h3>
+                    <p class="mt-2 text-sm text-su-muted-foreground">Interface that components use to retrieve localized strings. Can be replaced with custom implementations.</p>
+                </div>
+                <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                    <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-su-foreground">SummitUILocalizer</h3>
+                    <p class="mt-2 text-sm text-su-muted-foreground">Default implementation using IStringLocalizer&lt;T&gt; with embedded .resx resources containing English defaults.</p>
+                </div>
+                <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                    <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-su-foreground">Culture Fallback</h3>
+                    <p class="mt-2 text-sm text-su-muted-foreground">Uses .NET's standard culture fallback chain (e.g., fr-CA &rarr; fr &rarr; default).</p>
+                </div>
+                <div class="rounded-lg border border-su-border p-4 bg-su-card/50">
+                    <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-su-accent text-su-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-su-foreground">Singleton Registration</h3>
+                    <p class="mt-2 text-sm text-su-muted-foreground">Registered with TryAddSingleton, allowing you to override with your own implementation.</p>
+                </div>
+            </div>
+        </div>
+    </SuSection>
+</div>
+
+@code {
+    private const string customLocalizerCode = @"using SummitUI;
+
+public class SwedishSummitUILocalizer : ISummitUILocalizer
+{
+    private readonly Dictionary<string, string> _translations = new()
+    {
+        [""Dialog_CloseLabel""] = ""Stäng dialogrutan"",
+        [""Popover_CloseLabel""] = ""Stäng"",
+        [""Combobox_ClearAllLabel""] = ""Rensa alla val"",
+        [""Calendar_NextMonthLabel""] = ""Nästa månad"",
+        [""Calendar_PreviousMonthLabel""] = ""Föregaende månad"",
+        [""Calendar_GridInstructions""] = ""Använd piltangenterna för att navigera, Enter eller Mellanslag för att välja"",
+        [""Calendar_DateSelectedAnnouncement""] = ""{0} valt"",
+        [""DateField_YearLabel""] = ""År"",
+        [""DateField_MonthLabel""] = ""Månad"",
+        [""DateField_DayLabel""] = ""Dag"",
+        [""DateField_HourLabel""] = ""Timme"",
+        [""DateField_MinuteLabel""] = ""Minut"",
+        [""DateField_DayPeriodLabel""] = ""FM/EM"",
+    };
+
+    public string this[string key] =>
+        _translations.TryGetValue(key, out var value) ? value : key;
+
+    public string this[string key, params object[] arguments] =>
+        string.Format(this[key], arguments);
+}";
+
+    private const string registerLocalizerCode = @"// Program.cs
+builder.Services.AddSummitUI();
+
+// Override with your custom localizer
+builder.Services.AddSingleton<ISummitUILocalizer, SwedishSummitUILocalizer>();";
+
+    private const string enableLocalizationCode = @"// Program.cs
+builder.Services.AddLocalization(options =>
+    options.ResourcesPath = ""Resources"");
+
+builder.Services.AddSummitUI();";
+
+    private const string resxExampleCode = @"<!-- Resources/SummitUIResources.sv.resx -->
+<?xml version=""1.0"" encoding=""utf-8""?>
+<root>
+  <data name=""Dialog_CloseLabel"" xml:space=""preserve"">
+    <value>Stäng dialogrutan</value>
+  </data>
+  <data name=""Calendar_NextMonthLabel"" xml:space=""preserve"">
+    <value>Nästa månad</value>
+  </data>
+  <data name=""Calendar_PreviousMonthLabel"" xml:space=""preserve"">
+    <value>Föregående månad</value>
+  </data>
+  <!-- Add other translations... -->
+</root>";
+
+    private const string csprojCode = @"<ItemGroup>
+  <EmbeddedResource Update=""Resources\SummitUIResources.*.resx"">
+    <Generator>ResXFileCodeGenerator</Generator>
+  </EmbeddedResource>
+</ItemGroup>";
+
+    private const string alertDialogCode = @"// Button text must be provided by your application
+var result = await AlertDialogService.ConfirmAsync(
+    ""Are you sure you want to delete this item?"",
+    new AlertDialogOptions
+    {
+        Title = ""Delete Item"",
+        ConfirmText = ""Delete"",    // Required - localize in your app
+        CancelText = ""Cancel"",     // Required - localize in your app
+        IsDestructive = true
+    });";
+}

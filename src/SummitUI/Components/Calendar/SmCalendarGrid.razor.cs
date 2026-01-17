@@ -23,6 +23,12 @@ public partial class SmCalendarGrid : IAsyncDisposable
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
+    /// Custom ARIA description for screen reader instructions.
+    /// If not provided, uses the localized default from <see cref="ISummitUILocalizer"/>.
+    /// </summary>
+    [Parameter] public string? AriaDescription { get; set; }
+
+    /// <summary>
     /// Additional attributes to apply to the table element.
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]

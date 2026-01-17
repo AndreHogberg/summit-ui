@@ -29,8 +29,9 @@ public sealed class AlertDialogContext : OpenCloseContextBase
 
     /// <summary>
     /// The current options for this dialog instance.
+    /// Set when the dialog is shown via <see cref="IAlertDialogService.ConfirmAsync"/>.
     /// </summary>
-    public AlertDialogOptions Options { get; internal set; } = new();
+    public AlertDialogOptions? Options { get; internal set; }
 
     /// <summary>
     /// Completes the dialog with the specified result (true = confirmed, false = cancelled).

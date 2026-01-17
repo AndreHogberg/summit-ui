@@ -22,6 +22,7 @@ public partial class SmCalendarRoot : IAsyncDisposable
 
     [Inject] private CalendarJsInterop JsInterop { get; set; } = default!;
     [Inject] private CalendarFormatter CalendarFormatter { get; set; } = default!;
+    [Inject] private ISummitUILocalizer Localizer { get; set; } = default!;
 
     /// <summary>
     /// Optional live announcer for screen reader announcements.
@@ -180,7 +181,8 @@ public partial class SmCalendarRoot : IAsyncDisposable
             valueChanged: ValueChanged,
             onValueChange: OnValueChange,
             announcer: Announcer,
-            getSelectionAnnouncement: GetSelectionAnnouncement
+            getSelectionAnnouncement: GetSelectionAnnouncement,
+            localizer: Localizer
         );
 
         // Update month name if culture or month changed

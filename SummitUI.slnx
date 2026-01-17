@@ -9,5 +9,6 @@
     <Project Path="tests/SummitUI.Tests.Manual/SummitUI.Tests.Manual.Client/SummitUI.Tests.Manual.Client.csproj" />
     <Project Path="tests/SummitUI.Tests.Manual/SummitUI.Tests.Manual/SummitUI.Tests.Manual.csproj" />
     <Project Path="tests/SummitUI.Tests.Playwright/SummitUI.Tests.Playwright.csproj" />
+    <Project Path="tests/SummitUI.Tests.Unit/SummitUI.Tests.Unit.csproj" />
   </Folder>
 </Solution>

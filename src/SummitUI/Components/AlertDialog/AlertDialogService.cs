@@ -9,12 +9,12 @@ public class AlertDialogService : IAlertDialogService
     public event Action<AlertDialogRequest>? OnShow;
 
     /// <inheritdoc />
-    public async ValueTask<bool> ConfirmAsync(string message, AlertDialogOptions? options = null)
+    public async ValueTask<bool> ConfirmAsync(string message, AlertDialogOptions options)
     {
         var request = new AlertDialogRequest
         {
             Message = message,
-            Options = options ?? new AlertDialogOptions()
+            Options = options
         };
 
         OnShow?.Invoke(request);

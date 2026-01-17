@@ -11,14 +11,22 @@ public class AlertDialogOptions
     public string? Title { get; set; }
 
     /// <summary>
-    /// The text for the confirm button. Defaults to "Confirm".
+    /// The text for the confirm button.
     /// </summary>
-    public string ConfirmText { get; set; } = "Confirm";
+    /// <remarks>
+    /// This is required because button text is user-facing content that should be
+    /// localized by the application, not the component library.
+    /// </remarks>
+    public required string ConfirmText { get; set; }
 
     /// <summary>
-    /// The text for the cancel button. Defaults to "Cancel".
+    /// The text for the cancel button.
     /// </summary>
-    public string CancelText { get; set; } = "Cancel";
+    /// <remarks>
+    /// This is required because button text is user-facing content that should be
+    /// localized by the application, not the component library.
+    /// </remarks>
+    public required string CancelText { get; set; }
 
     /// <summary>
     /// Whether the action is destructive (e.g., delete operations).

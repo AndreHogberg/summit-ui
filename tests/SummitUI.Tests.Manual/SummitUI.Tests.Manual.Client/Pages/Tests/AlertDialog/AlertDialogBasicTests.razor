@@ -111,7 +111,7 @@ else
     {
         var result = await AlertDialogService.ConfirmAsync(
             "Are you sure you want to continue?",
-            new AlertDialogOptions { Title = "Confirm Action" });
+            new AlertDialogOptions { Title = "Confirm Action", ConfirmText = "Confirm", CancelText = "Cancel" });
         _basicResult = result ? "Confirmed" : "Cancelled";
     }
 

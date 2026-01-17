@@ -11,14 +11,14 @@
          data-state="@DataState"
          data-summit-alertdialog-content
          tabindex="-1"
-         data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+         data-destructive="@(Context.Options!.IsDestructive ? "" : null)"
          @attributes="AdditionalAttributes">
         @if (TrapFocus)
         {
             <SmFocusTrap IsActive="Context.IsOpen"
                        AutoFocus="true"
                        ReturnFocus="true"
-                       InitialFocusSelector="@(Context.Options.IsDestructive ? "[data-summit-alertdialog-cancel]" : null)">
+                       InitialFocusSelector="@(Context.Options!.IsDestructive ? "[data-summit-alertdialog-cancel]" : null)">
                 @ChildContent
             </SmFocusTrap>
         }

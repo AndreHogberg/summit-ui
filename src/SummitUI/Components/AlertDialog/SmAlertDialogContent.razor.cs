@@ -102,7 +102,7 @@ public partial class SmAlertDialogContent : IAsyncDisposable
                     _scrollLocked = true;
                 }
 
-                if (Context.Options.AllowEscapeClose || OnEscapeKeyDown.HasDelegate)
+                if (Context.Options!.AllowEscapeClose || OnEscapeKeyDown.HasDelegate)
                 {
                     _escapeKeyListenerId = await FloatingInterop.RegisterEscapeKeyAsync(
                         _dotNetRef,
@@ -188,7 +188,7 @@ public partial class SmAlertDialogContent : IAsyncDisposable
 
         await OnEscapeKeyDown.InvokeAsync();
 
-        if (Context.Options.AllowEscapeClose)
+        if (Context.Options!.AllowEscapeClose)
         {
             Context.Complete(false);
         }

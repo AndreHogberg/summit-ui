@@ -1,11 +1,12 @@
 @namespace SummitUI
+@inject ISummitUILocalizer Localizer
 
 @* Button to navigate to the next month. *@
 
 <button
     type="button"
     data-summit-calendar-next-button="true"
-    aria-label="@(AriaLabel ?? "Next month")"
+    aria-label="@(AriaLabel ?? Localizer["Calendar_NextMonthLabel"])"
     @onclick="HandleClick"
     disabled="@(IsDisabled ? true : null)"
     aria-disabled="@(IsDisabled ? "true" : null)"
@@ -31,6 +32,7 @@
 
     /// <summary>
     /// Accessible label for the button.
+    /// If not provided, uses the localized default from <see cref="ISummitUILocalizer"/>.
     /// </summary>
     [Parameter] public string? AriaLabel { get; set; }
 

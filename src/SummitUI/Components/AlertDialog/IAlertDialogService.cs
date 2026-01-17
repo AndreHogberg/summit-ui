@@ -15,9 +15,9 @@ public interface IAlertDialogService
     /// Shows an alert dialog with the specified message and returns true if confirmed.
     /// </summary>
     /// <param name="message">The message to display in the dialog.</param>
-    /// <param name="options">Optional configuration for the dialog appearance.</param>
+    /// <param name="options">Configuration for the dialog including button text (required for localization).</param>
     /// <returns>True if the user confirmed, false if cancelled or dismissed.</returns>
-    ValueTask<bool> ConfirmAsync(string message, AlertDialogOptions? options = null);
+    ValueTask<bool> ConfirmAsync(string message, AlertDialogOptions options);
 }
 
 /// <summary>
@@ -33,7 +33,7 @@ public class AlertDialogRequest
     /// <summary>
     /// Configuration options for the dialog.
     /// </summary>
-    public AlertDialogOptions Options { get; init; } = new();
+    public required AlertDialogOptions Options { get; init; }
 
     /// <summary>
     /// Task completion source to signal when the user responds.

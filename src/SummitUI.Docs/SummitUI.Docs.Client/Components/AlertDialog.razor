@@ -6,7 +6,7 @@
             <SmAlertDialogDescription class="mt-2 text-sm text-su-muted-foreground" />
             <div class="mt-6 flex justify-end gap-3">
                 <SmAlertDialogCancel class="inline-flex items-center justify-center rounded-md border border-su-border bg-su-background px-4 py-2 text-sm font-medium text-su-foreground shadow-sm transition-colors hover:bg-su-accent hover:text-su-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 focus-visible:ring-offset-su-background" />
-                <SmAlertDialogConfirm class="@GetConfirmButtonClass(alert.Options.IsDestructive)" />
+                <SmAlertDialogConfirm class="@GetConfirmButtonClass(alert.Options!.IsDestructive)" />
             </div>
         </SmAlertDialogContent>
     </SmAlertDialogPortal>

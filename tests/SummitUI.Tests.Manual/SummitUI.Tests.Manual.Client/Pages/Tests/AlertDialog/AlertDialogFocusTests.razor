@@ -101,7 +101,7 @@ else
     {
         var result = await AlertDialogService.ConfirmAsync(
             "This dialog traps focus within its content.",
-            new AlertDialogOptions { Title = "Focus Test" });
+            new AlertDialogOptions { Title = "Focus Test", ConfirmText = "Confirm", CancelText = "Cancel" });
         _result = result ? "Confirmed" : "Cancelled";
     }
 }

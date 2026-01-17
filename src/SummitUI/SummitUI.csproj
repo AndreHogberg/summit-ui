@@ -31,6 +31,14 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.1"/>
+    </ItemGroup>
+
+    <!-- Embedded resources for localization -->
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\SummitUIResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
     </ItemGroup>
 
     <!-- npm build integration for JavaScript bundling -->

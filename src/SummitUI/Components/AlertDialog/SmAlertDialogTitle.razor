@@ -4,7 +4,7 @@
     As="@As"
     id="@Context.TitleId"
     data-summit-alertdialog-title
-    data-destructive="@(Context.Options.IsDestructive ? "" : null)"
+    data-destructive="@(Context.Options!.IsDestructive ? "" : null)"
     @attributes="AdditionalAttributes">
     @if (ChildContent is not null)
     {
@@ -12,7 +12,7 @@
     }
     else
     {
-        @Context.Options.Title
+        @Context.Options!.Title
     }
 </SmPrimitive>
 

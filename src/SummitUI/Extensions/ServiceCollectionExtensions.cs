@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using SummitUI.Interop;
 using SummitUI.Services;
@@ -19,6 +20,10 @@ public static class ServiceCollectionExtensions
     /// <returns>The service collection for chaining.</returns>
     public static IServiceCollection AddSummitUI(this IServiceCollection services)
     {
+        // Localization services
+        services.AddLocalization();
+        services.TryAddSingleton<ISummitUILocalizer, SummitUILocalizer>();
+
         // Core utility services
         services.AddScoped<SummitUtilities>();
         services.AddScoped<FocusTrapJsInterop>();
