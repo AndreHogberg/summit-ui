@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 
 using SummitUI.Interop;
@@ -10,7 +9,7 @@ namespace SummitUI;
 /// Renders a single segment of the date field (day, month, year, hour, etc.).
 /// Handles keyboard interaction for increment/decrement and navigation.
 /// </summary>
-public class SmDateFieldSegment : ComponentBase, IAsyncDisposable
+public partial class SmDateFieldSegment : ComponentBase, IAsyncDisposable
 {
     [Inject] private DateFieldJsInterop JsInterop { get; set; } = default!;
 
@@ -23,19 +22,26 @@ public class SmDateFieldSegment : ComponentBase, IAsyncDisposable
     private DotNetObjectReference<SmDateFieldSegment>? _dotNetHelper;
     private bool _isDisposed;
 
+    private bool SegmentHasValue => Context.SegmentHasValue(Segment.Type);
+    private string SegmentText => DateFieldUtils.FormatSegmentValue(Segment.Type, Context);
+    private string AriaLabel => Context.GetSegmentLabel(Segment.Type);
+    private int Min => DateFieldUtils.GetSegmentMin(Segment.Type, Context);
+    private int Max => DateFieldUtils.GetSegmentMax(Segment.Type, Context);
+    private int? ValueNow => GetValueNow();
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && Segment.Type != DateFieldSegmentType.Literal && !_isDisposed)
         {
             _dotNetHelper = DotNetObjectReference.Create(this);
-            
+
             // Check again after creating the reference in case we were disposed during the await
             if (_isDisposed)
             {
                 _dotNetHelper.Dispose();
                 return;
             }
-            
+
             try
             {
                 await JsInterop.InitializeSegmentAsync(_elementRef, _dotNetHelper);
@@ -49,70 +55,6 @@ public class SmDateFieldSegment : ComponentBase, IAsyncDisposable
                 // Circuit disconnected, safe to ignore
             }
         }
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        if (Segment.Type == DateFieldSegmentType.Literal)
-        {
-            BuildLiteralSegment(builder);
-        }
-        else
-        {
-            BuildEditableSegment(builder);
-        }
-    }
-
-    private void BuildLiteralSegment(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "aria-hidden", "true");
-        builder.AddAttribute(2, "data-segment", "literal");
-        builder.AddMultipleAttributes(3, AdditionalAttributes);
-        builder.AddContent(4, Segment.LiteralValue);
-        builder.CloseElement();
-    }
-
-    private void BuildEditableSegment(RenderTreeBuilder builder)
-    {
-        var segmentHasValue = Context.SegmentHasValue(Segment.Type);
-        var segmentText = DateFieldUtils.FormatSegmentValue(Segment.Type, Context);
-        var ariaLabel = Context.GetSegmentLabel(Segment.Type);
-        var min = DateFieldUtils.GetSegmentMin(Segment.Type, Context);
-        var max = DateFieldUtils.GetSegmentMax(Segment.Type, Context);
-        var valueNow = GetValueNow();
-
-        builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "role", "spinbutton");
-        builder.AddAttribute(2, "aria-label", ariaLabel);
-        builder.AddAttribute(3, "aria-valuemin", min);
-        builder.AddAttribute(4, "aria-valuemax", max);
-
-        if (valueNow.HasValue)
-        {
-            builder.AddAttribute(5, "aria-valuenow", valueNow.Value);
-        }
-
-        builder.AddAttribute(6, "aria-valuetext", segmentText);
-        builder.AddAttribute(7, "tabindex", Context.Disabled ? "-1" : "0");
-        builder.AddAttribute(8, "data-segment", Segment.Type.ToString().ToLowerInvariant());
-        builder.AddAttribute(9, "inputmode", Segment.Type == DateFieldSegmentType.DayPeriod ? "text" : "numeric");
-
-        if (Context.Disabled) builder.AddAttribute(10, "data-disabled", "");
-        if (Context.ReadOnly) builder.AddAttribute(11, "data-readonly", "");
-        if (!segmentHasValue) builder.AddAttribute(12, "data-placeholder", "");
-
-        builder.AddMultipleAttributes(13, AdditionalAttributes);
-        builder.AddElementReferenceCapture(14, el => _elementRef = el);
-
-        // Wrap text content in aria-hidden span to prevent screen readers from 
-        // reading both aria-valuetext and the visible text content
-        builder.OpenElement(15, "span");
-        builder.AddAttribute(16, "aria-hidden", "true");
-        builder.AddContent(17, segmentText);
-        builder.CloseElement();
-
-        builder.CloseElement();
     }
 
     /// <summary>
@@ -180,7 +122,7 @@ public class SmDateFieldSegment : ComponentBase, IAsyncDisposable
     {
         if (_isDisposed) return;
         _isDisposed = true;
-        
+
         _dotNetHelper?.Dispose();
         if (Segment.Type != DateFieldSegmentType.Literal)
         {

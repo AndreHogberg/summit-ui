@@ -1,0 +1,21 @@
+@namespace SummitUI
+
+<CascadingValue Value="_context" IsFixed="true">
+    <div role="group"
+         id="@_context.Id"
+         aria-labelledby="@_context.LabelId"
+         data-disabled="@(Disabled ? true : null)"
+         data-readonly="@(ReadOnly ? true : null)"
+         data-invalid="@(IsInvalid ? true : null)"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+
+        @if (!string.IsNullOrEmpty(Name))
+        {
+            <input type="hidden"
+                   name="@Name"
+                   value="@GetFormValue()"
+                   required="@(Required ? true : null)" />
+        }
+    </div>
+</CascadingValue>

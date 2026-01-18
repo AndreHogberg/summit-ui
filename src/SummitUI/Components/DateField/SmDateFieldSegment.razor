@@ -1,0 +1,27 @@
+@namespace SummitUI
+
+@if (Segment.Type == DateFieldSegmentType.Literal)
+{
+    <span aria-hidden="true"
+          data-segment="literal"
+          @attributes="AdditionalAttributes">@Segment.LiteralValue</span>
+}
+else
+{
+    <span role="spinbutton"
+          aria-label="@AriaLabel"
+          aria-valuemin="@Min"
+          aria-valuemax="@Max"
+          aria-valuenow="@ValueNow"
+          aria-valuetext="@SegmentText"
+          tabindex="@(Context.Disabled ? "-1" : "0")"
+          data-segment="@Segment.Type.ToString().ToLowerInvariant()"
+          inputmode="@(Segment.Type == DateFieldSegmentType.DayPeriod ? "text" : "numeric")"
+          data-disabled="@(Context.Disabled ? true : null)"
+          data-readonly="@(Context.ReadOnly ? true : null)"
+          data-placeholder="@(!SegmentHasValue ? true : null)"
+          @ref="_elementRef"
+          @attributes="AdditionalAttributes">
+        <span aria-hidden="true">@SegmentText</span>
+    </span>
+}

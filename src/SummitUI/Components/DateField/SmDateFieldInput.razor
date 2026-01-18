@@ -1,0 +1,15 @@
+@namespace SummitUI
+
+<div role="presentation" @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent(_segments)
+    }
+    else
+    {
+        @foreach (var segment in _segments)
+        {
+            <SmDateFieldSegment @key="segment.Id" Segment="segment" />
+        }
+    }
+</div>

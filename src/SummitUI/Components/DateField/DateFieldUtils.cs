@@ -12,10 +12,11 @@ internal static class DateFieldUtils
     /// </summary>
     public static List<DateFieldSegmentState> GetSegments(DateFieldContext context)
     {
-        List<DateFieldSegmentState> segments = new();
-
-        // Parse date format into segments
-        segments.AddRange(ParsePattern(context.Format));
+        List<DateFieldSegmentState> segments =
+        [
+            // Parse date format into segments
+            .. ParsePattern(context.Format),
+        ];
 
         // Add time segments if in DateTime mode
         if (context.IsDateTimeMode)
@@ -101,7 +102,7 @@ internal static class DateFieldUtils
     /// </summary>
     private static List<DateFieldSegmentState> GetTimeSegments(DateFieldContext context)
     {
-        List<DateFieldSegmentState> segments = new();
+        List<DateFieldSegmentState> segments = [];
         string timeSeparator = context.GetTimeSeparator();
         bool use12Hour = context.Uses12HourClock();
 

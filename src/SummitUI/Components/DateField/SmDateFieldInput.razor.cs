@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace SummitUI;
 
 /// <summary>
 /// Container for date field segments. Generates segments based on format configuration.
 /// </summary>
-public class SmDateFieldInput : ComponentBase, IDisposable
+public partial class SmDateFieldInput : ComponentBase, IDisposable
 {
     [CascadingParameter] public DateFieldContext Context { get; set; } = default!;
 
@@ -27,10 +26,10 @@ public class SmDateFieldInput : ComponentBase, IDisposable
             throw new InvalidOperationException("DateFieldInput must be used within a DateFieldRoot.");
 
         Context.OnStateChanged += HandleStateChanged;
-        
+
         // Initialize segment labels from localizer
         InitializeSegmentLabels();
-        
+
         RegenerateSegments();
     }
 
@@ -64,33 +63,6 @@ public class SmDateFieldInput : ComponentBase, IDisposable
     private void RegenerateSegments()
     {
         _segments = DateFieldUtils.GetSegments(Context);
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "role", "presentation");
-        builder.AddMultipleAttributes(2, AdditionalAttributes);
-
-        if (ChildContent != null)
-        {
-            // Custom template rendering
-            builder.AddContent(3, ChildContent(_segments));
-        }
-        else
-        {
-            // Default rendering - render each segment
-            var seq = 4;
-            foreach (var segment in _segments)
-            {
-                builder.OpenComponent<SmDateFieldSegment>(seq++);
-                builder.AddAttribute(seq++, "Segment", segment);
-                builder.SetKey(segment.Id);
-                builder.CloseComponent();
-            }
-        }
-
-        builder.CloseElement();
     }
 
     public void Dispose()

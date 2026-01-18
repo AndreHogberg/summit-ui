@@ -2,7 +2,6 @@ using System.Globalization;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Rendering;
 
 using SummitUI.Services;
 
@@ -12,10 +11,10 @@ namespace SummitUI;
 /// Root component for a date/time field with segmented editing.
 /// Supports both DateOnly and DateTime values with explicit format strings.
 /// </summary>
-public class SmDateFieldRoot : ComponentBase
+public partial class SmDateFieldRoot : ComponentBase
 {
     [Inject] private ILiveAnnouncer? Announcer { get; set; }
-    
+
     // DateOnly binding
     [Parameter] public DateOnly? Value { get; set; }
     [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
@@ -109,6 +108,24 @@ public class SmDateFieldRoot : ComponentBase
     /// </summary>
     private bool IsDateTimeMode => DateTimeValueChanged.HasDelegate || DateTimeValue.HasValue;
 
+    /// <summary>
+    /// Determines the invalid state for rendering.
+    /// </summary>
+    private bool IsInvalid
+    {
+        get
+        {
+            var isInvalid = Invalid || IsOutOfRange();
+
+            if (EditContext is not null && _fieldIdentifier.HasValue)
+            {
+                isInvalid |= EditContext.GetValidationMessages(_fieldIdentifier.Value).Any();
+            }
+
+            return isInvalid;
+        }
+    }
+
     protected override void OnInitialized()
     {
         // Set up EditContext field identifier for validation
@@ -151,18 +168,18 @@ public class SmDateFieldRoot : ComponentBase
         {
             EditContext.NotifyFieldChanged(_fieldIdentifier.Value);
         }
-        
+
         // Announce date changes to screen readers
         AnnounceValueChange();
     }
-    
+
     private void AnnounceValueChange()
     {
         if (GetDateAnnouncement is null || Announcer is null)
         {
             return;
         }
-        
+
         if (IsDateTimeMode)
         {
             // Only announce when we have a complete value and it changed
@@ -198,7 +215,7 @@ public class SmDateFieldRoot : ComponentBase
         {
             _previousDateTimeValue = DateTimeValue;
         }
-        
+
         // Determine validation state
         var isInvalid = Invalid || IsOutOfRange();
 
@@ -251,49 +268,6 @@ public class SmDateFieldRoot : ComponentBase
             if (MaxValue.HasValue && Value.Value > MaxValue.Value) return true;
         }
         return false;
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        var isInvalid = Invalid || IsOutOfRange();
-
-        if (EditContext is not null && _fieldIdentifier.HasValue)
-        {
-            isInvalid |= EditContext.GetValidationMessages(_fieldIdentifier.Value).Any();
-        }
-
-        builder.OpenComponent<CascadingValue<DateFieldContext>>(0);
-        builder.AddAttribute(1, "Value", _context);
-        builder.AddAttribute(2, "IsFixed", true);
-        builder.AddAttribute(3, "ChildContent", (RenderFragment)(builder2 =>
-        {
-            builder2.OpenElement(4, "div");
-            builder2.AddAttribute(5, "role", "group");
-            builder2.AddAttribute(6, "id", _context.Id);
-            builder2.AddAttribute(7, "aria-labelledby", _context.LabelId);
-
-            // Data attributes for styling hooks
-            if (Disabled) builder2.AddAttribute(8, "data-disabled", "");
-            if (ReadOnly) builder2.AddAttribute(9, "data-readonly", "");
-            if (isInvalid) builder2.AddAttribute(10, "data-invalid", "");
-
-            builder2.AddMultipleAttributes(11, AdditionalAttributes);
-            builder2.AddContent(12, ChildContent);
-
-            // Hidden input for form submission
-            if (!string.IsNullOrEmpty(Name))
-            {
-                builder2.OpenElement(13, "input");
-                builder2.AddAttribute(14, "type", "hidden");
-                builder2.AddAttribute(15, "name", Name);
-                builder2.AddAttribute(16, "value", GetFormValue());
-                if (Required) builder2.AddAttribute(17, "required", true);
-                builder2.CloseElement();
-            }
-
-            builder2.CloseElement();
-        }));
-        builder.CloseComponent();
     }
 
     private string GetFormValue()
