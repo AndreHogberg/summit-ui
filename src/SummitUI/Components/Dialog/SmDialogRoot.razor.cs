@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace SummitUI;
 
@@ -7,7 +6,7 @@ namespace SummitUI;
 /// Root component that manages the state of the dialog.
 /// Provides cascading context to child components and supports nested dialogs.
 /// </summary>
-public class SmDialogRoot : ComponentBase
+public partial class SmDialogRoot : ComponentBase
 {
     /// <summary>
     /// Parent dialog context if this dialog is nested within another dialog.
@@ -102,15 +101,6 @@ public class SmDialogRoot : ComponentBase
     {
         // Sync context with current open state
         _context.IsOpen = IsOpen;
-    }
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        builder.OpenComponent<CascadingValue<DialogContext>>(0);
-        builder.AddComponentParameter(1, "Value", _context);
-        builder.AddComponentParameter(2, "IsFixed", false);
-        builder.AddComponentParameter(3, "ChildContent", ChildContent);
-        builder.CloseComponent();
     }
 
     private async Task ToggleAsync()

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace SummitUI;
 
@@ -8,7 +6,7 @@ namespace SummitUI;
 /// Close button for the dialog.
 /// Supports the AsChild pattern for rendering custom elements.
 /// </summary>
-public class SmDialogClose : ComponentBase
+public partial class SmDialogClose : ComponentBase
 {
     [CascadingParameter]
     private DialogContext Context { get; set; } = default!;
@@ -31,12 +29,6 @@ public class SmDialogClose : ComponentBase
     public RenderFragment<AsChildContext>? ChildContent { get; set; }
 
     /// <summary>
-    /// HTML element to render when AsChild is false. Defaults to "button".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "button";
-
-    /// <summary>
     /// Accessible label for the close button.
     /// If not provided, uses the localized default from <see cref="ISummitUILocalizer"/>.
     /// </summary>
@@ -48,46 +40,25 @@ public class SmDialogClose : ComponentBase
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private AsChildContext _context = default!;
 
-    private ElementReference _elementRef;
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
+    protected override void OnInitialized()
     {
-        var context = new AsChildContext
+        _context = new AsChildContext
         {
-            Attrs = BuildAttributes(),
-            RefCallback = el => _elementRef = el
+            Attrs = BuildAttributes()
         };
-
-        if (AsChild)
-        {
-            // Render only the child content with context - no wrapper element
-            builder.AddContent(0, ChildContent?.Invoke(context));
-        }
-        else
-        {
-            // Render wrapper element
-            builder.OpenElement(0, As);
-            builder.AddMultipleAttributes(1, context.Attrs);
-            builder.AddElementReferenceCapture(2, el => _elementRef = el);
-            builder.AddContent(3, ChildContent?.Invoke(context));
-            builder.CloseElement();
-        }
     }
 
     private IReadOnlyDictionary<string, object> BuildAttributes()
     {
-        var attrs = new Dictionary<string, object>();
-
-        // Add type for button elements
-        if (As == "button" && !AsChild)
+        var attrs = new Dictionary<string, object>
         {
-            attrs["type"] = "button";
-        }
-
-        attrs["aria-label"] = AriaLabel ?? Localizer["Dialog_CloseLabel"];
-        attrs["data-summit-dialog-close"] = true;
-        attrs["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync);
+            ["type"] = "button",
+            ["aria-label"] = AriaLabel ?? Localizer["Dialog_CloseLabel"],
+            ["data-summit-dialog-close"] = true,
+            ["onclick"] = EventCallback.Factory.Create(this, HandleClickAsync)
+        };
 
         // Merge additional attributes (consumer attributes win)
         if (AdditionalAttributes is not null)

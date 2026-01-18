@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 
 using SummitUI.Interop;
@@ -10,7 +9,7 @@ namespace SummitUI;
 /// The main content panel of the dialog with focus trapping, scroll locking,
 /// and keyboard event handling.
 /// </summary>
-public class SmDialogContent : ComponentBase, IAsyncDisposable
+public partial class SmDialogContent : ComponentBase, IAsyncDisposable
 {
     [Inject]
     private DialogJsInterop DialogInterop { get; set; } = default!;
@@ -26,12 +25,6 @@ public class SmDialogContent : ComponentBase, IAsyncDisposable
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>
-    /// HTML element to render. Defaults to "div".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "div";
 
     /// <summary>
     /// Whether to trap focus within the dialog content. Defaults to true.
@@ -106,54 +99,6 @@ public class SmDialogContent : ComponentBase, IAsyncDisposable
     /// </summary>
     private string CssVariables =>
         $"--summit-dialog-depth: {Context.Depth}; --summit-dialog-nested-count: {Context.NestedOpenCount};";
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        // Only render when open or during close animation so CSS animate-out classes can run
-        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
-
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "id", Context.DialogId);
-        builder.AddAttribute(2, "role", "dialog");
-        builder.AddAttribute(3, "aria-modal", TrapFocus.ToString().ToLowerInvariant());
-        builder.AddAttribute(4, "aria-labelledby", Context.TitleId);
-        builder.AddAttribute(5, "aria-describedby", Context.DescriptionId);
-        builder.AddAttribute(6, "data-state", DataState);
-        builder.AddAttribute(7, "data-summit-dialog-content", true);
-        builder.AddAttribute(8, "tabindex", "-1");
-
-        // Add nested dialog data attributes
-        if (Context.IsNested)
-        {
-            builder.AddAttribute(9, "data-nested", true);
-        }
-
-        if (Context.HasNestedOpen)
-        {
-            builder.AddAttribute(10, "data-nested-open", true);
-        }
-
-        builder.AddAttribute(11, "style", CssVariables);
-        builder.AddMultipleAttributes(12, AdditionalAttributes);
-        builder.AddElementReferenceCapture(13, elementRef => _elementRef = elementRef);
-
-        // Wrap content in FocusTrap if enabled
-        if (TrapFocus)
-        {
-            builder.OpenComponent<SmFocusTrap>(14);
-            builder.AddComponentParameter(15, "IsActive", Context.IsOpen);
-            builder.AddComponentParameter(16, "AutoFocus", true);
-            builder.AddComponentParameter(17, "ReturnFocus", true);
-            builder.AddComponentParameter(18, "ChildContent", (RenderFragment)(childBuilder => childBuilder.AddContent(0, ChildContent)));
-            builder.CloseComponent();
-        }
-        else
-        {
-            builder.AddContent(14, ChildContent);
-        }
-
-        builder.CloseElement();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

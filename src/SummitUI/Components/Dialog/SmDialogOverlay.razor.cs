@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
@@ -12,7 +11,7 @@ namespace SummitUI;
 /// Clicking the overlay typically closes the dialog.
 /// Supports nested dialog styling via data attributes and CSS custom properties.
 /// </summary>
-public class SmDialogOverlay : ComponentBase, IAsyncDisposable
+public partial class SmDialogOverlay : ComponentBase, IAsyncDisposable
 {
     [Inject]
     private FloatingJsInterop FloatingInterop { get; set; } = default!;
@@ -25,12 +24,6 @@ public class SmDialogOverlay : ComponentBase, IAsyncDisposable
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>
-    /// HTML element to render. Defaults to "div".
-    /// </summary>
-    [Parameter]
-    public string As { get; set; } = "div";
 
     /// <summary>
     /// Callback when the overlay is clicked.
@@ -63,35 +56,6 @@ public class SmDialogOverlay : ComponentBase, IAsyncDisposable
     private bool _wasOpen;
     private bool _animationWatcherRegistered;
     private bool _isDisposed;
-
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
-    {
-        // Only render when open or during close animation so CSS animate-out classes can run
-        if (!Context.IsOpen && !Context.IsAnimatingClosed) return;
-
-        builder.OpenElement(0, As);
-        builder.AddAttribute(1, "data-state", DataState);
-        builder.AddAttribute(2, "data-summit-dialog-overlay", true);
-        builder.AddAttribute(3, "aria-hidden", "true");
-
-        // Add nested dialog data attributes
-        if (Context.IsNested)
-        {
-            builder.AddAttribute(4, "data-nested", true);
-        }
-
-        if (Context.HasNestedOpen)
-        {
-            builder.AddAttribute(5, "data-nested-open", true);
-        }
-
-        builder.AddAttribute(6, "style", CssVariables);
-        builder.AddMultipleAttributes(7, AdditionalAttributes);
-        builder.AddAttribute(8, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync));
-        builder.AddElementReferenceCapture(9, elementRef => _elementRef = elementRef);
-        builder.AddContent(10, ChildContent);
-        builder.CloseElement();
-    }
 
     private async Task HandleClickAsync(MouseEventArgs args)
     {

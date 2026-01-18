@@ -1,0 +1,16 @@
+@namespace SummitUI
+
+@if (Context.IsOpen || Context.IsAnimatingClosed)
+{
+    <div data-state="@DataState"
+         data-summit-dialog-overlay
+         aria-hidden="true"
+         data-nested="@(Context.IsNested ? true : null)"
+         data-nested-open="@(Context.HasNestedOpen ? true : null)"
+         style="@CssVariables"
+         @onclick="HandleClickAsync"
+         @ref="_elementRef"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}

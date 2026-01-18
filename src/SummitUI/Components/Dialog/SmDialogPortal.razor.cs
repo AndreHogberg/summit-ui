@@ -9,7 +9,7 @@ namespace SummitUI;
 /// This avoids z-index and overflow issues that can occur with nested DOM structures.
 /// Uses depth-based z-index calculation for proper nested dialog stacking.
 /// </summary>
-public class SmDialogPortal : SimplePortalBase<DialogContext>
+public partial class SmDialogPortal : SimplePortalBase<DialogContext>
 {
     /// <inheritdoc />
     protected override string DataAttribute => "data-summit-dialog-portal";

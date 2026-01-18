@@ -1,0 +1,21 @@
+@namespace SummitUI
+
+@if (AsChild)
+{
+    @ChildContent?.Invoke(_asChildContext)
+}
+else
+{
+    <button type="button"
+            aria-haspopup="dialog"
+            aria-expanded="@Context.IsOpen.ToString().ToLowerInvariant()"
+            aria-controls="@Context.DialogId"
+            data-state="@DataState"
+            data-summit-dialog-trigger
+            @onclick="HandleClickAsync"
+            @onkeydown="HandleKeyDownAsync"
+            @ref="_elementRef"
+            @attributes="AdditionalAttributes">
+        @ChildContent?.Invoke(_asChildContext)
+    </button>
+}

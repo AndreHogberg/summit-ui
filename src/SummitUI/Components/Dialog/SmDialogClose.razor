@@ -1,0 +1,16 @@
+@namespace SummitUI
+
+@if (AsChild)
+{
+    @ChildContent?.Invoke(_context)
+}
+else
+{
+    <button type="button"
+            aria-label="@(AriaLabel ?? Localizer["Dialog_CloseLabel"])"
+            data-summit-dialog-close="true"
+            @onclick="HandleClickAsync"
+            @attributes="AdditionalAttributes">
+        @ChildContent?.Invoke(_context)
+    </button>
+}

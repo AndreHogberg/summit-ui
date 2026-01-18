@@ -1,0 +1,29 @@
+@namespace SummitUI
+
+@if (Context.IsOpen || Context.IsAnimatingClosed)
+{
+    <div id="@Context.DialogId"
+         role="dialog"
+         aria-modal="@TrapFocus.ToString().ToLowerInvariant()"
+         aria-labelledby="@Context.TitleId"
+         aria-describedby="@Context.DescriptionId"
+         data-state="@DataState"
+         data-summit-dialog-content
+         tabindex="-1"
+         data-nested="@(Context.IsNested ? true : null)"
+         data-nested-open="@(Context.HasNestedOpen ? true : null)"
+         style="@CssVariables"
+         @ref="_elementRef"
+         @attributes="AdditionalAttributes">
+        @if (TrapFocus)
+        {
+            <SmFocusTrap IsActive="Context.IsOpen" AutoFocus="true" ReturnFocus="true">
+                @ChildContent
+            </SmFocusTrap>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </div>
+}
