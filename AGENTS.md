@@ -8,7 +8,7 @@ SummitUI is a Blazor component library focused on WCAG-compliant, fully customiz
 
 **Design Philosophy:**
 - Headless components (logic without opinionated styling)
-- Build components using .cs files only
+- Build components using `.razor` + `.razor.cs` code-behind pattern
 - WCAG accessibility compliance built-in
 - Customization via attributes
 - Prefer C# implementation; use JavaScript only for tasks impossible in C# or for external package dependencies
@@ -184,4 +184,4 @@ In `SummitUI.Docs` and `SummitUI.Docs.Client` projects, prefer `.razor` files ov
 - Use `.razor` files for page components and UI-focused components
 - Use `.cs` files only for services, utilities, and complex logic classes
 
-**Note:** This differs from the main `SummitUI` library, which uses `.cs` files exclusively for headless components.
+**Note:** The main `SummitUI` library uses `.razor` + `.razor.cs` code-behind files. For components that need dynamic HTML element names (via an `As` property), use `BuildRenderTree` in the code-behind since Razor doesn't support `<@Variable>` syntax.

@@ -205,6 +205,9 @@ public partial class SmOtpRoot : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Only run JS interop when interactive
+        if (!RendererInfo.IsInteractive) return;
+
         if (firstRender && !_initialized)
         {
             _initialized = true;
@@ -327,7 +330,14 @@ public partial class SmOtpRoot : IAsyncDisposable
     {
         if (_initialized)
         {
-            await JsInterop.DestroyAsync(_inputElement);
+            try
+            {
+                await JsInterop.DestroyAsync(_inputElement);
+            }
+            catch (JSDisconnectedException)
+            {
+                // Safe to ignore, JS resources are cleaned up by the browser
+            }
         }
         _dotNetRef?.Dispose();
     }

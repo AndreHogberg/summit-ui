@@ -21,6 +21,7 @@ public partial class SmDateFieldSegment : ComponentBase, IAsyncDisposable
     private ElementReference _elementRef;
     private DotNetObjectReference<SmDateFieldSegment>? _dotNetHelper;
     private bool _isDisposed;
+    private bool _jsInitialized;
 
     private bool SegmentHasValue => Context.SegmentHasValue(Segment.Type);
     private string SegmentText => DateFieldUtils.FormatSegmentValue(Segment.Type, Context);
@@ -45,6 +46,7 @@ public partial class SmDateFieldSegment : ComponentBase, IAsyncDisposable
             try
             {
                 await JsInterop.InitializeSegmentAsync(_elementRef, _dotNetHelper);
+                _jsInitialized = true;
             }
             catch (ObjectDisposedException)
             {
@@ -124,7 +126,9 @@ public partial class SmDateFieldSegment : ComponentBase, IAsyncDisposable
         _isDisposed = true;
 
         _dotNetHelper?.Dispose();
-        if (Segment.Type != DateFieldSegmentType.Literal)
+        
+        // Only call JS cleanup if we actually initialized JS (i.e., we were interactive)
+        if (_jsInitialized && Segment.Type != DateFieldSegmentType.Literal)
         {
             try
             {

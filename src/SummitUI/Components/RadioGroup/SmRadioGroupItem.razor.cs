@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 using SummitUI.Utilities;
 
@@ -114,6 +115,9 @@ public partial class SmRadioGroupItem : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Only run JS interop when interactive
+        if (!RendererInfo.IsInteractive) return;
+
         if (firstRender && !_jsInitialized)
         {
             await SummitUtilities.InitializeRadioItemAsync(_elementRef);
@@ -205,7 +209,14 @@ public partial class SmRadioGroupItem : IAsyncDisposable
 
         if (_jsInitialized)
         {
-            await SummitUtilities.DestroyRadioItemAsync(_elementRef);
+            try
+            {
+                await SummitUtilities.DestroyRadioItemAsync(_elementRef);
+            }
+            catch (JSDisconnectedException)
+            {
+                // Safe to ignore, JS resources are cleaned up by the browser
+            }
         }
     }
 }

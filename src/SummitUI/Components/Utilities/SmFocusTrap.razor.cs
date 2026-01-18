@@ -65,6 +65,9 @@ public partial class SmFocusTrap : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Only run JS interop when interactive
+        if (!RendererInfo.IsInteractive) return;
+
         if (IsActive && !_isActive)
         {
             await ActivateAsync();

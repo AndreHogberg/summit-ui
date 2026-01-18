@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 
 using SummitUI.Utilities;
 
@@ -252,6 +253,9 @@ public partial class SmCheckboxRoot : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Only run JS interop when interactive
+        if (!RendererInfo.IsInteractive) return;
+
         if (firstRender && !_jsInitialized)
         {
             _jsInitialized = true;
@@ -316,7 +320,14 @@ public partial class SmCheckboxRoot : IAsyncDisposable
 
         if (_jsInitialized)
         {
-            await SummitUtilities.DestroyCheckboxAsync(_elementRef);
+            try
+            {
+                await SummitUtilities.DestroyCheckboxAsync(_elementRef);
+            }
+            catch (JSDisconnectedException)
+            {
+                // Safe to ignore, JS resources are cleaned up by the browser
+            }
         }
     }
 }

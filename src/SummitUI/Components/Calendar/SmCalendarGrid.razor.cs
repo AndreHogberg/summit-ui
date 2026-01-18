@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 using SummitUI.Interop;
 
@@ -36,6 +37,9 @@ public partial class SmCalendarGrid : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Only run JS interop when interactive
+        if (!RendererInfo.IsInteractive) return;
+
         // Initialize keyboard navigation support (preventDefault for navigation keys)
         if (!_initialized)
         {
@@ -48,7 +52,14 @@ public partial class SmCalendarGrid : IAsyncDisposable
     {
         if (_initialized)
         {
-            await JsInterop.DestroyCalendarAsync(_elementRef);
+            try
+            {
+                await JsInterop.DestroyCalendarAsync(_elementRef);
+            }
+            catch (JSDisconnectedException)
+            {
+                // Safe to ignore, JS resources are cleaned up by the browser
+            }
         }
     }
 }

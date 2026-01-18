@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 using SummitUI.Services;
 
@@ -44,6 +45,9 @@ public partial class SmLiveAnnouncer : IAsyncDisposable
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Only run JS interop when interactive
+        if (!RendererInfo.IsInteractive) return;
+
         if (firstRender && !_initialized)
         {
             _initialized = true;
@@ -59,9 +63,16 @@ public partial class SmLiveAnnouncer : IAsyncDisposable
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
-        if (Announcer is LiveAnnouncerService service)
+        if (_initialized && Announcer is LiveAnnouncerService service)
         {
-            await service.DestroyAsync();
+            try
+            {
+                await service.DestroyAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Safe to ignore, JS resources are cleaned up by the browser
+            }
         }
     }
 }
