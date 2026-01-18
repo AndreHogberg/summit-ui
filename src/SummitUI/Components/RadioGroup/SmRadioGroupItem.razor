@@ -1,0 +1,21 @@
+@namespace SummitUI
+
+<button @ref="_elementRef"
+        type="button"
+        role="radio"
+        id="@ItemId"
+        aria-checked="@(IsChecked ? "true" : "false")"
+        aria-disabled="@(IsDisabled ? "true" : null)"
+        disabled="@IsDisabled"
+        tabindex="@(IsFocusable && !IsDisabled ? "0" : "-1")"
+        data-summit-radio-group-item=""
+        data-state="@DataState"
+        data-orientation="@OrientationString"
+        data-disabled="@(IsDisabled ? "" : null)"
+        @onclick="HandleClickAsync"
+        @onkeydown="HandleKeyDownAsync"
+        @attributes="AdditionalAttributes">
+    <CascadingValue Value="ItemContext" IsFixed="false">
+        @ChildContent?.Invoke(ItemContext)
+    </CascadingValue>
+</button>

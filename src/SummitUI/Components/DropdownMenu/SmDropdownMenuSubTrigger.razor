@@ -1,0 +1,24 @@
+@namespace SummitUI
+
+<div @ref="_elementRef"
+     role="menuitem"
+     id="@_itemId"
+     aria-haspopup="menu"
+     aria-expanded="@(IsOpen ? "true" : "false")"
+     aria-controls="@(IsOpen ? SubContext.SubMenuId : null)"
+     tabindex="-1"
+     aria-disabled="@(Disabled ? "true" : null)"
+     data-summit-dropdown-menu-sub-trigger=""
+     data-state="@DataState"
+     data-disabled="@(Disabled ? "" : null)"
+     data-highlighted="@(IsHighlighted ? "" : null)"
+     @onclick="HandleClickAsync"
+     @onpointerenter="HandlePointerEnterAsync"
+     @onpointerleave="HandlePointerLeaveAsync"
+     @onpointermove="HandlePointerMoveAsync"
+     @onkeydown="HandleKeyDownAsync"
+     @onkeydown:preventDefault
+     @onkeydown:stopPropagation
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>

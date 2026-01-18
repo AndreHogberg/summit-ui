@@ -1,0 +1,10 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+<CascadingValue Value="_context" IsFixed="false">
+    @ChildContent
+    @if (!string.IsNullOrEmpty(Name))
+    {
+        <input type="hidden" name="@Name" value="@EffectiveValueAsString" />
+    }
+</CascadingValue>

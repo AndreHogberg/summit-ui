@@ -1,0 +1,11 @@
+@namespace SummitUI
+
+<div @ref="_elementRef"
+     role="tablist"
+     aria-orientation="@Context.Orientation.ToString().ToLowerInvariant()"
+     data-orientation="@Context.Orientation.ToString().ToLowerInvariant()"
+     data-summit-tabs-list=""
+     @onkeydown="HandleKeyDownAsync"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>

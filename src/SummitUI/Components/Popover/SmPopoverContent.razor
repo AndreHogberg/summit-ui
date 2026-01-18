@@ -1,0 +1,27 @@
+@namespace SummitUI
+
+@if (Context.IsOpen || Context.IsAnimatingClosed)
+{
+    <div @ref="_elementRef"
+         id="@Context.PopoverId"
+         role="dialog"
+         aria-modal="@EffectiveTrapFocus.ToString().ToLowerInvariant()"
+         data-state="@DataState"
+         data-side="@Side.ToString().ToLowerInvariant()"
+         data-align="@Align.ToString().ToLowerInvariant()"
+         data-summit-popover-content="true"
+         tabindex="-1"
+         style="position: absolute; visibility: hidden;"
+         @attributes="AdditionalAttributes">
+        @if (EffectiveTrapFocus)
+        {
+            <SmFocusTrap IsActive="Context.IsOpen" AutoFocus="true" ReturnFocus="true">
+                @ChildContent
+            </SmFocusTrap>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </div>
+}

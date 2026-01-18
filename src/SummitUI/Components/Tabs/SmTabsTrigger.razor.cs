@@ -1,0 +1,167 @@
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+
+namespace SummitUI;
+
+/// <summary>
+/// Individual tab trigger button. Renders with role="tab".
+/// Registers with the TabsContext for keyboard navigation support.
+/// Supports the AsChild pattern for rendering custom elements.
+/// </summary>
+public partial class SmTabsTrigger : IDisposable
+{
+    [CascadingParameter]
+    private TabsContext Context { get; set; } = default!;
+
+    /// <summary>
+    /// Unique value identifying this tab. Required.
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string Value { get; set; } = "";
+
+    /// <summary>
+    /// When true, the component will not render a wrapper element.
+    /// Instead, it passes attributes via context to the child element.
+    /// The child must apply @attributes="context.Attrs" for proper functionality.
+    /// </summary>
+    [Parameter]
+    public bool AsChild { get; set; }
+
+    /// <summary>
+    /// Child content. When AsChild is true, receives an AsChildContext with attributes to apply.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<AsChildContext>? ChildContent { get; set; }
+
+    /// <summary>
+    /// Whether this tab is disabled.
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Additional HTML attributes to apply.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private ElementReference _elementRef;
+    private bool _previousDisabled;
+    private string _previousValue = "";
+    private bool _isRegistered;
+    private AsChildContext _asChildContext = default!;
+
+    private bool IsActive => Context.Value == Value;
+    private string DataState => IsActive ? "active" : "inactive";
+    private int TabIndex => IsActive ? 0 : -1;
+
+    protected override void OnParametersSet()
+    {
+        // Update registration if Value changed
+        if (_isRegistered && _previousValue != Value)
+        {
+            Context.UnregisterTrigger(_previousValue);
+            _isRegistered = false;
+        }
+
+        // Update disabled state if it changed
+        if (_isRegistered && _previousDisabled != Disabled)
+        {
+            Context.UpdateTriggerDisabled(Value, Disabled);
+        }
+
+        _previousDisabled = Disabled;
+        _previousValue = Value;
+
+        // Update AsChildContext
+        _asChildContext = new AsChildContext
+        {
+            Attrs = BuildAttributes(),
+            RefCallback = el => _elementRef = el
+        };
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // Register with context after first render when ElementReference is available
+        if (!_isRegistered)
+        {
+            Context.RegisterTrigger(Value, _elementRef, Disabled);
+            _isRegistered = true;
+        }
+    }
+
+    private IReadOnlyDictionary<string, object> BuildAttributes()
+    {
+        var attrs = new Dictionary<string, object>
+        {
+            ["role"] = "tab",
+            ["id"] = Context.GetTriggerId(Value),
+            ["aria-selected"] = IsActive.ToString().ToLowerInvariant(),
+            ["aria-controls"] = Context.GetContentId(Value),
+            ["tabindex"] = TabIndex,
+            ["data-state"] = DataState,
+            ["data-orientation"] = Context.Orientation.ToString().ToLowerInvariant(),
+            ["data-summit-tabs-trigger"] = true,
+            ["data-value"] = Value,
+            ["onclick"] = EventCallback.Factory.Create<MouseEventArgs>(this, HandleClickAsync),
+            ["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDownAsync),
+            ["onfocus"] = EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusAsync)
+        };
+
+        if (Disabled)
+        {
+            attrs["aria-disabled"] = "true";
+            attrs["data-disabled"] = true;
+        }
+
+        // Merge additional attributes (consumer attributes win)
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var (key, value) in AdditionalAttributes)
+            {
+                attrs[key] = value;
+            }
+        }
+
+        return attrs;
+    }
+
+    private async Task HandleClickAsync(MouseEventArgs args)
+    {
+        if (Disabled) return;
+        await Context.ActivateTabAsync(Value);
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs args)
+    {
+        if (Disabled) return;
+
+        // Enter and Space activate in both auto and manual modes
+        if (args.Key is "Enter" or " ")
+        {
+            await Context.ActivateTabAsync(Value);
+        }
+        // Note: Arrow keys, Home, End are handled by TabsList
+    }
+
+    private async Task HandleFocusAsync(FocusEventArgs args)
+    {
+        if (Disabled) return;
+
+        // In auto mode, activate tab when focused via keyboard navigation
+        if (Context.ActivationMode == TabsActivationMode.Auto)
+        {
+            await Context.ActivateTabAsync(Value);
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_isRegistered)
+        {
+            Context.UnregisterTrigger(Value);
+            _isRegistered = false;
+        }
+    }
+}

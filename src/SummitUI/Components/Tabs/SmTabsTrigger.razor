@@ -1,0 +1,27 @@
+@namespace SummitUI
+
+@if (AsChild)
+{
+    @ChildContent?.Invoke(_asChildContext)
+}
+else
+{
+    <button @ref="_elementRef"
+            role="tab"
+            id="@Context.GetTriggerId(Value)"
+            aria-selected="@IsActive.ToString().ToLowerInvariant()"
+            aria-controls="@Context.GetContentId(Value)"
+            tabindex="@TabIndex"
+            data-state="@DataState"
+            data-orientation="@Context.Orientation.ToString().ToLowerInvariant()"
+            data-summit-tabs-trigger=""
+            data-value="@Value"
+            aria-disabled="@(Disabled ? "true" : null)"
+            data-disabled="@(Disabled ? true : null)"
+            @onclick="HandleClickAsync"
+            @onkeydown="HandleKeyDownAsync"
+            @onfocus="HandleFocusAsync"
+            @attributes="AdditionalAttributes">
+        @ChildContent?.Invoke(_asChildContext)
+    </button>
+}

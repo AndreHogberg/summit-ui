@@ -1,0 +1,25 @@
+@namespace SummitUI
+
+@if (AsChild)
+{
+    @ChildContent?.Invoke(_context)
+}
+else
+{
+    <div @ref="_elementRef"
+         role="menuitem"
+         id="@_itemId"
+         tabindex="-1"
+         data-summit-dropdown-menu-item=""
+         aria-disabled="@(Disabled ? "true" : null)"
+         data-disabled="@(Disabled ? "" : null)"
+         data-highlighted="@(IsHighlighted ? "" : null)"
+         @onclick="HandleClickAsync"
+         @onpointerenter="HandlePointerEnterAsync"
+         @onkeydown="HandleKeyDownAsync"
+         @onkeydown:preventDefault
+         @onkeydown:stopPropagation
+         @attributes="AdditionalAttributes">
+        @ChildContent?.Invoke(_context)
+    </div>
+}

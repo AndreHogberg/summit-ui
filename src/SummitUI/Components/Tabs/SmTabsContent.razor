@@ -1,0 +1,15 @@
+@namespace SummitUI
+
+@if (IsActive)
+{
+    <div role="tabpanel"
+         id="@Context.GetContentId(Value)"
+         aria-labelledby="@Context.GetTriggerId(Value)"
+         tabindex="0"
+         data-state="@DataState"
+         data-orientation="@Context.Orientation.ToString().ToLowerInvariant()"
+         data-summit-tabs-content=""
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}

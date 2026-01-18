@@ -1,0 +1,22 @@
+@namespace SummitUI
+
+@if (AsChild)
+{
+    @ChildContent?.Invoke(_context)
+}
+else
+{
+    <button type="button"
+            @ref="_elementRef"
+            id="@($"{Context.MenuId}-trigger")"
+            aria-haspopup="menu"
+            aria-expanded="@Context.IsOpen.ToString().ToLowerInvariant()"
+            aria-controls="@(Context.IsOpen ? Context.MenuId : null)"
+            data-state="@DataState"
+            data-summit-dropdown-menu-trigger="true"
+            @onclick="HandleClickAsync"
+            @onkeydown="HandleKeyDownAsync"
+            @attributes="AdditionalAttributes">
+        @ChildContent?.Invoke(_context)
+    </button>
+}

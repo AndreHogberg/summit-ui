@@ -1,0 +1,10 @@
+@namespace SummitUI
+
+@if (ShouldDisplay)
+{
+    <span data-summit-radio-group-indicator=""
+          data-state="@DataState"
+          @attributes="AdditionalAttributes">
+        @ChildContent
+    </span>
+}

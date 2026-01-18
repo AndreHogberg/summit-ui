@@ -1,0 +1,21 @@
+@namespace SummitUI
+@typeparam TContent
+@implements IAsyncDisposable
+
+<div @ref="_elementRef"
+     role="status"
+     aria-live="@AriaLive"
+     aria-atomic="true"
+     data-summit-toast-root=""
+     data-state="open"
+     data-toast-key="@ToastData.Key"
+     class="toast-root"
+     data-swipe-direction="@(SwipeDirection.HasValue ? SwipeDirection.Value.ToString().ToLowerInvariant() : null)"
+     aria-labelledby="@AriaLabelledBy"
+     aria-describedby="@AriaDescribedBy"
+     @key="ToastData.Key"
+     @attributes="AdditionalAttributes">
+    <CascadingValue Name="ToastKey" Value="@ToastData.Key" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</div>

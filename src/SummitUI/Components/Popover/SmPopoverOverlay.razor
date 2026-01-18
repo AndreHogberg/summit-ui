@@ -1,0 +1,9 @@
+@namespace SummitUI
+
+<div data-state="@DataState"
+     data-summit-popover-overlay="true"
+     aria-hidden="true"
+     @onclick="HandleClickAsync"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>

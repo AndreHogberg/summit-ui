@@ -1,0 +1,11 @@
+@namespace SummitUI
+
+<div role="group"
+     aria-labelledby="@_labelId"
+     aria-label="@AriaLabel"
+     data-summit-dropdown-menu-group=""
+     @attributes="AdditionalAttributes">
+    <CascadingValue Value="@_labelId" Name="GroupLabelId">
+        @ChildContent
+    </CascadingValue>
+</div>

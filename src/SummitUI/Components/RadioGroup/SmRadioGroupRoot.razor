@@ -1,0 +1,21 @@
+@namespace SummitUI
+
+<div role="radiogroup"
+     aria-label="@AriaLabel"
+     aria-labelledby="@AriaLabelledBy"
+     aria-describedby="@AriaDescribedBy"
+     aria-orientation="@OrientationString"
+     aria-required="@(Required ? "true" : null)"
+     data-summit-radio-group=""
+     data-orientation="@OrientationString"
+     data-disabled="@(Disabled ? "" : null)"
+     @attributes="AdditionalAttributes">
+    <CascadingValue Value="_context" IsFixed="false">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@if (!string.IsNullOrEmpty(Name))
+{
+    <input type="hidden" name="@Name" value="@(EffectiveValue ?? "")" disabled="@Disabled" required="@Required" />
+}

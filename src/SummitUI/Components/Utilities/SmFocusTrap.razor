@@ -1,0 +1,6 @@
+@namespace SummitUI
+@implements IAsyncDisposable
+
+<div data-summit-focus-trap="@(_isActive ? "active" : "inactive")" @ref="_containerRef">
+    @ChildContent
+</div>

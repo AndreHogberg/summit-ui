@@ -1,0 +1,14 @@
+@namespace SummitUI
+@typeparam TValue where TValue : notnull
+
+<span data-summit-select-value=""
+      data-placeholder="@(IsPlaceholder ? "" : null)">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @DisplayText
+    }
+</span>

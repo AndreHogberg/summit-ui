@@ -1,0 +1,9 @@
+@namespace SummitUI
+@implements IDisposable
+
+@foreach (var (id, content) in PortalService.GetPortals())
+{
+    <div id="@id" data-summit-portal @key="id">
+        @content
+    </div>
+}

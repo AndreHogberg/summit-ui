@@ -1,0 +1,21 @@
+@namespace SummitUI
+
+<div data-otp-slot
+     data-active="@(Slot.IsActive ? "true" : null)"
+     @attributes="AdditionalAttributes">
+    @if (Slot.HasFakeCaret && ChildContent != null)
+    {
+        @* Show child content (typically OtpCaret) when slot is active and empty *@
+        @ChildContent
+    }
+    else if (Slot.Char.HasValue)
+    {
+        @* Show the character *@
+        @Slot.Char.Value.ToString()
+    }
+    else if (Slot.PlaceholderChar.HasValue)
+    {
+        @* Show placeholder *@
+        <span data-otp-placeholder>@Slot.PlaceholderChar.Value.ToString()</span>
+    }
+</div>

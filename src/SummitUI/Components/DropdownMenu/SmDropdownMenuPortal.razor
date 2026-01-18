@@ -1,0 +1,10 @@
+@namespace SummitUI
+
+@if (Context.IsOpen || Context.IsAnimatingClosed)
+{
+    <div id="@_portalId"
+         data-summit-dropdown-menu-portal=""
+         style="position: absolute; top: 0; left: 0; z-index: 9999;">
+        @ChildContent
+    </div>
+}

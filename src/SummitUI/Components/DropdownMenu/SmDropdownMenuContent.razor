@@ -1,0 +1,23 @@
+@namespace SummitUI
+
+@if (Context.IsOpen || ForceMount || Context.IsAnimatingClosed)
+{
+    <div @ref="_elementRef"
+         id="@Context.MenuId"
+         role="menu"
+         aria-orientation="vertical"
+         aria-labelledby="@($"{Context.MenuId}-trigger")"
+         aria-activedescendant="@Context.HighlightedItemId"
+         data-state="@DataState"
+         data-side="@Side.ToString().ToLowerInvariant()"
+         data-align="@Align.ToString().ToLowerInvariant()"
+         data-summit-dropdown-menu-content="true"
+         tabindex="-1"
+         style="position: absolute; outline: none; visibility: hidden;"
+         @onkeydown="HandleKeyDownAsync"
+         @onkeydown:preventDefault
+         @onkeydown:stopPropagation
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}

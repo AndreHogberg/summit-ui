@@ -1,0 +1,11 @@
+@namespace SummitUI
+
+@{
+    var orientationValue = Orientation == SeparatorOrientation.Horizontal ? "horizontal" : "vertical";
+}
+
+<div role="@(Decorative ? "none" : "separator")"
+     aria-orientation="@(Decorative ? null : orientationValue)"
+     data-orientation="@orientationValue"
+     @attributes="AdditionalAttributes">
+</div>
