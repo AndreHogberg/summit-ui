@@ -60,6 +60,303 @@
         </SuCard>
     </SuSection>
 
+    @* Indeterminate State Demo *@
+    <SuSection Title="Indeterminate State">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            The indeterminate state is useful for "Select All" patterns where some but not all items are selected. Click the parent checkbox to toggle all children, or click individual items to see the parent update automatically.
+        </SuText>
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer p-3 bg-su-muted/30 rounded-md border border-su-border">
+                    <SmCheckboxRoot Checked="selectAllChecked"
+                                    CheckedChanged="HandleSelectAllChanged"
+                                    Indeterminate="selectAllIndeterminate"
+                                    AriaLabel="Select all items"
+                                    class="demo-checkbox">
+                        <SmCheckboxIndicator class="demo-indicator">
+                            @if (selectAllIndeterminate)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"/>
+                                </svg>
+                            }
+                            else
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5"/>
+                                </svg>
+                            }
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm font-medium text-su-foreground">Select All</span>
+                </label>
+                <div class="flex flex-col gap-2 ml-6 pl-6 border-l-2 border-su-border">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <SmCheckboxRoot Checked="item1Checked"
+                                        CheckedChanged="(value) => HandleChildChanged(value, 1)"
+                                        AriaLabel="Item 1"
+                                        class="demo-checkbox">
+                            <SmCheckboxIndicator class="demo-indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5"/>
+                                </svg>
+                            </SmCheckboxIndicator>
+                        </SmCheckboxRoot>
+                        <span class="text-sm text-su-foreground">Enable notifications</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <SmCheckboxRoot Checked="item2Checked"
+                                        CheckedChanged="(value) => HandleChildChanged(value, 2)"
+                                        AriaLabel="Item 2"
+                                        class="demo-checkbox">
+                            <SmCheckboxIndicator class="demo-indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5"/>
+                                </svg>
+                            </SmCheckboxIndicator>
+                        </SmCheckboxRoot>
+                        <span class="text-sm text-su-foreground">Enable dark mode</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <SmCheckboxRoot Checked="item3Checked"
+                                        CheckedChanged="(value) => HandleChildChanged(value, 3)"
+                                        AriaLabel="Item 3"
+                                        class="demo-checkbox">
+                            <SmCheckboxIndicator class="demo-indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5"/>
+                                </svg>
+                            </SmCheckboxIndicator>
+                        </SmCheckboxRoot>
+                        <span class="text-sm text-su-foreground">Enable auto-save</span>
+                    </label>
+                </div>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Checkbox Group Demo *@
+    <SuSection Title="Checkbox Group">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Use CheckboxGroup to manage multiple related checkboxes. The selected values are displayed below in real-time.
+        </SuText>
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <SmCheckboxGroup @bind-Values="groupDemoValues">
+                    <SmCheckboxGroupLabel class="text-sm font-medium text-su-foreground mb-3">Choose your interests</SmCheckboxGroupLabel>
+                    <div class="flex flex-col gap-3">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <SmCheckboxRoot Value="technology" class="demo-checkbox">
+                                <SmCheckboxIndicator class="demo-indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                </SmCheckboxIndicator>
+                            </SmCheckboxRoot>
+                            <span class="text-sm text-su-foreground">Technology</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <SmCheckboxRoot Value="design" class="demo-checkbox">
+                                <SmCheckboxIndicator class="demo-indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                </SmCheckboxIndicator>
+                            </SmCheckboxRoot>
+                            <span class="text-sm text-su-foreground">Design</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <SmCheckboxRoot Value="sports" class="demo-checkbox">
+                                <SmCheckboxIndicator class="demo-indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                </SmCheckboxIndicator>
+                            </SmCheckboxRoot>
+                            <span class="text-sm text-su-foreground">Sports</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <SmCheckboxRoot Value="music" class="demo-checkbox">
+                                <SmCheckboxIndicator class="demo-indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                </SmCheckboxIndicator>
+                            </SmCheckboxRoot>
+                            <span class="text-sm text-su-foreground">Music</span>
+                        </label>
+                    </div>
+                </SmCheckboxGroup>
+                <div class="mt-4 p-3 bg-su-muted/50 rounded-md border border-su-border">
+                    <span class="text-sm font-medium">Selected: </span>
+                    <code class="text-xs bg-su-background px-2 py-1 rounded border border-su-border">
+                        @if (groupDemoValues == null || groupDemoValues.Count == 0)
+                        {
+                            <text>None</text>
+                        }
+                        else
+                        {
+                            @string.Join(", ", groupDemoValues)
+                        }
+                    </code>
+                </div>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Disabled State Demo *@
+    <SuSection Title="Disabled State">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Disabled checkboxes prevent user interaction and display with reduced opacity. Try clicking the disabled checkboxes below.
+        </SuText>
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <SmCheckboxRoot DefaultChecked="true" AriaLabel="Enabled checked checkbox" class="demo-checkbox">
+                        <SmCheckboxIndicator class="demo-indicator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground">Enabled and checked</span>
+                </label>
+                <label class="flex items-center gap-3 cursor-not-allowed opacity-50">
+                    <SmCheckboxRoot Disabled="true" DefaultChecked="true" AriaLabel="Disabled checked checkbox" class="demo-checkbox">
+                        <SmCheckboxIndicator class="demo-indicator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground">Disabled and checked</span>
+                </label>
+                <label class="flex items-center gap-3 cursor-not-allowed opacity-50">
+                    <SmCheckboxRoot Disabled="true" AriaLabel="Disabled unchecked checkbox" class="demo-checkbox">
+                        <SmCheckboxIndicator class="demo-indicator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground">Disabled and unchecked</span>
+                </label>
+                <SmCheckboxGroup Disabled="true" DefaultValues="@(new[] { "group-item-1" })">
+                    <SmCheckboxGroupLabel class="text-sm font-medium text-su-foreground mb-2 opacity-50">Disabled Group</SmCheckboxGroupLabel>
+                    <div class="flex flex-col gap-2 opacity-50">
+                        <label class="flex items-center gap-3 cursor-not-allowed">
+                            <SmCheckboxRoot Value="group-item-1" class="demo-checkbox">
+                                <SmCheckboxIndicator class="demo-indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                </SmCheckboxIndicator>
+                            </SmCheckboxRoot>
+                            <span class="text-sm text-su-foreground">Group item 1</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-not-allowed">
+                            <SmCheckboxRoot Value="group-item-2" class="demo-checkbox">
+                                <SmCheckboxIndicator class="demo-indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                </SmCheckboxIndicator>
+                            </SmCheckboxRoot>
+                            <span class="text-sm text-su-foreground">Group item 2</span>
+                        </label>
+                    </div>
+                </SmCheckboxGroup>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Controlled Mode Demo *@
+    <SuSection Title="Controlled Mode">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Control the checkbox state programmatically using external buttons. This pattern is useful for complex UIs requiring external state management.
+        </SuText>
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-3 p-3 bg-su-muted/50 rounded-md border border-su-border">
+                    <span class="text-sm font-medium">Current state:</span>
+                    <code class="text-xs bg-su-background px-2 py-1 rounded border border-su-border">@(controlledChecked ? "Checked" : "Unchecked")</code>
+                    <div class="flex gap-2 ml-auto">
+                        <button @onclick="@(() => controlledChecked = true)" class="px-3 py-1 text-xs font-medium bg-su-primary text-su-primary-foreground rounded hover:bg-su-primary/90">
+                            Check
+                        </button>
+                        <button @onclick="@(() => controlledChecked = false)" class="px-3 py-1 text-xs font-medium bg-su-secondary text-su-secondary-foreground rounded hover:bg-su-secondary/80">
+                            Uncheck
+                        </button>
+                        <button @onclick="@(() => controlledChecked = !controlledChecked)" class="px-3 py-1 text-xs font-medium bg-su-secondary text-su-secondary-foreground rounded hover:bg-su-secondary/80">
+                            Toggle
+                        </button>
+                    </div>
+                </div>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <SmCheckboxRoot @bind-Checked="controlledChecked" AriaLabel="Controlled checkbox" class="demo-checkbox">
+                        <SmCheckboxIndicator class="demo-indicator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground">Programmatically controlled checkbox</span>
+                </label>
+            </div>
+        </SuCard>
+    </SuSection>
+
+    @* Custom Styling Example Demo *@
+    <SuSection Title="Custom Styling Example">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Checkboxes are completely headless - style them however you want using data attributes and Tailwind utility classes.
+        </SuText>
+        <SuCard>
+            <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <SmCheckboxRoot DefaultChecked="true" AriaLabel="Primary styled checkbox" class="w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-primary rounded cursor-pointer transition-all hover:border-su-primary/80 hover:scale-105 data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary">
+                        <SmCheckboxIndicator class="text-su-primary-foreground">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground group-hover:text-su-primary transition-colors">Primary Color with Hover Scale</span>
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <SmCheckboxRoot AriaLabel="Success styled checkbox" class="w-6 h-6 flex items-center justify-center bg-transparent border-2 border-green-500 rounded-md cursor-pointer transition-all hover:shadow-lg data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500">
+                        <SmCheckboxIndicator class="text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground group-hover:text-green-500 transition-colors">Success Color with Shadow</span>
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <SmCheckboxRoot DefaultChecked="true" AriaLabel="Circle styled checkbox" class="w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded-full cursor-pointer transition-all hover:border-blue-500 data-[state=checked]:bg-gradient-to-br data-[state=checked]:from-blue-500 data-[state=checked]:to-purple-600 data-[state=checked]:border-transparent">
+                        <SmCheckboxIndicator class="text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground group-hover:text-blue-500 transition-colors">Circular with Gradient</span>
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <SmCheckboxRoot AriaLabel="Animated styled checkbox" class="w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all duration-300 hover:rotate-6 hover:border-su-primary data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary data-[state=checked]:rotate-0">
+                        <SmCheckboxIndicator class="text-su-primary-foreground animate-in zoom-in-50 duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </SmCheckboxIndicator>
+                    </SmCheckboxRoot>
+                    <span class="text-sm text-su-foreground group-hover:text-su-primary transition-colors">Animated with Rotation</span>
+                </label>
+            </div>
+        </SuCard>
+    </SuSection>
+
     @* Features *@
     <SuSection Title="Features">
         <ul class="grid gap-2 text-sm text-su-muted-foreground">
@@ -175,13 +472,39 @@
         <div class="flex flex-col gap-8">
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">Basic Usage</SuHeading>
-                <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+                <SmTabsRoot DefaultValue="code">
+                    <SmTabsList class="inline-flex h-10 items-center justify-start rounded-md bg-su-muted p-1">
+                        <SmTabsTrigger Value="code" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Code</SmTabsTrigger>
+                        <SmTabsTrigger Value="styling-tailwind" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Tailwind Styling</SmTabsTrigger>
+                        <SmTabsTrigger Value="styling-css" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">CSS Styling</SmTabsTrigger>
+                    </SmTabsList>
+                    <SmTabsContent Value="code" class="mt-4">
+                        <SuCodeBlock Code="@basicExampleCode" Language="razor" />
+                    </SmTabsContent>
+                    <SmTabsContent Value="styling-tailwind" class="mt-4">
+                        <SuCodeBlock Code="@basicExampleTailwindCode" Language="razor" />
+                    </SmTabsContent>
+                    <SmTabsContent Value="styling-css" class="mt-4">
+                        <SuCodeBlock Code="@basicExampleCssCode" Language="css" />
+                    </SmTabsContent>
+                </SmTabsRoot>
             </div>
 
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">With Label</SuHeading>
                 <SuText Size="SuTextSize.Small" Muted="true">Wrap the checkbox in a label for better accessibility and click handling.</SuText>
-                <SuCodeBlock Code="@withLabelExampleCode" Language="razor" />
+                <SmTabsRoot DefaultValue="code">
+                    <SmTabsList class="inline-flex h-10 items-center justify-start rounded-md bg-su-muted p-1">
+                        <SmTabsTrigger Value="code" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Code</SmTabsTrigger>
+                        <SmTabsTrigger Value="styling" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Tailwind Styling</SmTabsTrigger>
+                    </SmTabsList>
+                    <SmTabsContent Value="code" class="mt-4">
+                        <SuCodeBlock Code="@withLabelExampleCode" Language="razor" />
+                    </SmTabsContent>
+                    <SmTabsContent Value="styling" class="mt-4">
+                        <SuCodeBlock Code="@withLabelTailwindCode" Language="razor" />
+                    </SmTabsContent>
+                </SmTabsRoot>
             </div>
 
             <div class="flex flex-col gap-4">
@@ -199,7 +522,18 @@
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">Checkbox Group</SuHeading>
                 <SuText Size="SuTextSize.Small" Muted="true">Manage multiple checkboxes as a group.</SuText>
-                <SuCodeBlock Code="@groupExampleCode" Language="razor" />
+                <SmTabsRoot DefaultValue="code">
+                    <SmTabsList class="inline-flex h-10 items-center justify-start rounded-md bg-su-muted p-1">
+                        <SmTabsTrigger Value="code" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Code</SmTabsTrigger>
+                        <SmTabsTrigger Value="styling" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-su-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-su-background data-[state=active]:text-su-foreground data-[state=active]:shadow-sm">Tailwind Styling</SmTabsTrigger>
+                    </SmTabsList>
+                    <SmTabsContent Value="code" class="mt-4">
+                        <SuCodeBlock Code="@groupExampleCode" Language="razor" />
+                    </SmTabsContent>
+                    <SmTabsContent Value="styling" class="mt-4">
+                        <SuCodeBlock Code="@groupTailwindCode" Language="razor" />
+                    </SmTabsContent>
+                </SmTabsRoot>
             </div>
 
             <div class="flex flex-col gap-4">
@@ -221,6 +555,9 @@
         <div class="flex flex-col gap-12">
             <div class="flex flex-col gap-3">
                 <SuHeading Level="SuHeadingLevel.H3">Data Attributes</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Use these data attributes to style checkboxes based on their state.
+                </SuText>
                 <SuTable>
                     <SuTableHeader>
                         <SuTableRow>
@@ -243,8 +580,61 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
-                <SuCodeBlock Code="@cssExampleCode" Language="css" />
+                <SuHeading Level="SuHeadingLevel.H3">Tailwind CSS Examples</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Style checkboxes using Tailwind utility classes and data attribute selectors.
+                </SuText>
+
+                <div class="flex flex-col gap-6">
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Size Variants</SuHeading>
+                        <SuCodeBlock Code="@tailwindSizeVariantsCode" Language="razor" />
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Color Variants</SuHeading>
+                        <SuCodeBlock Code="@tailwindColorVariantsCode" Language="razor" />
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Interactive States</SuHeading>
+                        <SuCodeBlock Code="@tailwindInteractiveStatesCode" Language="razor" />
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Custom Shapes and Effects</SuHeading>
+                        <SuCodeBlock Code="@tailwindCustomShapesCode" Language="razor" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">CSS Examples</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">
+                    Alternative styling approaches using vanilla CSS with data attribute selectors.
+                </SuText>
+
+                <div class="flex flex-col gap-6">
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Basic Styling</SuHeading>
+                        <SuCodeBlock Code="@cssExampleCode" Language="css" />
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Animated Checkbox</SuHeading>
+                        <SuCodeBlock Code="@cssAnimatedExampleCode" Language="css" />
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Custom Indicator with SVG</SuHeading>
+                        <SuCodeBlock Code="@cssCustomIndicatorCode" Language="css" />
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <SuHeading Level="SuHeadingLevel.H4" class="text-base">Themed Variants</SuHeading>
+                        <SuCodeBlock Code="@cssThemedVariantsCode" Language="css" />
+                    </div>
+                </div>
             </div>
         </div>
     </SuSection>
@@ -343,6 +733,81 @@
 @code {
     private bool isChecked1 = true;
     private bool isChecked2 = false;
+
+    // Indeterminate State Demo variables
+    private bool selectAllChecked = false;
+    private bool selectAllIndeterminate = true;
+    private bool item1Checked = true;
+    private bool item2Checked = false;
+    private bool item3Checked = true;
+
+    // Checkbox Group Demo variables
+    private IReadOnlyList<string>? groupDemoValues = new List<string> { "technology" };
+
+    // Controlled Mode Demo variables
+    private bool controlledChecked = false;
+
+    // Event handler when Select All checkbox is clicked
+    private void HandleSelectAllChanged(bool isChecked)
+    {
+        // When parent is clicked:
+        // - If currently unchecked or indeterminate -> check all
+        // - If currently checked -> uncheck all
+        selectAllChecked = isChecked;
+        selectAllIndeterminate = false;
+
+        item1Checked = isChecked;
+        item2Checked = isChecked;
+        item3Checked = isChecked;
+    }
+
+    // Event handler when a child checkbox is clicked
+    private void HandleChildChanged(bool isChecked, int itemNumber)
+    {
+        // Update the specific child
+        switch (itemNumber)
+        {
+            case 1:
+                item1Checked = isChecked;
+                break;
+            case 2:
+                item2Checked = isChecked;
+                break;
+            case 3:
+                item3Checked = isChecked;
+                break;
+        }
+
+        // Update parent state based on children
+        UpdateSelectAllState();
+    }
+
+    private void UpdateSelectAllState()
+    {
+        int checkedCount = 0;
+        if (item1Checked) checkedCount++;
+        if (item2Checked) checkedCount++;
+        if (item3Checked) checkedCount++;
+
+        if (checkedCount == 0)
+        {
+            // All unchecked
+            selectAllChecked = false;
+            selectAllIndeterminate = false;
+        }
+        else if (checkedCount == 3)
+        {
+            // All checked
+            selectAllChecked = true;
+            selectAllIndeterminate = false;
+        }
+        else
+        {
+            // Some checked - indeterminate state
+            selectAllChecked = false;
+            selectAllIndeterminate = true;
+        }
+    }
 
     private List<SuApiProperty> checkboxRootProperties = new()
     {
@@ -567,5 +1032,303 @@
 /* Indicator styles */
 .checkbox-indicator {
     color: white;
+}";
+
+    // New code examples for tabbed sections
+    private const string basicExampleTailwindCode = @"<!-- Basic checkbox with Tailwind styling -->
+<SmCheckboxRoot DefaultChecked=""true""
+    class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all hover:border-su-primary data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">
+        <svg xmlns=""http://www.w3.org/2000/svg"" width=""14"" height=""14"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""3"" stroke-linecap=""round"" stroke-linejoin=""round"">
+            <path d=""M20 6 9 17l-5-5""/>
+        </svg>
+    </SmCheckboxIndicator>
+</SmCheckboxRoot>";
+
+    private const string basicExampleCssCode = @"/* Simple checkbox styling */
+.my-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid hsl(var(--border));
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 150ms;
+}
+
+.my-checkbox:hover {
+    border-color: hsl(var(--primary));
+}
+
+.my-checkbox[data-state=""checked""] {
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+}
+
+.my-checkbox-indicator {
+    color: hsl(var(--primary-foreground));
+}";
+
+    private const string withLabelTailwindCode = @"<!-- Checkbox with label using Tailwind -->
+<label class=""flex items-center gap-3 cursor-pointer group"">
+    <SmCheckboxRoot
+        class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all group-hover:border-su-primary data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+        <SmCheckboxIndicator class=""text-su-primary-foreground"">
+            <svg xmlns=""http://www.w3.org/2000/svg"" width=""14"" height=""14"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""3"" stroke-linecap=""round"" stroke-linejoin=""round"">
+                <path d=""M20 6 9 17l-5-5""/>
+            </svg>
+        </SmCheckboxIndicator>
+    </SmCheckboxRoot>
+    <span class=""text-sm text-su-foreground group-hover:text-su-primary transition-colors"">
+        Accept terms and conditions
+    </span>
+</label>";
+
+    private const string groupTailwindCode = @"@code {
+    private IReadOnlyList<string> values = new[] { ""apple"" };
+}
+
+<SmCheckboxGroup @bind-Values=""values"">
+    <SmCheckboxGroupLabel class=""text-sm font-medium text-su-foreground mb-3"">
+        Favorite Fruits
+    </SmCheckboxGroupLabel>
+
+    <div class=""flex flex-col gap-3"">
+        <label class=""flex items-center gap-3 cursor-pointer group"">
+            <SmCheckboxRoot Value=""apple""
+                class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all group-hover:border-su-primary data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+                <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+            </SmCheckboxRoot>
+            <span class=""text-sm"">Apple</span>
+        </label>
+
+        <label class=""flex items-center gap-3 cursor-pointer group"">
+            <SmCheckboxRoot Value=""banana""
+                class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all group-hover:border-su-primary data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+                <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+            </SmCheckboxRoot>
+            <span class=""text-sm"">Banana</span>
+        </label>
+    </div>
+</SmCheckboxGroup>";
+
+    // Tailwind CSS Examples
+    private const string tailwindSizeVariantsCode = @"<!-- Small (16px) -->
+<SmCheckboxRoot class=""w-4 h-4 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">
+        <svg width=""12"" height=""12"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""3"">
+            <path d=""M20 6 9 17l-5-5""/>
+        </svg>
+    </SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- Medium (20px - default) -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">
+        <svg width=""14"" height=""14"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""3"">
+            <path d=""M20 6 9 17l-5-5""/>
+        </svg>
+    </SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- Large (24px) -->
+<SmCheckboxRoot class=""w-6 h-6 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">
+        <svg width=""16"" height=""16"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""3"">
+            <path d=""M20 6 9 17l-5-5""/>
+        </svg>
+    </SmCheckboxIndicator>
+</SmCheckboxRoot>";
+
+    private const string tailwindColorVariantsCode = @"<!-- Primary (default) -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- Success (green) -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-green-500 rounded cursor-pointer data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500"">
+    <SmCheckboxIndicator class=""text-white"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- Warning (yellow) -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-yellow-500 rounded cursor-pointer data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"">
+    <SmCheckboxIndicator class=""text-white"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- Danger (red) -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-red-500 rounded cursor-pointer data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500"">
+    <SmCheckboxIndicator class=""text-white"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>";
+
+    private const string tailwindInteractiveStatesCode = @"<!-- With focus ring and hover effects -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-su-ring focus-visible:ring-offset-2 hover:border-su-primary hover:scale-105 data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- With shadow on hover -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all hover:shadow-lg hover:border-su-primary data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary data-[state=checked]:shadow-md"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- Disabled state -->
+<SmCheckboxRoot Disabled=""true"" class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-not-allowed opacity-50 data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>";
+
+    private const string tailwindCustomShapesCode = @"<!-- Circular checkbox -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded-full cursor-pointer transition-all hover:border-su-primary data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- With gradient background -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all data-[state=checked]:bg-gradient-to-br data-[state=checked]:from-blue-500 data-[state=checked]:to-purple-600 data-[state=checked]:border-transparent"">
+    <SmCheckboxIndicator class=""text-white"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- With rotation animation -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all duration-300 hover:rotate-6 data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary data-[state=checked]:rotate-0"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground animate-in zoom-in-50 duration-200"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>
+
+<!-- With shadow effects -->
+<SmCheckboxRoot class=""w-5 h-5 flex items-center justify-center bg-transparent border-2 border-su-border rounded cursor-pointer transition-all shadow-sm hover:shadow-md data-[state=checked]:bg-su-primary data-[state=checked]:border-su-primary data-[state=checked]:shadow-lg"">
+    <SmCheckboxIndicator class=""text-su-primary-foreground"">✓</SmCheckboxIndicator>
+</SmCheckboxRoot>";
+
+    // CSS Examples
+    private const string cssAnimatedExampleCode = @"/* Animated checkbox with smooth transitions */
+.animated-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid hsl(var(--border));
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animated-checkbox:hover {
+    border-color: hsl(var(--primary));
+    transform: scale(1.05);
+}
+
+.animated-checkbox[data-state=""checked""] {
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+    animation: checkbox-pop 300ms ease-out;
+}
+
+.animated-checkbox-indicator {
+    color: hsl(var(--primary-foreground));
+    animation: checkmark-appear 200ms ease-out;
+}
+
+@keyframes checkbox-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes checkmark-appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}";
+
+    private const string cssCustomIndicatorCode = @"/* Checkbox with custom checkmark styles */
+.custom-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid hsl(var(--border));
+    border-radius: 0.25rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.custom-checkbox[data-state=""checked""] {
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+}
+
+/* Custom SVG checkmark */
+.custom-checkbox[data-state=""checked""]::after {
+    content: '';
+    position: absolute;
+    width: 0.375rem;
+    height: 0.75rem;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* For indeterminate state - horizontal line */
+.custom-checkbox[data-state=""indeterminate""]::after {
+    content: '';
+    position: absolute;
+    width: 0.625rem;
+    height: 2px;
+    background: white;
+    transform: none;
+}";
+
+    private const string cssThemedVariantsCode = @"/* Success theme */
+.checkbox-success {
+    border-color: #22c55e;
+}
+
+.checkbox-success[data-state=""checked""] {
+    background: #22c55e;
+    border-color: #22c55e;
+}
+
+/* Warning theme */
+.checkbox-warning {
+    border-color: #eab308;
+}
+
+.checkbox-warning[data-state=""checked""] {
+    background: #eab308;
+    border-color: #eab308;
+}
+
+/* Error theme */
+.checkbox-error {
+    border-color: #ef4444;
+}
+
+.checkbox-error[data-state=""checked""] {
+    background: #ef4444;
+    border-color: #ef4444;
+}
+
+/* Info theme */
+.checkbox-info {
+    border-color: #3b82f6;
+}
+
+.checkbox-info[data-state=""checked""] {
+    background: #3b82f6;
+    border-color: #3b82f6;
 }";
 }
