@@ -1,0 +1,396 @@
+# AlertDialog
+
+> A modal dialog for important confirmations that require user acknowledgment, similar to JavaScript's `window.confirm()` but with async/await support.
+
+The AlertDialog component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Service-based programmatic API with async/await
+- Returns boolean result (confirm/cancel)
+- Destructive action styling support
+- Focus trapping within dialog
+- Scroll locking when open
+- Optional Escape key and overlay click dismissal
+- Animation support with proper cleanup
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Setup
+
+### 1. Register the Service
+
+Add the alert dialog service in your `Program.cs`:
+
+```csharp
+builder.Services.AddSummitUI();
+```
+
+### 2. Add the Provider
+
+Place the `SmAlertDialogProvider` once at the root of your application (e.g., in `MainLayout.razor` or `App.razor`):
+
+```razor
+<SmAlertDialogProvider Context="alert">
+    <SmAlertDialogPortal>
+        <SmAlertDialogOverlay class="alert-overlay" />
+        <SmAlertDialogContent class="alert-content">
+            <SmAlertDialogTitle class="alert-title" />
+            <SmAlertDialogDescription class="alert-description" />
+            <div class="alert-actions">
+                <SmAlertDialogCancel class="btn-cancel" />
+                <SmAlertDialogConfirm class="btn-confirm" />
+            </div>
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>
+```
+
+## Anatomy
+
+The AlertDialog uses a provider pattern with templated content:
+
+```razor
+<SmAlertDialogProvider Context="alert">
+    <SmAlertDialogPortal>
+        <SmAlertDialogOverlay />
+        <SmAlertDialogContent>
+            <SmAlertDialogTitle />
+            <SmAlertDialogDescription />
+            <SmAlertDialogCancel />
+            <SmAlertDialogConfirm />
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>
+```
+
+## Sub-components
+
+### SmAlertDialogProvider
+Root provider that enables alert dialogs via `IAlertDialogService`. Place once at app root.
+
+### SmAlertDialogPortal
+Container that renders when dialog is open.
+
+### SmAlertDialogOverlay
+Backdrop overlay. Clicking can optionally close the dialog.
+
+### SmAlertDialogContent
+Main content panel with focus trapping and scroll locking.
+
+### SmAlertDialogTitle
+Displays the title from `AlertDialogOptions.Title`.
+
+### SmAlertDialogDescription
+Displays the message passed to `ConfirmAsync`.
+
+### SmAlertDialogCancel
+Cancel button that returns `false`. Text from `AlertDialogOptions.CancelText`.
+
+### SmAlertDialogConfirm
+Confirm button that returns `true`. Text from `AlertDialogOptions.ConfirmText`.
+
+## API Reference
+
+### IAlertDialogService
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| ConfirmAsync(message, options) | ValueTask<bool> | Shows dialog and returns user's choice |
+
+### AlertDialogOptions
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Title | string? | null | Dialog title |
+| ConfirmText | string | (required) | Text for confirm button |
+| CancelText | string | (required) | Text for cancel button |
+| IsDestructive | bool | false | Whether action is destructive (affects styling) |
+| AllowEscapeClose | bool | true | Whether Escape key closes dialog |
+| AllowOverlayClose | bool | false | Whether clicking overlay closes dialog |
+
+### SmAlertDialogContent
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| TrapFocus | bool | true | Whether to trap focus within dialog |
+| PreventScroll | bool | true | Whether to lock body scroll |
+| OnEscapeKeyDown | EventCallback | - | Callback when Escape pressed |
+| OnOpenAutoFocus | EventCallback | - | Callback after opening |
+| OnCloseAutoFocus | EventCallback | - | Callback after closing |
+
+### SmAlertDialogTitle
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "h2" | HTML element to render |
+| ChildContent | RenderFragment? | - | Custom content (replaces default title) |
+
+### SmAlertDialogDescription
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| As | string | "p" | HTML element to render |
+| ChildContent | RenderFragment? | - | Custom content (replaces default message) |
+
+### SmAlertDialogCancel / SmAlertDialogConfirm
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| AsChild | bool | false | When true, passes attributes to child |
+| ChildContent | RenderFragment<AsChildContext>? | - | Custom button content |
+
+## Examples
+
+### Basic Confirmation
+
+```razor
+@inject IAlertDialogService AlertDialogService
+
+<button @onclick="ShowConfirmation">Delete Item</button>
+
+@code {
+    private async Task ShowConfirmation()
+    {
+        var confirmed = await AlertDialogService.ConfirmAsync(
+            "Are you sure you want to delete this item?",
+            new AlertDialogOptions
+            {
+                Title = "Confirm Delete",
+                ConfirmText = "Delete",
+                CancelText = "Cancel"
+            });
+
+        if (confirmed)
+        {
+            // Perform delete action
+        }
+    }
+}
+```
+
+### Destructive Action
+
+For destructive actions, the cancel button receives initial focus.
+
+```razor
+@inject IAlertDialogService AlertDialogService
+
+<button @onclick="ShowDestructiveConfirmation">Delete Account</button>
+
+@code {
+    private async Task ShowDestructiveConfirmation()
+    {
+        var confirmed = await AlertDialogService.ConfirmAsync(
+            "This will permanently delete your account and all associated data. This action cannot be undone.",
+            new AlertDialogOptions
+            {
+                Title = "Delete Account",
+                ConfirmText = "Delete Account",
+                CancelText = "Keep Account",
+                IsDestructive = true
+            });
+
+        if (confirmed)
+        {
+            // Delete account
+        }
+    }
+}
+```
+
+### Custom Provider Template
+
+Customize the dialog appearance in your layout:
+
+```razor
+<SmAlertDialogProvider Context="alert">
+    <SmAlertDialogPortal class="alert-portal">
+        <SmAlertDialogOverlay class="alert-overlay" />
+        <SmAlertDialogContent class="alert-content">
+            <div class="alert-header">
+                <SmAlertDialogTitle class="alert-title" />
+            </div>
+            <div class="alert-body">
+                <SmAlertDialogDescription class="alert-description" />
+            </div>
+            <div class="alert-footer">
+                <SmAlertDialogCancel class="btn btn-secondary" />
+                <SmAlertDialogConfirm class="btn btn-primary" />
+            </div>
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>
+```
+
+### With Custom Button Content
+
+```razor
+<SmAlertDialogProvider Context="alert">
+    <SmAlertDialogPortal>
+        <SmAlertDialogOverlay class="alert-overlay" />
+        <SmAlertDialogContent class="alert-content">
+            <SmAlertDialogTitle />
+            <SmAlertDialogDescription />
+            <div class="alert-actions">
+                <SmAlertDialogCancel class="btn-cancel">
+                    <span class="icon">✕</span> Cancel
+                </SmAlertDialogCancel>
+                <SmAlertDialogConfirm class="btn-confirm">
+                    <span class="icon">✓</span> Confirm
+                </SmAlertDialogConfirm>
+            </div>
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>
+```
+
+### Preventing Dismissal
+
+Require explicit button click (no Escape or overlay close):
+
+```razor
+var confirmed = await AlertDialogService.ConfirmAsync(
+    "Please review the terms carefully before proceeding.",
+    new AlertDialogOptions
+    {
+        Title = "Accept Terms",
+        ConfirmText = "I Accept",
+        CancelText = "Decline",
+        AllowEscapeClose = false,
+        AllowOverlayClose = false
+    });
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Dialog open state |
+| data-destructive | (presence) | Applied when IsDestructive is true |
+| data-summit-alertdialog-portal | - | Applied to portal |
+| data-summit-alertdialog-overlay | - | Applied to overlay |
+| data-summit-alertdialog-title | - | Applied to title |
+| data-summit-alertdialog-description | - | Applied to description |
+| data-summit-alertdialog-cancel | - | Applied to cancel button |
+| data-summit-alertdialog-confirm | - | Applied to confirm button |
+
+### CSS Example
+
+```css
+/* Overlay */
+.alert-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(var(--su-foreground) / 0.5);
+}
+
+.alert-overlay[data-state="closed"] {
+    display: none;
+}
+
+/* Content */
+.alert-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgb(var(--su-card));
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgb(var(--su-foreground) / 0.15);
+    min-width: 300px;
+    max-width: 450px;
+    padding: 24px;
+}
+
+.alert-content[data-state="closed"] {
+    display: none;
+}
+
+/* Title */
+.alert-title {
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.alert-title[data-destructive] {
+    color: rgb(var(--su-destructive));
+}
+
+/* Description */
+.alert-description {
+    margin: 0 0 16px;
+    color: rgb(var(--su-muted-foreground));
+}
+
+/* Actions */
+.alert-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* Cancel button */
+.btn-cancel {
+    padding: 8px 16px;
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Confirm button */
+.btn-confirm {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background: rgb(var(--su-primary));
+    color: rgb(var(--su-primary-foreground));
+    cursor: pointer;
+}
+
+.btn-confirm[data-destructive] {
+    background: rgb(var(--su-destructive));
+    color: rgb(var(--su-destructive-foreground));
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Escape | Close dialog (if AllowEscapeClose is true) |
+| Tab | Navigate between buttons |
+| Shift + Tab | Navigate backwards |
+| Enter / Space | Activate focused button |
+
+### ARIA Attributes
+
+- **Content:** Has `role="alertdialog"`, `aria-modal="true"`, `aria-labelledby`, and `aria-describedby`
+- **Title:** Linked via `aria-labelledby`
+- **Description:** Linked via `aria-describedby`
+
+### Focus Management
+
+- When opened, focus moves to the first focusable element
+- For destructive actions (`IsDestructive: true`), the cancel button receives initial focus
+- Focus is trapped within the dialog
+- When closed, focus returns to the previously focused element
+
+### Best Practices
+
+- Always provide clear, descriptive titles and messages
+- Use `IsDestructive: true` for irreversible actions
+- Consider disabling Escape/overlay close for critical confirmations
+- Button text should clearly indicate the action (e.g., "Delete" not just "OK")

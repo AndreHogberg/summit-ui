@@ -1,0 +1,326 @@
+# Dialog
+
+> A modal dialog component that overlays the page content, requiring user interaction before continuing.
+
+The Dialog component is part of SummitUI, a Blazor component library focused on WCAG-compliant, fully customizable headless components.
+
+## Features
+
+- Modal overlay with backdrop
+- Focus trapping within dialog content
+- Scroll locking when open
+- Nested dialog support with proper z-index stacking
+- Controlled and uncontrolled modes
+- Close on Escape key or overlay click
+- Animation support with proper cleanup
+- WCAG compliant with proper ARIA attributes
+
+## Installation
+
+```bash
+dotnet add package SummitUI
+```
+
+## Anatomy
+
+Import the components and structure them as follows:
+
+```razor
+<SmDialogRoot>
+    <SmDialogTrigger class="dialog-trigger">Open Dialog</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class="dialog-overlay" />
+        <SmDialogContent class="dialog-content">
+            <SmDialogTitle class="dialog-title">Dialog Title</SmDialogTitle>
+            <SmDialogDescription class="dialog-description">
+                Dialog description text.
+            </SmDialogDescription>
+            <SmDialogClose class="dialog-close">Close</SmDialogClose>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
+```
+
+## Sub-components
+
+### SmDialogRoot
+Root container managing dialog state. Provides cascading context to child components.
+
+### SmDialogTrigger
+Button that opens the dialog when clicked. Supports the AsChild pattern.
+
+### SmDialogPortal
+Renders dialog children in a fixed-position container with depth-based z-index.
+
+### SmDialogOverlay
+Backdrop overlay that covers the page. Clicking closes the dialog by default.
+
+### SmDialogContent
+Main content panel with focus trapping, scroll locking, and keyboard handling.
+
+### SmDialogTitle
+Accessible title linked to the dialog via aria-labelledby.
+
+### SmDialogDescription
+Accessible description linked to the dialog via aria-describedby.
+
+### SmDialogClose
+Close button that dismisses the dialog. Supports the AsChild pattern.
+
+## API Reference
+
+### SmDialogRoot
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Open | bool? | null | Controlled open state |
+| DefaultOpen | bool | false | Default open state (uncontrolled) |
+| OpenChanged | EventCallback<bool> | - | Open state change callback |
+| OnOpen | EventCallback | - | Callback when dialog opens |
+| OnClose | EventCallback | - | Callback when dialog closes |
+
+### SmDialogTrigger
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| AsChild | bool | false | When true, passes attributes to child instead of rendering button |
+| ChildContent | RenderFragment<AsChildContext>? | - | Child content with AsChild context |
+
+### SmDialogContent
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| TrapFocus | bool | true | Whether to trap focus within dialog |
+| PreventScroll | bool | true | Whether to lock body scroll |
+| EscapeKeyBehavior | EscapeKeyBehavior | Close | Escape key behavior (Close/Ignore) |
+| OutsideClickBehavior | OutsideClickBehavior | Close | Outside click behavior |
+| OnInteractOutside | EventCallback | - | Callback for outside clicks |
+| OnEscapeKeyDown | EventCallback | - | Callback for Escape key |
+| OnOpenAutoFocus | EventCallback | - | Callback after opening and focus |
+| OnCloseAutoFocus | EventCallback | - | Callback after closing |
+
+### SmDialogOverlay
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| CloseOnClick | bool | true | Whether clicking closes the dialog |
+| OnClick | EventCallback<MouseEventArgs> | - | Click callback |
+
+### SmDialogClose
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| AsChild | bool | false | When true, passes attributes to child |
+| AriaLabel | string? | null | Accessible label (uses localized default) |
+
+## Examples
+
+### Basic Dialog
+
+```razor
+<SmDialogRoot>
+    <SmDialogTrigger class="dialog-trigger">Open Dialog</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class="dialog-overlay" />
+        <SmDialogContent class="dialog-content">
+            <SmDialogTitle class="dialog-title">Dialog Title</SmDialogTitle>
+            <SmDialogDescription class="dialog-description">
+                This is a basic dialog description.
+            </SmDialogDescription>
+            <SmDialogClose class="dialog-close">Close</SmDialogClose>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
+```
+
+### Controlled Mode
+
+Control the open state externally.
+
+```razor
+@code {
+    private bool _isOpen;
+}
+
+<SmDialogRoot @bind-Open="_isOpen">
+    <SmDialogTrigger class="dialog-trigger">
+        @(_isOpen ? "Open" : "Closed")
+    </SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class="dialog-overlay" />
+        <SmDialogContent class="dialog-content">
+            <SmDialogTitle>Controlled Dialog</SmDialogTitle>
+            <button type="button" @onclick="() => _isOpen = false">
+                Internal Close
+            </button>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
+
+<button type="button" @onclick="() => _isOpen = !_isOpen">
+    External Toggle
+</button>
+```
+
+### Nested Dialogs
+
+Dialogs can be nested with automatic z-index management.
+
+```razor
+<SmDialogRoot>
+    <SmDialogTrigger>Open First Dialog</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class="dialog-overlay" />
+        <SmDialogContent class="dialog-content">
+            <SmDialogTitle>First Dialog</SmDialogTitle>
+
+            <SmDialogRoot>
+                <SmDialogTrigger>Open Nested Dialog</SmDialogTrigger>
+                <SmDialogPortal>
+                    <SmDialogOverlay class="dialog-overlay" />
+                    <SmDialogContent class="dialog-content">
+                        <SmDialogTitle>Nested Dialog</SmDialogTitle>
+                        <SmDialogClose>Close</SmDialogClose>
+                    </SmDialogContent>
+                </SmDialogPortal>
+            </SmDialogRoot>
+
+            <SmDialogClose>Close</SmDialogClose>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
+```
+
+### With AsChild Pattern
+
+Use custom elements instead of the default button.
+
+```razor
+<SmDialogRoot>
+    <SmDialogTrigger AsChild>
+        <a href="#" @attributes="context.Attrs" @ref="context.RefCallback">
+            Open as link
+        </a>
+    </SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class="dialog-overlay" />
+        <SmDialogContent class="dialog-content">
+            <SmDialogTitle>Custom Trigger</SmDialogTitle>
+            <SmDialogClose>Close</SmDialogClose>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
+```
+
+## Styling
+
+### Data Attributes
+
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| data-state | "open" \| "closed" | Dialog open state |
+| data-summit-dialog-trigger | - | Applied to trigger element |
+| data-summit-dialog-portal | - | Applied to portal container |
+| data-summit-dialog-close | - | Applied to close button |
+| data-depth | number | Nesting depth (0 for root) |
+
+### CSS Variables
+
+| Variable | Description |
+|----------|-------------|
+| --summit-dialog-depth | Current dialog nesting depth |
+| --summit-dialog-nested-count | Number of nested dialogs open |
+
+### CSS Example
+
+```css
+/* Trigger */
+.dialog-trigger {
+    padding: 8px 16px;
+    background: rgb(var(--su-primary));
+    color: rgb(var(--su-primary-foreground));
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dialog-trigger[data-state="open"] {
+    opacity: 0.9;
+}
+
+/* Overlay */
+.dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(var(--su-foreground) / 0.5);
+}
+
+.dialog-overlay[data-state="closed"] {
+    display: none;
+}
+
+/* Content */
+.dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgb(var(--su-card));
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgb(var(--su-foreground) / 0.15);
+    min-width: 300px;
+    padding: 24px;
+}
+
+.dialog-content[data-state="closed"] {
+    display: none;
+}
+
+/* Title */
+.dialog-title {
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Description */
+.dialog-description {
+    margin: 0 0 16px;
+    color: rgb(var(--su-muted-foreground));
+}
+
+/* Close button */
+.dialog-close {
+    padding: 8px 16px;
+    border: 1px solid rgb(var(--su-border));
+    border-radius: 4px;
+    cursor: pointer;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| Enter / Space | Open dialog (on trigger) |
+| Escape | Close dialog |
+| Tab | Navigate within dialog (focus trapped) |
+| Shift + Tab | Navigate backwards within dialog |
+
+### ARIA Attributes
+
+- **Trigger:** Has `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls`
+- **Content:** Has `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, and `aria-describedby`
+- **Title:** Linked via `aria-labelledby`
+- **Description:** Linked via `aria-describedby`
+- **Close:** Has `aria-label` for screen readers
+
+### Focus Management
+
+- When opened, focus moves to the first focusable element in the content
+- Focus is trapped within the dialog (Tab cycles through focusable elements)
+- When closed, focus returns to the trigger element
+- Nested dialogs maintain separate focus traps
