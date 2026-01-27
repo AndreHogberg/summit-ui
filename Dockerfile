@@ -60,7 +60,8 @@ RUN dotnet publish SummitUI.Docs.csproj \
     -c $BUILD_CONFIGURATION \
     -o /app/publish \
     -p:RunNpmBuild=false \
-    -p:UseAppHost=false
+    -p:UseAppHost=false \
+    -p:RunAOTCompilation=false
 
 
 # Stage 3: Final runtime image
