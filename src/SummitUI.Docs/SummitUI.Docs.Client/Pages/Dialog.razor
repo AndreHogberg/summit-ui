@@ -27,7 +27,7 @@
                     Open Dialog
                 </SmDialogTrigger>
                 <SmDialogPortal>
-                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                <SmDialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in duration-200" />
                     <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-lg h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
                         <SmDialogTitle class="text-lg font-semibold">Edit Profile</SmDialogTitle>
                         <SmDialogDescription class="text-sm text-su-muted-foreground">
@@ -64,7 +64,7 @@
                     Open Parent Dialog
                 </SmDialogTrigger>
                 <SmDialogPortal>
-                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in duration-200" />
                     <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-lg h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
                         <SmDialogTitle class="text-lg font-semibold">Parent Dialog</SmDialogTitle>
                         <SmDialogDescription class="text-sm text-su-muted-foreground">
@@ -81,7 +81,7 @@
                                     Open Nested Dialog
                                 </SmDialogTrigger>
                                 <SmDialogPortal>
-                                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in duration-200" />
                                     <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-md h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
                                         <SmDialogTitle class="text-lg font-semibold">Nested Dialog (Depth 1)</SmDialogTitle>
                                         <SmDialogDescription class="text-sm text-su-muted-foreground">
@@ -98,7 +98,7 @@
                                                     Go Deeper
                                                 </SmDialogTrigger>
                                                 <SmDialogPortal>
-                                                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+                                                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in duration-200" />
                                                     <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-sm h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
                                                         <SmDialogTitle class="text-lg font-semibold">Deep Nested (Depth 2)</SmDialogTitle>
                                                         <SmDialogDescription class="text-sm text-su-muted-foreground">
@@ -126,6 +126,58 @@
                             <SmDialogClose class="inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent">
                                 Close Parent
                             </SmDialogClose>
+                        </div>
+                    </SmDialogContent>
+                </SmDialogPortal>
+            </SmDialogRoot>
+        </SuCard>
+    </SuSection>
+
+    @* Dialog with AlertDialog Demo *@
+    <SuSection Title="Dialog with AlertDialog Demo">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            Use AlertDialog for destructive actions within a Dialog. The AlertDialog appears on top of the Dialog with proper z-index stacking.
+        </SuText>
+        <SuCard>
+            <SmDialogRoot>
+                <SmDialogTrigger class="inline-flex items-center justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90 transition-colors">
+                    Edit Settings
+                </SmDialogTrigger>
+                <SmDialogPortal>
+                    <SmDialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in duration-200" />
+                    <SmDialogContent class="fixed inset-0 z-50 m-auto grid w-full max-w-lg h-fit gap-4 border bg-su-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 rounded-lg">
+                        <SmDialogTitle class="text-lg font-semibold">Settings</SmDialogTitle>
+                        <SmDialogDescription class="text-sm text-su-muted-foreground">
+                            Manage your account settings and preferences.
+                        </SmDialogDescription>
+                        <div class="grid gap-4 py-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
+                                <label class="text-sm font-medium">Username</label>
+                                <input class="sm:col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" value="johndoe" />
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
+                                <label class="text-sm font-medium">Email</label>
+                                <input class="sm:col-span-3 flex h-10 w-full rounded-md border border-su-input bg-su-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-su-ring" value="john@example.com" type="email" />
+                            </div>
+                        </div>
+                        <div class="border-t border-su-border pt-4 mt-2">
+                            <h4 class="text-sm font-medium text-su-destructive mb-2">Danger Zone</h4>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-su-muted-foreground">Permanently delete your account</p>
+                                <button @onclick="ShowDeleteConfirmation" class="inline-flex items-center justify-center rounded-md bg-su-destructive px-4 py-2 text-sm font-medium text-su-destructive-foreground hover:bg-su-destructive/90 transition-colors">
+                                    Delete Account
+                                </button>
+                            </div>
+                            @if (!string.IsNullOrEmpty(deleteResult))
+                            {
+                                <p class="mt-3 text-sm @(deleteResult.Contains("deleted") ? "text-su-destructive" : "text-su-muted-foreground")">
+                                    @deleteResult
+                                </p>
+                            }
+                        </div>
+                        <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+                            <SmDialogClose class="mt-2 sm:mt-0 inline-flex justify-center rounded-md border border-su-input bg-su-background px-4 py-2 text-sm font-medium hover:bg-su-accent sm:mr-2">Close</SmDialogClose>
+                            <SmDialogClose class="inline-flex justify-center rounded-md bg-su-primary px-4 py-2 text-sm font-medium text-su-primary-foreground hover:bg-su-primary/90">Save Changes</SmDialogClose>
                         </div>
                     </SmDialogContent>
                 </SmDialogPortal>
@@ -292,6 +344,12 @@
                 <SuText Size="SuTextSize.Small" Muted="true">A dialog containing a form with multiple focusable elements.</SuText>
                 <SuCodeBlock Code="@formExampleCode" Language="razor" />
             </div>
+
+            <div class="flex flex-col gap-4">
+                <SuHeading Level="SuHeadingLevel.H3">Dialog with AlertDialog</SuHeading>
+                <SuText Size="SuTextSize.Small" Muted="true">Trigger an AlertDialog confirmation from within a Dialog for destructive actions.</SuText>
+                <SuCodeBlock Code="@dialogWithAlertDialogCode" Language="razor" />
+            </div>
         </div>
     </SuSection>
 
@@ -341,6 +399,14 @@
                     </SuTableBody>
                 </SuTable>
             </div>
+
+            <SuAlert>
+                <div class="text-sm">
+                    <strong class="text-su-foreground">Overlay animation tip:</strong> Overlays remain mounted until close
+                    animations finish. To avoid a brief flash at the end, keep closed overlays transparent (for example,
+                    <code>data-[state=closed]:opacity-0</code> alongside your <code>animate-out</code> classes).
+                </div>
+            </SuAlert>
 
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
@@ -403,6 +469,26 @@
 </div>
 
 @code {
+    [Inject] private IAlertDialogService AlertDialogService { get; set; } = default!;
+
+    private string? deleteResult;
+
+    private async Task ShowDeleteConfirmation()
+    {
+        var confirmed = await AlertDialogService.ConfirmAsync(
+            "This will permanently delete your account and all associated data. This action cannot be undone.",
+            new AlertDialogOptions
+            {
+                Title = "Delete Account",
+                ConfirmText = "Delete",
+                CancelText = "Cancel",
+                IsDestructive = true
+            });
+
+        deleteResult = confirmed ? "Account deleted!" : "Deletion cancelled.";
+        StateHasChanged();
+    }
+
     private List<SuApiProperty> dialogRootProperties = new()
     {
         new() { Name = "Open", Type = "bool?", Default = "null", Description = "Controlled open state (null for uncontrolled mode)" },
@@ -687,6 +773,61 @@
     to {
         opacity: 0;
         scale: 0.95;
+    }
+}";
+
+    private const string dialogWithAlertDialogCode = @"@inject IAlertDialogService AlertDialogService
+
+<SmDialogRoot>
+    <SmDialogTrigger class=""btn btn-primary"">Edit Settings</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class=""dialog-overlay"">
+            <SmDialogContent class=""dialog-content"">
+                <SmDialogTitle>Settings</SmDialogTitle>
+                <SmDialogDescription>
+                    Manage your account settings and preferences.
+                </SmDialogDescription>
+
+                <div class=""dialog-form"">
+                    <!-- Settings form fields here -->
+                </div>
+
+                <div class=""danger-zone"">
+                    <h4>Danger Zone</h4>
+                    <button @onclick=""ShowDeleteConfirmation"" class=""btn btn-destructive"">
+                        Delete Account
+                    </button>
+                    @if (!string.IsNullOrEmpty(deleteResult))
+                    {
+                        <p>@deleteResult</p>
+                    }
+                </div>
+
+                <div class=""dialog-actions"">
+                    <SmDialogClose class=""btn btn-secondary"">Close</SmDialogClose>
+                    <SmDialogClose class=""btn btn-primary"">Save Changes</SmDialogClose>
+                </div>
+            </SmDialogContent>
+        </SmDialogOverlay>
+    </SmDialogPortal>
+</SmDialogRoot>
+
+@code {
+    private string? deleteResult;
+
+    private async Task ShowDeleteConfirmation()
+    {
+        var confirmed = await AlertDialogService.ConfirmAsync(
+            ""This will permanently delete your account. This action cannot be undone."",
+            new AlertDialogOptions
+            {
+                Title = ""Delete Account"",
+                ConfirmText = ""Delete"",
+                CancelText = ""Cancel"",
+                IsDestructive = true
+            });
+
+        deleteResult = confirmed ? ""Account deleted!"" : ""Deletion cancelled."";
     }
 }";
 }

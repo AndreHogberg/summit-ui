@@ -150,8 +150,9 @@ public partial class SmDialogRoot : ComponentBase
         }
 
         _context.IsOpen = false;
-        // Note: IsContentAnimatingClosed and IsOverlayAnimatingClosed are set by
-        // DialogContent and DialogOverlay respectively when they register animation watchers
+        // Keep content/overlay rendered during close so animations can run
+        _context.IsContentAnimatingClosed = true;
+        _context.IsOverlayAnimatingClosed = true;
         await OpenChanged.InvokeAsync(false);
         await OnClose.InvokeAsync();
         StateHasChanged();

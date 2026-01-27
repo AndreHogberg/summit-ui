@@ -7,6 +7,17 @@
 let scrollLockCount = 0;
 let originalStyles = null;
 let scrollPosition = 0;
+let scrollLockHandlers = null;
+
+function isInDialogContent(target) {
+    if (!(target instanceof Element)) return false;
+    return !!target.closest('[data-summit-dialog-content]');
+}
+
+function preventBackgroundScroll(event) {
+    if (isInDialogContent(event.target)) return;
+    event.preventDefault();
+}
 
 /**
  * Locks body scroll to prevent background scrolling when a modal is open.
@@ -20,18 +31,20 @@ export function lockScroll() {
         // Store current scroll position
         scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
-        // Store original body styles
+        // Store original styles
         originalStyles = {
-            overflow: document.body.style.overflow,
-            position: document.body.style.position,
-            top: document.body.style.top,
-            left: document.body.style.left,
-            right: document.body.style.right,
-            width: document.body.style.width,
-            paddingRight: document.body.style.paddingRight
+            bodyOverflow: document.body.style.overflow,
+            bodyPosition: document.body.style.position,
+            bodyTop: document.body.style.top,
+            bodyLeft: document.body.style.left,
+            bodyRight: document.body.style.right,
+            bodyWidth: document.body.style.width,
+            bodyPaddingRight: document.body.style.paddingRight,
+            htmlOverflow: document.documentElement.style.overflow,
+            htmlPaddingRight: document.documentElement.style.paddingRight
         };
 
-        // Calculate scrollbar width to prevent layout shift
+        // Calculate scrollbar width for compensation
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 
         // Check for iOS Safari which needs special handling
@@ -48,11 +61,37 @@ export function lockScroll() {
         }
 
         document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
 
-        // Compensate for scrollbar removal to prevent layout shift
+        // Compensate on body to avoid layout shift and gutter bar
         if (scrollbarWidth > 0) {
             document.body.style.paddingRight = `${scrollbarWidth}px`;
         }
+
+        // Prevent wheel/touch/scroll keys from scrolling background
+        scrollLockHandlers = {
+            wheel: (event) => preventBackgroundScroll(event),
+            touchmove: (event) => preventBackgroundScroll(event),
+            keydown: (event) => {
+                if (isInDialogContent(event.target)) return;
+                const keys = [
+                    'ArrowUp',
+                    'ArrowDown',
+                    'PageUp',
+                    'PageDown',
+                    'Home',
+                    'End',
+                    'Space'
+                ];
+                if (keys.includes(event.code) || keys.includes(event.key)) {
+                    event.preventDefault();
+                }
+            }
+        };
+
+        document.addEventListener('wheel', scrollLockHandlers.wheel, { passive: false });
+        document.addEventListener('touchmove', scrollLockHandlers.touchmove, { passive: false });
+        document.addEventListener('keydown', scrollLockHandlers.keydown, { passive: false });
     }
 }
 
@@ -69,17 +108,26 @@ export function unlockScroll() {
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
             // Restore original styles
-            document.body.style.overflow = originalStyles.overflow;
-            document.body.style.position = originalStyles.position;
-            document.body.style.top = originalStyles.top;
-            document.body.style.left = originalStyles.left;
-            document.body.style.right = originalStyles.right;
-            document.body.style.width = originalStyles.width;
-            document.body.style.paddingRight = originalStyles.paddingRight;
+            document.body.style.overflow = originalStyles.bodyOverflow;
+            document.body.style.position = originalStyles.bodyPosition;
+            document.body.style.top = originalStyles.bodyTop;
+            document.body.style.left = originalStyles.bodyLeft;
+            document.body.style.right = originalStyles.bodyRight;
+            document.body.style.width = originalStyles.bodyWidth;
+            document.body.style.paddingRight = originalStyles.bodyPaddingRight;
+            document.documentElement.style.overflow = originalStyles.htmlOverflow;
+            document.documentElement.style.paddingRight = originalStyles.htmlPaddingRight;
 
             // Restore scroll position for iOS
             if (isIOS) {
                 window.scrollTo(0, scrollPosition);
+            }
+
+            if (scrollLockHandlers) {
+                document.removeEventListener('wheel', scrollLockHandlers.wheel);
+                document.removeEventListener('touchmove', scrollLockHandlers.touchmove);
+                document.removeEventListener('keydown', scrollLockHandlers.keydown);
+                scrollLockHandlers = null;
             }
 
             originalStyles = null;
@@ -96,16 +144,25 @@ export function forceUnlockScroll() {
     if (originalStyles) {
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-        document.body.style.overflow = originalStyles.overflow;
-        document.body.style.position = originalStyles.position;
-        document.body.style.top = originalStyles.top;
-        document.body.style.left = originalStyles.left;
-        document.body.style.right = originalStyles.right;
-        document.body.style.width = originalStyles.width;
-        document.body.style.paddingRight = originalStyles.paddingRight;
+        document.body.style.overflow = originalStyles.bodyOverflow;
+        document.body.style.position = originalStyles.bodyPosition;
+        document.body.style.top = originalStyles.bodyTop;
+        document.body.style.left = originalStyles.bodyLeft;
+        document.body.style.right = originalStyles.bodyRight;
+        document.body.style.width = originalStyles.bodyWidth;
+        document.body.style.paddingRight = originalStyles.bodyPaddingRight;
+        document.documentElement.style.overflow = originalStyles.htmlOverflow;
+        document.documentElement.style.paddingRight = originalStyles.htmlPaddingRight;
 
         if (isIOS) {
             window.scrollTo(0, scrollPosition);
+        }
+
+        if (scrollLockHandlers) {
+            document.removeEventListener('wheel', scrollLockHandlers.wheel);
+            document.removeEventListener('touchmove', scrollLockHandlers.touchmove);
+            document.removeEventListener('keydown', scrollLockHandlers.keydown);
+            scrollLockHandlers = null;
         }
 
         originalStyles = null;

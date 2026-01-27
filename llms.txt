@@ -126,6 +126,16 @@ All components expose data attributes for CSS styling:
 [data-orientation="horizontal"] { flex-direction: row; }
 ```
 
+### Overlay Close Animations
+
+Overlays stay mounted until close animations finish. To avoid a flash after the
+animate-out ends, keep the closed state transparent:
+
+```css
+/* Example for Dialog/Popover overlays */
+[data-state="closed"] { opacity: 0; }
+```
+
 ### Custom Element Rendering
 
 Most components support the `As` parameter to render as different HTML elements:

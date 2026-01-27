@@ -204,6 +204,14 @@
                 </SuTable>
             </div>
 
+            <SuAlert>
+                <div class="text-sm">
+                    <strong class="text-su-foreground">Overlay animation tip:</strong> If you animate overlays on close,
+                    keep the closed state transparent (for example, <code>data-[state=closed]:opacity-0</code>).
+                    Overlays stay mounted until animations complete, so this prevents a flash after <code>animate-out</code>.
+                </div>
+            </SuAlert>
+
             <div class="flex flex-col gap-4">
                 <SuHeading Level="SuHeadingLevel.H3">CSS Example</SuHeading>
                 <SuCodeBlock Code="@cssExampleCode" Language="css" />

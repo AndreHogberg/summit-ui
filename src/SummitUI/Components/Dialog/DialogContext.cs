@@ -22,22 +22,36 @@ public sealed class DialogContext : OpenCloseContextBase
     /// </summary>
     public string DialogId => ComponentId;
 
-    /// <summary>
-    /// Whether the dialog is currently animating closed.
-    /// Used to keep content in DOM during close animations.
-    /// True if either content or overlay is still animating.
-    /// </summary>
-    public new bool IsAnimatingClosed => IsContentAnimatingClosed || IsOverlayAnimatingClosed;
+    private bool _isContentAnimatingClosed;
+    private bool _isOverlayAnimatingClosed;
 
     /// <summary>
     /// Whether the dialog content is currently animating closed.
     /// </summary>
-    public bool IsContentAnimatingClosed { get; set; }
+    public bool IsContentAnimatingClosed
+    {
+        get => _isContentAnimatingClosed;
+        set
+        {
+            if (_isContentAnimatingClosed == value) return;
+            _isContentAnimatingClosed = value;
+            UpdateAnimatingClosed();
+        }
+    }
 
     /// <summary>
     /// Whether the dialog overlay is currently animating closed.
     /// </summary>
-    public bool IsOverlayAnimatingClosed { get; set; }
+    public bool IsOverlayAnimatingClosed
+    {
+        get => _isOverlayAnimatingClosed;
+        set
+        {
+            if (_isOverlayAnimatingClosed == value) return;
+            _isOverlayAnimatingClosed = value;
+            UpdateAnimatingClosed();
+        }
+    }
 
     /// <summary>
     /// Reference to the parent dialog context if this dialog is nested.
@@ -107,4 +121,10 @@ public sealed class DialogContext : OpenCloseContextBase
     /// ID for the description element (used for aria-describedby).
     /// </summary>
     public string DescriptionId => GetElementId("description");
+
+    private void UpdateAnimatingClosed()
+    {
+        // Keep portal/content rendered while either piece animates out.
+        IsAnimatingClosed = _isContentAnimatingClosed || _isOverlayAnimatingClosed;
+    }
 }
