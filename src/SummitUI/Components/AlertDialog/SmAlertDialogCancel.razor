@@ -1,4 +1,5 @@
 @namespace SummitUI
+@using Microsoft.AspNetCore.Components.Web
 
 @if (AsChild)
 {
@@ -15,6 +16,7 @@ else
         data-summit-alertdialog-cancel
         data-destructive="@(Context.Options!.IsDestructive ? "" : null)"
         @onclick="HandleClick"
+        @onkeydown="HandleKeyDown"
         @ref="_elementRef"
         @attributes="AdditionalAttributes">
         @if (ChildContent is not null)
@@ -65,7 +67,8 @@ else
         {
             ["type"] = "button",
             ["data-summit-alertdialog-cancel"] = true,
-            ["onclick"] = EventCallback.Factory.Create(this, HandleClick)
+            ["onclick"] = EventCallback.Factory.Create(this, HandleClick),
+            ["onkeydown"] = EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDown)
         };
 
         if (Context.Options!.IsDestructive)
@@ -86,4 +89,12 @@ else
     }
 
     private void HandleClick() => Context.Complete(false);
+
+    private void HandleKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key is "Enter" or " " or "Space" or "Spacebar")
+        {
+            Context.Complete(false);
+        }
+    }
 }

@@ -86,21 +86,21 @@ public partial class SmCalendarDay
             case "PageUp":
                 if (args.ShiftKey)
                 {
-                    Context.PreviousYear();
+                    Context.MoveFocusYears(-1);
                 }
                 else
                 {
-                    Context.PreviousMonth();
+                    Context.MoveFocusMonths(-1);
                 }
                 break;
             case "PageDown":
                 if (args.ShiftKey)
                 {
-                    Context.NextYear();
+                    Context.MoveFocusYears(1);
                 }
                 else
                 {
-                    Context.NextMonth();
+                    Context.MoveFocusMonths(1);
                 }
                 break;
             case "Enter":

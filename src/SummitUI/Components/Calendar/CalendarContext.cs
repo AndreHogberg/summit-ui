@@ -411,6 +411,22 @@ public class CalendarContext
     }
 
     /// <summary>
+    /// Moves focus by a number of months, preserving keyboard focus.
+    /// </summary>
+    public void MoveFocusMonths(int months)
+    {
+        FocusDate(_focusedDate.AddMonths(months));
+    }
+
+    /// <summary>
+    /// Moves focus by a number of years, preserving keyboard focus.
+    /// </summary>
+    public void MoveFocusYears(int years)
+    {
+        FocusDate(_focusedDate.AddYears(years));
+    }
+
+    /// <summary>
     /// Moves focus to the first day of the current week.
     /// </summary>
     public void FocusStartOfWeek()
