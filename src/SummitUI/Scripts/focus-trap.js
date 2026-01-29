@@ -1,9 +1,17 @@
 /**
  * SummitUI Focus Trap Module
  * Reusable focus management for modals, dialogs, popovers, etc.
+ * 
+ * Uses a stack-based approach to handle multiple simultaneous focus traps.
+ * Only the topmost (most recently activated) focus trap intercepts focusin events.
+ * This prevents conflicts when multiple dialogs/modals are open (e.g., Dialog + AlertDialog).
  */
 
-// Store active focus traps
+// Stack of active focus traps - the last one is the "active" one
+// Format: [{ id, container, config, handleKeyDown }, ...]
+const focusTrapStack = [];
+
+// Store trap configs by ID for cleanup
 const focusTraps = new Map();
 
 // Focusable element selectors
@@ -29,6 +37,36 @@ function getFocusableElements(container) {
         return el.offsetParent !== null &&
                getComputedStyle(el).visibility !== 'hidden';
     });
+}
+
+/**
+ * Global focusin handler - only the topmost focus trap intercepts focus events.
+ * This prevents multiple focus traps from fighting over focus.
+ */
+function handleGlobalFocusIn(event) {
+    if (focusTrapStack.length === 0) return;
+
+    // Get the topmost (active) focus trap
+    const topTrap = focusTrapStack[focusTrapStack.length - 1];
+    const containerEl = topTrap.container;
+
+    // If focus is already inside the topmost trap's container, allow it
+    if (containerEl.contains(event.target)) return;
+
+    // Focus escaped the topmost trap - bring it back
+    event.preventDefault();
+    event.stopPropagation();
+
+    const focusableElements = getFocusableElements(containerEl);
+    if (focusableElements.length > 0) {
+        focusableElements[0].focus();
+    } else {
+        // Make container focusable and focus it
+        if (!containerEl.hasAttribute('tabindex')) {
+            containerEl.setAttribute('tabindex', '-1');
+        }
+        containerEl.focus();
+    }
 }
 
 /**
@@ -60,9 +98,13 @@ export function activate(containerEl, options = {}) {
         returnFocusTo: options.returnFocusTo || document.activeElement
     };
 
-    // Handle Tab key for focus trapping
+    // Handle Tab key for focus trapping (still per-container for proper Tab cycling)
     function handleKeyDown(event) {
         if (event.key !== 'Tab') return;
+
+        // Only handle Tab if this is the topmost trap
+        const topTrap = focusTrapStack[focusTrapStack.length - 1];
+        if (!topTrap || topTrap.id !== trapId) return;
 
         const focusableElements = getFocusableElements(containerEl);
         if (focusableElements.length === 0) {
@@ -88,34 +130,27 @@ export function activate(containerEl, options = {}) {
         }
     }
 
-    // Prevent focus from leaving the container via click
-    function handleFocusIn(event) {
-        if (!containerEl.contains(event.target)) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            const focusableElements = getFocusableElements(containerEl);
-            if (focusableElements.length > 0) {
-                focusableElements[0].focus();
-            } else {
-                containerEl.focus();
-            }
-        }
-    }
-
-    // Add event listeners
+    // Add keydown listener to the container
     containerEl.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('focusin', handleFocusIn, true);
 
-    // Store trap info for cleanup
-    focusTraps.set(trapId, {
+    // Create trap entry
+    const trapEntry = {
+        id: trapId,
         container: containerEl,
         config,
-        cleanup: () => {
-            containerEl.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('focusin', handleFocusIn, true);
-        }
-    });
+        handleKeyDown
+    };
+
+    // Add to stack
+    focusTrapStack.push(trapEntry);
+
+    // Register the global focusin listener when first trap is added
+    if (focusTrapStack.length === 1) {
+        document.addEventListener('focusin', handleGlobalFocusIn, true);
+    }
+
+    // Store for cleanup
+    focusTraps.set(trapId, trapEntry);
 
     // Auto-focus
     if (config.autoFocus) {
@@ -149,7 +184,19 @@ export function deactivate(trapId) {
     const trap = focusTraps.get(trapId);
     if (!trap) return;
 
-    trap.cleanup();
+    // Remove keydown listener from container
+    trap.container.removeEventListener('keydown', trap.handleKeyDown);
+
+    // Remove from stack
+    const stackIndex = focusTrapStack.findIndex(t => t.id === trapId);
+    if (stackIndex !== -1) {
+        focusTrapStack.splice(stackIndex, 1);
+    }
+
+    // Unregister global focusin listener when last trap is removed
+    if (focusTrapStack.length === 0) {
+        document.removeEventListener('focusin', handleGlobalFocusIn, true);
+    }
 
     // Return focus if configured
     if (trap.config.returnFocus && trap.config.returnFocusTo) {
@@ -230,4 +277,12 @@ export function isFocusable(element) {
 export function getFocusableCount(containerEl) {
     if (!containerEl) return 0;
     return getFocusableElements(containerEl).length;
+}
+
+/**
+ * Get the current focus trap stack depth (useful for debugging)
+ * @returns {number}
+ */
+export function getStackDepth() {
+    return focusTrapStack.length;
 }
