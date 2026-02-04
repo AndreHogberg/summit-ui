@@ -48,10 +48,12 @@ public partial class SmAlertDialogContent : IAsyncDisposable
     public EventCallback OnEscapeKeyDown { get; set; }
 
     /// <summary>
-    /// Callback invoked after dialog opens and focuses.
+    /// Callback invoked when the dialog opens, before auto-focus occurs.
+    /// Call <see cref="OpenAutoFocusEventArgs.PreventDefault"/> to prevent
+    /// the default auto-focus behavior, which can cause browser scroll.
     /// </summary>
     [Parameter]
-    public EventCallback OnOpenAutoFocus { get; set; }
+    public EventCallback<OpenAutoFocusEventArgs> OnOpenAutoFocus { get; set; }
 
     /// <summary>
     /// Callback invoked when dialog closes and returns focus.
@@ -74,6 +76,8 @@ public partial class SmAlertDialogContent : IAsyncDisposable
     private bool _wasOpen;
     private bool _animationWatcherRegistered;
     private bool _scrollLocked;
+    private bool _shouldAutoFocus = true;
+    private bool _focusTrapReady;
 
     private string DataState => Context.IsOpen ? "open" : "closed";
 
@@ -111,12 +115,21 @@ public partial class SmAlertDialogContent : IAsyncDisposable
 
                 _isInitialized = true;
 
-                if (!TrapFocus)
+                // Invoke event BEFORE focus to allow prevention
+                var eventArgs = new OpenAutoFocusEventArgs();
+                await OnOpenAutoFocus.InvokeAsync(eventArgs);
+                _shouldAutoFocus = !eventArgs.DefaultPrevented;
+
+                // Arm the focus trap now that we know whether to auto-focus
+                _focusTrapReady = true;
+
+                // Trigger re-render so SmFocusTrap sees IsActive=true
+                StateHasChanged();
+
+                if (!TrapFocus && _shouldAutoFocus)
                 {
                     await FloatingInterop.FocusFirstElementAsync(_elementRef);
                 }
-
-                await OnOpenAutoFocus.InvokeAsync();
             }
             finally
             {
@@ -147,6 +160,8 @@ public partial class SmAlertDialogContent : IAsyncDisposable
         if (!_isInitialized) return;
 
         _isInitialized = false;
+        _focusTrapReady = false;
+        _shouldAutoFocus = true;
 
         try
         {

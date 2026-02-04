@@ -12,7 +12,7 @@ else
     
     <div class="test-section" data-testid="basic-section">
         <h2>Basic Calendar</h2>
-        <SmCalendarRoot @bind-Value="_selectedDate" data-testid="calendar-basic" Context="calendarContext">
+        <SmCalendarRoot @bind-Value="_selectedDate" Placeholder="@(new DateOnly(2026, 1, 1))" data-testid="calendar-basic" Context="calendarContext">
             <SmCalendarHeader class="calendar-header">
                 <SmCalendarPrevButton class="calendar-nav-button" data-testid="prev-button" />
                 <SmCalendarHeading class="calendar-heading" data-testid="heading" />
@@ -164,7 +164,7 @@ else
 
     <div class="test-section" data-testid="monday-start-section">
         <h2>Week Starts Monday</h2>
-        <SmCalendarRoot @bind-Value="_selectedDate5" WeekStartsOn="DayOfWeek.Monday" data-testid="calendar-monday" Context="ctx">
+        <SmCalendarRoot @bind-Value="_selectedDate5" WeekStartsOn="DayOfWeek.Monday" Placeholder="@(new DateOnly(2026, 1, 1))" data-testid="calendar-monday" Context="ctx">
             <SmCalendarHeader class="calendar-header">
                 <SmCalendarPrevButton class="calendar-nav-button" />
                 <SmCalendarHeading class="calendar-heading" />

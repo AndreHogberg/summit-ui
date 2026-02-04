@@ -17,7 +17,7 @@
          @attributes="AdditionalAttributes">
         @if (TrapFocus)
         {
-            <SmFocusTrap IsActive="Context.IsOpen" AutoFocus="true" ReturnFocus="true">
+            <SmFocusTrap IsActive="Context.IsOpen && _focusTrapReady" AutoFocus="_shouldAutoFocus" ReturnFocus="true">
                 @ChildContent
             </SmFocusTrap>
         }

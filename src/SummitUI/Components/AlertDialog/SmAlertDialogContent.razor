@@ -15,8 +15,8 @@
          @attributes="AdditionalAttributes">
         @if (TrapFocus)
         {
-            <SmFocusTrap IsActive="Context.IsOpen"
-                       AutoFocus="true"
+            <SmFocusTrap IsActive="Context.IsOpen && _focusTrapReady"
+                       AutoFocus="_shouldAutoFocus"
                        ReturnFocus="true"
                        InitialFocusSelector="@(Context.Options!.IsDestructive ? "[data-summit-alertdialog-cancel]" : null)">
                 @ChildContent
