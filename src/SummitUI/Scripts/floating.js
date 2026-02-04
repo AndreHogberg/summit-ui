@@ -235,8 +235,8 @@ export function focusElement(element) {
     // Empty Blazor ElementReference arrives as {id: "", context: null} which is truthy but not focusable
     if (!element || typeof element.focus !== 'function') return;
     
-    function tryFocus(attempts) {
-        element.focus();
+function tryFocus(attempts) {
+        element.focus({ preventScroll: true });
         // If focus didn't succeed and we have attempts left, retry
         if (document.activeElement !== element && attempts > 0) {
             setTimeout(() => tryFocus(attempts - 1), 20);
@@ -279,13 +279,13 @@ export function getFocusableElements(container) {
 export function focusFirstElement(container) {
     const elements = getFocusableElements(container);
     if (elements.length > 0) {
-        elements[0].focus();
+        elements[0].focus({ preventScroll: true });
     } else if (container) {
         // Make container focusable and focus it
         if (!container.hasAttribute('tabindex')) {
             container.setAttribute('tabindex', '-1');
         }
-        container.focus();
+        container.focus({ preventScroll: true });
     }
 }
 
@@ -296,7 +296,7 @@ export function focusFirstElement(container) {
 export function focusLastElement(container) {
     const elements = getFocusableElements(container);
     if (elements.length > 0) {
-        elements[elements.length - 1].focus();
+        elements[elements.length - 1].focus({ preventScroll: true });
     }
 }
 
@@ -377,7 +377,7 @@ export function focusElementById(elementId) {
     if (!element) return;
     
     function tryFocus(attempts) {
-        element.focus();
+        element.focus({ preventScroll: true });
         // If focus didn't succeed and we have attempts left, retry
         if (document.activeElement !== element && attempts > 0) {
             setTimeout(() => tryFocus(attempts - 1), 20);
