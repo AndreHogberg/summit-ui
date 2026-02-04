@@ -28,6 +28,12 @@ public partial class SmDialogPortal : SimplePortalBase<DialogContext>
     protected override string ContainerStyle =>
         $"position: {Position}; top: 0; left: 0; right: 0; bottom: 0; z-index: {ZIndex}; pointer-events: none;";
 
+    /// <summary>
+    /// Inner wrapper covers full viewport to ensure overlay and dialog work correctly when nested.
+    /// </summary>
+    protected override string InnerWrapperStyle =>
+        "pointer-events: auto; position: fixed; top: 0; left: 0; right: 0; bottom: 0;";
+
     /// <inheritdoc />
     protected override void AddCustomAttributes(RenderTreeBuilder builder, ref int sequence)
     {

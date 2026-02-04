@@ -64,6 +64,11 @@ public abstract class SimplePortalBase<TContext> : ComponentBase, IDisposable
     protected virtual bool UsePointerEventsWrapper => true;
 
     /// <summary>
+    /// Gets the style for the inner pointer-events wrapper. Override for full-screen dialogs.
+    /// </summary>
+    protected virtual string InnerWrapperStyle => "pointer-events: auto;";
+
+    /// <summary>
     /// Override to add additional attributes to the portal element.
     /// </summary>
     protected virtual void AddCustomAttributes(RenderTreeBuilder builder, ref int sequence)
@@ -101,7 +106,7 @@ public abstract class SimplePortalBase<TContext> : ComponentBase, IDisposable
         if (UsePointerEventsWrapper)
         {
             builder.OpenElement(sequence++, "div");
-            builder.AddAttribute(sequence++, "style", "pointer-events: auto;");
+            builder.AddAttribute(sequence++, "style", InnerWrapperStyle);
             builder.AddContent(sequence++, ChildContent);
             builder.CloseElement();
         }

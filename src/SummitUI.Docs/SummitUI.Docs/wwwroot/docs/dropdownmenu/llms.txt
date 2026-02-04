@@ -76,7 +76,7 @@ Visual separator between items.
 | DefaultOpen | bool | false | Default open state (uncontrolled) |
 | OpenChanged | EventCallback<bool> | - | Callback when open state changes |
 | OnOpen | EventCallback | - | Callback when menu opens |
-| OnClose | EventCallback | - | Callback when menu closes |
+| OnClose | EventCallback | - | Callback fired immediately when close is triggered (before animations start) |
 | Modal | bool | true | Whether to trap focus |
 
 ### DropdownMenuContent
@@ -88,6 +88,8 @@ Visual separator between items.
 | Align | Align | Start | Alignment along side axis |
 | AvoidCollisions | bool | true | Avoid viewport boundaries |
 | Loop | bool | true | Loop keyboard navigation |
+| OnOpenAutoFocus | EventCallback | - | Callback after menu opens and focus is set |
+| OnCloseAutoFocus | EventCallback | - | Callback after close animations complete and focus returns to trigger |
 
 ### DropdownMenuItem
 
@@ -95,6 +97,46 @@ Visual separator between items.
 |----------|------|---------|-------------|
 | Disabled | bool | false | Disable item |
 | OnSelect | EventCallback | - | Selection callback |
+
+## Callback Timing with Animations
+
+When using CSS animations on menu content, understanding when each callback fires is important:
+
+| Callback | Location | When it fires |
+|----------|----------|---------------|
+| OnClose | DropdownMenuRoot | Immediately when close is triggered (before animations) |
+| OnCloseAutoFocus | DropdownMenuContent | After all close animations complete and focus returns to trigger |
+
+**When to use each:**
+
+- **OnClose:** Use for immediate state updates, analytics tracking, or when animation timing doesn't matter
+- **OnCloseAutoFocus:** Use when you need the menu to be fully closed (e.g., cleanup operations, navigation, showing toasts)
+
+```razor
+<DropdownMenuRoot OnClose="@HandleClose">
+    <DropdownMenuTrigger>Options</DropdownMenuTrigger>
+    <DropdownMenuPortal>
+        <DropdownMenuContent
+            class="menu-content animate-out fade-out-0 zoom-out-95 duration-150"
+            OnCloseAutoFocus="@HandleCloseComplete">
+            <DropdownMenuItem>Item 1</DropdownMenuItem>
+            <DropdownMenuItem>Item 2</DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenuPortal>
+</DropdownMenuRoot>
+
+@code {
+    private void HandleClose()
+    {
+        // Fires immediately - use for analytics, state updates
+    }
+
+    private void HandleCloseComplete()
+    {
+        // Fires after animation - use for cleanup, navigation
+    }
+}
+```
 
 ## Examples
 

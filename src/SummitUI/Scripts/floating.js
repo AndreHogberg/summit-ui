@@ -231,7 +231,9 @@ export function updatePosition(instanceId) {
  * @param {HTMLElement} element - Element to focus
  */
 export function focusElement(element) {
-    if (!element) return;
+    // Check if element is a valid DOM element with focus capability
+    // Empty Blazor ElementReference arrives as {id: "", context: null} which is truthy but not focusable
+    if (!element || typeof element.focus !== 'function') return;
     
     function tryFocus(attempts) {
         element.focus();

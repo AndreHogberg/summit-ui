@@ -231,6 +231,50 @@
         </div>
     </SuSection>
 
+    @* Callback Timing with Animations *@
+    <SuSection Title="Callback Timing with Animations">
+        <div class="flex flex-col gap-6">
+            <SuText Size="SuTextSize.Small" Muted="true">
+                When using CSS animations on alert dialog content, understanding when each callback fires is important for coordinating state changes.
+            </SuText>
+            <SuTable>
+                <SuTableHeader>
+                    <SuTableRow>
+                        <SuTableHead>Callback</SuTableHead>
+                        <SuTableHead>Location</SuTableHead>
+                        <SuTableHead>When it fires</SuTableHead>
+                    </SuTableRow>
+                </SuTableHeader>
+                <SuTableBody>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">OnOpenAutoFocus</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">AlertDialogContent</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">After dialog opens and focus is set to the appropriate button</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">OnCloseAutoFocus</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">AlertDialogContent</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">After all close animations complete and focus returns to trigger</SuTableCell>
+                    </SuTableRow>
+                </SuTableBody>
+            </SuTable>
+            <div class="flex flex-col gap-2">
+                <SuHeading Level="SuHeadingLevel.H4">When to use each</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">OnOpenAutoFocus:</span>
+                        <span>Use when you need to perform actions after the dialog is visible and focused (e.g., start a timer)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">OnCloseAutoFocus:</span>
+                        <span>Use when you need the dialog to be fully closed (e.g., cleanup operations, navigation, showing toasts)</span>
+                    </li>
+                </ul>
+            </div>
+            <SuCodeBlock Code="@callbackTimingExampleCode" Language="razor" />
+        </div>
+    </SuSection>
+
     @* Styling *@
     <SuSection Title="Styling">
         <div class="flex flex-col gap-12">
@@ -357,8 +401,8 @@
         new() { Name = "TrapFocus", Type = "bool", Default = "true", Description = "Enable focus trapping" },
         new() { Name = "PreventScroll", Type = "bool", Default = "true", Description = "Lock body scroll" },
         new() { Name = "OnEscapeKeyDown", Type = "EventCallback<KeyboardEventArgs>", Description = "Callback on escape key" },
-        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback when dialog receives auto-focus" },
-        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback when dialog loses auto-focus" },
+        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback after dialog opens and focus is set" },
+        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback after close animations complete and focus returns to trigger" },
         new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
     };
 
@@ -596,6 +640,39 @@
         {
             // User explicitly confirmed
         }
+    }
+}";
+
+    private const string callbackTimingExampleCode = @"@* Configure callbacks in your AlertDialog component *@
+
+<SmAlertDialogProvider Context=""alert"">
+    <SmAlertDialogPortal>
+        <SmAlertDialogOverlay class=""overlay-styles"" />
+        <SmAlertDialogContent
+            class=""content-styles animate-out fade-out-0 zoom-out-95 duration-200""
+            OnOpenAutoFocus=""@HandleOpenComplete""
+            OnCloseAutoFocus=""@HandleCloseComplete"">
+            <SmAlertDialogTitle />
+            <SmAlertDialogDescription />
+            <div class=""actions"">
+                <SmAlertDialogCancel />
+                <SmAlertDialogConfirm />
+            </div>
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>
+
+@code {
+    private void HandleOpenComplete()
+    {
+        // Fires after dialog opens and focus is set
+        Console.WriteLine(""Dialog opened and focused"");
+    }
+
+    private void HandleCloseComplete()
+    {
+        // Fires after animation - use for cleanup, navigation
+        Console.WriteLine(""Dialog fully closed"");
     }
 }";
 

@@ -11,9 +11,6 @@ public partial class SmDialogClose : ComponentBase
     [CascadingParameter]
     private DialogContext Context { get; set; } = default!;
 
-    [Inject]
-    private ISummitUILocalizer Localizer { get; set; } = default!;
-
     /// <summary>
     /// When true, the component will not render a wrapper element.
     /// Instead, it passes attributes via context to the child element.
@@ -27,13 +24,6 @@ public partial class SmDialogClose : ComponentBase
     /// </summary>
     [Parameter]
     public RenderFragment<AsChildContext>? ChildContent { get; set; }
-
-    /// <summary>
-    /// Accessible label for the close button.
-    /// If not provided, uses the localized default from <see cref="ISummitUILocalizer"/>.
-    /// </summary>
-    [Parameter]
-    public string? AriaLabel { get; set; }
 
     /// <summary>
     /// Additional HTML attributes.
@@ -55,7 +45,6 @@ public partial class SmDialogClose : ComponentBase
         var attrs = new Dictionary<string, object>
         {
             ["type"] = "button",
-            ["aria-label"] = AriaLabel ?? Localizer["Dialog_CloseLabel"],
             ["data-summit-dialog-close"] = true,
             ["onclick"] = EventCallback.Factory.Create(this, HandleClickAsync)
         };

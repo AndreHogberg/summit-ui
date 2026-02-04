@@ -121,8 +121,8 @@ Confirm button that returns `true`. Text from `AlertDialogOptions.ConfirmText`.
 | TrapFocus | bool | true | Whether to trap focus within dialog |
 | PreventScroll | bool | true | Whether to lock body scroll |
 | OnEscapeKeyDown | EventCallback | - | Callback when Escape pressed |
-| OnOpenAutoFocus | EventCallback | - | Callback after opening |
-| OnCloseAutoFocus | EventCallback | - | Callback after closing |
+| OnOpenAutoFocus | EventCallback | - | Callback after dialog opens and focus is set |
+| OnCloseAutoFocus | EventCallback | - | Callback after close animations complete and focus returns to trigger |
 
 ### SmAlertDialogTitle
 
@@ -144,6 +144,51 @@ Confirm button that returns `true`. Text from `AlertDialogOptions.ConfirmText`.
 |----------|------|---------|-------------|
 | AsChild | bool | false | When true, passes attributes to child |
 | ChildContent | RenderFragment<AsChildContext>? | - | Custom button content |
+
+## Callback Timing with Animations
+
+When using CSS animations on alert dialog content, understanding when each callback fires is important:
+
+| Callback | Location | When it fires |
+|----------|----------|---------------|
+| OnOpenAutoFocus | SmAlertDialogContent | After dialog opens and focus is set to the appropriate button |
+| OnCloseAutoFocus | SmAlertDialogContent | After all close animations complete and focus returns to trigger |
+
+**When to use each:**
+
+- **OnOpenAutoFocus:** Use when you need to perform actions after the dialog is visible and focused (e.g., start a timer)
+- **OnCloseAutoFocus:** Use when you need the dialog to be fully closed (e.g., cleanup operations, navigation, showing toasts)
+
+```razor
+<SmAlertDialogProvider Context="alert">
+    <SmAlertDialogPortal>
+        <SmAlertDialogOverlay class="alert-overlay" />
+        <SmAlertDialogContent
+            class="alert-content animate-out fade-out-0 zoom-out-95 duration-200"
+            OnOpenAutoFocus="@HandleOpenComplete"
+            OnCloseAutoFocus="@HandleCloseComplete">
+            <SmAlertDialogTitle />
+            <SmAlertDialogDescription />
+            <div class="alert-actions">
+                <SmAlertDialogCancel />
+                <SmAlertDialogConfirm />
+            </div>
+        </SmAlertDialogContent>
+    </SmAlertDialogPortal>
+</SmAlertDialogProvider>
+
+@code {
+    private void HandleOpenComplete()
+    {
+        // Fires after dialog opens and focus is set
+    }
+
+    private void HandleCloseComplete()
+    {
+        // Fires after animation - use for cleanup, navigation
+    }
+}
+```
 
 ## Examples
 

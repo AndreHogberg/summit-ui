@@ -353,6 +353,51 @@
         </div>
     </SuSection>
 
+    @* Callback Timing *@
+    <SuSection Title="Callback Timing with Animations">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            The dialog fires callbacks at different points during the open/close sequence. Understanding when each callback fires is important for proper integration.
+        </SuText>
+        <SuTable>
+            <SuTableHeader>
+                <SuTableRow>
+                    <SuTableHead>Callback</SuTableHead>
+                    <SuTableHead>Location</SuTableHead>
+                    <SuTableHead>When it fires</SuTableHead>
+                </SuTableRow>
+            </SuTableHeader>
+            <SuTableBody>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">OnClose</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">DialogRoot</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Immediately when close is triggered (before animations start)</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">OnCloseAutoFocus</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">DialogContent</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">After all close animations complete and focus returns to trigger</SuTableCell>
+                </SuTableRow>
+            </SuTableBody>
+        </SuTable>
+        <div class="mt-6 flex flex-col gap-4">
+            <SuHeading Level="SuHeadingLevel.H3">When to use each</SuHeading>
+            <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">OnClose:</span>
+                    <span>Use for immediate state updates, analytics, or when animation timing doesn't matter</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">OnCloseAutoFocus:</span>
+                    <span>Use when you need to ensure the dialog is fully closed (e.g., cleanup, navigation, or showing a toast after the dialog disappears)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mt-6 flex flex-col gap-4">
+            <SuHeading Level="SuHeadingLevel.H3">Example</SuHeading>
+            <SuCodeBlock Code="@callbackTimingExampleCode" Language="razor" />
+        </div>
+    </SuSection>
+
     @* Styling *@
     <SuSection Title="Styling">
         <div class="flex flex-col gap-12">
@@ -495,7 +540,7 @@
         new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state for uncontrolled mode" },
         new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Callback on open state change" },
         new() { Name = "OnOpen", Type = "EventCallback", Description = "Callback when dialog opens" },
-        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback when dialog closes" },
+        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback fired immediately when close is triggered (before animations start)" },
         new() { Name = "ChildContent", Type = "RenderFragment", Required = true, Description = "Child components" }
     };
 
@@ -509,8 +554,8 @@
         new() { Name = "OutsideClickBehavior", Type = "OutsideClickBehavior", Default = "Close", Description = "Click outside behavior (Close or Ignore)" },
         new() { Name = "OnInteractOutside", Type = "EventCallback<MouseEventArgs>", Description = "Callback on click outside" },
         new() { Name = "OnEscapeKeyDown", Type = "EventCallback<KeyboardEventArgs>", Description = "Callback on escape key" },
-        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback when dialog receives auto-focus" },
-        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback when dialog loses auto-focus" },
+        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback fired after dialog opens and receives focus" },
+        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback fired after close animations complete and focus returns to trigger. Use this instead of OnClose when you need to run code after the dialog is fully closed." },
         new() { Name = "AdditionalAttributes", Type = "IDictionary<string, object>", Description = "Additional HTML attributes" }
     };
 
@@ -828,6 +873,34 @@
             });
 
         deleteResult = confirmed ? ""Account deleted!"" : ""Deletion cancelled."";
+    }
+}";
+
+    private const string callbackTimingExampleCode = @"<SmDialogRoot OnClose=""HandleClose"">
+    <SmDialogTrigger class=""btn btn-primary"">Open Dialog</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class=""dialog-overlay"" />
+        <SmDialogContent class=""dialog-content"" OnCloseAutoFocus=""HandleCloseComplete"">
+            <SmDialogTitle>Example Dialog</SmDialogTitle>
+            <SmDialogDescription>This dialog demonstrates callback timing.</SmDialogDescription>
+            <SmDialogClose class=""btn btn-primary"">Close</SmDialogClose>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
+
+@code {
+    void HandleClose()
+    {
+        // Fires immediately when close is triggered
+        // Animations are still running at this point
+        Console.WriteLine(""Close triggered - animations starting"");
+    }
+
+    void HandleCloseComplete()
+    {
+        // Fires after all animations complete
+        // Dialog is now fully closed and focus has returned to trigger
+        Console.WriteLine(""Dialog fully closed - safe to navigate or show toast"");
     }
 }";
 }

@@ -154,6 +154,50 @@
         </div>
     </SuSection>
 
+    @* Callback Timing with Animations *@
+    <SuSection Title="Callback Timing with Animations">
+        <div class="flex flex-col gap-6">
+            <SuText Size="SuTextSize.Small" Muted="true">
+                When using CSS animations on menu content, understanding when each callback fires is important for coordinating state changes.
+            </SuText>
+            <SuTable>
+                <SuTableHeader>
+                    <SuTableRow>
+                        <SuTableHead>Callback</SuTableHead>
+                        <SuTableHead>Location</SuTableHead>
+                        <SuTableHead>When it fires</SuTableHead>
+                    </SuTableRow>
+                </SuTableHeader>
+                <SuTableBody>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">OnClose</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">DropdownMenuRoot</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">Immediately when close is triggered (before animations)</SuTableCell>
+                    </SuTableRow>
+                    <SuTableRow>
+                        <SuTableCell class="font-mono text-su-primary font-medium">OnCloseAutoFocus</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">DropdownMenuContent</SuTableCell>
+                        <SuTableCell class="text-su-muted-foreground">After all close animations complete and focus returns to trigger</SuTableCell>
+                    </SuTableRow>
+                </SuTableBody>
+            </SuTable>
+            <div class="flex flex-col gap-2">
+                <SuHeading Level="SuHeadingLevel.H4">When to use each</SuHeading>
+                <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">OnClose:</span>
+                        <span>Use for immediate state updates, analytics tracking, or when animation timing doesn't matter</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-su-foreground font-medium shrink-0">OnCloseAutoFocus:</span>
+                        <span>Use when you need the menu to be fully closed (e.g., cleanup operations, navigation, showing toasts)</span>
+                    </li>
+                </ul>
+            </div>
+            <SuCodeBlock Code="@callbackTimingExampleCode" Language="razor" />
+        </div>
+    </SuSection>
+
     @* Examples *@
     <SuSection Title="Examples">
         <div class="flex flex-col gap-8">
@@ -437,7 +481,7 @@
         new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state (uncontrolled)" },
         new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Callback when open state changes" },
         new() { Name = "OnOpen", Type = "EventCallback", Description = "Callback when menu opens" },
-        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback when menu closes" },
+        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback fired immediately when close is triggered (before animations start)" },
         new() { Name = "Modal", Type = "bool", Default = "true", Description = "Whether to trap focus" }
     };
 
@@ -447,7 +491,9 @@
         new() { Name = "SideOffset", Type = "int", Default = "4", Description = "Offset from trigger (px)" },
         new() { Name = "Align", Type = "Align", Default = "Start", Description = "Alignment along side axis" },
         new() { Name = "AvoidCollisions", Type = "bool", Default = "true", Description = "Avoid viewport boundaries" },
-        new() { Name = "Loop", Type = "bool", Default = "true", Description = "Loop keyboard navigation" }
+        new() { Name = "Loop", Type = "bool", Default = "true", Description = "Loop keyboard navigation" },
+        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback after menu opens and focus is set" },
+        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback after close animations complete and focus returns to trigger" }
     };
 
     private readonly List<SuApiProperty> itemProps = new()
@@ -507,6 +553,35 @@
         </SmDropdownMenuContent>
     </SmDropdownMenuPortal>
 </SmDropdownMenuRoot>";
+
+    private const string callbackTimingExampleCode = @"@* OnClose fires immediately when menu starts closing *@
+@* OnCloseAutoFocus fires after animations complete *@
+
+<SmDropdownMenuRoot OnClose=""@HandleClose"">
+    <SmDropdownMenuTrigger>Options</SmDropdownMenuTrigger>
+    <SmDropdownMenuPortal>
+        <SmDropdownMenuContent
+            class=""animate-out fade-out-0 zoom-out-95 duration-150""
+            OnCloseAutoFocus=""@HandleCloseComplete"">
+            <SmDropdownMenuItem>Item 1</SmDropdownMenuItem>
+            <SmDropdownMenuItem>Item 2</SmDropdownMenuItem>
+        </SmDropdownMenuContent>
+    </SmDropdownMenuPortal>
+</SmDropdownMenuRoot>
+
+@code {
+    private void HandleClose()
+    {
+        // Fires immediately - use for analytics, state updates
+        Console.WriteLine(""Menu closing..."");
+    }
+
+    private void HandleCloseComplete()
+    {
+        // Fires after animation - use for cleanup, navigation
+        Console.WriteLine(""Menu fully closed"");
+    }
+}";
 
     private const string basicExampleCode = @"<SmDropdownMenuRoot>
     <SmDropdownMenuTrigger class=""su-dropdown-trigger"">Options</SmDropdownMenuTrigger>

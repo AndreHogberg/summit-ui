@@ -178,6 +178,47 @@
         </div>
     </SuSection>
 
+    @* Callback Timing *@
+    <SuSection Title="Callback Timing with Animations">
+        <SuText Size="SuTextSize.Small" Muted="true" class="mb-4">
+            The popover fires callbacks at different points during the open/close sequence.
+        </SuText>
+        <SuTable>
+            <SuTableHeader>
+                <SuTableRow>
+                    <SuTableHead>Callback</SuTableHead>
+                    <SuTableHead>Location</SuTableHead>
+                    <SuTableHead>When it fires</SuTableHead>
+                </SuTableRow>
+            </SuTableHeader>
+            <SuTableBody>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">OnClose</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">PopoverRoot</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">Immediately when close is triggered (before animations start)</SuTableCell>
+                </SuTableRow>
+                <SuTableRow>
+                    <SuTableCell class="font-mono text-su-primary font-medium">OnCloseAutoFocus</SuTableCell>
+                    <SuTableCell class="font-mono text-su-muted-foreground text-sm">PopoverContent</SuTableCell>
+                    <SuTableCell class="text-su-muted-foreground">After all close animations complete and focus returns to trigger</SuTableCell>
+                </SuTableRow>
+            </SuTableBody>
+        </SuTable>
+        <div class="mt-6 flex flex-col gap-4">
+            <SuHeading Level="SuHeadingLevel.H3">When to use each</SuHeading>
+            <ul class="grid gap-2 text-sm text-su-muted-foreground">
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">OnClose:</span>
+                    <span>Use for immediate state updates, analytics, or when animation timing doesn't matter</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-su-foreground font-medium shrink-0">OnCloseAutoFocus:</span>
+                    <span>Use when you need to ensure the popover is fully closed (e.g., cleanup or showing a toast after the popover disappears)</span>
+                </li>
+            </ul>
+        </div>
+    </SuSection>
+
     @* Styling *@
     <SuSection Title="Styling">
         <div class="flex flex-col gap-12">
@@ -329,7 +370,7 @@
         new() { Name = "DefaultOpen", Type = "bool", Default = "false", Description = "Default open state (uncontrolled)" },
         new() { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Open state change callback" },
         new() { Name = "OnOpen", Type = "EventCallback", Description = "Callback when popover opens" },
-        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback when popover closes" },
+        new() { Name = "OnClose", Type = "EventCallback", Description = "Callback fired immediately when close is triggered (before animations start)" },
         new() { Name = "Modal", Type = "bool", Default = "false", Description = "Whether to trap focus" }
     };
 
@@ -341,7 +382,9 @@
         new() { Name = "AvoidCollisions", Type = "bool", Default = "true", Description = "Avoid viewport boundaries" },
         new() { Name = "TrapFocus", Type = "bool", Default = "false", Description = "Whether to trap focus" },
         new() { Name = "EscapeKeyBehavior", Type = "EscapeKeyBehavior", Default = "Close", Description = "Escape key behavior" },
-        new() { Name = "OutsideClickBehavior", Type = "OutsideClickBehavior", Default = "Close", Description = "Outside click behavior" }
+        new() { Name = "OutsideClickBehavior", Type = "OutsideClickBehavior", Default = "Close", Description = "Outside click behavior" },
+        new() { Name = "OnOpenAutoFocus", Type = "EventCallback", Description = "Callback fired after popover opens and receives focus" },
+        new() { Name = "OnCloseAutoFocus", Type = "EventCallback", Description = "Callback fired after close animations complete and focus returns to trigger" }
     };
 
     private List<SuApiProperty> dataAttributes = new()

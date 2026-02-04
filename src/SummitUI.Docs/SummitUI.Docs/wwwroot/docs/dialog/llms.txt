@@ -77,7 +77,7 @@ Close button that dismisses the dialog. Supports the AsChild pattern.
 | DefaultOpen | bool | false | Default open state (uncontrolled) |
 | OpenChanged | EventCallback<bool> | - | Open state change callback |
 | OnOpen | EventCallback | - | Callback when dialog opens |
-| OnClose | EventCallback | - | Callback when dialog closes |
+| OnClose | EventCallback | - | Callback fired immediately when close is triggered (before animations start) |
 
 ### SmDialogTrigger
 
@@ -96,8 +96,8 @@ Close button that dismisses the dialog. Supports the AsChild pattern.
 | OutsideClickBehavior | OutsideClickBehavior | Close | Outside click behavior |
 | OnInteractOutside | EventCallback | - | Callback for outside clicks |
 | OnEscapeKeyDown | EventCallback | - | Callback for Escape key |
-| OnOpenAutoFocus | EventCallback | - | Callback after opening and focus |
-| OnCloseAutoFocus | EventCallback | - | Callback after closing |
+| OnOpenAutoFocus | EventCallback | - | Callback after dialog opens and focus is set |
+| OnCloseAutoFocus | EventCallback | - | Callback after close animations complete and focus returns to trigger |
 
 ### SmDialogOverlay
 
@@ -112,6 +112,47 @@ Close button that dismisses the dialog. Supports the AsChild pattern.
 |----------|------|---------|-------------|
 | AsChild | bool | false | When true, passes attributes to child |
 | AriaLabel | string? | null | Accessible label (uses localized default) |
+
+## Callback Timing with Animations
+
+When using CSS animations on dialog content, understanding when each callback fires is important:
+
+| Callback | Location | When it fires |
+|----------|----------|---------------|
+| OnClose | SmDialogRoot | Immediately when close is triggered (before animations) |
+| OnCloseAutoFocus | SmDialogContent | After all close animations complete and focus returns to trigger |
+
+**When to use each:**
+
+- **OnClose:** Use for immediate state updates, analytics tracking, or when animation timing doesn't matter
+- **OnCloseAutoFocus:** Use when you need the dialog to be fully closed (e.g., cleanup operations, navigation, showing toasts)
+
+```razor
+<SmDialogRoot OnClose="@HandleClose">
+    <SmDialogTrigger>Open</SmDialogTrigger>
+    <SmDialogPortal>
+        <SmDialogOverlay class="dialog-overlay" />
+        <SmDialogContent
+            class="dialog-content animate-out fade-out-0 zoom-out-95 duration-200"
+            OnCloseAutoFocus="@HandleCloseComplete">
+            <SmDialogTitle>Title</SmDialogTitle>
+            <SmDialogClose>Close</SmDialogClose>
+        </SmDialogContent>
+    </SmDialogPortal>
+</SmDialogRoot>
+
+@code {
+    private void HandleClose()
+    {
+        // Fires immediately - use for analytics, state updates
+    }
+
+    private void HandleCloseComplete()
+    {
+        // Fires after animation - use for cleanup, navigation
+    }
+}
+```
 
 ## Examples
 

@@ -65,7 +65,7 @@ Close button within popover.
 | DefaultOpen | bool | false | Default open state (uncontrolled) |
 | OpenChanged | EventCallback<bool> | - | Open state change callback |
 | OnOpen | EventCallback | - | Callback when popover opens |
-| OnClose | EventCallback | - | Callback when popover closes |
+| OnClose | EventCallback | - | Callback fired immediately when close is triggered (before animations start) |
 | Modal | bool | false | Whether to trap focus |
 
 ### PopoverContent
@@ -79,6 +79,47 @@ Close button within popover.
 | TrapFocus | bool | false | Whether to trap focus |
 | EscapeKeyBehavior | EscapeKeyBehavior | Close | Escape key behavior |
 | OutsideClickBehavior | OutsideClickBehavior | Close | Outside click behavior |
+| OnOpenAutoFocus | EventCallback | - | Callback after popover opens and focus is set |
+| OnCloseAutoFocus | EventCallback | - | Callback after close animations complete and focus returns to trigger |
+
+## Callback Timing with Animations
+
+When using CSS animations on popover content, understanding when each callback fires is important:
+
+| Callback | Location | When it fires |
+|----------|----------|---------------|
+| OnClose | PopoverRoot | Immediately when close is triggered (before animations) |
+| OnCloseAutoFocus | PopoverContent | After all close animations complete and focus returns to trigger |
+
+**When to use each:**
+
+- **OnClose:** Use for immediate state updates, analytics tracking, or when animation timing doesn't matter
+- **OnCloseAutoFocus:** Use when you need the popover to be fully closed (e.g., cleanup operations, navigation, showing toasts)
+
+```razor
+<PopoverRoot OnClose="@HandleClose">
+    <PopoverTrigger>Open</PopoverTrigger>
+    <PopoverPortal>
+        <PopoverContent
+            class="popover-content animate-out fade-out-0 zoom-out-95 duration-150"
+            OnCloseAutoFocus="@HandleCloseComplete">
+            Content here
+        </PopoverContent>
+    </PopoverPortal>
+</PopoverRoot>
+
+@code {
+    private void HandleClose()
+    {
+        // Fires immediately - use for analytics, state updates
+    }
+
+    private void HandleCloseComplete()
+    {
+        // Fires after animation - use for cleanup, navigation
+    }
+}
+```
 
 ## Examples
 
