@@ -7,6 +7,7 @@
 let scrollLockCount = 0;
 let originalStyles = null;
 let scrollPosition = 0;
+let scrollingElement = null;
 let scrollLockHandlers = null;
 
 function isInDialogContent(target) {
@@ -28,8 +29,9 @@ export function lockScroll() {
     scrollLockCount++;
 
     if (scrollLockCount === 1) {
-        // Store current scroll position
-        scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        // Store current scroll position from the actual scrolling element
+        scrollingElement = document.scrollingElement || document.documentElement;
+        scrollPosition = scrollingElement?.scrollTop ?? window.pageYOffset ?? document.documentElement.scrollTop;
 
         // Store original styles
         originalStyles = {
@@ -40,33 +42,36 @@ export function lockScroll() {
             bodyRight: document.body.style.right,
             bodyWidth: document.body.style.width,
             bodyPaddingRight: document.body.style.paddingRight,
+            bodyScrollbarGutter: document.body.style.scrollbarGutter,
             htmlOverflow: document.documentElement.style.overflow,
-            htmlPaddingRight: document.documentElement.style.paddingRight
+            htmlPaddingRight: document.documentElement.style.paddingRight,
+            htmlScrollbarGutter: document.documentElement.style.scrollbarGutter
         };
 
-        // Calculate scrollbar width for compensation
-        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        // Use fixed positioning to preserve visual scroll position while locking
+        // This prevents sticky header/sidebar jumping when scroll is locked
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosition}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
 
-        // Check for iOS Safari which needs special handling
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        // Reset scroll position to avoid double-offset when body is fixed
+        const resetScroll = () => {
+            const target = scrollingElement || document.documentElement;
+            try {
+                if (target) target.scrollTop = 0;
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+                window.scrollTo(0, 0);
+            } catch {
+                // Ignore
+            }
+        };
 
-        if (isIOS) {
-            // iOS requires position: fixed to truly lock scroll
-            // This prevents the rubber-band scrolling effect
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${scrollPosition}px`;
-            document.body.style.left = '0';
-            document.body.style.right = '0';
-            document.body.style.width = '100%';
-        }
-
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
-
-        // Compensate on body to avoid layout shift and gutter bar
-        if (scrollbarWidth > 0) {
-            document.body.style.paddingRight = `${scrollbarWidth}px`;
-        }
+        resetScroll();
+        requestAnimationFrame(resetScroll);
+        setTimeout(resetScroll, 0);
 
         // Prevent wheel/touch/scroll keys from scrolling background
         scrollLockHandlers = {
@@ -105,8 +110,6 @@ export function unlockScroll() {
         scrollLockCount = 0;
 
         if (originalStyles) {
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
             // Restore original styles
             document.body.style.overflow = originalStyles.bodyOverflow;
             document.body.style.position = originalStyles.bodyPosition;
@@ -115,13 +118,17 @@ export function unlockScroll() {
             document.body.style.right = originalStyles.bodyRight;
             document.body.style.width = originalStyles.bodyWidth;
             document.body.style.paddingRight = originalStyles.bodyPaddingRight;
+            document.body.style.scrollbarGutter = originalStyles.bodyScrollbarGutter;
             document.documentElement.style.overflow = originalStyles.htmlOverflow;
             document.documentElement.style.paddingRight = originalStyles.htmlPaddingRight;
+            document.documentElement.style.scrollbarGutter = originalStyles.htmlScrollbarGutter;
 
-            // Restore scroll position for iOS
-            if (isIOS) {
-                window.scrollTo(0, scrollPosition);
-            }
+            // Restore scroll position
+            const target = scrollingElement || document.documentElement;
+            if (target) target.scrollTop = scrollPosition;
+            document.body.scrollTop = scrollPosition;
+            document.documentElement.scrollTop = scrollPosition;
+            window.scrollTo(0, scrollPosition);
 
             if (scrollLockHandlers) {
                 document.removeEventListener('wheel', scrollLockHandlers.wheel);
@@ -142,8 +149,6 @@ export function forceUnlockScroll() {
     scrollLockCount = 0;
 
     if (originalStyles) {
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
         document.body.style.overflow = originalStyles.bodyOverflow;
         document.body.style.position = originalStyles.bodyPosition;
         document.body.style.top = originalStyles.bodyTop;
@@ -151,12 +156,16 @@ export function forceUnlockScroll() {
         document.body.style.right = originalStyles.bodyRight;
         document.body.style.width = originalStyles.bodyWidth;
         document.body.style.paddingRight = originalStyles.bodyPaddingRight;
+        document.body.style.scrollbarGutter = originalStyles.bodyScrollbarGutter;
         document.documentElement.style.overflow = originalStyles.htmlOverflow;
         document.documentElement.style.paddingRight = originalStyles.htmlPaddingRight;
+        document.documentElement.style.scrollbarGutter = originalStyles.htmlScrollbarGutter;
 
-        if (isIOS) {
-            window.scrollTo(0, scrollPosition);
-        }
+        const target = scrollingElement || document.documentElement;
+        if (target) target.scrollTop = scrollPosition;
+        document.body.scrollTop = scrollPosition;
+        document.documentElement.scrollTop = scrollPosition;
+        window.scrollTo(0, scrollPosition);
 
         if (scrollLockHandlers) {
             document.removeEventListener('wheel', scrollLockHandlers.wheel);
