@@ -66,17 +66,20 @@ public partial class SmDialogContent : ComponentBase, IAsyncDisposable
 
     /// <summary>
     /// Callback invoked when the dialog opens, before auto-focus occurs.
-    /// Call <see cref="OpenAutoFocusEventArgs.PreventDefault"/> to prevent
+    /// Call <see cref="AutoFocusEventArgs.PreventDefault"/> to prevent
     /// the default auto-focus behavior, which can cause browser scroll.
     /// </summary>
     [Parameter]
-    public EventCallback<OpenAutoFocusEventArgs> OnOpenAutoFocus { get; set; }
+    public EventCallback<AutoFocusEventArgs> OnOpenAutoFocus { get; set; }
 
     /// <summary>
-    /// Callback invoked when dialog closes and returns focus.
+    /// Callback invoked when the dialog closes, before focus returns to the trigger element.
+    /// Call <see cref="AutoFocusEventArgs.PreventDefault"/> to prevent the default behavior.
+    /// This is useful in controlled mode where there may be no trigger element,
+    /// allowing you to focus a custom element instead.
     /// </summary>
     [Parameter]
-    public EventCallback OnCloseAutoFocus { get; set; }
+    public EventCallback<AutoFocusEventArgs> OnCloseAutoFocus { get; set; }
 
     /// <summary>
     /// Additional HTML attributes.
@@ -144,7 +147,7 @@ public partial class SmDialogContent : ComponentBase, IAsyncDisposable
                 _isInitialized = true;
 
                 // Invoke event BEFORE focus to allow prevention
-                var eventArgs = new OpenAutoFocusEventArgs();
+                var eventArgs = new AutoFocusEventArgs();
                 await OnOpenAutoFocus.InvokeAsync(eventArgs);
                 _shouldAutoFocus = !eventArgs.DefaultPrevented;
 
@@ -261,10 +264,15 @@ public partial class SmDialogContent : ComponentBase, IAsyncDisposable
         {
             await CleanupAsync();
 
-            // Return focus to trigger
-            await FloatingInterop.FocusElementAsync(Context.TriggerElement);
+            // Invoke event BEFORE focus to allow prevention
+            var eventArgs = new AutoFocusEventArgs();
+            await OnCloseAutoFocus.InvokeAsync(eventArgs);
 
-            await OnCloseAutoFocus.InvokeAsync();
+            // Return focus to trigger if not prevented and trigger element exists
+            if (!eventArgs.DefaultPrevented && Context.TriggerElement.Id is not null)
+            {
+                await FloatingInterop.FocusElementAsync(Context.TriggerElement);
+            }
         }
 
         Context.RaiseStateChanged();

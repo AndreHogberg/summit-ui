@@ -49,17 +49,18 @@ public partial class SmAlertDialogContent : IAsyncDisposable
 
     /// <summary>
     /// Callback invoked when the dialog opens, before auto-focus occurs.
-    /// Call <see cref="OpenAutoFocusEventArgs.PreventDefault"/> to prevent
+    /// Call <see cref="AutoFocusEventArgs.PreventDefault"/> to prevent
     /// the default auto-focus behavior, which can cause browser scroll.
     /// </summary>
     [Parameter]
-    public EventCallback<OpenAutoFocusEventArgs> OnOpenAutoFocus { get; set; }
+    public EventCallback<AutoFocusEventArgs> OnOpenAutoFocus { get; set; }
 
     /// <summary>
-    /// Callback invoked when dialog closes and returns focus.
+    /// Callback invoked when the dialog closes, before any focus restoration.
+    /// Call <see cref="AutoFocusEventArgs.PreventDefault"/> to prevent the default behavior.
     /// </summary>
     [Parameter]
-    public EventCallback OnCloseAutoFocus { get; set; }
+    public EventCallback<AutoFocusEventArgs> OnCloseAutoFocus { get; set; }
 
     /// <summary>
     /// Additional HTML attributes.
@@ -116,7 +117,7 @@ public partial class SmAlertDialogContent : IAsyncDisposable
                 _isInitialized = true;
 
                 // Invoke event BEFORE focus to allow prevention
-                var eventArgs = new OpenAutoFocusEventArgs();
+                var eventArgs = new AutoFocusEventArgs();
                 await OnOpenAutoFocus.InvokeAsync(eventArgs);
                 _shouldAutoFocus = !eventArgs.DefaultPrevented;
 
@@ -222,7 +223,10 @@ public partial class SmAlertDialogContent : IAsyncDisposable
         if (!Context.IsOpen)
         {
             await CleanupAsync();
-            await OnCloseAutoFocus.InvokeAsync();
+
+            // Invoke event to allow custom focus handling
+            var eventArgs = new AutoFocusEventArgs();
+            await OnCloseAutoFocus.InvokeAsync(eventArgs);
         }
 
         Context.NotifyStateChanged();

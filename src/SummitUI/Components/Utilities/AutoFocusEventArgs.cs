@@ -1,10 +1,10 @@
 namespace SummitUI;
 
 /// <summary>
-/// Event arguments for the OnOpenAutoFocus event.
+/// Event arguments for auto-focus events (OnOpenAutoFocus, OnCloseAutoFocus).
 /// Allows preventing the default auto-focus behavior.
 /// </summary>
-public class OpenAutoFocusEventArgs : EventArgs
+public class AutoFocusEventArgs : EventArgs
 {
     private bool _defaultPrevented;
 
@@ -15,8 +15,9 @@ public class OpenAutoFocusEventArgs : EventArgs
 
     /// <summary>
     /// Prevents the default auto-focus behavior.
-    /// When called, the dialog will not automatically focus
+    /// When called on open, the component will not automatically focus
     /// the first focusable element, avoiding browser scroll.
+    /// When called on close, the component will not return focus to the trigger element.
     /// </summary>
     public void PreventDefault() => _defaultPrevented = true;
 }
