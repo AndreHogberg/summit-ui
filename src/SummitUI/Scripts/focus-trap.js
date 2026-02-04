@@ -59,13 +59,13 @@ function handleGlobalFocusIn(event) {
 
     const focusableElements = getFocusableElements(containerEl);
     if (focusableElements.length > 0) {
-        focusableElements[0].focus();
+        focusableElements[0].focus({ preventScroll: true });
     } else {
         // Make container focusable and focus it
         if (!containerEl.hasAttribute('tabindex')) {
             containerEl.setAttribute('tabindex', '-1');
         }
-        containerEl.focus();
+        containerEl.focus({ preventScroll: true });
     }
 }
 
@@ -119,13 +119,13 @@ export function activate(containerEl, options = {}) {
             // Shift+Tab: going backwards
             if (document.activeElement === firstElement || !containerEl.contains(document.activeElement)) {
                 event.preventDefault();
-                lastElement.focus();
+                lastElement.focus({ preventScroll: true });
             }
         } else {
             // Tab: going forwards
             if (document.activeElement === lastElement || !containerEl.contains(document.activeElement)) {
                 event.preventDefault();
-                firstElement.focus();
+                firstElement.focus({ preventScroll: true });
             }
         }
     }
@@ -157,17 +157,17 @@ export function activate(containerEl, options = {}) {
         // Use requestAnimationFrame to ensure DOM is ready
         requestAnimationFrame(() => {
             if (config.initialFocus && containerEl.contains(config.initialFocus)) {
-                config.initialFocus.focus();
+                config.initialFocus.focus({ preventScroll: true });
             } else {
                 const focusableElements = getFocusableElements(containerEl);
                 if (focusableElements.length > 0) {
-                    focusableElements[0].focus();
+                    focusableElements[0].focus({ preventScroll: true });
                 } else {
                     // Make container focusable and focus it
                     if (!containerEl.hasAttribute('tabindex')) {
                         containerEl.setAttribute('tabindex', '-1');
                     }
-                    containerEl.focus();
+                    containerEl.focus({ preventScroll: true });
                 }
             }
         });
@@ -202,7 +202,7 @@ export function deactivate(trapId) {
     if (trap.config.returnFocus && trap.config.returnFocusTo) {
         requestAnimationFrame(() => {
             if (trap.config.returnFocusTo && typeof trap.config.returnFocusTo.focus === 'function') {
-                trap.config.returnFocusTo.focus();
+                trap.config.returnFocusTo.focus({ preventScroll: true });
             }
         });
     }
@@ -232,7 +232,7 @@ export function focusFirst(containerEl) {
 
     const focusableElements = getFocusableElements(containerEl);
     if (focusableElements.length > 0) {
-        focusableElements[0].focus();
+        focusableElements[0].focus({ preventScroll: true });
     }
 }
 
@@ -245,7 +245,7 @@ export function focusLast(containerEl) {
 
     const focusableElements = getFocusableElements(containerEl);
     if (focusableElements.length > 0) {
-        focusableElements[focusableElements.length - 1].focus();
+        focusableElements[focusableElements.length - 1].focus({ preventScroll: true });
     }
 }
 
@@ -254,7 +254,7 @@ export function focusLast(containerEl) {
  * @param {HTMLElement} element
  */
 export function focusElement(element) {
-    element?.focus();
+    element?.focus({ preventScroll: true });
 }
 
 /**
