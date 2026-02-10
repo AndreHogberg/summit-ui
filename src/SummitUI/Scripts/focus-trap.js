@@ -50,8 +50,11 @@ function handleGlobalFocusIn(event) {
     const topTrap = focusTrapStack[focusTrapStack.length - 1];
     const containerEl = topTrap.container;
 
-    // If focus is already inside the topmost trap's container, allow it
-    if (containerEl.contains(event.target)) return;
+    // If focus is already inside the topmost trap's container, or on an
+    // ancestor of it (e.g. the dialog wrapper with tabindex="-1"), allow it.
+    // Ancestor focus happens naturally when clicking non-focusable text for
+    // selection — blocking it would prevent text selection inside the trap.
+    if (containerEl.contains(event.target) || event.target.contains(containerEl)) return;
 
     // Focus escaped the topmost trap - bring it back
     event.preventDefault();
