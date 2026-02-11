@@ -226,7 +226,7 @@ public partial class SmSelectContent<TValue> : ComponentBase, IAsyncDisposable w
 
                 // Highlight selected item or first item
                 var selectedKey = Context.GetKeyForValue(Context.Value);
-                if (!string.IsNullOrEmpty(selectedKey))
+                if (selectedKey is not null)
                 {
                     await Context.SetHighlightedKeyAsync(selectedKey);
                     // Scroll to the selected item
@@ -260,7 +260,7 @@ public partial class SmSelectContent<TValue> : ComponentBase, IAsyncDisposable w
 
     private string? GetActiveDescendantId()
     {
-        return !string.IsNullOrEmpty(Context.HighlightedKey)
+        return Context.HighlightedKey is not null
             ? Context.GetItemId(Context.HighlightedKey)
             : null;
     }
@@ -461,7 +461,7 @@ public partial class SmSelectContent<TValue> : ComponentBase, IAsyncDisposable w
         var keys = GetItemKeys();
         if (keys.Count == 0) return;
 
-        var currentIndex = string.IsNullOrEmpty(Context.HighlightedKey)
+        var currentIndex = Context.HighlightedKey is null
             ? -1
             : keys.IndexOf(Context.HighlightedKey);
 
@@ -495,7 +495,7 @@ public partial class SmSelectContent<TValue> : ComponentBase, IAsyncDisposable w
         var keys = GetItemKeys();
         if (keys.Count == 0) return;
 
-        var currentIndex = string.IsNullOrEmpty(Context.HighlightedKey)
+        var currentIndex = Context.HighlightedKey is null
             ? keys.Count
             : keys.IndexOf(Context.HighlightedKey);
 
@@ -560,7 +560,7 @@ public partial class SmSelectContent<TValue> : ComponentBase, IAsyncDisposable w
 
     private async Task SelectHighlightedItemAsync()
     {
-        if (string.IsNullOrEmpty(Context.HighlightedKey)) return;
+        if (Context.HighlightedKey is null) return;
 
         // Root.CloseAsync will focus the trigger before closing
         await Context.SelectItemByKeyAsync(Context.HighlightedKey);
@@ -580,7 +580,7 @@ public partial class SmSelectContent<TValue> : ComponentBase, IAsyncDisposable w
 
     private async Task ScrollToHighlightedItemAsync()
     {
-        if (string.IsNullOrEmpty(Context.HighlightedKey)) return;
+        if (Context.HighlightedKey is null) return;
 
         try
         {
